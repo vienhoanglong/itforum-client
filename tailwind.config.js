@@ -5,17 +5,35 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        primary: ["Epilogue", "sans-serif"],
+        sans: ['Poppins', 'sans-serif'],
+        serif: ['Nunito Sans', 'serif'],
       },
       colors: {
-        primary: "#1DC071",
+        primary: '#FF9315',
+        white: '#ffffff',
+        grey: {
+          dark: '#605a5a',
+          light: '#ADA7A0',
+        },
+        bg: {
+          dark: '#16212C',
+          light: '#FCFCFC',
+        },
+        red: {
+          DEFAULT: '#EF5950',
+        },
+        green: {
+          DEFAULT: '#7ACB9A',
+        },
+        orange: {
+          light: '#FFF3E4',
+        },
         secondary: "#6F49FD",
         text1: "#171725",
         text2: "#4B5264",
         text3: "#808191",
         text4: "#B2B3BD",
         "icon-color": "#A2A2A8",
-        white: "#FFFFFF",
         whiteSoft: "#FCFBFF",
         graySoft: "#FCFCFC",
         grayf3: "#f3f3f3",
@@ -34,5 +52,11 @@ export default {
       },
     },
   },
+  variants: {
+    extend: {
+      display: ["group-hover"],
+    },
+  },
+
   plugins: [],
 }

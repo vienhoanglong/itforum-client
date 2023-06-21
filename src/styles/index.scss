@@ -1,6 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400&family=Poppins:wght@300;400;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --orange: #ff9315;
+  --font-color: #605a5a;
+  --background-color: #fcfcfc;
+}
+
+.dark {
+  --font-color: #ffffff;
+  --background-color: #16212c;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-color);
+  color: var(--font-color);
+}
+
+#root {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.editable:empty:before {
+  font-weight: 300;
+  content: attr(data-placeholder);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.ql-toolbar {
+  background-color: var(--background-color);
+}
+
+.mantine-RichTextEditor-toolbarControl {
+  color: var(--font-color);
+}
+
+.mantine-RichTextEditor-toolbarControl:hover {
+  @apply text-primary;
+}
 
 @layer components {
     /* custom classes */
