@@ -3,9 +3,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
+import { Label } from "@/components/label";
+import { Button } from "@/components/button";
+import { FormGroup } from "@/components/common";
+import { Input } from "components/input";
 
 export const PostAddNew: React.FC = () => {
-    const { register, handleSubmit } = useForm();
+    //const { register, handleSubmit } = useForm();
     const [content, setContent] = useState("");
     const onSubmit = (data: any) => {
         console.log(data);
@@ -13,6 +17,15 @@ export const PostAddNew: React.FC = () => {
     const handleContentChange = (value: any) => {
         setContent(value);
     };
+
+    const {
+        handleSubmit,
+        control,
+        formState: { errors },
+    } = useForm({
+        mode: "onSubmit",
+    });
+
     const toolbarOptions = [
         ["bold", "italic", "underline", "strike"],
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -33,40 +46,43 @@ export const PostAddNew: React.FC = () => {
                 <div>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-4 mt-4">
-                            <label
-                                htmlFor="title"
-                                className="block font-semibold mb-1 text-base"
-                            >
-                                Title
-                            </label>
-                            <input
-                                type="text"
-                                id="title"
-                                className="w-full border border-gray-300 rounded px-3 py-2"
-                                {...register("title")}
-                            />
+                            <FormGroup>
+                                <Label
+                                    htmlFor="title"
+                                    className="block font-semibold mb-1"
+                                >
+                                    Title
+                                </Label>
+                                {/* <input
+                                    type="text"
+                                    id="title"
+                                    className="w-full border border-gray-300 rounded px-3 py-2"
+                                    {...register("title")}
+                                /> */}
+                                <Input control={control} name="title"></Input>
+                            </FormGroup>
                         </div>
                         <div className="mb-4">
-                            <label
+                            <Label
                                 htmlFor="hastag"
-                                className="block font-semibold mb-1 text-base"
+                                className="block font-semibold mb-1"
                             >
                                 Hastag
-                            </label>
+                            </Label>
                             <input
                                 type="text"
                                 id="hastag"
                                 className="w-full border border-gray-300 rounded px-3 py-2"
-                                {...register("hastag")}
+                                //{...register("hastag")}
                             />
                         </div>
                         <div className=" h-80 ">
-                            <label
+                            <Label
                                 htmlFor="content"
-                                className="block font-semibold mb-1 text-base"
+                                className="block font-semibold mb-1"
                             >
                                 Content
-                            </label>
+                            </Label>
                             <div className="overflow-auto">
                                 <ReactQuill
                                     className="border-gray-300 w-full mb-4"
@@ -79,12 +95,13 @@ export const PostAddNew: React.FC = () => {
                             </div>
                         </div>
                         <div className="mt-6">
-                            <button
-                                type="submit"
+                            <Button
                                 className="bg-blue-500 text-white rounded px-4 py-2"
+                                kind="primary"
+                                type="submit"
                             >
                                 Add post
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 </div>
