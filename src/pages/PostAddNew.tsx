@@ -1,4 +1,4 @@
-import LayoutShared from "layout/LayoutDashboard";
+import LayoutShared from "@/layout/LayoutDefault";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-quill/dist/quill.snow.css";
@@ -26,50 +26,50 @@ export const PostAddNew: React.FC = () => {
 
     return (
         <LayoutShared>
-            <div className="container mx-auto h-auto">
-                <div className="sticky top-0 rounded-lg z-10 p-4 text-white bg-blue-600 shadow-md">
+            <div className="container h-auto mx-auto">
+                <div className="top-0 z-10 p-4 text-white bg-blue-600 rounded-lg shadow-md ">
                     <h1 className="text-2xl font-bold ">Add new post</h1>
                 </div>
                 <div>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="mb-4 mt-4">
+                        <div className="mt-4 mb-4">
                             <label
                                 htmlFor="title"
-                                className="block font-semibold mb-1 text-base"
+                                className="block mb-1 text-base font-semibold"
                             >
                                 Title
                             </label>
                             <input
                                 type="text"
                                 id="title"
-                                className="w-full border border-gray-300 rounded px-3 py-2"
+                                className="w-full px-3 py-2 border border-gray-300 rounded"
                                 {...register("title")}
                             />
                         </div>
                         <div className="mb-4">
                             <label
                                 htmlFor="hastag"
-                                className="block font-semibold mb-1 text-base"
+                                className="block mb-1 text-base font-semibold"
                             >
                                 Hastag
                             </label>
                             <input
                                 type="text"
                                 id="hastag"
-                                className="w-full border border-gray-300 rounded px-3 py-2"
+                                className="w-full px-3 py-2 border border-gray-300 rounded"
                                 {...register("hastag")}
                             />
                         </div>
-                        <div className=" h-80 ">
+                        <div className=" h-80">
                             <label
                                 htmlFor="content"
-                                className="block font-semibold mb-1 text-base"
+                                className="block mb-1 text-base font-semibold"
                             >
                                 Content
                             </label>
                             <div className="overflow-auto">
                                 <ReactQuill
-                                    className="border-gray-300 w-full mb-4"
+                                    className="w-full mb-4 border-gray-300"
                                     value={content}
                                     onChange={handleContentChange}
                                     modules={{
@@ -81,7 +81,7 @@ export const PostAddNew: React.FC = () => {
                         <div className="mt-6">
                             <button
                                 type="submit"
-                                className="bg-blue-500 text-white rounded px-4 py-2"
+                                className="px-4 py-2 text-white bg-blue-500 rounded"
                             >
                                 Add post
                             </button>
