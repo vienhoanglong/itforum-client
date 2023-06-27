@@ -14,7 +14,7 @@ export const Header: React.FC = () => {
             </div>
             <div className="flex flex-row items-center justify-end flex-1 space-x-3">
           <div className="relative cursor-pointer group sm:cursor-default">
-            <AvatarImage name="long" size={44} />
+            <AvatarImage name="long" size={44}/>
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex group-hover:sm:hidden">
               <div className="h-[58px] bg-transparent"></div>
               <div className="flex flex-col w-full p-5 space-y-5 bg-white rounded dark:bg-bg-dark">
