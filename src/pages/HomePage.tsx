@@ -1,14 +1,14 @@
-import LayoutShared from "layout/LayoutDashboard";
-import Post from "modules/home/Post";
+import LayoutDefault from "@/layout/LayoutDefault";
+import Post from "@/modules/home/Post";
 import React from "react"
 
 
 
 export const HomePage: React.FC = () => {
     return (
-        <LayoutShared>
+        <LayoutDefault>
             <Post></Post>
-        </LayoutShared>
+        </LayoutDefault>
     );
 };
 

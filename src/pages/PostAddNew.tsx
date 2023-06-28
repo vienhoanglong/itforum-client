@@ -1,5 +1,5 @@
-import LayoutShared from "layout/LayoutDashboard";
-import React, { useState } from "react";
+import LayoutShared from "@/layout/LayoutDefault";
+import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
@@ -8,21 +8,47 @@ import { Button } from "@/components/button";
 import { FormGroup } from "@/components/common";
 import { Input } from "components/input";
 
+interface FormDataPosting {
+    title: string;
+    hastag: string;
+    content: string;
+}
+
 export const PostAddNew: React.FC = () => {
-    //const { register, handleSubmit } = useForm();
-    const [content, setContent] = useState("");
-    const onSubmit = (data: any) => {
+    const [content, setContent] = useState<string>("");
+
+    const onSubmit = (data: FormDataPosting) => {
         console.log(data);
     };
-    const handleContentChange = (value: any) => {
+
+    const handleContentChange = (value: string) => {
         setContent(value);
     };
 
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+    const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            if (reader.readyState === FileReader.DONE) {
+                setSelectedImage(reader.result as string);
+            }
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+    const editorStyles = {
+        border: "2px solid #3A3A43",
+    };
     const {
         handleSubmit,
         control,
         formState: { errors },
-    } = useForm({
+    } = useForm<FormDataPosting>({
         mode: "onSubmit",
     });
 
@@ -39,70 +65,87 @@ export const PostAddNew: React.FC = () => {
 
     return (
         <LayoutShared>
-            <div className="container mx-auto h-auto">
-                <div className="sticky top-0 rounded-lg z-10 p-4 text-white bg-blue-600 shadow-md">
-                    <h1 className="text-2xl font-bold ">Add new post</h1>
+            <div className="container h-full mx-auto">
+                <div className="top-0 z-10 p-4 text-white bg-blue-600 rounded-lg shadow-md ">
+                    <h1 className="text-xl font-bold ">Add new post</h1>
                 </div>
-                <div>
+                <div className=" overflow-auto h-full">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-4 mt-4">
                             <FormGroup>
                                 <Label
                                     htmlFor="title"
-                                    className="block font-semibold mb-1"
+                                    className="block font-semibold"
                                 >
                                     Title
                                 </Label>
-                                {/* <input
-                                    type="text"
-                                    id="title"
-                                    className="w-full border border-gray-300 rounded px-3 py-2"
-                                    {...register("title")}
-                                /> */}
+
                                 <Input control={control} name="title"></Input>
                             </FormGroup>
                         </div>
                         <div className="mb-4">
-                            <Label
-                                htmlFor="hastag"
-                                className="block font-semibold mb-1"
-                            >
-                                Hastag
-                            </Label>
-                            <input
-                                type="text"
-                                id="hastag"
-                                className="w-full border border-gray-300 rounded px-3 py-2"
-                                //{...register("hastag")}
-                            />
+                            <FormGroup>
+                                <Label
+                                    htmlFor="hastag"
+                                    className="block font-semibold"
+                                >
+                                    Hastag
+                                </Label>
+                                <Input control={control} name="hastag"></Input>
+                            </FormGroup>
                         </div>
-                        <div className=" h-80 ">
-                            <Label
-                                htmlFor="content"
-                                className="block font-semibold mb-1"
-                            >
-                                Content
-                            </Label>
-                            <div className="overflow-auto">
+                        <div className="mb-4">
+                            <FormGroup>
+                                <Label
+                                    htmlFor="imageUpload"
+                                    className="block font-semibold mb-1"
+                                >
+                                    Upload image for background:{" "}
+                                </Label>
+                                <input
+                                    type="file"
+                                    id="imageUpload"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                />
+                                {selectedImage && (
+                                    <div>
+                                        <h2>Preview:</h2>
+                                        <img
+                                            src={selectedImage}
+                                            alt="Preview"
+                                        />
+                                    </div>
+                                )}
+                            </FormGroup>
+                        </div>
+                        <div className="mb-4 ">
+                            <FormGroup>
+                                <Label
+                                    htmlFor="content"
+                                    className="block font-semibold"
+                                >
+                                    Content
+                                </Label>
                                 <ReactQuill
-                                    className="border-gray-300 w-full mb-4"
+                                    className="w-full mb-4 overflow-auto rounded-lg "
                                     value={content}
                                     onChange={handleContentChange}
+                                    style={editorStyles}
                                     modules={{
                                         toolbar: toolbarOptions,
                                     }}
                                 />
-                            </div>
+                            </FormGroup>
                         </div>
-                        <div className="mt-6">
-                            <Button
-                                className="bg-blue-500 text-white rounded px-4 py-2"
-                                kind="primary"
-                                type="submit"
-                            >
-                                Add post
-                            </Button>
-                        </div>
+
+                        <Button
+                            className="bg-blue-500 text-white  rounded px-4 py-2"
+                            kind="primary"
+                            type="submit"
+                        >
+                            Add post
+                        </Button>
                     </form>
                 </div>
             </div>
