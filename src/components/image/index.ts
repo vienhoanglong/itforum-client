@@ -1,2 +1,2 @@
 import AvatarImage from "./AvatarImage";
-export {AvatarImage}
+export { AvatarImage };
