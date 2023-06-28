@@ -24,9 +24,7 @@ export const SideBar: React.FC = () => {
               }
             >
               <menu.icon size={20} />
-              <span className="hidden md:block">
-                {menu.name.en}
-              </span>
+              <span className="hidden md:block">{menu.name.en}</span>
             </NavLink>
           </li>
         ))}
@@ -34,24 +32,15 @@ export const SideBar: React.FC = () => {
       <ul className="flex flex-col space-y-4">
         <li
           title="Settings"
-          className="flex flex-row items-center justify-center px-5 py-3 rounded cursor-pointer md:justify-start hover:text-primary"        >
+          className="flex flex-row items-center justify-center px-5 py-3 rounded cursor-pointer md:justify-start hover:text-primary"
+        >
           <HiOutlineCog size={20} />
-          <span className="hidden md:block md:pl-5">
-            setting
-          </span>
+          <span className="hidden md:block md:pl-5">setting</span>
         </li>
         <li className="flex items-end h-full">
-          <Button1
-            type="button"
-            isDanger
-            isFull
-            start
-            title='Log out'
-          >
+          <Button1 type="button" isDanger isFull start title="Log out">
             <HiOutlineLogout size={20} />
-            <span className="hidden md:block md:pl-5">
-             logout
-            </span>
+            <span className="hidden md:block md:pl-5">logout</span>
           </Button1>
         </li>
       </ul>

@@ -150,7 +150,7 @@ export const PostAddNew: React.FC = () => {
                 </div>
             </div>
         </LayoutShared>
-    );
+  );
 };
 
 export default PostAddNew;

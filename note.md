@@ -42,3 +42,4 @@
     }
   ]
 }
+add "--no-verify" at the back of the commit
