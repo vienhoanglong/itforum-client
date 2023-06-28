@@ -4,11 +4,11 @@ import { Container } from "@/components/common";
 import React from "react";
 
 interface LayoutDefaultProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export const LayoutDefault: React.FC<LayoutDefaultProps> = ({
-    children,
+  children,
 }: LayoutDefaultProps) => {
     return (
         <React.Fragment>

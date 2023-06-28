@@ -149,8 +149,8 @@ export const PostAddNew: React.FC = () => {
                     </form>
                 </div>
             </div>
-        </LayoutShared>
-    );
+    </LayoutShared>
+  );
 };
 
 export default PostAddNew;
