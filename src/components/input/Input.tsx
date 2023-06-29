@@ -31,7 +31,6 @@ const Input: React.FC<InputProps> = ({
       <input
         id={name}
         type={type}
-      
         className={classNames(
           "w-full px-4 py-2 text-sm font-medium border rounded-xl placeholder:text-text4 dark:placeholder:text-text2  bg-transparent",
           error.length > 0

@@ -8,7 +8,7 @@ interface ButtonProps {
   className?: string;
   isLoading?: boolean;
   href?: string;
-  kind?: "primary" | "secondary" | "ghost";
+  kind?: "primary" | "secondary" | "ghost" | "delete";
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -24,10 +24,11 @@ export const Button: React.FC<ButtonProps> = ({
     children
   );
   let defaultClassName =
-    "flex items-center justify-center p-4 text-base font-semibold rounded-xl min-h-[56px]";
+    "flex items-center justify-center p-4 text-base font-semibold rounded-xl min-h-[56px] shadow-md";
   switch (rest.kind) {
     case "primary":
-      defaultClassName = defaultClassName + " bg-primary text-white";
+      defaultClassName =
+        defaultClassName + " bg-amber-400 hover:bg-amber-500 text-white ";
       break;
     case "secondary":
       defaultClassName = defaultClassName + " bg-secondary text-white";
@@ -35,6 +36,10 @@ export const Button: React.FC<ButtonProps> = ({
     case "ghost":
       defaultClassName =
         defaultClassName + " bg-secondary bg-opacity-10 text-secondary";
+      break;
+    case "delete":
+      defaultClassName =
+        defaultClassName + " bg-red-400 hover:bg-red-500 text-white";
       break;
     default:
       break;
