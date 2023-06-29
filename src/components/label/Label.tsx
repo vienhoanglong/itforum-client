@@ -10,7 +10,7 @@ export interface LabelProps {
 export const Label: React.FC<LabelProps> = ({
   children,
   htmlFor,
-  className = '',
+  className = "",
 }: LabelProps) => {
   return (
     <label

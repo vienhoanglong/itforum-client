@@ -30,6 +30,7 @@
     "react-error-boundary": "^4.0.9",
     "react-hook-form": "^7.44.3",
     "react-icons": "^4.9.0",
+    "react-paginate": "^8.2.0",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.11.2",
     "sass": "^1.62.1",
