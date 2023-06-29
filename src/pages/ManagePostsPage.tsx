@@ -1,6 +1,7 @@
 import { Button } from "@/components/button";
 import LayoutDefault from "@/layout/LayoutDefault";
 import React, { useState } from "react";
+import { HiPlusCircle, HiTrash } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
 
 export const ManagePosts: React.FC = () => {
@@ -112,16 +113,16 @@ export const ManagePosts: React.FC = () => {
 
         <div className=" overflow-x-hidden overflow-y-auto h-full">
           <div className="flex flex-wrap items-center">
-            <div className="w-2/4 mr-auto pt-2">
-              <div className="flex">
-                <div className="w-3/4 mr-2">
+            <div className=" w-1/2 mr-auto pt-2">
+              <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
+                <div className="w-full mr-2">
                   <input
                     type="text"
                     placeholder="Search..."
                     className="w-full pl-1 rounded-lg border-2 border-darkStroke"
                   />
                 </div>
-                <div className="w-1/4">
+                <div className="w-1/2">
                   <select
                     id="filterDropdown"
                     className="w-full rounded-lg border-2 border-darkStroke"
@@ -135,16 +136,8 @@ export const ManagePosts: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-2 justify-end py-4 ">
-              <Button
-                className=" w-full text-white   rounded px-4 py-2"
-                kind="delete"
-                type="submit"
-              >
-                {" "}
-                Delete
-              </Button>
 
+            <div className="grid grid-cols-2 gap-2 justify-end py-4 ">
               <Button
                 className=" w-full text-white  rounded px-4 py-2"
                 kind="primary"
@@ -152,7 +145,21 @@ export const ManagePosts: React.FC = () => {
                 href="/manage/add-post"
               >
                 {" "}
-                New post
+                New post{" "}
+                <span className="pl-1">
+                  <HiPlusCircle size={20} />
+                </span>
+              </Button>
+              <Button
+                className=" w-full text-white   rounded px-4 py-2"
+                kind="delete"
+                type="submit"
+              >
+                {" "}
+                Delete{" "}
+                <span className="pl-1">
+                  <HiTrash size={20} />
+                </span>
               </Button>
             </div>
           </div>

@@ -24,10 +24,11 @@ export const Button: React.FC<ButtonProps> = ({
     children
   );
   let defaultClassName =
-    "flex items-center justify-center p-4 text-base font-semibold rounded-xl min-h-[56px]";
+    "flex items-center justify-center p-4 text-base font-semibold rounded-xl min-h-[56px] shadow-md";
   switch (rest.kind) {
     case "primary":
-      defaultClassName = defaultClassName + " bg-primary text-white";
+      defaultClassName =
+        defaultClassName + " bg-amber-400 hover:bg-amber-500 text-white ";
       break;
     case "secondary":
       defaultClassName = defaultClassName + " bg-secondary text-white";

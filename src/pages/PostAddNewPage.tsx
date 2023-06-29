@@ -70,7 +70,7 @@ export const PostAddNew: React.FC = () => {
           <h1 className="text-xl font-bold ">Add new post</h1>
         </div>
         <div className=" overflow-auto h-full">
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} className="pb-4">
             <div className="mb-4 mt-4">
               <FormGroup>
                 <Label htmlFor="title" className="block font-semibold">
@@ -116,7 +116,7 @@ export const PostAddNew: React.FC = () => {
                   Content
                 </Label>
                 <ReactQuill
-                  className="w-full mb-4 overflow-auto rounded-lg "
+                  className="w-full mb-2 overflow-auto rounded-lg "
                   value={content}
                   onChange={handleContentChange}
                   style={editorStyles}
@@ -128,7 +128,7 @@ export const PostAddNew: React.FC = () => {
             </div>
 
             <Button
-              className="bg-blue-500 text-white  rounded px-4 py-2"
+              className=" text-white  rounded px-4 py-2"
               kind="primary"
               type="submit"
             >
