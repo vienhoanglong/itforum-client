@@ -3,6 +3,7 @@ import LayoutDefault from "@/layout/LayoutDefault";
 import React, { useState } from "react";
 import { HiPlusCircle, HiTrash } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
+import { exampleData } from "../constants/global.ts";
 
 export const ManagePosts: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -14,95 +15,12 @@ export const ManagePosts: React.FC = () => {
     setItemsPerPage(selectedItemsPerPage);
     setCurrentPage(0);
   };
-  const data = [
-    {
-      id: 1,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: false,
-    },
-    {
-      id: 2,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: true,
-    },
-    {
-      id: 3,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: false,
-    },
-    {
-      id: 4,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: false,
-    },
-    {
-      id: 5,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: true,
-    },
-    {
-      id: 6,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: true,
-    },
-    {
-      id: 7,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: true,
-    },
-    {
-      id: 8,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: true,
-    },
-    {
-      id: 9,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: true,
-    },
-    {
-      id: 10,
-      author: "Trần Hoàng Long",
-      title: "Build blogging website",
-      topic: "web development",
-      views: 100,
-      publish: true,
-    },
-  ];
-
   const handlePageChange = (selectedPage: { selected: number }) => {
     setCurrentPage(selectedPage.selected);
   };
 
   const offset = currentPage * itemsPerPage;
-  const paginatedData = data.slice(offset, offset + itemsPerPage);
+  const paginatedData = exampleData.slice(offset, offset + itemsPerPage);
 
   return (
     <LayoutDefault>
@@ -177,7 +95,7 @@ export const ManagePosts: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedData.map((item) => (
+                {paginatedData.map((item: any) => (
                   <tr
                     key={item.id}
                     className="even:bg-gray-100 odd:bg-white cursor-pointer"
@@ -209,7 +127,7 @@ export const ManagePosts: React.FC = () => {
           <div className="flex items-center bg-stone-500 text-white rounded-b-lg">
             <div className="w-1/2 mr-2 pb-3 ml-1">
               <ReactPaginate
-                pageCount={Math.ceil(data.length / itemsPerPage)}
+                pageCount={Math.ceil(exampleData.length / itemsPerPage)}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={5}
                 onPageChange={handlePageChange}
