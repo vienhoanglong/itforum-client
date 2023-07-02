@@ -22,7 +22,7 @@ export const LayoutChat: React.FC<LayoutChatProps> = ({
             <SideBar />
           </nav>
           <section
-            className="z-0 w-full sm:w-10/12 md:w-3/4 xl:w-4/5 max-xl:w-auto scrollbar-hide sm:px-5"
+            className="z-0 w-full sm:w-10/12 md:w-3/4 xl:w-4/5 scrollbar-hide sm:px-5"
             role="main"
           >
             {children}
