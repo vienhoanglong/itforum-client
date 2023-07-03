@@ -9,6 +9,7 @@ interface ButtonProps {
   isLoading?: boolean;
   href?: string;
   kind?: "primary" | "secondary" | "ghost" | "delete";
+  handle?: (() => void) | undefined;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -16,6 +17,7 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   className = "",
   isLoading = false,
+  handle,
   ...rest
 }: ButtonProps) => {
   const child = isLoading ? (
@@ -28,7 +30,8 @@ export const Button: React.FC<ButtonProps> = ({
   switch (rest.kind) {
     case "primary":
       defaultClassName =
-        defaultClassName + " bg-amber-400 hover:bg-amber-500 text-white ";
+        defaultClassName +
+        " border-4 border-white hover:bg-amber-500 text-green ";
       break;
     case "secondary":
       defaultClassName = defaultClassName + " bg-secondary text-white";
@@ -58,6 +61,7 @@ export const Button: React.FC<ButtonProps> = ({
         className
       )}
       type={type}
+      onClick={handle}
       {...rest}
     >
       {child}

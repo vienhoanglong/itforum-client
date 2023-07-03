@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { HiPlusCircle, HiTrash } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
 import { exampleData } from "../constants/global.ts";
+import LayoutChat from "@/layout/LayoutChat.tsx";
 
 export const ManagePosts: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -23,9 +24,9 @@ export const ManagePosts: React.FC = () => {
   const paginatedData = exampleData.slice(offset, offset + itemsPerPage);
 
   return (
-    <LayoutDefault>
+    <LayoutChat>
       <div className="container h-full mx-auto">
-        <div className=" p-4 text-white bg-blue-600 rounded-lg shadow-md ">
+        <div className=" py-4  rounded-lg">
           <h1 className="text-xl font-bold ">Manage posts</h1>
         </div>
 
@@ -68,13 +69,15 @@ export const ManagePosts: React.FC = () => {
                   <HiPlusCircle size={20} />
                 </span>
               </Button>
+
               <Button
-                className=" w-full text-white   rounded px-4 py-2"
+                className=" w-full text-white  rounded px-4 py-2"
                 kind="delete"
                 type="submit"
+                href="/manage/trash"
               >
                 {" "}
-                Delete{" "}
+                Trash{" "}
                 <span className="pl-1">
                   <HiTrash size={20} />
                 </span>
@@ -84,7 +87,7 @@ export const ManagePosts: React.FC = () => {
 
           <div className="overflow-x-auto overflow-y-hidden w-full">
             <table className="min-w-full relative   ">
-              <thead className=" sticky top-0 z-1 bg-stone-500 text-white">
+              <thead className=" sticky top-0 z-1 bg-gray-300 ">
                 <tr>
                   <th className="py-2 px-4 rounded-tl-lg text-left">SN</th>
                   <th className="py-2 px-4  text-left">Author</th>
@@ -124,7 +127,7 @@ export const ManagePosts: React.FC = () => {
             </table>
           </div>
 
-          <div className="flex items-center bg-stone-500 text-white rounded-b-lg">
+          <div className="flex items-center bg-gray-300 h-10 rounded-b-lg">
             <div className="w-1/2 mr-2 pb-3 ml-1">
               <ReactPaginate
                 pageCount={Math.ceil(exampleData.length / itemsPerPage)}
@@ -156,7 +159,7 @@ export const ManagePosts: React.FC = () => {
           </div>
         </div>
       </div>
-    </LayoutDefault>
+    </LayoutChat>
   );
 };
 
