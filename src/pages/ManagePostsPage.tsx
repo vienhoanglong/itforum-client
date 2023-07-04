@@ -9,10 +9,10 @@ import {
 } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
 import { exampleData, topicColors } from "../constants/global.ts";
-import LayoutChat from "@/layout/LayoutChat.tsx";
 import Modal from "@/components/modal/Modal.tsx";
 import PostAddNewPage from "./PostAddNewPage.tsx";
 import DeletedPostsPage from "./DeletedPostsPage.tsx";
+import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 
 export const ManagePosts: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -48,7 +48,7 @@ export const ManagePosts: React.FC = () => {
     setIsModalOpenTrash(false);
   };
   return (
-    <LayoutChat>
+    <LayoutSecondary>
       <div className="container h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">Manage posts</h4>
@@ -224,7 +224,7 @@ export const ManagePosts: React.FC = () => {
           </div>
         </div>
       </div>
-    </LayoutChat>
+    </LayoutSecondary>
   );
 };
 
