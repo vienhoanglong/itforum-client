@@ -34,8 +34,7 @@ export const ButtonSecondary: React.FC<ButtonSecondaryProps> = ({
       defaultClassName = defaultClassName + " text-teal0 border-teal0";
       break;
     case "ghost":
-      defaultClassName =
-        defaultClassName + " border-orange0 text-orange0";
+      defaultClassName = defaultClassName + " border-orange0 text-orange0";
       break;
     default:
       break;
