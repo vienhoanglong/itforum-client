@@ -1,3 +1,3 @@
 import Input from "./Input";
-import ChatBox from "./Chatbox";
+import ChatBox from "./ChatBox";
 export { Input, ChatBox };

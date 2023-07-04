@@ -8,7 +8,8 @@ interface ButtonProps {
   className?: string;
   isLoading?: boolean;
   href?: string;
-  kind?: "primary" | "secondary" | "ghost";
+  handle?: (() => void) | undefined;
+  kind?: "primary" | "secondary" | "ghost" | "custom";
   size?: "small" | "medium" | "large";
 }
 
@@ -17,6 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   className = "",
   isLoading = false,
+  handle,
   ...rest
 }: ButtonProps) => {
   const child = isLoading ? (
@@ -37,18 +39,21 @@ export const Button: React.FC<ButtonProps> = ({
       defaultClassName =
         defaultClassName + " bg-orange0 bg-opacity-10 text-white";
       break;
+    case "custom":
+      defaultClassName;
+      break;
     default:
       break;
   }
   switch (rest.size) {
     case "small":
-      defaultClassName = defaultClassName + "max-h-[40px]";
+      defaultClassName = defaultClassName + " max-h-[40px]";
       break;
     case "medium":
-      defaultClassName = defaultClassName + "max-h-[48px]";
+      defaultClassName = defaultClassName + " max-h-[48px]";
       break;
     case "large":
-      defaultClassName = defaultClassName + "max-h-[60px]";
+      defaultClassName = defaultClassName + " max-h-[60px]";
       break;
     default:
       break;
@@ -63,10 +68,11 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       className={classNames(
         defaultClassName,
-        isLoading ? "opacity-50 pointer-events-none" : "",
+        isLoading ? " opacity-50 pointer-events-none" : "",
         className
       )}
       type={type}
+      onClick={handle}
       {...rest}
     >
       {child}

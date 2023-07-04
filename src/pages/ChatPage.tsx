@@ -2,7 +2,7 @@ import LayoutChat from "@/layout/LayoutChat";
 import React from "react";
 import { HiInformationCircle, HiMenu, HiOutlineSearch } from "react-icons/hi";
 import { AvatarImage } from "@/components/image";
-import ChatBox from "@/components/input/Chatbox";
+import ChatBox from "@/components/input/ChatBox";
 export const ChatPage: React.FC = () => {
   const users = [
     { id: 1, username: "Viên Hoàng Long" },
