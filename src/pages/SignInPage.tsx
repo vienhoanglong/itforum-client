@@ -74,7 +74,7 @@ export const SignInPage: React.FC = () => {
         </FormGroup>
         <FormGroup>
           <div className="text-right">
-            <span className="inline-block text-sm font-medium text-primary">
+            <span className="inline-block text-sm font-medium text-mainColor">
               Forgot password
             </span>
           </div>

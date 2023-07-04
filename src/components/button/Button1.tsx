@@ -17,7 +17,7 @@ const Button1: React.FC<any> = ({
     "flex flex-row items-center px-6 py-2 text-white rounded transition-all justify-center",
   ];
 
-  isPrimary && className.push("bg-primary hover:bg-orange-600");
+  isPrimary && className.push("bg-mainColor hover:bg-blue-600");
   isDanger && className.push("bg-red3 hover:bg-red-600");
   isFull && className.push("w-full");
   start && className.push("md:justify-start");
