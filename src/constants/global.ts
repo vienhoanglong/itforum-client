@@ -5,7 +5,23 @@ export const exampleData = [
     id: 1,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 1,
+        name: "JavaScript",
+        description: "JavaScript",
+      },
+      {
+        id: 3,
+        name: "NodeJs",
+        description: "NodeJS",
+      },
+      {
+        id: 4,
+        name: "C#",
+        description: "C#",
+      },
+    ],
     views: 100,
     publish: false,
   },
@@ -13,7 +29,28 @@ export const exampleData = [
     id: 2,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 1,
+        name: "JavaScript",
+        description: "JavaScript",
+      },
+      {
+        id: 2,
+        name: "React",
+        description: "React",
+      },
+      {
+        id: 3,
+        name: "NodeJs",
+        description: "NodeJS",
+      },
+      {
+        id: 4,
+        name: "C#",
+        description: "C#",
+      },
+    ],
     views: 100,
     publish: true,
   },
@@ -21,7 +58,28 @@ export const exampleData = [
     id: 3,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 1,
+        name: "JavaScript",
+        description: "JavaScript",
+      },
+      {
+        id: 2,
+        name: "React",
+        description: "React",
+      },
+      {
+        id: 3,
+        name: "NodeJs",
+        description: "NodeJS",
+      },
+      {
+        id: 4,
+        name: "C#",
+        description: "C#",
+      },
+    ],
     views: 100,
     publish: false,
   },
@@ -29,7 +87,18 @@ export const exampleData = [
     id: 4,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 1,
+        name: "JavaScript",
+        description: "JavaScript",
+      },
+      {
+        id: 2,
+        name: "React",
+        description: "React",
+      },
+    ],
     views: 100,
     publish: false,
   },
@@ -37,7 +106,28 @@ export const exampleData = [
     id: 5,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 1,
+        name: "JavaScript",
+        description: "JavaScript",
+      },
+      {
+        id: 2,
+        name: "React",
+        description: "React",
+      },
+      {
+        id: 3,
+        name: "NodeJs",
+        description: "NodeJS",
+      },
+      {
+        id: 4,
+        name: "C#",
+        description: "C#",
+      },
+    ],
     views: 100,
     publish: true,
   },
@@ -45,7 +135,23 @@ export const exampleData = [
     id: 6,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 2,
+        name: "React",
+        description: "React",
+      },
+      {
+        id: 3,
+        name: "NodeJs",
+        description: "NodeJS",
+      },
+      {
+        id: 4,
+        name: "C#",
+        description: "C#",
+      },
+    ],
     views: 100,
     publish: true,
   },
@@ -53,7 +159,23 @@ export const exampleData = [
     id: 7,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 1,
+        name: "JavaScript",
+        description: "JavaScript",
+      },
+      {
+        id: 2,
+        name: "React",
+        description: "React",
+      },
+      {
+        id: 3,
+        name: "NodeJs",
+        description: "NodeJS",
+      },
+    ],
     views: 100,
     publish: true,
   },
@@ -61,7 +183,23 @@ export const exampleData = [
     id: 8,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 1,
+        name: "JavaScript",
+        description: "JavaScript",
+      },
+      {
+        id: 2,
+        name: "React",
+        description: "React",
+      },
+      {
+        id: 4,
+        name: "C#",
+        description: "C#",
+      },
+    ],
     views: 100,
     publish: true,
   },
@@ -69,7 +207,23 @@ export const exampleData = [
     id: 9,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 1,
+        name: "JavaScript",
+        description: "JavaScript",
+      },
+      {
+        id: 3,
+        name: "NodeJs",
+        description: "NodeJS",
+      },
+      {
+        id: 4,
+        name: "C#",
+        description: "C#",
+      },
+    ],
     views: 100,
     publish: true,
   },
@@ -77,8 +231,58 @@ export const exampleData = [
     id: 10,
     author: "Trần Hoàng Long",
     title: "Build blogging website",
-    topic: "web development",
+    topic: [
+      {
+        id: 1,
+        name: "JavaScript",
+        description: "JavaScript",
+      },
+      {
+        id: 2,
+        name: "React",
+        description: "React",
+      },
+      {
+        id: 3,
+        name: "NodeJs",
+        description: "NodeJS",
+      },
+    ],
     views: 100,
     publish: true,
   },
 ];
+
+export const exampleDataTopic = [
+  {
+    id: 1,
+    name: "JavaScript",
+    description: "JavaScript",
+    color: "#F7DF1E",
+  },
+  {
+    id: 2,
+    name: "React",
+    description: "React",
+    color: "#61DAFB",
+  },
+  {
+    id: 3,
+    name: "NodeJs",
+    description: "NodeJS",
+    color: "#339933",
+  },
+  {
+    id: 4,
+    name: "C#",
+    description: "C#",
+    color: "#9A57FF",
+  },
+];
+
+export const topicColors: { [key: string]: string } = {
+  JavaScript: "bg-yellow-400/25 text-yellow-400 border-yellow-400",
+  React: "bg-blue-400/25 text-blue-400 border-blue-400",
+  NodeJs: "bg-green-400/25 text-green-400 border-green-400",
+  "C#": "bg-violet-400/25 text-violet-400 border-violet-400",
+};

@@ -6,11 +6,11 @@ interface UploadProgressProps {
 
 const UploadProgress: React.FC<UploadProgressProps> = ({ uploadProgress }) => {
   return (
-    <div className="bg-white shadow-md rounded-md p-4">
+    <div className="z-10 h-auto w-full  rounded-md text-xs p-2">
       <div className="flex items-center mb-2">
-        <div className="w-full bg-gray-200 h-2 rounded-full">
+        <div className="w-full  h-1 rounded-full">
           <div
-            className="bg-green-500 h-2 rounded-full"
+            className="bg-teal0 h-1 rounded-full"
             style={{ width: `${uploadProgress}%` }}
           ></div>
         </div>

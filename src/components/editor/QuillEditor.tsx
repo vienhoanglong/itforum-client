@@ -25,7 +25,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ value, onChange }) => {
   return (
     <div className="h-full border-gray-500 rounded-lg ">
       <ReactQuill
-        className="h-5/6"
+        className="h-5/6 text-xs"
         value={value}
         onChange={handleContentChange}
         modules={{

@@ -9,6 +9,7 @@ interface InputProps {
   control: Control<any>;
   placeholder?: string;
   children?: React.ReactNode;
+  className?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -18,6 +19,7 @@ const Input: React.FC<InputProps> = ({
   control,
   placeholder = "",
   children,
+  className = "",
   ...rest
 }) => {
   const { field } = useController({
@@ -32,7 +34,8 @@ const Input: React.FC<InputProps> = ({
         id={name}
         type={type}
         className={classNames(
-          "w-full px-4 py-2 text-sm font-medium border rounded-xl placeholder:text-text4 dark:placeholder:text-text2  bg-transparent",
+          "w-full px-4 py-2 text-sm font-medium border rounded-xl placeholder:text-text4 dark:placeholder:text-text2 mx-[2px]  bg-transparent",
+          className,
           error.length > 0
             ? "border-error text-error"
             : "border-strock text-text1 dark:border-darkStroke",

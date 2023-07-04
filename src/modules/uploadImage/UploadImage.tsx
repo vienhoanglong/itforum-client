@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { Button } from "../../components/button";
 import UploadProgress from "./UploadProgress";
 import logoUpload from "/src/assets/upload-image.png";
+import { HiTrash } from "react-icons/hi";
 
 interface UploadImageProps {
   onImageUpload: (imageUrl: string) => void;
@@ -62,29 +63,37 @@ const UploadImage: React.FC<UploadImageProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center bg-gray-100 rounded-lg">
-      <div className="bg-white shadow-md rounded-md p-8 w-full">
+    <div className="flex flex-col justify-center h-full w-auto items-center rounded-lg">
+      <div className="bg-white dark:bg-dark2 rounded-md p-2 w-full h-[180px]">
         {selectedImage ? (
-          <div className="mb-4 flex justify-center items-center w-full h-[400px]">
+          <div className="mb-4 flex justify-center items-center w-auto h-full relative">
             <img
               src={selectedImage}
               alt="Uploaded"
               className="max-w-full max-h-full w-auto h-auto"
             />
+            <button
+              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+              onClick={handleDelete}
+            >
+              <HiTrash size={15}></HiTrash>
+            </button>
           </div>
         ) : (
           <div
             {...getRootProps()}
-            className={`flex flex-col items-center justify-center border-4 rounded-lg border-dashed py-16 px-8 mb-4 ${
-              isDragActive ? "bg-gray-200 border-blue-500" : ""
+            className={`flex flex-col h-full w-full items-center justify-center border-2 dark:border-dark1 rounded-lg border-dashed py-16 px-8 mb-4 ${
+              isDragActive
+                ? "bg-gray-200 border-blue-500 dark:bg-dark0 dark:border-dark3 w-full h-full"
+                : ""
             }`}
           >
             <input {...getInputProps()} accept="image/*" />
-            <img srcSet={logoUpload} alt="logoUpload" className="mb-2 h-24" />
+            <img srcSet={logoUpload} alt="logoUpload" className="mb-2 h-14" />
             {isDragActive ? (
-              <p>Drop the image here...</p>
+              <p className="text-xs">Drop the image here...</p>
             ) : (
-              <p>
+              <p className="text-xs">
                 Drag and drop an image here, or{" "}
                 <a className="underline underline-offset-2 cursor-pointer text-blue-500 hover:text-blue-700 font-bold">
                   CLICK
@@ -94,18 +103,11 @@ const UploadImage: React.FC<UploadImageProps> = ({
             )}
           </div>
         )}
-        {showDeleteButton && (
-          <div className="flex justify-center">
-            <Button type="submit" kind="delete" handle={handleDelete}>
-              Delete
-            </Button>
-          </div>
-        )}
-
-        {uploading && (
-          <UploadProgress uploadProgress={uploadProgress}></UploadProgress>
-        )}
       </div>
+
+      {uploading && (
+        <UploadProgress uploadProgress={uploadProgress}></UploadProgress>
+      )}
     </div>
   );
 };
