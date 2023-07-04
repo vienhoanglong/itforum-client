@@ -18,7 +18,7 @@ export const Modal: React.FC<ModalProps> = ({
     <ReactModal
       isOpen={isOpen}
       overlayClassName={overlayClassName}
-      className="modal-content w-full max-w-[90vw] bg-light0 dark:bg-dark1 rounded-lg outline-none p-6 relative max-h-[90vh] overflow-y-auto scroll-hidden"
+      className="modal-content max-w-[90vw] bg-light4 dark:bg-dark1 rounded-lg outline-none p-6 relative max-h-[90vh] overflow-y-auto scroll-hidden"
     >
       <button
         className="absolute z-10 flex items-center justify-center cursor-pointer w-11 h-11 right-2 top-[10px] text-dark0 dark:text-light0"

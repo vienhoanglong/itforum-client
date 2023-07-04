@@ -26,6 +26,7 @@ interface PostAddNewPageProps {
 }
 
 export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
+  const isDarkMode = true;
   const [content, setContent] = useState<string>("");
 
   const onSubmit = (data: FormDataPosting) => {
@@ -80,7 +81,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
                 control={control}
                 name="title"
                 placeholder="Title for post..."
-                className=" dark:bg-dark0 border dark:border-dark2 text-xs shadow-inner "
+                className=" dark:bg-dark0 border dark:border-dark2 border-gray-500 text-xs shadow-inner "
               ></Input>
             </div>
             <div className="mb-4">
@@ -96,8 +97,8 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
                   onChange={(selectedOptions) =>
                     setSelectedTags(selectedOptions as TagOption[])
                   }
-                  styles={customStyles}
-                  className=" rounded-[12px] text-xs bg-dark0"
+                  styles={customStyles(isDarkMode)}
+                  className=" rounded-[12px] text-xs dark:bg-dark0 shadow-inner"
                 />
               </div>
             </div>
@@ -141,7 +142,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
           type="submit"
           handle={onCancel}
         >
-          Cancle
+          Cancel
         </Button>
       </div>
     </div>

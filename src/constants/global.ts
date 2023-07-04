@@ -23,6 +23,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: false,
   },
   {
@@ -52,6 +53,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: true,
   },
   {
@@ -81,6 +83,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: false,
   },
   {
@@ -100,6 +103,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: false,
   },
   {
@@ -129,6 +133,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: true,
   },
   {
@@ -153,6 +158,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: true,
   },
   {
@@ -177,6 +183,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: true,
   },
   {
@@ -201,6 +208,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: true,
   },
   {
@@ -225,6 +233,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: true,
   },
   {
@@ -249,6 +258,7 @@ export const exampleData = [
       },
     ],
     views: 100,
+    datePost: "16/6/2023",
     publish: true,
   },
 ];

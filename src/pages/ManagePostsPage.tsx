@@ -12,6 +12,7 @@ import { exampleData, topicColors } from "../constants/global.ts";
 import LayoutChat from "@/layout/LayoutChat.tsx";
 import Modal from "@/components/modal/Modal.tsx";
 import PostAddNewPage from "./PostAddNewPage.tsx";
+import DeletedPostsPage from "./DeletedPostsPage.tsx";
 
 export const ManagePosts: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -30,14 +31,21 @@ export const ManagePosts: React.FC = () => {
   const offset = currentPage * itemsPerPage;
   const paginatedData = exampleData.slice(offset, offset + itemsPerPage);
 
-  const [isModalOpen, setIsModalOpen] = useState(true); // config modal
-
+  const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
+  const [isModalOpenTrash, setIsModalOpenTrash] = useState(false); // config modal trash
   const handleAddNewPost = () => {
-    setIsModalOpen(true);
+    setIsModalOpenAddPost(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseModalAdd = () => {
+    setIsModalOpenAddPost(false);
+  };
+  const handleDeletedPosts = () => {
+    setIsModalOpenTrash(true);
+  };
+
+  const handleCloseModalTrash = () => {
+    setIsModalOpenTrash(false);
   };
   return (
     <LayoutChat>
@@ -94,7 +102,7 @@ export const ManagePosts: React.FC = () => {
               className=" w-full text-white bg-red3 hover:bg-red2  text-xs rounded shadow-md px-4 py-2"
               kind="custom"
               type="submit"
-              href="/manage/trash"
+              handle={handleDeletedPosts}
             >
               {" "}
               Trash{" "}
@@ -105,8 +113,11 @@ export const ManagePosts: React.FC = () => {
           </div>
         </div>
 
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <PostAddNewPage onCancel={handleCloseModal}></PostAddNewPage>
+        <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
+          <PostAddNewPage onCancel={handleCloseModalAdd}></PostAddNewPage>
+        </Modal>
+        <Modal isOpen={isModalOpenTrash} onClose={handleCloseModalTrash}>
+          <DeletedPostsPage></DeletedPostsPage>
         </Modal>
 
         <div className="w-full overflow-x-auto">
@@ -118,6 +129,7 @@ export const ManagePosts: React.FC = () => {
                 <th className="py-2 px-4  ">Title</th>
                 <th className="py-2 px-4  ">Topic</th>
                 <th className="py-2 px-4  ">Views</th>
+                <th className="py-2 px-4  ">Date</th>
                 <th className="py-2 px-4  ">Publish</th>
                 <th className="py-2 px-4 rounded-tr-md ">Action</th>
               </tr>
@@ -157,6 +169,9 @@ export const ManagePosts: React.FC = () => {
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                       {item.views}
+                    </td>
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
+                      {item.datePost}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                       {item.publish ? "publish" : "unpublish"}

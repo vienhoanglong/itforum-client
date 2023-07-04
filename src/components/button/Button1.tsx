@@ -18,7 +18,7 @@ const Button1: React.FC<any> = ({
   ];
 
   isPrimary && className.push("bg-primary hover:bg-orange-600");
-  isDanger && className.push("bg-red hover:bg-red-600");
+  isDanger && className.push("bg-red3 hover:bg-red-600");
   isFull && className.push("w-full");
   start && className.push("md:justify-start");
   end && className.push("md:justify-end");
