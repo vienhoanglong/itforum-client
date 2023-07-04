@@ -2,15 +2,13 @@ import React from "react";
 import { Container } from "../common";
 import { AvatarImage } from "../image";
 import { HiOutlineCog, HiOutlineLogout } from "react-icons/hi";
-
+import logo from "assets/logo-text.png"
 export const Header: React.FC = () => {
     return (
-        <header className="flex flex-row items-center mb-[1px] justify-between w-full py-4 bg-white shadow-sm dark:bg-bg-dark dark:shadow-xl">
+        <header className="flex flex-row items-center mb-[1px] justify-between w-full py-4 bg-white shadow-sm dark:bg-dark0 dark:shadow-xl">
             <Container>
                 <div className="flex flex-row items-center flex-1 md:space-x-3">
-                    <span className="font-bold text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#EFAE63]">
-                        IT→_→FORUM
-                    </span>
+                    <img srcSet={`${logo} 3.5x`} alt="ict-forum"/>    
                 </div>
                 <div className="flex flex-row items-center justify-end flex-1 space-x-3">
                     <div className="relative cursor-pointer group sm:cursor-default">
@@ -33,7 +31,7 @@ export const Header: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex-col hidden md:flex">
-                        <p className="text-sm font-bold text-primary">Long</p>
+                        <p className="text-sm font-bold text-primary">Viên Hoàng Long</p>
                         <p className="text-xs font-light text-grey-dark dark:text-white text-text1">
                             vienlongdev@gmail.com
                         </p>
