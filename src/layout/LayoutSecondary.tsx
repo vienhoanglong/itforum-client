@@ -13,10 +13,10 @@ export const LayoutSecondary: React.FC<LayoutSecondaryProps> = ({
   return (
     <React.Fragment>
       <Header />
-      <main className="h-full pt-8 mb-20   overflow-y-scroll dark:bg-dark0 sm:mb-4">
+      <main className="h-full pt-4 overflow-y-scroll dark:bg-dark0">
         <Container justify="justify-between">
           <nav
-            className="hidden sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[230px]"
+            className="hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[230px]"
             aria-label="Primary"
           >
             <SideBar />

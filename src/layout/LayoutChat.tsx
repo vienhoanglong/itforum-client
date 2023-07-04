@@ -13,10 +13,10 @@ export const LayoutChat: React.FC<LayoutChatProps> = ({
   return (
     <React.Fragment>
       <Header />
-      <main className="h-full w-full pt-8 mb-20 overflow-y-scroll sm:overflow-hidden sm:mb-4">
+      <main className="h-full pt-4 overflow-y-scroll dark:bg-dark0">
         <Container justify="justify-between">
           <nav
-            className="hidden sm:flex flex-col sm:w-2/12 md:w-3/12 xl:w-1/5 max-h-[700px] max-w-[230px]"
+            className="hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[230px]"
             aria-label="Primary"
           >
             <SideBar />
@@ -29,7 +29,7 @@ export const LayoutChat: React.FC<LayoutChatProps> = ({
           </section>
           {/* SHOWED ONLY ON SMALL DEVICE */}
           <section
-            className="fixed bottom-0 left-0 right-0 z-10 w-full bg-white dark:bg-bg-dark sm:hidden"
+            className="fixed bottom-0 left-0 right-0 z-10 w-full bg-white dark:bg-dark0 sm:hidden"
             role="navigation"
             aria-label="Secondary"
           >

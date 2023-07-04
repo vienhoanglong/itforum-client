@@ -4,9 +4,9 @@ import { NavLink } from "react-router-dom";
 
 export const BottomBar: React.FC = () => {
   const classNavLink =
-    "flex justify-center py-5 cursor-pointer hover:text-primary transition-all";
+    "flex justify-center py-5 cursor-pointer hover:text-mainColor transition-all";
   const active =
-    "bg-orange-light dark:bg-transparent text-primary border-t-2 border-primary";
+    "bg-subtle dark:bg-transparent text-mainColor border-t-2 border-mainColor";
   return (
     <ul className="relative flex flex-row items-center w-full shadow-md">
       {menus.map((menu) => (

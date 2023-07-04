@@ -16,7 +16,7 @@ export const Label: React.FC<LabelProps> = ({
     <label
       htmlFor={htmlFor}
       className={classNames(
-        "inline-block self-start text-sm font-medium cursor-pointer text-text2 dark:text-text3",
+        "inline-block self-start text-sm font-medium cursor-pointer text-dark2 dark:text-dark4",
         className
       )}
     >
