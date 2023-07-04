@@ -3,13 +3,13 @@ import SideBar from "@/components/navigation/SideBar";
 import { Container } from "@/components/common";
 import React from "react";
 
-interface LayoutChatProps {
+interface LayoutSecondaryProps {
   children: React.ReactNode;
 }
 
-export const LayoutChat: React.FC<LayoutChatProps> = ({
+export const LayoutSecondary: React.FC<LayoutSecondaryProps> = ({
   children,
-}: LayoutChatProps) => {
+}: LayoutSecondaryProps) => {
   return (
     <React.Fragment>
       <Header />
@@ -42,4 +42,4 @@ export const LayoutChat: React.FC<LayoutChatProps> = ({
   );
 };
 
-export default LayoutChat;
+export default LayoutSecondary;
