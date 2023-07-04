@@ -6,12 +6,12 @@ import { Button1 } from "../button";
 
 export const SideBar: React.FC = () => {
   const classNavLink =
-    "flex flex-row items-center px-5 py-3 cursor-pointer space-x-5 whitespace-nowrap rounded hover:text-primary transition-all justify-center md:justify-start";
+    "flex flex-row items-center px-5 py-3 cursor-pointer space-x-5 whitespace-nowrap rounded hover:text-mainColor transition-all justify-center md:justify-start";
   const active =
-    "bg-orange-light dark:bg-transparent text-primary border-l-2 border-primary";
+    "bg-subtle dark:bg-transparent text-mainColor border-l-2 border-mainColor";
   return (
     <React.Fragment>
-      <ul className="flex flex-col h-full space-y-4">
+      <ul className="flex flex-col h-full space-y-4 dark:text-light1">
         <li className="pb-3 font-bold text-center md:px-5 md:text-left">
           Menu
         </li>
@@ -32,7 +32,7 @@ export const SideBar: React.FC = () => {
       <ul className="flex flex-col space-y-4">
         <li
           title="Settings"
-          className="flex flex-row items-center justify-center px-5 py-3 rounded cursor-pointer md:justify-start hover:text-primary"
+          className="flex flex-row items-center justify-center px-5 py-3 rounded cursor-pointer md:justify-start hover:text-mainColor"
         >
           <HiOutlineCog size={20} />
           <span className="hidden md:block md:pl-5">setting</span>
