@@ -6,18 +6,38 @@ import ChatBox from "@/modules/chat/ChatBox";
 import avt1 from "@/assets/avt1.jpg";
 import avt2 from "@/assets/avt2.jpg";
 import Avatar from "@/components/image/Avatar";
-
+import { BsFillPlusCircleFill } from "react-icons/bs";
 export const ChatPage: React.FC = () => {
   const users = [
     { id: 1, username: "Viên Hoàng Long" },
     { id: 2, username: "ChatGPT" },
   ];
+  const [showMenuChat, setShowMenuChat] = React.useState<boolean>(false);
+  const handleMenuChat = () => {
+    setShowMenuChat(!showMenuChat);
+  };
   return (
     <LayoutChat>
-      <div className="container bg-white p-0 rounded-lg lg:max-w-960 md:max-w-720 sm:max-w-540">
-        <div className="mx-0 flex flex-wrap h-[80vh]">
-          {/* Chatbox */}
-          <div className="px-0 border-solid md:w-1/4 border-[#dee2e6] border relative w-full overflow-hidden">
+      <div className="bg-white p-0 rounded-lg lg:max-w-960 md:max-w-720 sm:max-w-540">
+        <div className="mx-0 flex sm:h-[80vh] flex-wrap">
+          {/* List Chatbox */}
+          <div className="flex flex-col bg-light0 p-[10px_15px] w-full rounded-t-lg sm:hidden">
+            <h5 className="text-sm mb-2">Friends</h5>
+            <div className="flex flex-row gap-1">
+              <div className="relative">
+                <img src={avt1} className="h-10 w-10 object-cover border border-dark4 rounded-full" />
+                <BsFillPlusCircleFill className="text-xs absolute bottom-0 right-1 text-mainColor"/>
+              </div>
+              <div className="items-center flex flex-row gap-2 justify-between">
+                <Avatar src={avt1} cln="h-10 w-10 object-cover border border-dark4"></Avatar>
+                <Avatar src={avt2} cln="h-10 w-10 object-cover border border-dark4"></Avatar>
+                <Avatar src={avt1} cln="h-10 w-10 object-cover border border-dark4"></Avatar>
+                <Avatar src={avt2} cln="h-10 w-10 object-cover border border-dark4"></Avatar>
+              </div>
+            </div>
+          </div>
+          {/* List Chatbox */}
+          <div className="px-0 border-solid sm:w-1/4 border-[#dee2e6] border relative w-full overflow-hidden hidden sm:block">
             <div className="bg-[#fafafa] p-[10px_15px] rounded-md flex justify-between items-center">
               <div className="flex justify-between items-center gap-2">
                 <Avatar
@@ -26,7 +46,7 @@ export const ChatPage: React.FC = () => {
                     "w-[40px] h-[40px] object-cover border-none align-middle cursor-pointer"
                   }
                 />
-                <div className="flex flex-col">
+                <div className="flex flex-col custom200:hidden">
                   <span className="text-sm">Viên Hoàng Long</span>
                   <span className="text-xs">@vienlongdev</span>
                 </div>
@@ -66,7 +86,11 @@ export const ChatPage: React.FC = () => {
             </div>
           </div>
           {/* Chatcontent */}
-          <div className="px-0 relative w-full md:w-2/4 border-solid border-[#dee2e6] border flex flex-col">
+          <div
+            className={`${
+              showMenuChat ? "sm:w-2/4" : "sm:w-3/4"
+            } px-0 relative w-full border-solid border-[#dee2e6] border flex flex-col min-h-[62vh] sm:h-auto`}
+          >
             <div className="bg-[#fafafa] p-[10px_15px] rounded-md flex justify-between items-center">
               <div className="p-0 flex align-middle transition-all duration-300 ease mx-0 overflow-hidden">
                 <Avatar
@@ -82,7 +106,10 @@ export const ChatPage: React.FC = () => {
                   </p>
                 </div>
               </div>
-              <HiInformationCircle className="text-2xl"/>
+              <HiInformationCircle
+                className="text-2xl cursor-pointer"
+                onClick={handleMenuChat}
+              />
             </div>
             <div className="pt-4 flex-grow">
               <div className="flex flex-wrap">
@@ -92,7 +119,8 @@ export const ChatPage: React.FC = () => {
               </div>
               <div className="flex flex-wrap">
                 <div className="text-xs ml-auto p-2 mx-8 md:p-2 bg-dark4 rounded-tl-xl rounded-tr-xl rounded-bl-xl animate-fadeIn max-w-[60%]">
-                  Xin chào người anh em thiện lành, xin chào người anh em thiện lành, xin chào người anh em thiện lành
+                  Xin chào người anh em thiện lành, xin chào người anh em thiện
+                  lành, xin chào người anh em thiện lành
                 </div>
               </div>
             </div>
@@ -105,7 +133,11 @@ export const ChatPage: React.FC = () => {
             </div>
           </div>
           {/* ChatMore */}
-          <div className="px-0 md:w-1/4 border-solid border-[#dee2e6] border">
+          <div
+            className={`px-0 sm:w-1/4 border-solid border-[#dee2e6] border w-full ${
+              showMenuChat ? "block" : "hidden"
+            }`}
+          >
             <div className="flex items-center align-middle flex-col">
               <h3 className="mt-5 text-lg">Group Chat</h3>
               <div className="relative mx-auto w-[80px] h-[80px] mt-2">
