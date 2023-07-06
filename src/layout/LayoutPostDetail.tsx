@@ -3,29 +3,34 @@ import SideBar from "@/components/navigation/SideBar";
 import { Container } from "@/components/common";
 import React from "react";
 
-interface LayoutSecondaryProps {
+interface LayoutPostDetailProps {
   children: React.ReactNode;
 }
 
-export const LayoutSecondary: React.FC<LayoutSecondaryProps> = ({
+export const LayoutPostDetail: React.FC<LayoutPostDetailProps> = ({
   children,
-}: LayoutSecondaryProps) => {
+}: LayoutPostDetailProps) => {
   return (
     <React.Fragment>
       <Header />
-      <main className="h-full mb-16 text-xs sm:mb-0 pt-4 overflow-y-scroll dark:bg-dark0">
-        <Container justify="justify-between">
+      <main className="h-full text-xs pt-4 overflow-y-scroll dark:bg-dark0">
+        <Container>
           <nav
-            className="hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[230px]"
+            className=" hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[230px]"
             aria-label="Primary"
           >
             <SideBar />
           </nav>
+
           <section
-            className="z-0 flex-grow w-full sm:w-10/12 md:w-9/12 xl:w-4/5 scrollbar-hide sm:px-5"
+            className="z-0 w-full flex-grow h-full sm:w-10/12 md:w-6/12 scrollbar-hide sm:px-5"
             role="main"
           >
             {children}
+          </section>
+
+          <section className="flex-col hidden w-3/12 space-y-5 md:flex">
+            <div className="w-full h-full bg-light0 dark:bg-dark1 rounded-lg"></div>
           </section>
           {/* SHOWED ONLY ON SMALL DEVICE */}
           <section
@@ -35,11 +40,10 @@ export const LayoutSecondary: React.FC<LayoutSecondaryProps> = ({
           >
             <BottomBar />
           </section>
-          <div className="absolute"></div>
         </Container>
       </main>
     </React.Fragment>
   );
 };
 
-export default LayoutSecondary;
+export default LayoutPostDetail;

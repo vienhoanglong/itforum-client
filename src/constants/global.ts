@@ -296,3 +296,61 @@ export const topicColors: { [key: string]: string } = {
   NodeJs: "bg-green-400/25 text-green-400 border-green-400",
   "C#": "bg-violet-400/25 text-violet-400 border-violet-400",
 };
+export const OPTIONS = [
+  "Spam",
+  "Violence",
+  "Misinformation",
+  "Copyright infringement",
+  "Other",
+];
+
+export const exPostDetailData = {
+  id: 1,
+  title: 'AI Introducing Lary "Quickdraw" AI',
+  author: "Tran Hoang Long",
+  publishedDate: "February 23, 2023",
+  thumbnail: "https://example.com/thumbnail.jpg",
+  topic: [
+    {
+      id: 1,
+      name: "JavaScript",
+      description: "JavaScript",
+      color: "#F7DF1E",
+    },
+    {
+      id: 2,
+      name: "React",
+      description: "React",
+      color: "#61DAFB",
+    },
+    {
+      id: 3,
+      name: "NodeJs",
+      description: "NodeJS",
+      color: "#339933",
+    },
+    {
+      id: 4,
+      name: "C#",
+      description: "C#",
+      color: "#9A57FF",
+    },
+  ],
+  content: 'Hello, everyone! My name is Lary "Quickdraw" AI...',
+  comments: [
+    {
+      id: 1,
+      author: "Tran Hoang Long",
+      content: "This is a comment.",
+      timestamp: "2023-07-06T12:34:56Z",
+      replies: [
+        {
+          id: 1,
+          author: "John Doe",
+          content: "This is a reply to the comment.",
+          timestamp: "2023-07-06T13:45:00Z",
+        },
+      ],
+    },
+  ],
+};

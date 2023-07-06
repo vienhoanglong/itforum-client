@@ -28,7 +28,9 @@ export const Header: React.FC = () => {
             </div>
           </div>
           <div className="flex-col hidden md:flex">
-            <p className="text-sm font-bold text-primary text-dark1 dark:text-mainColor">Viên Hoàng Long</p>
+            <p className="text-sm font-bold text-primary text-dark1 dark:text-mainColor">
+              Viên Hoàng Long
+            </p>
             <p className="text-xs font-light text-dark2 dark:text-light0">
               vienlongdev@gmail.com
             </p>

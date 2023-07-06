@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const PostDetailPage = lazy(() => import("./pages/PostDetailPage"));
 const ManagePostsPage = lazy(() => import("./pages/ManagePostsPage"));
 const PostAddNewPage = lazy(() => import("./pages/PostAddNewPage"));
 const SignInPage = lazy(() => import("./pages/SignInPage"));
@@ -12,6 +13,14 @@ function App() {
       <Routes>
         <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
         <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route
+          path="/post-detail"
+          element={<PostDetailPage></PostDetailPage>}
+        ></Route>
+        {/* <Route
+              path="/:slug"
+              element={<PostDetailsPage></PostDetailsPage>}
+            ></Route> */}
         <Route
           path="/manage/add-post"
           element={<PostAddNewPage></PostAddNewPage>}
