@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Thumbnail from "../assets/header-image-post-detail.png";
 import {
   HiArrowCircleLeft,
@@ -10,6 +16,11 @@ import {
 import { exampleDataTopic, topicColors } from "@/constants/global";
 import LayoutPostDetail from "@/layout/LayoutPostDetail";
 import ReportModal from "@/components/report/ReportModal";
+import { Button } from "@/components/button";
+
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import { BsEmojiSmile, BsEmojiSmileFill } from "react-icons/bs";
 
 export const PostDetailPage: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -45,9 +56,44 @@ export const PostDetailPage: React.FC = () => {
     };
   }, []);
 
+  const [comment, setComment] = useState<string>("");
+
+  const handleCommentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(event.target.value);
+  };
+
+  const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Xử lý logic khi người dùng gửi bình luận
+    console.log("Bình luận đã được gửi:", comment);
+    // Reset nội dung bình luận sau khi gửi
+
+    setComment("");
+  };
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    const textarea = textareaRef.current;
+
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [comment]);
+
+  const [showEmoji, setShowEmoji] = React.useState<boolean>(false);
+  // Add emoji
+  const addEmoji = (e: { unified: string }): void => {
+    const sym: string[] = e.unified.split("_");
+    const codeArray: number[] = [];
+    sym.forEach((el: string) => codeArray.push(parseInt("0x" + el, 16)));
+    const emoji: string = String.fromCodePoint(...codeArray);
+    setComment(comment + emoji);
+  };
+
   return (
     <LayoutPostDetail>
-      <div className="container bg-light4 dark:bg-dark1 dark:text-light0 shadow-md rounded-lg p-4">
+      <div className="container md:w-full bg-light4 dark:bg-dark1 dark:text-light0 shadow-md rounded-lg p-4">
         <div className="header grid grid-cols-1">
           <div className="mb-4 flex justify-between">
             <a
@@ -88,7 +134,6 @@ export const PostDetailPage: React.FC = () => {
               )}
             </div>
           </div>
-
           <div className="">
             <h1 className="h-auto mt-4 mb-2 text-4xl font-bold leading-tighter text-dark0 dark:text-light0">
               {" "}
@@ -212,7 +257,65 @@ export const PostDetailPage: React.FC = () => {
         </div>
 
         <div className="w-full mx-auto mt-16 bg-white dark:bg-dark2  rounded-lg shadow-md p-4">
-          <div className="comment mb-4 dark:text-light0">
+          <div className="bg-gray-200 dark:bg-dark0 flex rounded-lg p-4 mb-2 relative">
+            <div className="flex-shrink-0 mr-2">
+              <img
+                className="w-8 h-8 rounded-full"
+                src="https://via.placeholder.com/50"
+                alt="User Avatar"
+              />
+            </div>
+            <div className="w-full h-auto">
+              <form
+                onSubmit={handleCommentSubmit}
+                className="h-auto flex flex-col justify-end"
+              >
+                <textarea
+                  rows={1}
+                  ref={textareaRef}
+                  className=" w-full overflow-y-hidden h-auto p-2 break-words border rounded dark:bg-dark2"
+                  placeholder="Nhập bình luận của bạn..."
+                  value={comment}
+                  onChange={handleCommentChange}
+                ></textarea>
+
+                <div className="flex justify-end mt-2">
+                  <Button
+                    size="small"
+                    type="submit"
+                    kind="primary"
+                    className="text-xs"
+                  >
+                    Send
+                  </Button>
+                </div>
+              </form>
+              <div className="absolute bottom-6 right-0 flex items-center h-full pr-2">
+                <Button
+                  size="small"
+                  type="submit"
+                  kind="primary"
+                  className="text-sm bg-transparent"
+                  handle={() => setShowEmoji(!showEmoji)}
+                >
+                  <BsEmojiSmileFill />
+                </Button>
+                {showEmoji && (
+                  <div className="absolute bottom-16 left-8 ">
+                    <Picker
+                      data={data}
+                      emojiSize={20}
+                      emojiButtonSize={28}
+                      maxFrequentRows={0}
+                      onEmojiSelect={addEmoji}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="comment mb-4 dark:text-light0 ml-4">
             <div className="flex items-start">
               <div className="flex-shrink-0">
                 <img
@@ -224,7 +327,7 @@ export const PostDetailPage: React.FC = () => {
               <div className="ml-2">
                 <div className="font-bold">Tran Hoang Long</div>
                 <div className="text-gray-600 dark:text-light0">
-                  This is a comment.
+                  This is a commentdsdasdasdsa.
                 </div>
                 <div className="text-xs text-gray-500 dark:text-light0">
                   2 hours ago
@@ -259,7 +362,7 @@ export const PostDetailPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="comment mb-4">
+          <div className="comment mb-4 ml-4">
             <div className="flex items-start">
               <div className="flex-shrink-0">
                 <img
@@ -280,8 +383,6 @@ export const PostDetailPage: React.FC = () => {
             </div>
           </div>
         </div>
-
-        <div className="reply"></div>
       </div>
     </LayoutPostDetail>
   );
