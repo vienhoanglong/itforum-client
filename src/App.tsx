@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
+const DashBoardPage = lazy(()=> import("./pages/DashBoardPage") );
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const ManagePostsPage = lazy(() => import("./pages/ManagePostsPage"));
 const PostAddNewPage = lazy(() => import("./pages/PostAddNewPage"));
@@ -22,6 +23,7 @@ function App() {
         ></Route>
         <Route path="/chat" element={<ChatPage></ChatPage>}></Route>
         <Route path="/sign-in" element={<SignInPage></SignInPage>}></Route>
+        <Route path="/dashboard" element={<DashBoardPage></DashBoardPage>}></Route>
       </Routes>
     </Suspense>
   );
