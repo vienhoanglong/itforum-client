@@ -91,7 +91,7 @@ const ModalReport: React.FC<ModalReportProps> = ({ closeModal }) => {
               <input
                 type="text"
                 id="otherText"
-                className="w-full break-words py-2 px-3 border border-gray-300 rounded-lg"
+                className="w-full break-words py-2 px-3 border border-gray-300 dark:bg-dark1 rounded-lg"
                 {...register("otherText", { required: true })}
               />
               {errors.otherText && (

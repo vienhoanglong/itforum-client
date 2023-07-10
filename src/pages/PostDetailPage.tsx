@@ -9,6 +9,7 @@ import Thumbnail from "../assets/header-image-post-detail.png";
 import {
   HiArrowCircleLeft,
   HiDotsHorizontal,
+  HiDotsVertical,
   HiEyeOff,
   HiFlag,
   HiTrash,
@@ -20,15 +21,20 @@ import { Button } from "@/components/button";
 
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { BsEmojiSmile, BsEmojiSmileFill } from "react-icons/bs";
+import { BsEmojiSmileFill, BsEyeFill, BsMessenger } from "react-icons/bs";
+import Carousel from "@/modules/post/Carousel";
 
 export const PostDetailPage: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isMenuComment, setMenuComment] = useState(false);
   const [isReportModalOpen, setReportModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleMenuToggle = () => {
     setMenuOpen(!isMenuOpen);
+  };
+  const handleMenuComment = () => {
+    setMenuComment(!isMenuComment);
   };
   const handleReportClick = () => {
     setReportModalOpen(true);
@@ -48,6 +54,8 @@ export const PostDetailPage: React.FC = () => {
         )
       ) {
         setMenuOpen(false);
+        setShowEmoji(false);
+        setMenuComment(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -66,8 +74,6 @@ export const PostDetailPage: React.FC = () => {
     event.preventDefault();
     // Xử lý logic khi người dùng gửi bình luận
     console.log("Bình luận đã được gửi:", comment);
-    // Reset nội dung bình luận sau khi gửi
-
     setComment("");
   };
 
@@ -93,7 +99,7 @@ export const PostDetailPage: React.FC = () => {
 
   return (
     <LayoutPostDetail>
-      <div className="container md:w-full bg-light4 dark:bg-dark1 dark:text-light0 shadow-md rounded-lg p-4">
+      <div className=" md:w-full pb-2 bg-light4 dark:bg-dark1 dark:text-light0 shadow-md rounded-lg p-4">
         <div className="header grid grid-cols-1">
           <div className="mb-4 flex justify-between">
             <a
@@ -103,7 +109,15 @@ export const PostDetailPage: React.FC = () => {
               <HiArrowCircleLeft className="w-6 h-6 mr-1" />
               Back to Posts
             </a>
-            <div className="ml-auto relative" ref={menuRef}>
+            <div className="flex items-center ml-auto mr-2">
+              <BsEyeFill />
+              <span className="ml-1">100 </span>
+            </div>
+            <div className="flex items-center mr-4">
+              <BsMessenger />
+              <span className="ml-1">22</span>
+            </div>
+            <div className=" w-auto relative" ref={menuRef}>
               <button
                 className="bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full px-2 py-1"
                 onClick={handleMenuToggle}
@@ -214,13 +228,6 @@ export const PostDetailPage: React.FC = () => {
               analyze your query and respond with the most relevant and helpful
               response within seconds.
             </p>
-
-            <img
-              src="https://repository-images.githubusercontent.com/37153337/9d0a6780-394a-11eb-9fd1-6296a684b124"
-              alt="Screenshot of example AI forum response"
-              className=" rounded-lg my-8"
-            />
-
             <p>
               But don't worry,{" "}
               <strong>we're not trying to replace human interaction</strong>.
@@ -256,7 +263,7 @@ export const PostDetailPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-full mx-auto mt-16 bg-white dark:bg-dark2  rounded-lg shadow-md p-4">
+        <div className="w-full mx-auto mt-16 bg-white dark:bg-dark1 p-4">
           <div className="bg-gray-200 dark:bg-dark0 flex rounded-lg p-4 mb-2 relative">
             <div className="flex-shrink-0 mr-2">
               <img
@@ -274,7 +281,7 @@ export const PostDetailPage: React.FC = () => {
                   rows={1}
                   ref={textareaRef}
                   className=" w-full overflow-y-hidden h-auto p-2 break-words border rounded dark:bg-dark2"
-                  placeholder="Nhập bình luận của bạn..."
+                  placeholder="Typing your comment..."
                   value={comment}
                   onChange={handleCommentChange}
                 ></textarea>
@@ -301,7 +308,7 @@ export const PostDetailPage: React.FC = () => {
                   <BsEmojiSmileFill />
                 </Button>
                 {showEmoji && (
-                  <div className="absolute bottom-16 left-8 ">
+                  <div className="absolute bottom-16 left-8 " ref={menuRef}>
                     <Picker
                       data={data}
                       emojiSize={20}
@@ -315,8 +322,8 @@ export const PostDetailPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="comment mb-4 dark:text-light0 ml-4">
-            <div className="flex items-start">
+          <div className="comment mb-4 dark:text-light0 dark:bg-dark2 shadow rounded-lg p-2 ml-4">
+            <div className="flex items-start border-b-2 pb-2 dark:border-b-dark1 border-b-light0">
               <div className="flex-shrink-0">
                 <img
                   className="w-8 h-8 rounded-full"
@@ -327,7 +334,7 @@ export const PostDetailPage: React.FC = () => {
               <div className="ml-2">
                 <div className="font-bold">Tran Hoang Long</div>
                 <div className="text-gray-600 dark:text-light0">
-                  This is a commentdsdasdasdsa.
+                  This is a comment.
                 </div>
                 <div className="text-xs text-gray-500 dark:text-light0">
                   2 hours ago
@@ -336,7 +343,30 @@ export const PostDetailPage: React.FC = () => {
                   Reply
                 </div>
               </div>
+              <div
+                onClick={handleMenuComment}
+                className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2"
+              >
+                <HiDotsVertical size={20}></HiDotsVertical>
+                {isMenuComment && (
+                  <div className="bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 absolute top-full right-0 shadow-xl z-10">
+                    <button className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4">
+                      <HiFlag className="mr-2" />
+                      Report
+                    </button>
+                    <button className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4">
+                      <HiTrash className="mr-2" />
+                      Delete
+                    </button>
+                    <button className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4">
+                      <HiEyeOff className="mr-2" />
+                      Hide
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
+
             <div className="ml-10 mt-2">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
@@ -358,11 +388,14 @@ export const PostDetailPage: React.FC = () => {
                     Reply
                   </div>
                 </div>
+                <div className="ml-auto bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2">
+                  <HiDotsVertical size={20}></HiDotsVertical>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="comment mb-4 ml-4">
+          <div className="comment mb-4 ml-4 dark:text-light0 dark:bg-dark2 shadow rounded-lg p-2">
             <div className="flex items-start">
               <div className="flex-shrink-0">
                 <img
@@ -379,10 +412,18 @@ export const PostDetailPage: React.FC = () => {
                 <div className="text-xs text-gray-500 dark:text-light0">
                   1 hour ago
                 </div>
+                <div className="text-xs text-blue-500 cursor-pointer mt-2">
+                  Reply
+                </div>
+              </div>
+              <div className="ml-auto bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2">
+                <HiDotsVertical size={20}></HiDotsVertical>
               </div>
             </div>
           </div>
         </div>
+
+        <Carousel></Carousel>
       </div>
     </LayoutPostDetail>
   );

@@ -336,6 +336,7 @@ export const exPostDetailData = {
       color: "#9A57FF",
     },
   ],
+  view: 100,
   content: 'Hello, everyone! My name is Lary "Quickdraw" AI...',
   comments: [
     {
@@ -346,7 +347,7 @@ export const exPostDetailData = {
       replies: [
         {
           id: 1,
-          author: "John Doe",
+          author: "Vien Hoang Long",
           content: "This is a reply to the comment.",
           timestamp: "2023-07-06T13:45:00Z",
         },
@@ -354,3 +355,35 @@ export const exPostDetailData = {
     },
   ],
 };
+
+export const posts = [
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào? ",
+    img: "https://photo2.tinhte.vn/data/attachment-files/2023/07/6487116_CompressionExplainer-byKristinaArmitage-Lede-scaled.jpg",
+  },
+
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào? ",
+    img: "https://photo2.tinhte.vn/data/attachment-files/2023/07/6487116_CompressionExplainer-byKristinaArmitage-Lede-scaled.jpg",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào? ",
+    img: "https://photo2.tinhte.vn/data/attachment-files/2023/07/6487116_CompressionExplainer-byKristinaArmitage-Lede-scaled.jpg",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào? ",
+    img: "https://photo2.tinhte.vn/data/attachment-files/2023/07/6487116_CompressionExplainer-byKristinaArmitage-Lede-scaled.jpg",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào? ",
+    img: "https://photo2.tinhte.vn/data/attachment-files/2023/07/6487116_CompressionExplainer-byKristinaArmitage-Lede-scaled.jpg",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào? ",
+    img: "https://photo2.tinhte.vn/data/attachment-files/2023/07/6487116_CompressionExplainer-byKristinaArmitage-Lede-scaled.jpg",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào? ",
+    img: "https://photo2.tinhte.vn/data/attachment-files/2023/07/6487116_CompressionExplainer-byKristinaArmitage-Lede-scaled.jpg",
+  },
+];

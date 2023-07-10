@@ -16,7 +16,7 @@ export const LayoutSecondary: React.FC<LayoutSecondaryProps> = ({
       <main className="h-full mb-16 text-xs sm:mb-0 pt-4 overflow-y-scroll dark:bg-dark0">
         <Container justify="justify-between">
           <nav
-            className="hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[230px]"
+            className="hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[180px]"
             aria-label="Primary"
           >
             <SideBar />

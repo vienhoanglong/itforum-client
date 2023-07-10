@@ -52,7 +52,26 @@ body {
 .ql-toolbar {
     background-color: var(--background-color);
 }
+.slider-container {
+    padding: 10px 30px 30px 30px; 
+    height: auto;
+  }
 
+.slick-slide>div{
+    margin: 0 10px;
+    padding: 10px;
+}
+.slick-list{
+    margin-right: -20px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .slick-prev:before,
+    .slick-next:before {
+      color: darkgrey !important;
+    }
+  }
+  
 // .mantine-RichTextEditor-toolbarControl {
 //     color: var(--font-color);
 // }

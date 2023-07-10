@@ -25,6 +25,7 @@
     "@emoji-mart/react": "^1.1.1",
     "@hookform/resolvers": "^3.1.0",
     "@types/react-modal": "^3.16.0",
+    "@types/react-slick": "^0.23.10",
     "emoji-mart": "^5.5.2",
     "i": "^0.3.7",
     "npm": "^9.6.7",
@@ -40,7 +41,9 @@
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.11.2",
     "react-select": "^5.7.3",
+    "react-slick": "^0.29.0",
     "sass": "^1.62.1",
+    "slick-carousel": "^1.8.1",
     "vite-tsconfig-paths": "^4.2.0",
     "yup": "^1.2.0"
   },
