@@ -38,7 +38,7 @@ export const Discuss: React.FC = () => {
           <div className="flex flex-col justify-between">
             <div className="-mt-1 md:flex md:items-start">
               <h3 className="mb-4 tracking-normal md:pr-6 lg:mb-0 dark:text-light0">
-                <a href="" className="text-base font-semibold">
+                <a href="/post-detail" className="text-base font-semibold">
                   Deploy ứng dụng NodeJS lên EC2 instance của AWS (Phần 1)
                 </a>
               </h3>
