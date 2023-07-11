@@ -74,7 +74,7 @@ export const PostDetailPage: React.FC = () => {
 
   return (
     <LayoutPostDetail>
-      <div className=" md:w-full pb-2 bg-light4 dark:bg-dark1 dark:text-light0 shadow-md rounded-lg p-4">
+      <div className=" md:w-full pb-2 bg-light4 dark:bg-dark1 dark:text-light0 rounded-lg p-8">
         <PostHeader
           menuRef={menuRef}
           title="AI Introducing Lary 'Quickdraw' AI"
