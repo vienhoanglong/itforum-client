@@ -1,7 +1,11 @@
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import React, { useState, ChangeEvent } from "react";
-import { BsEmojiSmile, BsFillSendFill } from "react-icons/bs";
+import {
+  HiOutlinePaperClip,
+  HiOutlineEmojiHappy,
+  HiPaperAirplane,
+} from "react-icons/hi";
 
 interface Mention {
   id: number;
@@ -51,10 +55,12 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
 
   return (
     <>
+      <HiOutlinePaperClip className="text-xl cursor-pointer" />
       <input
-        className="p-[4px_10px] border rounded-[30px] overflow-visible w-full border-[#dee2e6]"
+        className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] text-sm outline-none"
         type="text"
         value={inputText}
+        placeholder="Nhâp @, nhắn tin tới Trần Hoàng Long"
         onChange={handleInputChange}
       />
       {showEmoji && (
@@ -82,12 +88,12 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
         </div>
       )}
       <span
-        className="text-xl text-primary cursor-pointer"
+        className="text-xl cursor-pointer"
         onClick={() => setShowEmoji(!showEmoji)}
       >
-        <BsEmojiSmile />
+        <HiOutlineEmojiHappy />
       </span>
-      <BsFillSendFill className="text-xl text-primary cursor-pointer" />
+      <HiPaperAirplane className="text-xl cursor-pointer" />
     </>
   );
 };
