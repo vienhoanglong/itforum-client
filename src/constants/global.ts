@@ -387,3 +387,56 @@ export const posts = [
     img: "https://photo2.tinhte.vn/data/attachment-files/2023/07/6487116_CompressionExplainer-byKristinaArmitage-Lede-scaled.jpg",
   },
 ];
+
+export const content =
+  "Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before.";
+
+export const listComment = [
+  {
+    id: 1,
+    author: "Tran Hoang Long",
+    avatar: "https://via.placeholder.com/50",
+    content: "This is a comment.",
+    timestamp: "2 hours ago",
+    replies: [
+      {
+        id: 1,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "This is a reply to the comment.",
+        timestamp: "1 hour ago",
+      },
+    ],
+  },
+  {
+    id: 2,
+    author: "Tran Hoang Long",
+    avatar: "https://via.placeholder.com/50",
+    content: "Another comment.",
+    timestamp: "3 hours ago",
+    replies: [],
+  },
+  {
+    id: 3,
+    author: "Tran Hoang Long",
+    avatar: "https://via.placeholder.com/50",
+    content: "Yet another comment.",
+    timestamp: "4 hours ago",
+    replies: [
+      {
+        id: 2,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Reply to Bob's comment.",
+        timestamp: "3 hours ago",
+      },
+      {
+        id: 3,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+    ],
+  },
+];
