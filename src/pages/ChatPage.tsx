@@ -29,10 +29,11 @@ export const ChatPage: React.FC = () => {
   const handleMenuChat = () => {
     setShowMenuChat(!showMenuChat);
   };
-  const [activeTabChatInfo, setActiveTabChatInfo] = React.useState<string>("file")
+  const [activeTabChatInfo, setActiveTabChatInfo] =
+    React.useState<string>("file");
   const handleTabChatClick = (tab: string) => {
     setActiveTabChatInfo(tab);
-  }
+  };
   return (
     <LayoutChat>
       <div className="bg-white p-0 rounded-lg lg:max-w-960 md:max-w-720 sm:max-w-540">
@@ -248,86 +249,113 @@ export const ChatPage: React.FC = () => {
               </div>
               <div className="w-full mt-1">
                 <ul className="flex gap-2 justify-center">
-                  <li className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${activeTabChatInfo === "file" ? 'bg-mainColor text-light1' : ''}`} onClick={()=>handleTabChatClick("file")}>
+                  <li
+                    className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${
+                      activeTabChatInfo === "file"
+                        ? "bg-mainColor text-light1"
+                        : ""
+                    }`}
+                    onClick={() => handleTabChatClick("file")}
+                  >
                     File
                   </li>
-                  <li className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${activeTabChatInfo === "media" ? 'bg-mainColor text-light1' : ''}`} onClick={()=>handleTabChatClick("media")}>
+                  <li
+                    className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${
+                      activeTabChatInfo === "media"
+                        ? "bg-mainColor text-light1"
+                        : ""
+                    }`}
+                    onClick={() => handleTabChatClick("media")}
+                  >
                     Media
                   </li>
-                  <li className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${activeTabChatInfo === "link" ? 'bg-mainColor text-light1' : ''}`} onClick={()=>handleTabChatClick("link")}>
+                  <li
+                    className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${
+                      activeTabChatInfo === "link"
+                        ? "bg-mainColor text-light1"
+                        : ""
+                    }`}
+                    onClick={() => handleTabChatClick("link")}
+                  >
                     Link
                   </li>
                 </ul>
                 <div className="p-2">
-                  { activeTabChatInfo === "media" && <div className="1">
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFillImageFill className="text-sm text-dark3" />
+                  {activeTabChatInfo === "media" && (
+                    <div className="1">
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFillImageFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Ảnh mẫu.png</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
-                      <div className="">
-                        <span className="text-xs">Ảnh mẫu.png</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFillImageFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Ảnh mẫu.png</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFillImageFill className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">Ảnh mẫu.png</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFillImageFill className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">Ảnh mẫu.png</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
-                      </div>
-                    </div>
-                  </div>}
-                  {activeTabChatInfo === "file" && <div className="2">
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFileEarmarkFill className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">Book1.zip</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFillImageFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Ảnh mẫu.png</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFileEarmarkFill className="text-sm text-dark3" />
+                  )}
+                  {activeTabChatInfo === "file" && (
+                    <div className="2">
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFileEarmarkFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Book1.zip</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
-                      <div className="">
-                        <span className="text-xs">Book1.zip</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
-                      </div>
-                    </div>
-                  </div>}
-                  {activeTabChatInfo === "link" && <div className="2">
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsLink45Deg className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">vienhoanglong.com</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsLink45Deg className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">vienhoanglong.com</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFileEarmarkFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Book1.zip</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
                     </div>
-                  </div>}
+                  )}
+                  {activeTabChatInfo === "link" && (
+                    <div className="2">
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsLink45Deg className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">vienhoanglong.com</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsLink45Deg className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">vienhoanglong.com</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
