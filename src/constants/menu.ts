@@ -4,6 +4,7 @@ import {
   HiChatAlt2,
   HiHome,
   HiDocumentDuplicate,
+  HiUser,
 } from "react-icons/hi";
 const menus: MenuTypes[] = [
   {
@@ -17,6 +18,12 @@ const menus: MenuTypes[] = [
     name: { en: "Chat", vn: "Tin nhắn" },
     icon: HiChatAlt2,
     path: "/chat",
+  },
+  {
+    id: "profileUser",
+    name: { en: "My Profile", vn: "Hồ sơ" },
+    icon: HiUser,
+    path: "/profile",
   },
   {
     id: "notice",

@@ -15,7 +15,7 @@ export const LayoutDefault: React.FC<LayoutDefaultProps> = ({
   return (
     <React.Fragment>
       <Header />
-      <main className="h-full pt-4 overflow-y-scroll dark:bg-dark0">
+      <main className="h-full pt-4 text-xs overflow-y-scroll dark:bg-dark0">
         <Container>
           <nav
             className="hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[230px]"

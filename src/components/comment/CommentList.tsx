@@ -73,12 +73,12 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
       {comments.map((comment, commentIndex) => (
         <div
           key={commentIndex}
-          className="comment mb-4 dark:text-light0 dark:bg-dark2 shadow rounded-lg p-2 ml-4"
+          className="comment mb-4 dark:text-light0 dark:bg-dark2 rounded-lg p-2 ml-4"
         >
           <div className="flex items-start border-b-2 pb-2 dark:border-b-dark1 border-b-light0">
             <div className="flex-shrink-0">
               <img
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full brightness-90"
                 src={comment.avatar}
                 alt="User Avatar"
               />
@@ -100,7 +100,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
               onClick={() => handleMenuComment(commentIndex)}
               className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2"
             >
-              <HiDotsVertical size={20}></HiDotsVertical>
+              <HiDotsVertical size={15}></HiDotsVertical>
               {activeComment === commentIndex && <ActionMenu></ActionMenu>}
             </div>
           </div>
@@ -110,7 +110,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
               <div className="flex items-start">
                 <div className="flex-shrink-0">
                   <img
-                    className="w-8 h-8 rounded-full"
+                    className="w-8 h-8 rounded-full brightness-90"
                     src={reply.avatar}
                     alt="User Avatar"
                   />
@@ -132,7 +132,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                   onClick={() => handleMenuReply(commentIndex, replyIndex)}
                   className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2"
                 >
-                  <HiDotsVertical size={20}></HiDotsVertical>
+                  <HiDotsVertical size={15}></HiDotsVertical>
                   {activeReply?.commentIndex === commentIndex &&
                     activeReply?.replyIndex === replyIndex && (
                       <ActionMenu></ActionMenu>

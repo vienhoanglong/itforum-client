@@ -7,12 +7,14 @@ const PostAddNewPage = lazy(() => import("./pages/PostAddNewPage"));
 const SignInPage = lazy(() => import("./pages/SignInPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ChatPage = lazy(() => import("@/pages/ChatPage"));
+const ProfilePage = lazy(() => import("@/pages/ProfilePage"));
 function App() {
   return (
     <Suspense>
       <Routes>
         <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
         <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route path="/profile" element={<ProfilePage></ProfilePage>}></Route>
         <Route
           path="/post-detail"
           element={<PostDetailPage></PostDetailPage>}

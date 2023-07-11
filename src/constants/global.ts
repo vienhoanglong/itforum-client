@@ -440,3 +440,13 @@ export const listComment = [
     ],
   },
 ];
+
+export const dataUser = [
+  {
+    id: "51800075",
+    fullname: "Tran Hoang Long",
+    birthday: "1/1/2000",
+    class: "18050202",
+    major: "Software Developer",
+  },
+];

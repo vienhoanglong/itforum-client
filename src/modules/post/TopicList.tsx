@@ -21,16 +21,6 @@ const TopicList: React.FC<TopicListProps> = ({
           {topic.name}
         </div>
       ))}
-      {exampleDataTopic.map((topic) => (
-        <div
-          key={topic.id}
-          className={`cursor-pointer inline-block text-xs border-2 px-2 py-1 rounded-full m-[1px] ${
-            topicColors[topic.name] || ""
-          }`}
-        >
-          {topic.name}
-        </div>
-      ))}
     </div>
   );
 };

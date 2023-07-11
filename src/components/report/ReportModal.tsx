@@ -48,7 +48,7 @@ const ModalReport: React.FC<ModalReportProps> = ({ closeModal }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-10 text-dark0 dark:text-light0  flex items-center justify-center bg-gray-900 bg-opacity-75">
+    <div className="fixed inset-0 z-20 text-dark0 dark:text-light0  flex items-center justify-center bg-gray-900 bg-opacity-75">
       <div className="bg-white dark:bg-dark1   dark:text-light0 w-80 h-auto mx-4 p-6 rounded-lg">
         <h2 className="text-2xl mb-4 font-bold text-darker">Report</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
