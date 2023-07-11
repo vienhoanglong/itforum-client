@@ -19,12 +19,14 @@ export const Discuss: React.FC = () => {
                 cln="rounded-[10px_!important] w-14 h-14 p-[1px] object-cover"
               />
             </a>
-            <strong className="uppercase md:hidden text-xs md:text-base">Viên Hoàng Long</strong>
+            <strong className="uppercase md:hidden text-xs md:text-base">
+              Viên Hoàng Long
+            </strong>
           </div>
           <div className="flex items-center justify-center py-2 ml-auto rounded-xl bg-grey-400 md:hidden">
             <div className="flex items-center px-3">
               <div className="mr-1">
-                <BsFillChatFill className="text-lg"/>
+                <BsFillChatFill className="text-lg" />
               </div>
               <span className="text-xs font-semibold leading-none text-grey-800">
                 3
@@ -43,7 +45,7 @@ export const Discuss: React.FC = () => {
               <div className="relative hidden text-center md:ml-auto md:flex md:flex-row-reverse md:items-center gap-2 dark:text-light0">
                 <div className="flex items-center justify-center ml-4">
                   <div className="mr-1">
-                    <BsFillChatFill className="text-lg"/>
+                    <BsFillChatFill className="text-lg" />
                   </div>
                   <span className="relative text-xs font-medium leading-none text-left text-text1">
                     3
@@ -51,7 +53,7 @@ export const Discuss: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-center">
                   <div className="mr-1">
-                    <BsEyeFill className="text-lg"/>
+                    <BsEyeFill className="text-lg" />
                   </div>
                   <span className="text-xs font-medium leading-none text-left text-text1">
                     2552

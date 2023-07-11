@@ -5,11 +5,12 @@ import React from "react";
 
 interface LayoutDefaultProps {
   children: React.ReactNode;
-  childrenOther?: React.ReactNode
+  childrenOther?: React.ReactNode;
 }
 
 export const LayoutDefault: React.FC<LayoutDefaultProps> = ({
-  children, childrenOther
+  children,
+  childrenOther,
 }: LayoutDefaultProps) => {
   return (
     <React.Fragment>
@@ -28,7 +29,9 @@ export const LayoutDefault: React.FC<LayoutDefaultProps> = ({
           >
             {children}
           </section>
-          <section className="flex-col hidden w-3/12 space-y-5 md:flex">{childrenOther}</section>
+          <section className="flex-col hidden w-3/12 space-y-5 md:flex">
+            {childrenOther}
+          </section>
           {/* SHOWED ONLY ON SMALL DEVICE */}
           <section
             className="fixed bottom-0 left-0 right-0 z-10 w-full bg-white dark:bg-bg-dark sm:hidden"

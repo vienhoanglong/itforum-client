@@ -1,7 +1,11 @@
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import React, { useState, ChangeEvent } from "react";
-import { HiOutlinePaperClip, HiOutlineEmojiHappy, HiPaperAirplane } from "react-icons/hi";
+import {
+  HiOutlinePaperClip,
+  HiOutlineEmojiHappy,
+  HiPaperAirplane,
+} from "react-icons/hi";
 
 interface Mention {
   id: number;
@@ -51,7 +55,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
 
   return (
     <>
-      <HiOutlinePaperClip className="text-xl cursor-pointer"/>
+      <HiOutlinePaperClip className="text-xl cursor-pointer" />
       <input
         className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] text-sm outline-none"
         type="text"
