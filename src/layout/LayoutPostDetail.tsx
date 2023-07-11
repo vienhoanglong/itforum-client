@@ -25,7 +25,7 @@ export const LayoutPostDetail: React.FC<LayoutPostDetailProps> = ({
           </nav>
 
           <section
-            className="z-0 w-full flex-grow h-full sm:w-10/12 md:w-6/12 scrollbar-hide sm:px-4"
+            className="z-10 w-full flex-grow h-full sm:w-10/12 md:w-6/12 scrollbar-hide sm:px-4"
             role="main"
           >
             {children}
