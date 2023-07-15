@@ -23,7 +23,7 @@ const ListPostCard: React.FC<ListPostCardProps> = ({ posts }) => {
       {posts.map((post, index) => (
         <div
           key={index}
-          className="flex hover:cursor-pointer hover:text-darker bg-light4 dark:bg-dark1 shadow hover:shadow-md p-2 rounded-lg transform transition-all duration-100 "
+          className="flex hover:cursor-pointer hover:text-mainColor dark:text-light0 bg-light4 dark:bg-dark1 shadow hover:shadow-md p-2 rounded-lg transform transition-all duration-100 "
         >
           <div className="w-1/2 rounded-lg">
             <img
@@ -32,9 +32,7 @@ const ListPostCard: React.FC<ListPostCardProps> = ({ posts }) => {
             ></img>
           </div>
           <div className="w-1/2 ml-2">
-            <span className="text-sm font-medium dark:text-light0">
-              {post.title}
-            </span>
+            <span className="text-sm font-medium">{post.title}</span>
           </div>
         </div>
       ))}

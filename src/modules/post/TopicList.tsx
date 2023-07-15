@@ -1,7 +1,7 @@
 import React from "react";
 
 type TopicListProps = {
-  exampleDataTopic: { id: number; name: string }[];
+  exampleDataTopic: { id: string; name: string }[];
   topicColors: Record<string, string>;
 };
 

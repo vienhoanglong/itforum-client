@@ -265,28 +265,43 @@ export const exampleData = [
 
 export const exampleDataTopic = [
   {
-    id: 1,
+    id: "1",
     name: "JavaScript",
     description: "JavaScript",
     color: "#F7DF1E",
   },
   {
-    id: 2,
+    id: "2",
     name: "React",
     description: "React",
     color: "#61DAFB",
   },
   {
-    id: 3,
+    id: "3",
     name: "NodeJs",
     description: "NodeJS",
     color: "#339933",
   },
   {
-    id: 4,
+    id: "4",
     name: "C#",
     description: "C#",
     color: "#9A57FF",
+  },
+];
+
+export const exampleSkillUser = [
+  {
+    id: "1",
+    name: "JavaScript",
+    description: "JavaScript",
+    color: "#F7DF1E",
+  },
+  {
+    id: "2",
+    name: "React",
+    description: "React",
+    color: "#61DAFB",
   },
 ];
 
@@ -443,10 +458,58 @@ export const listComment = [
 
 export const dataUser = [
   {
-    id: "51800075",
+    id: "123456789",
+    follower: 1500,
     fullname: "Tran Hoang Long",
-    birthday: "1/1/2000",
+    avatar:
+      "https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg",
+    birthday: "2000-01-01",
     class: "18050202",
     major: "Software Developer",
+    coverImage:
+      "https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg",
+    about:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget est ac turpis placerat malesuada a nec sem. Morbi quis diam sit amet mi malesuada malesuada. Nulla pharetra neque id nunc aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id eleifend pellentesque. Nunc non urna id felis luctus semper a ut nisi.",
+    skills: [
+      {
+        id: "1",
+        name: "JavaScript",
+        description: "JavaScript",
+        color: "#F7DF1E",
+      },
+      {
+        id: "2",
+        name: "React",
+        description: "React",
+        color: "#61DAFB",
+      },
+    ],
+    email: "hoanglong@example.com",
+    address: "q7,hcm,vn",
+    phone: "123-456-7890",
+    links: [
+      {
+        id: "1",
+        name: "GitHub",
+        link: "github.com/tranhoanglong",
+      },
+    ],
   },
 ];
+
+export const contactUser = {
+  test: "asasasasa",
+  email: "hoanglong@example.com",
+  address: "q7,hcm,vn",
+  phone: "123-456-7890",
+  links: [
+    {
+      id: "1",
+      name: "GitHub",
+      link: "github.com/tranhoanglong",
+    },
+  ],
+};
+
+export const about =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget est ac turpis placerat malesuada a nec sem. Morbi quis diam sit amet mi malesuada malesuada. Nulla pharetra neque id nunc aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id eleifend pellentesque. Nunc non urna id felis luctus semper a ut nisi.";

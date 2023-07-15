@@ -18,7 +18,7 @@ type PostHeaderProps = {
   handleCloseModal: () => void;
   isReportModalOpen: boolean;
   Thumbnail: string;
-  exampleDataTopic: { id: number; name: string }[];
+  exampleDataTopic: { id: string; name: string }[];
   topicColors: Record<string, string>;
   view: number;
   comment: number;

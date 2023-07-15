@@ -11,7 +11,7 @@ const ButtonGoogle: React.FC<ButtonGoogleProps> = ({
 }) => {
   return (
     <button
-      className="flex items-center justify-center w-full py-4 mb-5 text-base font-semibold border gap-x-3 border-strock rounded-xl text-text2 dark:text-white dark:border-darkStroke"
+      className="flex items-center justify-center w-full py-4 mb-5 text-xs font-semibold border gap-x-3 border-strock rounded-xl text-text2 dark:text-white dark:border-darkStroke"
       onClick={onClick}
     >
       <img srcSet={`${logoGoogle} 2x`} alt="icon-google" />

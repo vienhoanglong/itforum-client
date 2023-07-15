@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Button } from "../../components/button";
+import { Button } from "../button";
 import UploadProgress from "./UploadProgress";
 import logoUpload from "/src/assets/upload-image.png";
 import { HiTrash } from "react-icons/hi";
 
 interface UploadImageProps {
   onImageUpload: (imageUrl: string) => void;
-  onImageDelete: () => void;
   initialImageUrl?: string;
 }
 
-const UploadImage: React.FC<UploadImageProps> = ({
-  onImageUpload,
-  onImageDelete,
-}) => {
+const UploadImage: React.FC<UploadImageProps> = ({ onImageUpload }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [showDeleteButton, setShowDeleteButton] = useState(false);
@@ -34,19 +30,19 @@ const UploadImage: React.FC<UploadImageProps> = ({
     const file = acceptedFiles[0];
 
     setUploading(true);
-    setUploadProgress(0); // Reset upload progress
+    setUploadProgress(0);
 
     const uploadInterval = setInterval(() => {
-      setUploadProgress((prevProgress) => prevProgress + 10); // Increment upload progress by 10%
+      setUploadProgress((prevProgress) => prevProgress + 10);
     }, 1000);
 
     setTimeout(() => {
       clearInterval(uploadInterval);
       setUploading(false);
-      setUploadProgress(0); // Reset upload progress
+      setUploadProgress(0);
       setShowDeleteButton(true);
       const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl); // Set the selected image after upload completes
+      setSelectedImage(imageUrl);
       onImageUpload(imageUrl);
     }, 3000);
   };
@@ -59,7 +55,6 @@ const UploadImage: React.FC<UploadImageProps> = ({
     }
     setSelectedImage(null);
     setShowDeleteButton(false);
-    onImageDelete();
   };
 
   return (

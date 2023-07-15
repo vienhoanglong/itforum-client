@@ -1,198 +1,170 @@
-import Avatar from "@/components/image/Avatar";
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import React, { useEffect, useState } from "react";
-import { HiDocument, HiPencil } from "react-icons/hi";
-import avt1 from "@/assets/avt1.jpg";
-import { dataUser, exampleDataTopic, topicColors } from "@/constants/global";
-import Thumbnail from "../assets/header-image-post-detail.png";
-import { Label } from "@/components/label";
-import { BsEyeFill, BsFillChatQuoteFill, BsMessenger } from "react-icons/bs";
+import { dataUser, exampleDataTopic } from "@/constants/global";
+import "react-datepicker/dist/react-datepicker.css";
+import ContactSection from "@/modules/profile/contacts/ContactSection";
+import SkillsSection from "@/modules/profile/skills/SkillsSection";
+import AccountSection from "@/modules/profile/account/AccountSection";
+import PersonalSection from "@/modules/profile/personal/PersonalSection";
+import AboutSection from "@/modules/profile/about/AboutSection";
+import {
+  getUser,
+  updateContact,
+  updatePersonal,
+  updateSkill,
+  updateAbout,
+  updateCoverImage,
+  updateAvatar,
+} from "@/services/profileService";
+import IUserUpdate from "@/interface/API/IUserUpdate";
+import UserModel from "@/interface/model/UserModel";
 
 const ProfilePage: React.FC = () => {
-  const [fullName, setFulltName] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [classValue, setClassValue] = useState("");
-  const [major, setMajor] = useState("");
-  const [id, setId] = useState("");
+  const [isOn, setIsOn] = useState(false);
 
+  const handleToggle = () => {
+    setIsOn(!isOn);
+  };
+  //example data user
+  const [user, setUser] = useState<UserModel>(dataUser[0]);
+  //Get user
   useEffect(() => {
-    const userInfo = dataUser[0];
-    setFulltName(userInfo.fullname);
-    setBirthday(userInfo.birthday);
-    setClassValue(userInfo.class);
-    setMajor(userInfo.major);
-    setId(userInfo.id);
+    const fetchData = async (userId: string) => {
+      try {
+        const user: UserModel = await getUser(userId);
+        console.log(user);
+        // hanldle data
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData("idUser");
   }, []);
+
+  const handleUpdateAvatar = async (updatedAvatar: IUserUpdate) => {
+    try {
+      const response = await updateAvatar(updatedAvatar);
+      //get new data user after updated
+      const updatedUser: UserModel = await getUser(user.id);
+      setUser(updatedUser);
+
+      console.log("Avatar image  updated:", response);
+    } catch (error) {
+      console.error("Failed to update Avatar image:", error);
+    }
+    console.log("Avatar image updated:", updatedAvatar);
+  };
+
+  const handleUpdateCoverImg = async (updatedCoverImg: IUserUpdate) => {
+    try {
+      const response = await updateCoverImage(updatedCoverImg);
+      //get new data user after updated
+      const updatedUser: UserModel = await getUser(user.id);
+      setUser(updatedUser);
+
+      console.log("Cover image  updated:", response);
+    } catch (error) {
+      console.error("Failed to update Cover image:", error);
+    }
+    console.log("Cover image updated:", updatedCoverImg);
+  };
+  const handleUpdateAbout = async (updatedAbout: IUserUpdate) => {
+    try {
+      const response = await updateAbout(updatedAbout);
+      //get new data user after updated
+      const updatedUser: UserModel = await getUser(user.id);
+      setUser(updatedUser);
+
+      console.log("About info updated:", response);
+    } catch (error) {
+      console.error("Failed to update About info:", error);
+    }
+    console.log("About info updated:", updatedAbout);
+  };
+
+  const handleUpdatePersonal = async (updatedPersonal: IUserUpdate) => {
+    try {
+      const response = await updatePersonal(updatedPersonal);
+
+      //get new data user after updated
+      const updatedUser: UserModel = await getUser(user.id);
+      setUser(updatedUser);
+
+      console.log("Personal info updated:", response);
+    } catch (error) {
+      console.error("Failed to update Personal info:", error);
+    }
+    console.log("Personal info updated:", updatedPersonal);
+  };
+
+  const handleUpdateSkills = async (updatedSkills: IUserUpdate) => {
+    try {
+      const response = await updateSkill(updatedSkills);
+      //get new data user after updated
+      const updatedUser: UserModel = await getUser(user.id);
+      setUser(updatedUser);
+      console.log("Skill updated:", response);
+    } catch (error) {
+      console.error("Failed to update skill:", error);
+    }
+  };
+
+  const handleUpdateContact = async (updatedContact: IUserUpdate) => {
+    try {
+      const response = await updateContact(updatedContact);
+      //get new data user after updated
+      const updatedUser: UserModel = await getUser(user.id);
+      setUser(updatedUser);
+      console.log("Contact updated:", response);
+    } catch (error) {
+      console.error("Failed to update contact:", error);
+    }
+  };
+
   return (
     <LayoutSecondary>
-      <div className="max-w-4xl mx-auto p-8 bg-light4 shadow-sm dark:bg-dark1 rounded-lg dark:text-light0">
+      <div className="max-w-4xl mx-auto p-8 bg-light4 shadow-sm dark:bg-dark1 rounded-lg dark:text-light0 relative">
         <h4 className="text-xl font-bold text-darker mb-4 ">Profile</h4>
-
-        <div className="dark:bg-dark2 bg-light3 shadow-sm flex flex-col rounded-t-xl rounded-b-lg mb-4">
-          <div className="w-full h-[150px]">
-            <img
-              src="https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg"
-              className="w-full rounded-t-xl max-w-full max-h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-          <div className="text-left mb-4 relative">
-            <a
-              href=""
-              className=" absolute bottom-[60%] left-[5%] flex items-center mr-3 w-28 h-28 "
-            >
-              <img
-                src={avt1}
-                alt="Avatar"
-                className="w-[100px] h-[100px] object-cover border-solid border-4 dark:border-dark2 align-middle cursor-pointer rounded-full"
-              />
-            </a>
-            <div className="flex justify-between flex-wrap">
-              <div className=" mt-10 px-4 min-w-[170px]">
-                <h1 className=" text-base font-bold mt-4">{fullName}</h1>
-                <p className="">Software developer</p>
-                <div className="flex items-start flex-col space-x-2 mt-2">
-                  <div className="flex items-center mr-4">
-                    <BsEyeFill />
-                    <span className="ml-1">100 follower</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <div className="flex items-center">
-                      <HiDocument />
-                      <span className="ml-1">100</span>
-                    </div>
-                    <div className="flex items-center mr-2">
-                      <BsFillChatQuoteFill />
-                      <span className="ml-1">100</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="p-4 relative">
-            <h2 className="text-base font-bold mb-4">About</h2>
-            <p className="">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-              eget est ac turpis placerat malesuada a nec sem. Morbi quis diam
-              sit amet mi malesuada malesuada. Nulla pharetra neque id nunc
-              aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id
-              eleifend pellentesque. Nunc non urna id felis luctus semper a ut
-              nisi.
-            </p>
-            <button className=" flex space-x-1 items-center absolute top-2 right-2 bg-blue-500 text-white px-2  py-2 rounded-full">
-              <HiPencil></HiPencil>
-              <span className="max-md:hidden">Edit</span>
-            </button>
+        <div className="flex space-x-2 items-center absolute top-2 right-2">
+          <span className="max-md:hidden text-sm font-bold">Edit</span>
+          <div
+            className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
+              isOn ? "bg-blue-600" : "bg-gray-400"
+            }`}
+            onClick={handleToggle}
+          >
+            <div
+              className={`absolute left-1 top-1 w-4 h-4 rounded-full transition-transform duration-300 transform ${
+                isOn ? "translate-x-6 bg-white" : "bg-gray-300"
+              }`}
+            ></div>
           </div>
         </div>
 
-        <div className="mb-4 dark:bg-dark2 bg-light3 shadow-sm w-auto rounded-lg p-4 relative">
-          <h2 className="text-base font-bold mb-4">Personal Information</h2>
+        <AboutSection
+          userData={user}
+          onUpdateAbout={handleUpdateAbout}
+        ></AboutSection>
 
-          <div className="flex flex-wrap">
-            <div className="w-1/2 flex flex-col space-y-4 min-w-[120px] mb-4">
-              <div className="">
-                <Label htmlFor="title" className="block text-xs font-semibold">
-                  Full name:
-                </Label>
-                <div className="">{fullName}</div>
-              </div>
-              <div className="">
-                <Label htmlFor="title" className="block text-xs font-semibold">
-                  Birthday:
-                </Label>
-                <div>{birthday}</div>
-              </div>
-              <div className="">
-                <Label htmlFor="title" className="block text-xs font-semibold">
-                  Class:
-                </Label>
-                <div>{classValue}</div>
-              </div>
-            </div>
-            <div className="w-1/2 flex flex-col space-y-4 min-w-[120px]">
-              <div className="">
-                <Label htmlFor="title" className="block text-xs font-semibold">
-                  ID:
-                </Label>
-                <div>{id}</div>
-              </div>
-              <div className="">
-                <Label htmlFor="title" className="block text-xs font-semibold">
-                  Major:
-                </Label>
-                <div>{major}</div>
-              </div>
-            </div>
-          </div>
+        <PersonalSection
+          userData={user}
+          hanldeUpdatePersonal={handleUpdatePersonal}
+        />
 
-          <button className=" flex space-x-1 items-center absolute top-2 right-2 bg-blue-500 text-white px-2 py-2 rounded-full">
-            <HiPencil></HiPencil>
-            <span className="max-md:hidden">Edit</span>
-          </button>
-        </div>
+        {/* is company */}
+        <AccountSection />
 
-        <div className="mb-4 dark:bg-dark2 bg-light3 shadow-sm rounded-lg p-4 relative">
-          <h2 className="text-base font-bold mb-4">Skills</h2>
-          <div className="w-full my-2 flex flex-wrap">
-            {exampleDataTopic.map((topic) => (
-              <div
-                key={topic.id}
-                className={`cursor-pointer inline-block text-xs border-2 px-2 py-1 rounded-full m-[1px] ${
-                  topicColors[topic.name] || ""
-                }`}
-              >
-                {topic.name}
-              </div>
-            ))}
-          </div>
-          <button className=" flex space-x-1 items-center absolute top-2 right-2 bg-blue-500 text-white px-2 py-2 rounded-full">
-            <HiPencil></HiPencil>
-            <span className="max-md:hidden">Edit</span>
-          </button>
-        </div>
+        {/* is student */}
+        <SkillsSection
+          hanleUpdateSkills={handleUpdateSkills}
+          listSkills={exampleDataTopic}
+          userData={user}
+        />
 
-        <div className="dark:bg-dark2 bg-light3 shadow-sm rounded-lg p-4 relative">
-          <h2 className="text-base font-bold mb-4">Contact</h2>
-          <ul className="">
-            <li>
-              Email:{" "}
-              <a href="https://example.com" className="text-blue-500">
-                hoanglong.com
-              </a>
-            </li>
-            <li>
-              Github:{" "}
-              <a href="https://hoanglong.com" className="text-blue-500">
-                hoanglong.com
-              </a>
-            </li>
-            <li>
-              Linkedin:{" "}
-              <a href="https://hoanglong.com" className="text-blue-500">
-                hoanglong.com
-              </a>
-            </li>
-            <li>
-              FB:{" "}
-              <a href="https://hoanglong.com" className="text-blue-500">
-                hoanglong.com
-              </a>
-            </li>
-            <li>Phone: 123-456-7890</li>
-            <li>
-              Website:{" "}
-              <a href="https://hoanglong.com" className="text-blue-500">
-                hoanglong.com
-              </a>
-            </li>
-          </ul>
-          <button className="flex space-x-1 items-center absolute top-2 right-2 bg-blue-500 text-white px-2 py-2 rounded-full">
-            <HiPencil></HiPencil>
-            <span className="max-md:hidden">Edit</span>
-          </button>
-        </div>
+        <ContactSection
+          handleUpdateContact={handleUpdateContact}
+          userData={user}
+        />
       </div>
     </LayoutSecondary>
   );

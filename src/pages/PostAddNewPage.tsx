@@ -6,7 +6,7 @@ import { Label } from "@/components/label";
 import { Button } from "@/components/button";
 import { Input } from "components/input";
 import "react-quill/dist/quill.snow.css";
-import UploadImage from "@/modules/uploadImage/UploadImage";
+import UploadImage from "@/components/uploadImage/UploadImage";
 import Select from "react-select";
 import { exampleDataTopic } from "@/constants/global";
 import { customStyles } from "@/constants/styleReactSelect";
@@ -48,11 +48,6 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
   const handleImageUpload = (imageUrl: string) => {
     // handle upload image
     console.log("Image uploaded:", imageUrl);
-  };
-
-  const handleImageDelete = () => {
-    // handle delete image
-    console.log("Image deleted");
   };
 
   const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
@@ -109,10 +104,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
               >
                 Upload image
               </Label>
-              <UploadImage
-                onImageUpload={handleImageUpload}
-                onImageDelete={handleImageDelete}
-              ></UploadImage>
+              <UploadImage onImageUpload={handleImageUpload}></UploadImage>
             </div>
           </div>
 
