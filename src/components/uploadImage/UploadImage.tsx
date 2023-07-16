@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Button } from "../button";
 import UploadProgress from "./UploadProgress";
 import logoUpload from "/src/assets/upload-image.png";
 import { HiTrash } from "react-icons/hi";
@@ -8,12 +7,15 @@ import { HiTrash } from "react-icons/hi";
 interface UploadImageProps {
   onImageUpload: (imageUrl: string) => void;
   initialImageUrl?: string;
+  onDeleteImage: () => void;
 }
 
-const UploadImage: React.FC<UploadImageProps> = ({ onImageUpload }) => {
+const UploadImage: React.FC<UploadImageProps> = ({
+  onImageUpload,
+  onDeleteImage,
+}) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [showDeleteButton, setShowDeleteButton] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [previousImageUrl, setPreviousImageUrl] = useState<string | null>(null);
 
@@ -40,10 +42,10 @@ const UploadImage: React.FC<UploadImageProps> = ({ onImageUpload }) => {
       clearInterval(uploadInterval);
       setUploading(false);
       setUploadProgress(0);
-      setShowDeleteButton(true);
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
       onImageUpload(imageUrl);
+      setUploadComplete(true);
     }, 3000);
   };
 
@@ -54,18 +56,18 @@ const UploadImage: React.FC<UploadImageProps> = ({ onImageUpload }) => {
       URL.revokeObjectURL(selectedImage);
     }
     setSelectedImage(null);
-    setShowDeleteButton(false);
+    onDeleteImage();
   };
 
   return (
     <div className="flex flex-col justify-center h-full w-auto items-center rounded-lg">
-      <div className="bg-white dark:bg-dark2 rounded-md p-2 w-full h-[180px]">
+      <div className="bg-white dark:bg-dark2 rounded-md p-2 lg:w-[300px]  w-[210px] h-[180px]">
         {selectedImage ? (
           <div className="mb-4 flex justify-center items-center w-auto h-full relative">
             <img
               src={selectedImage}
               alt="Uploaded"
-              className="max-w-full max-h-full w-auto h-auto"
+              className="m-w-full max-h-full w-auto h-auto"
             />
             <button
               className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
@@ -77,9 +79,9 @@ const UploadImage: React.FC<UploadImageProps> = ({ onImageUpload }) => {
         ) : (
           <div
             {...getRootProps()}
-            className={`flex flex-col h-full w-full items-center justify-center border-2 dark:border-dark1 rounded-lg border-dashed py-16 px-8 mb-4 ${
+            className={`flex flex-col h-full w-auto items-center justify-center border-2 dark:border-dark1 rounded-lg border-dashed py-16 px-8 ${
               isDragActive
-                ? "bg-gray-200 border-blue-500 dark:bg-dark0 dark:border-dark3 w-full h-full"
+                ? "bg-gray-200 border-blue-500 dark:bg-dark0 dark:border-dark3 w-auto h-full"
                 : ""
             }`}
           >

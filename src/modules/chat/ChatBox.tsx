@@ -57,10 +57,10 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
     <>
       <HiOutlinePaperClip className="text-xl cursor-pointer" />
       <input
-        className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] text-sm outline-none"
+        className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] dark:bg-dark0 text-sm outline-none"
         type="text"
         value={inputText}
-        placeholder="Nhâp @, nhắn tin tới Trần Hoàng Long"
+        placeholder="Nhập @, nhắn tin tới Trần Hoàng Long"
         onChange={handleInputChange}
       />
       {showEmoji && (

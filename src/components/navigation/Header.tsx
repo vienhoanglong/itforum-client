@@ -5,7 +5,7 @@ import { HiOutlineCog, HiOutlineLogout, HiUser } from "react-icons/hi";
 import logo from "assets/logo-text.png";
 export const Header: React.FC = () => {
   return (
-    <header className="z-20 flex flex-row items-center mb-[1px] justify-between w-full py-4 bg-dark0 shadow-sm dark:bg-dark0 dark:shadow-xl">
+    <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
       <Container>
         <div className="flex flex-row items-center flex-1 md:space-x-3">
           <img srcSet={`${logo} 3.5x`} alt="ict-forum" />
@@ -38,7 +38,7 @@ export const Header: React.FC = () => {
             <p className="text-sm font-bold text-primary text-mainColor">
               Viên Hoàng Long
             </p>
-            <p className="text-xs font-light text-light0">
+            <p className="text-xs font-light text-dark1 dark:text-light0 ">
               vienlongdev@gmail.com
             </p>
           </div>

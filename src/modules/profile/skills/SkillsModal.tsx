@@ -26,6 +26,7 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
       skills: newSelectedSkills.skills,
     };
     onSaveChanges(newSkills);
+    console.log(newSkills);
   };
 
   const handleSkillChange = (selectedOptions: any) => {

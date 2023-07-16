@@ -11,28 +11,57 @@ import IUserUpdate from "@/interface/API/IUserUpdate";
 interface AboutSectionProps {
   userData: UserModel;
   onUpdateAbout: (newAbout: IUserUpdate) => void;
-  onUpdateCoverImage?: (newCoverImage: IUserUpdate) => void;
+  onUpdateCoverImage: (newCoverImage: IUserUpdate) => void;
+  onUpdateAvatar: (newAvatar: IUserUpdate) => void;
 }
 
 const AboutSection: React.FC<AboutSectionProps> = ({
   userData,
   onUpdateAbout,
+  onUpdateAvatar,
+  onUpdateCoverImage,
 }) => {
   const [isUpdatingAbout, setIsUpdatingAbout] = useState(false);
   const [isUpdatingImg, setIsUpdatingImg] = useState(false);
+  const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
   const [newAbout, setNewAbout] = useState(userData.about);
+  const [newCoverImg, setNewCoverImg] = useState(userData.coverImage);
+  const [newAvatar, setNewAvatar] = useState(userData.avatar);
+  const [uploadComplete, setUploadComplete] = useState(false);
 
-  const handleOpenUpdateModal = () => {
+  const handleDeleteImage = () => {
+    setUploadComplete(false);
+  };
+  const handleOpenModalAbout = () => {
     setIsUpdatingAbout(true);
   };
-
+  const handleOpenModalImg = () => {
+    setIsUpdatingImg(true);
+  };
+  const handleOpenModalAvatar = () => {
+    setIsUpdatingAvatar(true);
+  };
   const handleCloseModal = () => {
     setIsUpdatingAbout(false);
     setIsUpdatingImg(false);
+    setIsUpdatingAvatar(false);
+    setUploadComplete(false);
   };
 
   const handleAboutChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewAbout(e.target.value);
+  };
+  const handleCoverImageUpload = (imageUrl: string) => {
+    // handle upload image
+    setNewCoverImg(imageUrl);
+    setUploadComplete(true);
+    console.log("Cover Image uploaded:", imageUrl);
+  };
+  const handleAvatarUpload = (imageUrl: string) => {
+    // handle upload image
+    setNewAvatar(imageUrl);
+    setUploadComplete(true);
+    console.log("Avatar Image uploaded:", imageUrl);
   };
 
   //update new about
@@ -44,13 +73,23 @@ const AboutSection: React.FC<AboutSectionProps> = ({
     handleCloseModal();
   };
 
-  const handleImageUpload = (imageUrl: string) => {
-    // handle upload image
-    console.log("Image uploaded:", imageUrl);
+  //Update Cover Img
+  const handleUpdateCoverImg = () => {
+    const newCoverImgUpdate: IUserUpdate = {
+      coverImage: newCoverImg,
+    };
+    onUpdateCoverImage(newCoverImgUpdate);
+    setUploadComplete(false);
+    handleCloseModal();
   };
-
-  const handleUpdateImg = () => {
-    setIsUpdatingImg(true);
+  //Update avatar
+  const handleUpdateAvatar = () => {
+    const newAvatarUpdate: IUserUpdate = {
+      avatar: newAvatar,
+    };
+    onUpdateAvatar(newAvatarUpdate);
+    setUploadComplete(false);
+    handleCloseModal();
   };
 
   return (
@@ -63,59 +102,78 @@ const AboutSection: React.FC<AboutSectionProps> = ({
         />
         <button
           className=" flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2  py-2 rounded-full"
-          onClick={handleUpdateImg}
+          onClick={handleOpenModalImg}
         >
           <HiPencil></HiPencil>
           <span className="max-md:hidden">Edit</span>
         </button>
         <Modal isOpen={isUpdatingImg} onClose={handleCloseModal}>
           <Label htmlFor="title" className="block text-xs font-semibold">
-            Choose your image:
+            Choose your cover image:
           </Label>
-          <UploadImage onImageUpload={handleImageUpload}></UploadImage>
+
+          <UploadImage
+            onImageUpload={handleCoverImageUpload}
+            onDeleteImage={handleDeleteImage}
+          ></UploadImage>
+
           <div className="flex justify-end">
-            <Button
-              size="small"
-              kind="primary"
-              className="text-xs mt-2"
-              type="submit"
-            >
-              Submit
-            </Button>
+            {uploadComplete ? (
+              <Button
+                size="small"
+                kind="primary"
+                className="text-xs mt-2"
+                type="submit"
+                handle={handleUpdateCoverImg}
+              >
+                Submit
+              </Button>
+            ) : null}
           </div>
         </Modal>
       </div>
 
       <div className="text-left mb-4 relative">
-        <a
-          href=""
-          className=" mb-1 absolute bottom-[50%] left-[3%] z-0 flex items-center w-[100px] h-[100px] "
-        >
+        <div className=" mb-1 absolute bottom-[50%] left-[3%] z-0 flex items-center w-[100px] h-[100px] ">
           <img
             src={userData.avatar}
             alt="Avatar"
-            className="w-full h-full dark:brightness-90 object-cover border-solid border-4 dark:border-dark2 align-middle rounded-full"
+            className="relative w-full h-full dark:brightness-90 object-cover border-solid border-4 dark:border-dark2 align-middle rounded-full"
           />
-          <button className="absolute top-[50%] inset-0 rounded-b-full h-[50%] flex items-center justify-center bg-dark0 text-white opacity-0 transition-opacity duration-300 hover:opacity-50">
+          <button
+            onClick={handleOpenModalAvatar}
+            className="absolute top-[46%] mx-1 inset-0 rounded-b-full h-[50%] flex items-center justify-center bg-dark0 text-white opacity-0 transition-opacity duration-200 hover:opacity-50"
+          >
             <HiPencil />
+            Edit
           </button>
+          <Modal isOpen={isUpdatingAvatar} onClose={handleCloseModal}>
+            <Label
+              htmlFor="updateAvatar"
+              className="block text-xs font-semibold"
+            >
+              Choose your avatar:
+            </Label>
 
-          {/* <button className="absolute bottom-0 left-0 w-[50%] h-full rounded-r-full flex items-center justify-center bg-blue-500 text-white">
-      <HiPencil />
-    </button> */}
-        </a>
-        {/* <div className="relative w-[100px] h-[100px]">
-              <img
-                src={userData.avatar}
-                alt="Avatar"
-                className="w-full h-full object-cover rounded-full"
-              />
-              <button className="absolute inset-0 h-[50%] flex items-center justify-center bg-blue-500 text-white opacity-0 transition-opacity duration-300 hover:opacity-100">
-                <HiPencil />
-              </button>
+            <UploadImage
+              onImageUpload={handleAvatarUpload}
+              onDeleteImage={handleDeleteImage}
+            ></UploadImage>
+            <div className="flex justify-end">
+              {uploadComplete ? (
+                <Button
+                  size="small"
+                  kind="primary"
+                  className="text-xs mt-2"
+                  type="submit"
+                  handle={handleUpdateAvatar}
+                >
+                  Submit
+                </Button>
+              ) : null}
             </div>
-                 */}
-
+          </Modal>
+        </div>
         <div className="flex justify-between items-center flex-wrap mt-10">
           <div className=" px-4 min-w-[170px]">
             <h1 className=" text-base font-bold mt-4">{userData.fullname}</h1>
@@ -132,7 +190,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
         <p className="">{userData.about}</p>
         <button
           className="flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2 py-2 rounded-full"
-          onClick={handleOpenUpdateModal}
+          onClick={handleOpenModalAbout}
         >
           <HiPencil />
           <span className="max-md:hidden">Edit</span>

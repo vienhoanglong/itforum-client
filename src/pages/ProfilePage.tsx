@@ -144,6 +144,8 @@ const ProfilePage: React.FC = () => {
         <AboutSection
           userData={user}
           onUpdateAbout={handleUpdateAbout}
+          onUpdateAvatar={handleUpdateAvatar}
+          onUpdateCoverImage={handleUpdateCoverImg}
         ></AboutSection>
 
         <PersonalSection

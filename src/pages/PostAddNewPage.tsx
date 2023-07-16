@@ -26,9 +26,13 @@ interface PostAddNewPageProps {
 }
 
 export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
+  const [uploadComplete, setUploadComplete] = useState(false);
   const isDarkMode = true;
   const [content, setContent] = useState<string>("");
 
+  const handleDeleteImg = () => {
+    setUploadComplete(false);
+  };
   const onSubmit = (data: FormDataPosting) => {
     console.log(data);
   };
@@ -47,6 +51,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
 
   const handleImageUpload = (imageUrl: string) => {
     // handle upload image
+    setUploadComplete(true);
     console.log("Image uploaded:", imageUrl);
   };
 
@@ -58,7 +63,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
   }));
 
   return (
-    <div className="container h-full dark:text-light0 w-full overflow-auto rounded-lg mx-auto flex flex-col ">
+    <div className=" h-full dark:text-light0 w-full overflow-auto rounded-lg mx-auto flex flex-col ">
       <div className=" pb-4 h-auto w-full">
         <h4 className="text-xl font-bold text-darker ">Add new post</h4>
       </div>
@@ -104,7 +109,10 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
               >
                 Upload image
               </Label>
-              <UploadImage onImageUpload={handleImageUpload}></UploadImage>
+              <UploadImage
+                onImageUpload={handleImageUpload}
+                onDeleteImage={handleDeleteImg}
+              ></UploadImage>
             </div>
           </div>
 
