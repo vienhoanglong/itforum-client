@@ -13,10 +13,12 @@ interface AboutSectionProps {
   onUpdateAbout: (newAbout: IUserUpdate) => void;
   onUpdateCoverImage: (newCoverImage: IUserUpdate) => void;
   onUpdateAvatar: (newAvatar: IUserUpdate) => void;
+  isEdit: boolean;
 }
 
 const AboutSection: React.FC<AboutSectionProps> = ({
   userData,
+  isEdit,
   onUpdateAbout,
   onUpdateAvatar,
   onUpdateCoverImage,
@@ -100,13 +102,16 @@ const AboutSection: React.FC<AboutSectionProps> = ({
           className="w-full rounded-t-xl max-w-full max-h-full object-cover"
           loading="lazy"
         />
-        <button
-          className=" flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2  py-2 rounded-full"
-          onClick={handleOpenModalImg}
-        >
-          <HiPencil></HiPencil>
-          <span className="max-md:hidden">Edit</span>
-        </button>
+        {isEdit ? (
+          <button
+            className=" flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2  py-2 rounded-full"
+            onClick={handleOpenModalImg}
+          >
+            <HiPencil></HiPencil>
+            <span className="max-md:hidden">Edit</span>
+          </button>
+        ) : null}
+
         <Modal isOpen={isUpdatingImg} onClose={handleCloseModal}>
           <Label htmlFor="title" className="block text-xs font-semibold">
             Choose your cover image:
@@ -140,13 +145,16 @@ const AboutSection: React.FC<AboutSectionProps> = ({
             alt="Avatar"
             className="relative w-full h-full dark:brightness-90 object-cover border-solid border-4 dark:border-dark2 align-middle rounded-full"
           />
-          <button
-            onClick={handleOpenModalAvatar}
-            className="absolute top-[46%] mx-1 inset-0 rounded-b-full h-[50%] flex items-center justify-center bg-dark0 text-white opacity-0 transition-opacity duration-200 hover:opacity-50"
-          >
-            <HiPencil />
-            Edit
-          </button>
+          {isEdit ? (
+            <button
+              onClick={handleOpenModalAvatar}
+              className="absolute top-[47%] mx-1 inset-0 rounded-b-full h-[50%] flex items-center justify-center bg-dark0 text-white opacity-0 transition-opacity duration-200 hover:opacity-50"
+            >
+              <HiPencil />
+              Edit
+            </button>
+          ) : null}
+
           <Modal isOpen={isUpdatingAvatar} onClose={handleCloseModal}>
             <Label
               htmlFor="updateAvatar"
@@ -188,13 +196,16 @@ const AboutSection: React.FC<AboutSectionProps> = ({
       <div className="p-4 relative">
         <h2 className="text-base font-bold mb-4">About</h2>
         <p className="">{userData.about}</p>
-        <button
-          className="flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2 py-2 rounded-full"
-          onClick={handleOpenModalAbout}
-        >
-          <HiPencil />
-          <span className="max-md:hidden">Edit</span>
-        </button>
+        {isEdit ? (
+          <button
+            className="flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2 py-2 rounded-full"
+            onClick={handleOpenModalAbout}
+          >
+            <HiPencil />
+            <span className="max-md:hidden">Edit</span>
+          </button>
+        ) : null}
+
         <Modal isOpen={isUpdatingAbout} onClose={handleCloseModal}>
           <div className="flex flex-col">
             <Label htmlFor="about" className="block text-xs font-semibold mb-2">

@@ -1,6 +1,7 @@
 import ActionMenu from "@/modules/post/ActionMenu";
 import React, { useEffect, useRef, useState } from "react";
-import { HiDotsVertical } from "react-icons/hi";
+import { BsFillChatRightDotsFill } from "react-icons/bs";
+import { HiDotsVertical, HiMinusCircle, HiPlusCircle } from "react-icons/hi";
 
 interface Comment {
   author: string;
@@ -73,26 +74,58 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
       {comments.map((comment, commentIndex) => (
         <div
           key={commentIndex}
-          className="comment mb-4 dark:text-light0 dark:bg-dark2 rounded-lg p-2 ml-4"
+          className="comment mb-4 dark:text-light0 bg-light1 dark:bg-dark2 rounded-lg p-2 ml-4 "
         >
-          <div className="flex items-start border-b-2 pb-2 dark:border-b-dark1 border-b-light0">
-            <div className="flex-shrink-0">
-              <img
-                className="w-8 h-8 rounded-full brightness-90"
-                src={comment.avatar}
-                alt="User Avatar"
-              />
-            </div>
-            <div className="ml-2">
-              <div className="font-bold">{comment.author}</div>
-              <div className="text-gray-600 dark:text-light0">
-                {comment.content}
+          <div className="flex items-start  pb-2 ">
+            <div className="ml-1">
+              <div className="flex items-center space-x-1">
+                <div className="flex-shrink-0">
+                  <img
+                    className="w-8 h-8 rounded-full brightness-90"
+                    src={comment.avatar}
+                    alt="User Avatar"
+                  />
+                </div>
+                <div className="font-bold">{comment.author}</div>
+                <div className="text-xs text-gray-500 dark:text-light0">
+                  {comment.timestamp}
+                </div>
               </div>
-              <div className="text-xs text-gray-500 dark:text-light0">
-                {comment.timestamp}
+              <div
+                className="md pl-[28px] xs:pl-xl text-xs
+                relative  before:content-['']
+                before:absolute
+                before:border-l-[1px]
+                before:border-r-[0px]
+                before:border-y-0
+                before:border-tone-4
+                before:border-solid
+                before:border-dark3
+                before:top-0
+                before:left-[15.5px]
+                xs:before:left-[15.5px]
+                before:h-[calc(100%+6px)]"
+              >
+                <div className="text-gray-600 dark:text-light0">
+                  {comment.content}
+                </div>
               </div>
-              <div className="text-xs text-blue-500 cursor-pointer mt-2">
-                Reply
+              <div
+                className="text-xs mt-1 w-full flex space-x-4 pl-[0.6rem]
+              "
+              >
+                <button className="flex items-center space-x-1 hover:underline hover:text-mainColor">
+                  <HiMinusCircle />
+                  <span className="text-xs italic font-thin underline">
+                    100 more
+                  </span>
+                </button>
+                <button className="hover:underline hover:text-mainColor flex items-center space-x-1">
+                  <BsFillChatRightDotsFill />
+                  <span className="text-xs italic font-thin underline">
+                    Reply
+                  </span>
+                </button>
               </div>
             </div>
             <div
@@ -104,43 +137,102 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
               {activeComment === commentIndex && <ActionMenu></ActionMenu>}
             </div>
           </div>
-
-          {comment.replies.map((reply, replyIndex) => (
-            <div key={replyIndex} className="ml-10 mt-2">
-              <div className="flex items-start">
-                <div className="flex-shrink-0">
-                  <img
-                    className="w-8 h-8 rounded-full brightness-90"
-                    src={reply.avatar}
-                    alt="User Avatar"
-                  />
-                </div>
-                <div className="ml-2">
-                  <div className="font-bold">{reply.author}</div>
-                  <div className="text-gray-600 dark:text-light0">
-                    {reply.content}
+          <div
+            className="relative  after:content-['']
+          after:absolute
+          after:border-l-[1px]
+          after:border-r-[0px]
+          after:border-y-0
+          after:border-dark3
+          after:border-tone-4
+          after:border-solid
+          after:top-[-17px]
+          after:left-[19.5px]
+          xs:after:left-[15.5px]
+          after:h-[calc(100%-36px)]"
+          >
+            {comment.replies.map((reply, replyIndex) => (
+              <div
+                key={replyIndex}
+                className="ml-10 mt-2 relative after:content-['']
+            after:absolute
+            after:border-l-[1px]
+            after:border-r-[0px]
+            after:border-y-0
+            after:border-tone-4
+            after:border-solid
+            after:border-dark3
+            after:rounded-bl-[12px]
+            after:border-b-[1px]
+            after:bottom-[14px] xs:after:bottom-[70px]
+            after:-left-[20.5px] xs:after:left-[3.5px]
+            after:w-[34px] xs:after:w-[23px]
+            after:h-[calc(100%-36px)] xs:after:h-[calc(100%-52px)]"
+              >
+                <div className="flex items-start  pb-2 ">
+                  <div className="ml-1">
+                    <div className="flex items-center space-x-1">
+                      <div className="flex-shrink-0">
+                        <img
+                          className="w-8 h-8 rounded-full brightness-90"
+                          src={reply.avatar}
+                          alt="User Avatar"
+                        />
+                      </div>
+                      <div className="font-bold">{reply.author}</div>
+                      <div className="text-xs text-gray-500 dark:text-light0">
+                        {reply.timestamp}
+                      </div>
+                    </div>
+                    <div
+                      className="md pl-[28px] xs:pl-xl text-xs
+                    relative  before:content-['']
+                    before:absolute
+                    before:border-l-[1px]
+                    before:border-r-[0px]
+                    before:border-y-0
+                    before:border-dark3
+                    before:border-tone-4
+                    before:border-solid
+                    before:top-0
+                    before:left-[15.5px]
+                    xs:before:left-[15.5px]
+                    before:h-[calc(100%+6px)]"
+                    >
+                      <div className="text-gray-600 dark:text-light0">
+                        {reply.content}
+                      </div>
+                    </div>
+                    <div className="text-xs mt-1 flex space-x-4 pl-[0.6rem] w-full ">
+                      <button className="flex items-center space-x-1 hover:underline hover:text-mainColor">
+                        <HiPlusCircle />
+                        <span className="text-xs italic font-thin underline">
+                          100 more
+                        </span>
+                      </button>
+                      <button className="hover:underline hover:text-mainColor flex items-center space-x-1">
+                        <BsFillChatRightDotsFill />
+                        <span className=" text-xs italic font-thin underline">
+                          Reply
+                        </span>
+                      </button>
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-light0">
-                    {reply.timestamp}
+                  <div
+                    ref={menuRef}
+                    onClick={() => handleMenuReply(commentIndex, replyIndex)}
+                    className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2"
+                  >
+                    <HiDotsVertical size={15}></HiDotsVertical>
+                    {activeReply?.commentIndex === commentIndex &&
+                      activeReply?.replyIndex === replyIndex && (
+                        <ActionMenu></ActionMenu>
+                      )}
                   </div>
-                  <div className="text-xs text-blue-500 cursor-pointer mt-2">
-                    Reply
-                  </div>
-                </div>
-                <div
-                  ref={menuRef}
-                  onClick={() => handleMenuReply(commentIndex, replyIndex)}
-                  className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2"
-                >
-                  <HiDotsVertical size={15}></HiDotsVertical>
-                  {activeReply?.commentIndex === commentIndex &&
-                    activeReply?.replyIndex === replyIndex && (
-                      <ActionMenu></ActionMenu>
-                    )}
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       ))}
     </div>

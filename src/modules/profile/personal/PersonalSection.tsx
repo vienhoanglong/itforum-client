@@ -8,11 +8,13 @@ import IUserUpdate from "@/interface/API/IUserUpdate";
 
 interface ProfileSectionProps {
   userData: UserModel;
+  isEdit: boolean;
   hanldeUpdatePersonal: (userDataUpdate: IUserUpdate) => void;
 }
 
 const ProfileSection: React.FC<ProfileSectionProps> = ({
   userData,
+  isEdit,
   hanldeUpdatePersonal,
 }) => {
   const [isUpdatePersonal, setUpdatePersonal] = useState(false);
@@ -75,13 +77,15 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             </div>
           </div>
         </div>
-        <button
-          className="flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2 py-2 rounded-full"
-          onClick={handleEditPersonal}
-        >
-          <HiPencil />
-          <span className="max-md:hidden">Edit</span>
-        </button>
+        {isEdit ? (
+          <button
+            className="flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2 py-2 rounded-full"
+            onClick={handleEditPersonal}
+          >
+            <HiPencil />
+            <span className="max-md:hidden">Edit</span>
+          </button>
+        ) : null}
       </div>
       <Modal isOpen={isUpdatePersonal} onClose={handleClose}>
         <Label htmlFor="title" className="block text-sm font-semibold mb-8">

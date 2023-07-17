@@ -20,10 +20,10 @@ import IUserUpdate from "@/interface/API/IUserUpdate";
 import UserModel from "@/interface/model/UserModel";
 
 const ProfilePage: React.FC = () => {
-  const [isOn, setIsOn] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const handleToggle = () => {
-    setIsOn(!isOn);
+    setIsEdit(!isEdit);
   };
   //example data user
   const [user, setUser] = useState<UserModel>(dataUser[0]);
@@ -129,13 +129,13 @@ const ProfilePage: React.FC = () => {
           <span className="max-md:hidden text-sm font-bold">Edit</span>
           <div
             className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
-              isOn ? "bg-blue-600" : "bg-gray-400"
+              isEdit ? "bg-blue-600" : "bg-gray-400"
             }`}
             onClick={handleToggle}
           >
             <div
               className={`absolute left-1 top-1 w-4 h-4 rounded-full transition-transform duration-300 transform ${
-                isOn ? "translate-x-6 bg-white" : "bg-gray-300"
+                isEdit ? "translate-x-6 bg-white" : "bg-gray-300"
               }`}
             ></div>
           </div>
@@ -146,18 +146,21 @@ const ProfilePage: React.FC = () => {
           onUpdateAbout={handleUpdateAbout}
           onUpdateAvatar={handleUpdateAvatar}
           onUpdateCoverImage={handleUpdateCoverImg}
+          isEdit={isEdit}
         ></AboutSection>
 
         <PersonalSection
           userData={user}
+          isEdit={isEdit}
           hanldeUpdatePersonal={handleUpdatePersonal}
         />
 
         {/* is company */}
-        <AccountSection />
+        <AccountSection isEdit={isEdit} />
 
         {/* is student */}
         <SkillsSection
+          isEdit={isEdit}
           hanleUpdateSkills={handleUpdateSkills}
           listSkills={exampleDataTopic}
           userData={user}
@@ -166,6 +169,7 @@ const ProfilePage: React.FC = () => {
         <ContactSection
           handleUpdateContact={handleUpdateContact}
           userData={user}
+          isEdit={isEdit}
         />
       </div>
     </LayoutSecondary>

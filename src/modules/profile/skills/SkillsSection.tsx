@@ -10,12 +10,14 @@ import IUserUpdate from "@/interface/API/IUserUpdate";
 interface SkillsSectionProps {
   listSkills: SkillModel[];
   userData: UserModel;
+  isEdit: boolean;
   hanleUpdateSkills: (newskills: IUserUpdate) => void;
 }
 
 const SkillsSection: React.FC<SkillsSectionProps> = ({
   listSkills,
   userData,
+  isEdit,
   hanleUpdateSkills,
 }) => {
   const [isUpdateSkills, setIsUpdateSkills] = useState(false);
@@ -47,14 +49,15 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
           </div>
         ))}
       </div>
-
-      <button
-        className=" flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2 py-2 rounded-full"
-        onClick={handleOpenModalSkill}
-      >
-        <HiPencil></HiPencil>
-        <span className="max-md:hidden">Edit</span>
-      </button>
+      {isEdit ? (
+        <button
+          className=" flex space-x-1 items-center absolute top-2 right-2 bg-mainColor hover:bg-darker text-white px-2 py-2 rounded-full"
+          onClick={handleOpenModalSkill}
+        >
+          <HiPencil></HiPencil>
+          <span className="max-md:hidden">Edit</span>
+        </button>
+      ) : null}
 
       <Modal isOpen={isUpdateSkills} onClose={handleClose}>
         <SkillsModal

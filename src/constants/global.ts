@@ -404,7 +404,7 @@ export const posts = [
 ];
 
 export const content =
-  "Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before.";
+  "Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before.";
 
 export const listComment = [
   {
@@ -429,7 +429,22 @@ export const listComment = [
     avatar: "https://via.placeholder.com/50",
     content: "Another comment.",
     timestamp: "3 hours ago",
-    replies: [],
+    replies: [
+      {
+        id: 5,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+      {
+        id: 6,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+    ],
   },
   {
     id: 3,
@@ -447,6 +462,28 @@ export const listComment = [
       },
       {
         id: 3,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+      {
+        id: 4,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+      {
+        id: 4,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+
+      {
+        id: 4,
         author: "Vien Hoang Long",
         avatar: "https://via.placeholder.com/50",
         content: "Another reply to Bob's comment.",
