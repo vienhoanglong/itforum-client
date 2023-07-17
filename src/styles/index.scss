@@ -65,13 +65,27 @@ body {
     margin-right: -20px;
 }
 
+.date-picker-wrapper {
+    position: relative;
+  }
+  
+.date-picker-popper {
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    transform: translateY(0.25rem);
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
 @media (prefers-color-scheme: dark) {
     .slick-prev:before,
     .slick-next:before {
       color: darkgrey !important;
     }
   }
-  
+
+
 // .mantine-RichTextEditor-toolbarControl {
 //     color: var(--font-color);
 // }

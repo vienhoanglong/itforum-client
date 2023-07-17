@@ -19,7 +19,6 @@ export const PageNotFound: React.FC = () => {
           URL?
         </p>
         <div className="flex justify-center items-center">
-          <img src={arrowBack} alt="notfound" className=" w-28 h-28" />
           <Button
             kind="primary"
             size="medium"

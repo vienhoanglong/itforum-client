@@ -18,7 +18,7 @@ type PostHeaderProps = {
   handleCloseModal: () => void;
   isReportModalOpen: boolean;
   Thumbnail: string;
-  exampleDataTopic: { id: number; name: string }[];
+  exampleDataTopic: { id: string; name: string }[];
   topicColors: Record<string, string>;
   view: number;
   comment: number;
@@ -84,7 +84,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({
           <img
             src={Thumbnail}
             alt="Avatar"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover brightness-90"
           />
         </div>
         <div className=" py-2 px-2">

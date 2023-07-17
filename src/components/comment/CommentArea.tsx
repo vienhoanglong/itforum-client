@@ -1,8 +1,15 @@
-import React, { ChangeEvent, FormEvent, useEffect, useRef } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button } from "../button";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
+import QuillEditor from "../editor/QuillEditor";
 
 interface CommentAreaProps {
   avatar: string;
@@ -22,6 +29,11 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
   setComment,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [content, setContent] = useState<string>("");
+
+  const handleContentChange = (value: string) => {
+    setContent(value);
+  };
   useEffect(() => {
     const textarea = textareaRef.current;
 
@@ -69,12 +81,12 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
           <textarea
             rows={1}
             ref={textareaRef}
-            className=" w-full overflow-y-hidden h-auto p-2 break-words border rounded dark:bg-dark2"
+            className=" w-full overflow-y-hidden h-auto p-2 break-words border rounded dark:bg-dark2 pr-4"
             placeholder="Typing your comment..."
             value={comment}
             onChange={handleCommentChange}
           ></textarea>
-
+          {/* <QuillEditor value={content} onChange={handleContentChange} /> */}
           <div className="flex justify-end mt-2">
             <Button
               size="small"
@@ -86,7 +98,7 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
             </Button>
           </div>
         </form>
-        <div className="absolute bottom-6 right-0 flex items-center h-full pr-2">
+        <div className=" absolute bottom-6 right-0 flex items-center h-full pr-2">
           <Button
             size="small"
             type="submit"
@@ -94,7 +106,7 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
             className="text-sm bg-transparent"
             handle={() => setShowEmoji(!showEmoji)}
           >
-            <BsEmojiSmileFill />
+            <BsEmojiSmileFill style={{ color: "grey" }} />
           </Button>
           {showEmoji && (
             <div className="absolute bottom-[65%] right-2 " ref={menuRef}>

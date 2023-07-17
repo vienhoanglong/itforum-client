@@ -1,5 +1,10 @@
 export const customStyles = (isDarkMode: boolean) => {
   const baseStyles = {
+    menu: (provided: any) => ({
+      ...provided,
+      maxHeight: "100px",
+      overflowY: "auto",
+    }),
     control: (provided: any, state: any) => ({
       ...provided,
       border: "1px solid gray",

@@ -1,7 +1,7 @@
 import { BottomBar, Header } from "@/components/navigation";
 import SideBar from "@/components/navigation/SideBar";
 import { Container } from "@/components/common";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ListPostCard from "@/modules/post/ListPostCard";
 import { posts } from "@/constants/global";
 

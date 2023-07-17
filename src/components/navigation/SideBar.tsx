@@ -8,11 +8,11 @@ export const SideBar: React.FC = () => {
   const classNavLink =
     "flex flex-row items-center px-5 py-3 cursor-pointer space-x-5 whitespace-nowrap rounded hover:text-mainColor transition-all justify-center md:justify-start";
   const active =
-    "bg-subtle dark:bg-transparent text-mainColor border-l-2 border-mainColor";
+    "bg-subtle dark:bg-dark1 text-mainColor border-l-2 border-mainColor";
   return (
     <React.Fragment>
       <ul className="flex flex-col h-full space-y-4 dark:text-light1">
-        <li className="pb-3 font-bold text-center md:px-5 md:text-left">
+        <li className="pb-3 font-bold text-sm text-center md:px-5 md:text-left">
           Menu
         </li>
         {menus.map((menu) => (
@@ -32,15 +32,15 @@ export const SideBar: React.FC = () => {
       <ul className="flex flex-col space-y-4">
         <li
           title="Settings"
-          className="flex flex-row items-center justify-center px-5 py-3 rounded cursor-pointer md:justify-start hover:text-mainColor"
+          className="flex flex-row items-center justify-center px-5 py-3 rounded cursor-pointer md:justify-start hover:text-mainColor dark:text-light0"
         >
           <HiOutlineCog size={20} />
-          <span className="hidden md:block md:pl-5">setting</span>
+          <span className="hidden md:block  md:pl-5">Setting</span>
         </li>
         <li className="flex items-end h-full">
           <Button1 type="button" isDanger isFull start title="Log out">
             <HiOutlineLogout size={20} />
-            <span className="hidden md:block md:pl-5">logout</span>
+            <span className="hidden md:block md:pl-5">Logout</span>
           </Button1>
         </li>
       </ul>

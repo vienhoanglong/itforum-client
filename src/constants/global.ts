@@ -265,28 +265,43 @@ export const exampleData = [
 
 export const exampleDataTopic = [
   {
-    id: 1,
+    id: "1",
     name: "JavaScript",
     description: "JavaScript",
     color: "#F7DF1E",
   },
   {
-    id: 2,
+    id: "2",
     name: "React",
     description: "React",
     color: "#61DAFB",
   },
   {
-    id: 3,
+    id: "3",
     name: "NodeJs",
     description: "NodeJS",
     color: "#339933",
   },
   {
-    id: 4,
+    id: "4",
     name: "C#",
     description: "C#",
     color: "#9A57FF",
+  },
+];
+
+export const exampleSkillUser = [
+  {
+    id: "1",
+    name: "JavaScript",
+    description: "JavaScript",
+    color: "#F7DF1E",
+  },
+  {
+    id: "2",
+    name: "React",
+    description: "React",
+    color: "#61DAFB",
   },
 ];
 
@@ -389,7 +404,7 @@ export const posts = [
 ];
 
 export const content =
-  "Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before.";
+  "Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before.";
 
 export const listComment = [
   {
@@ -414,7 +429,22 @@ export const listComment = [
     avatar: "https://via.placeholder.com/50",
     content: "Another comment.",
     timestamp: "3 hours ago",
-    replies: [],
+    replies: [
+      {
+        id: 5,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+      {
+        id: 6,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+    ],
   },
   {
     id: 3,
@@ -437,6 +467,86 @@ export const listComment = [
         content: "Another reply to Bob's comment.",
         timestamp: "2 hours ago",
       },
+      {
+        id: 4,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+      {
+        id: 4,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
+
+      {
+        id: 4,
+        author: "Vien Hoang Long",
+        avatar: "https://via.placeholder.com/50",
+        content: "Another reply to Bob's comment.",
+        timestamp: "2 hours ago",
+      },
     ],
   },
 ];
+
+export const dataUser = [
+  {
+    id: "123456789",
+    follower: 1500,
+    fullname: "Tran Hoang Long",
+    avatar:
+      "https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg",
+    birthday: "2000-01-01",
+    class: "18050202",
+    major: "Software Developer",
+    coverImage:
+      "https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg",
+    about:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget est ac turpis placerat malesuada a nec sem. Morbi quis diam sit amet mi malesuada malesuada. Nulla pharetra neque id nunc aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id eleifend pellentesque. Nunc non urna id felis luctus semper a ut nisi.",
+    skills: [
+      {
+        id: "1",
+        name: "JavaScript",
+        description: "JavaScript",
+        color: "#F7DF1E",
+      },
+      {
+        id: "2",
+        name: "React",
+        description: "React",
+        color: "#61DAFB",
+      },
+    ],
+    email: "hoanglong@example.com",
+    address: "q7,hcm,vn",
+    phone: "123-456-7890",
+    links: [
+      {
+        id: "1",
+        name: "GitHub",
+        link: "github.com/tranhoanglong",
+      },
+    ],
+  },
+];
+
+export const contactUser = {
+  test: "asasasasa",
+  email: "hoanglong@example.com",
+  address: "q7,hcm,vn",
+  phone: "123-456-7890",
+  links: [
+    {
+      id: "1",
+      name: "GitHub",
+      link: "github.com/tranhoanglong",
+    },
+  ],
+};
+
+export const about =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget est ac turpis placerat malesuada a nec sem. Morbi quis diam sit amet mi malesuada malesuada. Nulla pharetra neque id nunc aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id eleifend pellentesque. Nunc non urna id felis luctus semper a ut nisi.";
