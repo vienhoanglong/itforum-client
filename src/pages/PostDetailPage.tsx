@@ -11,14 +11,16 @@ import {
   content,
   exampleDataTopic,
   listComment,
+  posts,
   topicColors,
 } from "@/constants/global";
-import LayoutPostDetail from "@/layout/LayoutPostDetail";
+import LayoutDetail from "@/layout/LayoutDetail";
 import Carousel from "@/modules/post/Carousel";
 import PostHeader from "@/modules/post/PostHeader";
 import PostContent from "@/modules/post/PostContent";
 import CommentArea from "@/components/comment/CommentArea";
 import CommentList from "@/components/comment/CommentList";
+import ListPostCard from "@/modules/post/ListPostCard";
 
 export const PostDetailPage: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -73,7 +75,7 @@ export const PostDetailPage: React.FC = () => {
   };
 
   return (
-    <LayoutPostDetail>
+    <LayoutDetail otherChildren={<ListPostCard posts={posts}></ListPostCard>}>
       <div className="z-10 md:w-full pb-2 bg-light4 dark:bg-dark1 dark:text-light0 rounded-lg p-8">
         <PostHeader
           menuRef={menuRef}
@@ -107,7 +109,7 @@ export const PostDetailPage: React.FC = () => {
 
         <Carousel></Carousel>
       </div>
-    </LayoutPostDetail>
+    </LayoutDetail>
   );
 };
 

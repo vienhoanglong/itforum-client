@@ -8,6 +8,7 @@ const SignInPage = lazy(() => import("./pages/SignInPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ChatPage = lazy(() => import("@/pages/ChatPage"));
 const ProfilePage = lazy(() => import("@/pages/ProfilePage"));
+const DiscussDetailPage = lazy(() => import("@/pages/DiscussDetailPage"));
 function App() {
   return (
     <Suspense>
@@ -18,6 +19,10 @@ function App() {
         <Route
           path="/post-detail"
           element={<PostDetailPage></PostDetailPage>}
+        ></Route>
+        <Route
+          path="/discuss-detail"
+          element={<DiscussDetailPage></DiscussDetailPage>}
         ></Route>
         {/* <Route
               path="/:slug"
