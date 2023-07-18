@@ -74,7 +74,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
       {comments.map((comment, commentIndex) => (
         <div
           key={commentIndex}
-          className="comment mb-4 dark:text-light0 bg-light1 dark:bg-dark1 rounded-lg p-2 ml-4 "
+          className="comment mb-4 dark:text-light0 bg-light3 dark:bg-dark1 rounded-lg p-2 ml-4 "
         >
           <div className="flex items-start dark:bg-dark0 rounded-lg p-2 ">
             <div className="ml-1">
@@ -100,7 +100,9 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                 before:border-y-0
                 before:border-tone-4
                 before:border-solid
-                before:border-dark2
+                before:border-light1
+                dark:before:border-dark2 
+
                 before:top-0
                 before:left-[15.5px]
                 xs:before:left-[15.5px]
@@ -143,7 +145,8 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
           after:border-l-[1px]
           after:border-r-[0px]
           after:border-y-0
-          after:border-dark2
+          after:border-light1
+          dark:after:border-dark2
           after:border-tone-4
           after:border-solid
           after:top-[-17px]
@@ -161,7 +164,8 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
             after:border-y-0
             after:border-tone-4
             after:border-solid
-            after:border-dark2
+            after:border-light1
+            dark:after:border-dark2
             after:rounded-bl-[12px]
             after:border-b-[1px]
             after:bottom-[14px] xs:after:bottom-[70px]
@@ -191,7 +195,8 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                     before:border-l-[1px]
                     before:border-r-[0px]
                     before:border-y-0
-                    before:border-dark2
+                    before:border-light1
+                    dark:before:border-dark2
                     before:border-tone-4
                     before:border-solid
                     before:top-0

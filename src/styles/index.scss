@@ -85,6 +85,35 @@ body {
     }
   }
 
+  /* Custom styles for TabList */
+  .react-tabs__tab-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-color: #1c1c28 !important;
+
+  }
+  
+  .dark-mode .react-tabs__tab.react-tabs__tab--selected {
+    background-color:  #393b47;
+    border: none !important;
+  }
+  .react-tabs__tab--selected{
+    background-color:  #393b47 !important;
+    color: white  !important;
+
+  }
+  /* Custom styles for Tab */
+
+  
+  /* Custom styles for ::after */
+ 
+
+
+  
+
+  
 
 // .mantine-RichTextEditor-toolbarControl {
 //     color: var(--font-color);

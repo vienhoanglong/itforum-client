@@ -9,7 +9,7 @@ export const FeaturedArticle: React.FC = () => {
           Xem tất cả
         </a>
       </div>
-      <div className="flex flex-col cursor-pointer border-dotted border-mainColor border-[1px] border-t-0 border-r-0 rounded-bl-3xl p-3 pt-0">
+      <div className="flex flex-col cursor-pointer border-solid border-mainColor border-[1px] border-t-0 border-r-0 rounded-bl-3xl p-3 pt-0">
         <div className="flex gap-1 relative mb-2 before:content-[''] before:w-2 before:h-2 before:rounded-full before:-left-4 before:top-[10px] before:absolute before:block before:bg-mainColor">
           <span className="break-words leading-normal text-black/90 dark:text-light0 p-1 text-xs lg:text-sm line-clamp-3 w-4/5 hover:text-mainColor">
             Sử dụng macbook để lập trình sẽ như thế nào? Lợi ích của sử dụng

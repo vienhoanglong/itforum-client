@@ -14,7 +14,7 @@ import avt from "assets/avt1.jpg";
 import CommentArea from "@/components/comment/CommentArea";
 import CommentList from "@/components/comment/CommentList";
 import ActionMenu from "@/modules/post/ActionMenu";
-import { HiDotsHorizontal } from "react-icons/hi";
+import { HiArrowCircleLeft, HiDotsHorizontal } from "react-icons/hi";
 import ReportModal from "@/components/report/ReportModal";
 import ListDiscussCard from "@/modules/discuss/ListDiscussCard";
 import SliderDiscuss from "@/modules/discuss/SliderDiscuss";
@@ -63,7 +63,14 @@ const DiscussDetailPage: React.FC = () => {
   };
   return (
     <LayoutDetail otherChildren={<ListDiscussCard discuss={discuss} />}>
-      <div className="relative flex flex-col px-4 py-4 mb-3 duration-300 cursor-pointer rounded-xl md:flex-row bg-slate-100 dark:bg-dark1">
+      <a
+        className="dark:text-light0 rounded-full pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
+        href="/"
+      >
+        <HiArrowCircleLeft className="w-6 h-6 mr-1" />
+        Back to discussion
+      </a>
+      <div className="relative flex flex-col px-4 py-4 mb-3 duration-300 cursor-pointer rounded-xl md:flex-row bg-light4 dark:bg-dark1">
         <div className="flex items-center self-start w-full mb-4 md:mr-5 md:mb-0 md:block md:w-auto">
           <div className="flex items-center">
             <a
