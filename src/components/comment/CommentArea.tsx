@@ -109,7 +109,10 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
             <BsEmojiSmileFill style={{ color: "grey" }} />
           </Button>
           {showEmoji && (
-            <div className="absolute bottom-[65%] right-2 " ref={menuRef}>
+            <div
+              className="absolute bottom-[5%] -right-[16.5rem] "
+              ref={menuRef}
+            >
               <Picker
                 data={data}
                 emojiSize={20}

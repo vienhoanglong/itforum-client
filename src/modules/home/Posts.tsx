@@ -16,7 +16,7 @@ export const Posts: React.FC<ListPostProps> = ({ post }) => {
       {post.map((post, index) => (
         <div
           key={index}
-          className="flex w-full space-x-2 cursor-pointer dark:bg-dark1 rounded-lg p-2 m-2"
+          className="flex w-full space-x-2 cursor-pointer bg-light4 shadow-sm dark:bg-dark1 rounded-lg p-2 m-2"
         >
           <div className="w-2/5">
             <img

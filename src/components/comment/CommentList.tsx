@@ -133,7 +133,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
             <div
               ref={menuRef}
               onClick={() => handleMenuComment(commentIndex)}
-              className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2"
+              className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark0 dark:hover:bg-dark2 dark:text-light0 rounded-full py-2"
             >
               <HiDotsVertical size={15}></HiDotsVertical>
               {activeComment === commentIndex && <ActionMenu></ActionMenu>}
@@ -226,7 +226,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                   <div
                     ref={menuRef}
                     onClick={() => handleMenuReply(commentIndex, replyIndex)}
-                    className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2"
+                    className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark0 dark:hover:bg-dark2 dark:text-light0 rounded-full py-2"
                   >
                     <HiDotsVertical size={15}></HiDotsVertical>
                     {activeReply?.commentIndex === commentIndex &&

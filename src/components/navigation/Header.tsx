@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container } from "../common";
 import { AvatarImage } from "../image";
-import { HiOutlineCog, HiOutlineLogout, HiUser } from "react-icons/hi";
+import {
+  HiOutlineCog,
+  HiOutlineLogout,
+  HiPlusCircle,
+  HiUser,
+} from "react-icons/hi";
 import logo from "assets/logo-text.png";
+import { Link } from "react-router-dom";
+import { Button } from "../button";
+import Modal from "../modal/Modal";
+import PostAddNewPage from "@/pages/PostAddNewPage";
 export const Header: React.FC = () => {
+  const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
+  const handleAddNewPost = () => {
+    setIsModalOpenAddPost(true);
+  };
+
+  const handleCloseModalAdd = () => {
+    setIsModalOpenAddPost(false);
+  };
   return (
     <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
       <Container>
@@ -11,6 +28,17 @@ export const Header: React.FC = () => {
           <img srcSet={`${logo} 3.5x`} alt="ict-forum" />
         </div>
         <div className="flex flex-row items-center justify-end flex-1 space-x-3">
+          <Button
+            size="small"
+            className="p-1 flex space-x-1"
+            type="button"
+            kind="secondary"
+            handle={handleAddNewPost}
+          >
+            <span className="text-[12px]">New post</span>
+            <HiPlusCircle size={15}></HiPlusCircle>
+          </Button>
+
           <div className="relative cursor-pointer group sm:cursor-default">
             <AvatarImage name="long" size={44} />
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex ">
@@ -44,6 +72,9 @@ export const Header: React.FC = () => {
           </div>
         </div>
       </Container>
+      <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
+        <PostAddNewPage onCancel={handleCloseModalAdd}></PostAddNewPage>
+      </Modal>
     </header>
   );
 };

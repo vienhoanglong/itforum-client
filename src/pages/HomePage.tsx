@@ -2,7 +2,6 @@ import { discuss, posts } from "@/constants/global";
 import LayoutDefault from "@/layout/LayoutDefault";
 import { Discuss } from "@/modules/home/Discuss";
 import FeaturedArticle from "@/modules/home/FeaturedArticle";
-import FiltersBox from "@/modules/home/FiltersBox";
 import { Posts } from "@/modules/home/Posts";
 import React from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
