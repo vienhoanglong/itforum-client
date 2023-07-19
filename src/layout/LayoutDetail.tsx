@@ -2,16 +2,16 @@ import { BottomBar, Header } from "@/components/navigation";
 import SideBar from "@/components/navigation/SideBar";
 import { Container } from "@/components/common";
 import React from "react";
-import ListPostCard from "@/modules/post/ListPostCard";
-import { posts } from "@/constants/global";
 
-interface LayoutPostDetailProps {
+interface LayoutDetailProps {
   children: React.ReactNode;
+  otherChildren?: React.ReactNode;
 }
 
-export const LayoutPostDetail: React.FC<LayoutPostDetailProps> = ({
+export const LayoutDetail: React.FC<LayoutDetailProps> = ({
   children,
-}: LayoutPostDetailProps) => {
+  otherChildren,
+}: LayoutDetailProps) => {
   return (
     <React.Fragment>
       <Header />
@@ -32,7 +32,7 @@ export const LayoutPostDetail: React.FC<LayoutPostDetailProps> = ({
           </section>
 
           <section className="flex-col hidden w-3/12 space-y-5 lg:flex">
-            <ListPostCard posts={posts}></ListPostCard>
+            {otherChildren}
           </section>
 
           {/* SHOWED ONLY ON SMALL DEVICE */}
@@ -49,4 +49,4 @@ export const LayoutPostDetail: React.FC<LayoutPostDetailProps> = ({
   );
 };
 
-export default LayoutPostDetail;
+export default LayoutDetail;

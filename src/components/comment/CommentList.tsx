@@ -74,9 +74,9 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
       {comments.map((comment, commentIndex) => (
         <div
           key={commentIndex}
-          className="comment mb-4 dark:text-light0 bg-light1 dark:bg-dark2 rounded-lg p-2 ml-4 "
+          className="comment mb-4 dark:text-light0 bg-light3 dark:bg-dark1 rounded-lg p-2 ml-4 "
         >
-          <div className="flex items-start  pb-2 ">
+          <div className="flex items-start dark:bg-dark0 rounded-lg p-2 ">
             <div className="ml-1">
               <div className="flex items-center space-x-1">
                 <div className="flex-shrink-0">
@@ -100,7 +100,9 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                 before:border-y-0
                 before:border-tone-4
                 before:border-solid
-                before:border-dark3
+                before:border-light1
+                dark:before:border-dark2 
+
                 before:top-0
                 before:left-[15.5px]
                 xs:before:left-[15.5px]
@@ -116,13 +118,13 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
               >
                 <button className="flex items-center space-x-1 hover:underline hover:text-mainColor">
                   <HiMinusCircle />
-                  <span className="text-xs italic font-thin underline">
+                  <span className="text-xs italic font-thin text-mainColor">
                     100 more
                   </span>
                 </button>
                 <button className="hover:underline hover:text-mainColor flex items-center space-x-1">
                   <BsFillChatRightDotsFill />
-                  <span className="text-xs italic font-thin underline">
+                  <span className="text-xs italic font-thin text-mainColor">
                     Reply
                   </span>
                 </button>
@@ -131,7 +133,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
             <div
               ref={menuRef}
               onClick={() => handleMenuComment(commentIndex)}
-              className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2"
+              className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark0 dark:hover:bg-dark2 dark:text-light0 rounded-full py-2"
             >
               <HiDotsVertical size={15}></HiDotsVertical>
               {activeComment === commentIndex && <ActionMenu></ActionMenu>}
@@ -143,11 +145,12 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
           after:border-l-[1px]
           after:border-r-[0px]
           after:border-y-0
-          after:border-dark3
+          after:border-light1
+          dark:after:border-dark2
           after:border-tone-4
           after:border-solid
           after:top-[-17px]
-          after:left-[19.5px]
+          after:left-[26.5px]
           xs:after:left-[15.5px]
           after:h-[calc(100%-36px)]"
           >
@@ -161,15 +164,16 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
             after:border-y-0
             after:border-tone-4
             after:border-solid
-            after:border-dark3
+            after:border-light1
+            dark:after:border-dark2
             after:rounded-bl-[12px]
             after:border-b-[1px]
             after:bottom-[14px] xs:after:bottom-[70px]
-            after:-left-[20.5px] xs:after:left-[3.5px]
+            after:-left-[13.5px] xs:after:left-[3.5px]
             after:w-[34px] xs:after:w-[23px]
             after:h-[calc(100%-36px)] xs:after:h-[calc(100%-52px)]"
               >
-                <div className="flex items-start  pb-2 ">
+                <div className="flex items-start  dark:bg-dark0 rounded-lg p-2 ">
                   <div className="ml-1">
                     <div className="flex items-center space-x-1">
                       <div className="flex-shrink-0">
@@ -191,7 +195,8 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                     before:border-l-[1px]
                     before:border-r-[0px]
                     before:border-y-0
-                    before:border-dark3
+                    before:border-light1
+                    dark:before:border-dark2
                     before:border-tone-4
                     before:border-solid
                     before:top-0
@@ -206,13 +211,13 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                     <div className="text-xs mt-1 flex space-x-4 pl-[0.6rem] w-full ">
                       <button className="flex items-center space-x-1 hover:underline hover:text-mainColor">
                         <HiPlusCircle />
-                        <span className="text-xs italic font-thin underline">
+                        <span className="text-xs italic font-thin text-mainColor">
                           100 more
                         </span>
                       </button>
                       <button className="hover:underline hover:text-mainColor flex items-center space-x-1">
                         <BsFillChatRightDotsFill />
-                        <span className=" text-xs italic font-thin underline">
+                        <span className=" text-xs italic font-thin text-mainColor">
                           Reply
                         </span>
                       </button>
@@ -221,7 +226,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                   <div
                     ref={menuRef}
                     onClick={() => handleMenuReply(commentIndex, replyIndex)}
-                    className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full py-2"
+                    className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark0 dark:hover:bg-dark2 dark:text-light0 rounded-full py-2"
                   >
                     <HiDotsVertical size={15}></HiDotsVertical>
                     {activeReply?.commentIndex === commentIndex &&

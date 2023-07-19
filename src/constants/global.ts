@@ -371,6 +371,29 @@ export const exPostDetailData = {
   ],
 };
 
+export const discuss = [
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào?",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào?",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào?",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào?",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào?",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào?",
+  },
+  {
+    title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào?",
+  },
+];
 export const posts = [
   {
     title: "Việc nén dữ liệu đã thúc đẩy mạng Internet như thế nào? ",
@@ -411,7 +434,8 @@ export const listComment = [
     id: 1,
     author: "Tran Hoang Long",
     avatar: "https://via.placeholder.com/50",
-    content: "This is a comment.",
+    content:
+      "This is a comment. This is a comment. This is a comment. This is a comment. This is a comment. This is a comment. ",
     timestamp: "2 hours ago",
     replies: [
       {

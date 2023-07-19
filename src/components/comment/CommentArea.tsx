@@ -69,7 +69,7 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
     setComment(comment + emoji);
   };
   return (
-    <div className="bg-gray-200 dark:bg-dark0 flex rounded-lg p-4 mb-2 relative">
+    <div className="bg-light3 dark:bg-dark0 flex rounded-lg p-4 mb-2 relative">
       <div className="flex-shrink-0 mr-2">
         <img className="w-8 h-8 rounded-full" src={avatar} alt="User Avatar" />
       </div>
@@ -109,7 +109,10 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
             <BsEmojiSmileFill style={{ color: "grey" }} />
           </Button>
           {showEmoji && (
-            <div className="absolute bottom-[65%] right-2 " ref={menuRef}>
+            <div
+              className="absolute bottom-[5%] -right-[16.5rem] "
+              ref={menuRef}
+            >
               <Picker
                 data={data}
                 emojiSize={20}
