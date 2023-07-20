@@ -574,3 +574,34 @@ export const contactUser = {
 
 export const about =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget est ac turpis placerat malesuada a nec sem. Morbi quis diam sit amet mi malesuada malesuada. Nulla pharetra neque id nunc aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id eleifend pellentesque. Nunc non urna id felis luctus semper a ut nisi.";
+
+export const notifications = [
+  {
+    title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
+    content:
+      "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
+    author: "Admin",
+    datePosting: "19/7/2023",
+  },
+  {
+    title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
+    content:
+      "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
+    author: "Admin",
+    datePosting: "19/7/2023",
+  },
+  {
+    title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
+    content:
+      "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
+    author: "Admin",
+    datePosting: "19/7/2023",
+  },
+  {
+    title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
+    content:
+      "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
+    author: "Admin",
+    datePosting: "19/7/2023",
+  },
+];

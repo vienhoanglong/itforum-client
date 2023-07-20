@@ -1,5 +1,9 @@
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
+const NotificationDetailPage = lazy(
+  () => import("./pages/NotificationDetailPage")
+);
+const NotificationPage = lazy(() => import("./pages/NotificationPage"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 const PostDetailPage = lazy(() => import("./pages/PostDetailPage"));
 const ManagePostsPage = lazy(() => import("./pages/ManagePostsPage"));
@@ -15,6 +19,14 @@ function App() {
         <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path="/profile" element={<ProfilePage></ProfilePage>}></Route>
+        <Route
+          path="/notification"
+          element={<NotificationPage></NotificationPage>}
+        ></Route>
+        <Route
+          path="/notification-detail"
+          element={<NotificationDetailPage></NotificationDetailPage>}
+        ></Route>
         <Route
           path="/post-detail"
           element={<PostDetailPage></PostDetailPage>}

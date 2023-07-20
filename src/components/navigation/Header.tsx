@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
             size="small"
             className="p-1 flex space-x-1"
             type="button"
-            kind="secondary"
+            kind="primary"
             handle={handleAddNewPost}
           >
             <span className="text-[12px]">New post</span>

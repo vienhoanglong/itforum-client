@@ -95,7 +95,7 @@ export const ChatPage: React.FC = () => {
               />
             </div>
             {/* Chat List */}
-            <div className="flex flex-col overflow-y-auto bg-dark2 h-[100vh]">
+            <div className="flex flex-col overflow-y-auto dark:bg-dark2 h-[100vh]">
               <div className="p-[10px_15px] flex align-middle transition-all duration-300 ease w-full border-y-[1px] dark:border-dark3">
                 <AvatarImage
                   name={"tranhoanglong"}
@@ -148,7 +148,7 @@ export const ChatPage: React.FC = () => {
                 onClick={handleMenuChat}
               />
             </div>
-            <div className="pt-4 bg-dark1 flex-grow space-y-2">
+            <div className="pt-4 dark:bg-dark1 flex-grow space-y-2">
               <div className="flex flex-wrap">
                 <div className="text-xs mr-auto p-2 mx-8 md:p-2 bg-dark4 rounded-tl-xl rounded-tr-xl rounded-br-xl  animate-fadeIn max-w-[60%]">
                   Hello nè
