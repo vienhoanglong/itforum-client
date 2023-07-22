@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo404 from "assets/404.png";
-import arrowBack from "assets/arrowBack.png";
 import { Button } from "@/components/button";
 
 export const PageNotFound: React.FC = () => {
@@ -19,7 +18,6 @@ export const PageNotFound: React.FC = () => {
           URL?
         </p>
         <div className="flex justify-center items-center">
-          <img src={arrowBack} alt="notfound" className=" w-28 h-28" />
           <Button
             kind="primary"
             size="medium"

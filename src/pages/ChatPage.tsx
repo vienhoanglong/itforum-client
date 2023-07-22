@@ -29,16 +29,17 @@ export const ChatPage: React.FC = () => {
   const handleMenuChat = () => {
     setShowMenuChat(!showMenuChat);
   };
-  const [activeTabChatInfo, setActiveTabChatInfo] = React.useState<string>("file")
+  const [activeTabChatInfo, setActiveTabChatInfo] =
+    React.useState<string>("file");
   const handleTabChatClick = (tab: string) => {
     setActiveTabChatInfo(tab);
-  }
+  };
   return (
     <LayoutChat>
-      <div className="bg-white p-0 rounded-lg lg:max-w-960 md:max-w-720 sm:max-w-540">
-        <div className="mx-0 flex sm:h-[80vh] flex-wrap">
+      <div className="bg-white dark:bg-dark1 p-0 rounded-lg lg:max-w-960 md:max-w-720 sm:max-w-540">
+        <div className="mx-0 flex sm:h-[90vh] flex-wrap">
           {/* List Chatbox */}
-          <div className="flex flex-col bg-light0 p-[10px_15px] w-full rounded-t-lg sm:hidden">
+          <div className="flex flex-col bg-light0 dark:bg-dark1 p-[10px_15px] w-full rounded-t-lg sm:hidden">
             <h5 className="text-sm mb-2">Friends</h5>
             <div className="flex flex-row gap-1">
               <div className="relative">
@@ -69,8 +70,8 @@ export const ChatPage: React.FC = () => {
             </div>
           </div>
           {/* List Chatbox */}
-          <div className="px-0 border-solid sm:w-1/4 border-[#dee2e6] border relative w-full overflow-hidden hidden sm:block">
-            <div className="bg-[#fafafa] p-[10px_15px] rounded-md flex justify-between items-center">
+          <div className="px-0  sm:w-1/4  relative w-full overflow-hidden hidden sm:block">
+            <div className="bg-[#fafafa] dark:bg-dark2 p-[10px_15px] rounded-tl-md flex justify-between items-center">
               <div className="flex justify-between items-center gap-2">
                 <Avatar
                   src={avt2}
@@ -83,19 +84,19 @@ export const ChatPage: React.FC = () => {
                   <span className="text-xs">@vienlongdev</span>
                 </div>
               </div>
-              <HiMenu className="mt-2 text-xl text-gray-500" />
+              <HiMenu className="mt-2 text-xl  text-dark1 dark:text-light1" />
             </div>
             <div className="flex rounded-full justify-start items-center gap-2 px-2 py-1 border m-2">
-              <HiOutlineSearch className="cursor-pointer" />
+              <HiOutlineSearch className="cursor-pointe dark:text-light0" />
               <input
-                className="w-full rounded mr-4 outline-none text-xs p-1"
+                className="w-full rounded mr-4 outline-none dark:bg-dark1 text-xs p-1"
                 type="text"
                 placeholder="Search messages..."
               />
             </div>
             {/* Chat List */}
-            <div className="flex flex-col overflow-y-auto h-[70vh]">
-              <div className="p-[10px_15px] flex align-middle transition-all duration-300 ease w-full border-y-[1px]">
+            <div className="flex flex-col overflow-y-auto dark:bg-dark2 h-[100vh]">
+              <div className="p-[10px_15px] flex align-middle transition-all duration-300 ease w-full border-y-[1px] dark:border-dark3">
                 <AvatarImage
                   name={"tranhoanglong"}
                   size={0}
@@ -105,7 +106,9 @@ export const ChatPage: React.FC = () => {
                 />
                 <div className="flex w-full justify-between">
                   <div className="ml-3 max-w-xs">
-                    <span className="mt-1 text-sm">Trần Hoàng Long</span>
+                    <span className="mt-1 text-sm dark:text-light0">
+                      Trần Hoàng Long
+                    </span>
                     <p className="m-0 text-dark1 dark:text-light1 text-xs break-words truncate">
                       Hello 🚀
                     </p>
@@ -121,9 +124,9 @@ export const ChatPage: React.FC = () => {
           <div
             className={`${
               showMenuChat ? "sm:w-2/4" : "sm:w-3/4"
-            } px-0 relative w-full border-solid border-[#dee2e6] border flex flex-col min-h-[62vh] sm:h-auto`}
+            } px-0 relative w-full flex flex-col min-h-[62vh] sm:h-auto`}
           >
-            <div className="bg-[#fafafa] p-[10px_15px] rounded-md flex justify-between items-center">
+            <div className="bg-[#fafafa] dark:bg-dark2 p-[10px_15px] rounded-tr-md flex justify-between items-center">
               <div className="p-0 flex align-middle transition-all duration-300 ease mx-0 overflow-hidden">
                 <Avatar
                   src={avt1}
@@ -132,18 +135,20 @@ export const ChatPage: React.FC = () => {
                   }
                 />
                 <div className="ml-3 w-[70%] max-w-xs">
-                  <span className="mt-1 text-sm">Tran Hoang Long</span>
+                  <span className="mt-1 text-sm text-dark1 dark:text-light1">
+                    Tran Hoang Long
+                  </span>
                   <p className="m-0 text-dark1 dark:text-light1 text-xs break-words truncate">
                     Viết nội dung tại đây...
                   </p>
                 </div>
               </div>
               <HiInformationCircle
-                className="text-2xl cursor-pointer"
+                className="text-2xl text-dark1 dark:text-light1 cursor-pointer"
                 onClick={handleMenuChat}
               />
             </div>
-            <div className="pt-4 flex-grow">
+            <div className="pt-4 dark:bg-dark1 flex-grow space-y-2">
               <div className="flex flex-wrap">
                 <div className="text-xs mr-auto p-2 mx-8 md:p-2 bg-dark4 rounded-tl-xl rounded-tr-xl rounded-br-xl  animate-fadeIn max-w-[60%]">
                   Hello nè
@@ -158,7 +163,7 @@ export const ChatPage: React.FC = () => {
             </div>
             <div className="sticky bottom-0">
               <div className="w-full">
-                <form className="bg-[#fafafa] flex items-center p-[10px_15px] mt-5 gap-3">
+                <form className="bg-[#fafafa] dark:bg-dark2 dark:text-light0 flex items-center p-[10px_15px] mt-5 gap-3">
                   <ChatBox users={users}></ChatBox>
                 </form>
               </div>
@@ -166,12 +171,12 @@ export const ChatPage: React.FC = () => {
           </div>
           {/* ChatMore */}
           <div
-            className={`px-0 sm:w-1/4 border-solid border-[#dee2e6] border w-full ${
+            className={`px-0 sm:w-1/4 dark:bg-dark2 rouded-r-lg w-full ${
               showMenuChat ? "block" : "hidden"
             }`}
           >
-            <div className="flex items-center flex-col">
-              <h3 className="mt-5 text-md text-dark0">
+            <div className="flex items-center rouded-r-lg text-dark1 dark:text-light1 flex-col">
+              <h3 className="mt-5 text-md text-dark0 dark:text-light0">
                 Group chat information
               </h3>
               <div className="relative mx-auto w-[80px] h-[80px] mt-2">
@@ -187,15 +192,15 @@ export const ChatPage: React.FC = () => {
                 />
               </div>
               <div className="flex justify-between gap-4 mt-4">
-                <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 cursor-pointer hover:text-darker hover:font-bold">
+                <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 dark:bg-dark2 cursor-pointer hover:text-darker hover:font-bold">
                   <BsPinAngle />
                   <span className="text-xs mt-1 font-medium">Pin</span>
                 </div>
-                <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 cursor-pointer hover:text-darker hover:font-bold">
+                <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 dark:bg-dark2 cursor-pointer hover:text-darker hover:font-bold">
                   <HiOutlineSparkles />
                   <span className="text-xs mt-1 font-medium">Theme</span>
                 </div>
-                <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 cursor-pointer hover:text-darker hover:font-bold">
+                <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 dark:bg-dark2 cursor-pointer hover:text-darker hover:font-bold">
                   <HiLogout />
                   <span className="text-xs mt-1 font-medium">Leave</span>
                 </div>
@@ -248,86 +253,113 @@ export const ChatPage: React.FC = () => {
               </div>
               <div className="w-full mt-1">
                 <ul className="flex gap-2 justify-center">
-                  <li className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${activeTabChatInfo === "file" ? 'bg-mainColor text-light1' : ''}`} onClick={()=>handleTabChatClick("file")}>
+                  <li
+                    className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${
+                      activeTabChatInfo === "file"
+                        ? "bg-mainColor text-light1"
+                        : ""
+                    }`}
+                    onClick={() => handleTabChatClick("file")}
+                  >
                     File
                   </li>
-                  <li className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${activeTabChatInfo === "media" ? 'bg-mainColor text-light1' : ''}`} onClick={()=>handleTabChatClick("media")}>
+                  <li
+                    className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${
+                      activeTabChatInfo === "media"
+                        ? "bg-mainColor text-light1"
+                        : ""
+                    }`}
+                    onClick={() => handleTabChatClick("media")}
+                  >
                     Media
                   </li>
-                  <li className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${activeTabChatInfo === "link" ? 'bg-mainColor text-light1' : ''}`} onClick={()=>handleTabChatClick("link")}>
+                  <li
+                    className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${
+                      activeTabChatInfo === "link"
+                        ? "bg-mainColor text-light1"
+                        : ""
+                    }`}
+                    onClick={() => handleTabChatClick("link")}
+                  >
                     Link
                   </li>
                 </ul>
                 <div className="p-2">
-                  { activeTabChatInfo === "media" && <div className="1">
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFillImageFill className="text-sm text-dark3" />
+                  {activeTabChatInfo === "media" && (
+                    <div className="1">
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFillImageFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Ảnh mẫu.png</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
-                      <div className="">
-                        <span className="text-xs">Ảnh mẫu.png</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFillImageFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Ảnh mẫu.png</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFillImageFill className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">Ảnh mẫu.png</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFillImageFill className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">Ảnh mẫu.png</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
-                      </div>
-                    </div>
-                  </div>}
-                  {activeTabChatInfo === "file" && <div className="2">
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFileEarmarkFill className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">Book1.zip</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFillImageFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Ảnh mẫu.png</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsFileEarmarkFill className="text-sm text-dark3" />
+                  )}
+                  {activeTabChatInfo === "file" && (
+                    <div className="2">
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFileEarmarkFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Book1.zip</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
-                      <div className="">
-                        <span className="text-xs">Book1.zip</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
-                      </div>
-                    </div>
-                  </div>}
-                  {activeTabChatInfo === "link" && <div className="2">
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsLink45Deg className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">vienhoanglong.com</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2 mb-1">
-                      <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
-                        <BsLink45Deg className="text-sm text-dark3" />
-                      </div>
-                      <div className="">
-                        <span className="text-xs">vienhoanglong.com</span>
-                        <p className="text-[10px]">Sun 8 2023</p>
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsFileEarmarkFill className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">Book1.zip</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
                       </div>
                     </div>
-                  </div>}
+                  )}
+                  {activeTabChatInfo === "link" && (
+                    <div className="2">
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsLink45Deg className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">vienhoanglong.com</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 mb-1">
+                        <div className="p-3 border rounded-md bg-[#fafafa] w-fit">
+                          <BsLink45Deg className="text-sm text-dark3" />
+                        </div>
+                        <div className="">
+                          <span className="text-xs">vienhoanglong.com</span>
+                          <p className="text-[10px]">Sun 8 2023</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

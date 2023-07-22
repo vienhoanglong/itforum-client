@@ -52,6 +52,69 @@ body {
 .ql-toolbar {
     background-color: var(--background-color);
 }
+.slider-container {
+    padding: 10px 30px 30px 30px; 
+    height: auto;
+  }
+
+.slick-slide>div{
+    margin: 0 10px;
+    padding: 10px;
+}
+.slick-list{
+    margin-right: -20px;
+}
+
+.date-picker-wrapper {
+    position: relative;
+  }
+  
+.date-picker-popper {
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    transform: translateY(0.25rem);
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+@media (prefers-color-scheme: dark) {
+    .slick-prev:before,
+    .slick-next:before {
+      color: darkgrey !important;
+    }
+  }
+
+  /* Custom styles for TabList */
+  .react-tabs__tab-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-color: #1c1c28 !important;
+
+  }
+  
+  .dark-mode .react-tabs__tab.react-tabs__tab--selected {
+    background-color:  #393b47;
+    border: none !important;
+  }
+  .react-tabs__tab--selected{
+    background-color:  #393b47 !important;
+    color: white  !important;
+    border: none !important;
+
+  }
+  /* Custom styles for Tab */
+
+  
+  /* Custom styles for ::after */
+ 
+
+
+  
+
+  
 
 // .mantine-RichTextEditor-toolbarControl {
 //     color: var(--font-color);

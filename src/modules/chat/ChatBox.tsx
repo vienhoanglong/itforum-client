@@ -1,7 +1,11 @@
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import React, { useState, ChangeEvent } from "react";
-import { HiOutlinePaperClip, HiOutlineEmojiHappy, HiPaperAirplane } from "react-icons/hi";
+import {
+  HiOutlinePaperClip,
+  HiOutlineEmojiHappy,
+  HiPaperAirplane,
+} from "react-icons/hi";
 
 interface Mention {
   id: number;
@@ -51,12 +55,12 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
 
   return (
     <>
-      <HiOutlinePaperClip className="text-xl cursor-pointer"/>
+      <HiOutlinePaperClip className="text-xl cursor-pointer" />
       <input
-        className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] text-sm outline-none"
+        className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] dark:bg-dark0 text-sm outline-none"
         type="text"
         value={inputText}
-        placeholder="Nhâp @, nhắn tin tới Trần Hoàng Long"
+        placeholder="Nhập @, nhắn tin tới Trần Hoàng Long"
         onChange={handleInputChange}
       />
       {showEmoji && (

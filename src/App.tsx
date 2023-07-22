@@ -1,24 +1,70 @@
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
+const ManageNotificationPage = lazy(
+  () => import("./pages/ManageNotificationPage")
+);
+const ListNotificationPage = lazy(() => import("./pages/ListNotificationPage"));
+const NotificationPage = lazy(() => import("./pages/NotificationPage"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const PostDetailPage = lazy(() => import("./pages/PostDetailPage"));
 const ManagePostsPage = lazy(() => import("./pages/ManagePostsPage"));
-const PostAddNewPage = lazy(() => import("./pages/PostAddNewPage"));
 const SignInPage = lazy(() => import("./pages/SignInPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ChatPage = lazy(() => import("@/pages/ChatPage"));
+const ProfilePage = lazy(() => import("@/pages/ProfilePage"));
+const DiscussDetailPage = lazy(() => import("@/pages/DiscussDetailPage"));
+const ManagementPage = lazy(() => import("@/pages/ManagementPage"));
+const NotificationDetailPage = lazy(
+  () => import("@/pages/NotificationDetailPage")
+);
+const ManageDiscussionPage = lazy(() => import("@/pages/ManageDiscussionPage"));
 function App() {
   return (
     <Suspense>
       <Routes>
         <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
         <Route path="/" element={<HomePage></HomePage>}></Route>
+        <Route path="/profile" element={<ProfilePage></ProfilePage>}></Route>
         <Route
-          path="/manage/add-post"
-          element={<PostAddNewPage></PostAddNewPage>}
+          path="/notifications"
+          element={<NotificationPage></NotificationPage>}
         ></Route>
         <Route
-          path="/manage"
+          path="/notifications-detail"
+          element={<NotificationDetailPage></NotificationDetailPage>}
+        ></Route>
+        <Route
+          path="/managements/notifications"
+          element={<ManageNotificationPage></ManageNotificationPage>}
+        ></Route>
+        <Route
+          path="/notification-list"
+          element={<ListNotificationPage></ListNotificationPage>}
+        ></Route>
+        <Route
+          path="/post-detail"
+          element={<PostDetailPage></PostDetailPage>}
+        ></Route>
+        <Route
+          path="/discuss-detail"
+          element={<DiscussDetailPage></DiscussDetailPage>}
+        ></Route>
+        {/* <Route
+              path="/:slug"
+              element={<PostDetailsPage></PostDetailsPage>}
+            ></Route> */}
+
+        <Route
+          path="/managements/posts"
           element={<ManagePostsPage></ManagePostsPage>}
+        ></Route>
+        <Route
+          path="/managements/discussions"
+          element={<ManageDiscussionPage></ManageDiscussionPage>}
+        ></Route>
+        <Route
+          path="/managements"
+          element={<ManagementPage></ManagementPage>}
         ></Route>
         <Route path="/chat" element={<ChatPage></ChatPage>}></Route>
         <Route path="/sign-in" element={<SignInPage></SignInPage>}></Route>

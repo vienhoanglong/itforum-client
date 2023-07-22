@@ -10,8 +10,8 @@ import {
 import ReactPaginate from "react-paginate";
 import { exampleData, topicColors } from "../constants/global.ts";
 import Modal from "@/components/modal/Modal.tsx";
-import PostAddNewPage from "./PostAddNewPage.tsx";
-import DeletedPostsPage from "./DeletedPostsPage.tsx";
+import PostAddNewPage from "../modules/post/PostAddNew.tsx";
+import DeletedPostsPage from "../modules/post/DeletedPosts.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 
 export const ManagePosts: React.FC = () => {
@@ -49,7 +49,7 @@ export const ManagePosts: React.FC = () => {
   };
   return (
     <LayoutSecondary>
-      <div className="container h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
+      <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">Manage posts</h4>
         </div>
@@ -92,7 +92,7 @@ export const ManagePosts: React.FC = () => {
               handle={handleAddNewPost}
             >
               {" "}
-              New post{" "}
+              New{" "}
               <span className="pl-1">
                 <HiPlusCircle size={20} />
               </span>

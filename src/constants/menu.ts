@@ -4,6 +4,7 @@ import {
   HiChatAlt2,
   HiHome,
   HiDocumentDuplicate,
+  HiUser,
 } from "react-icons/hi";
 const menus: MenuTypes[] = [
   {
@@ -19,16 +20,22 @@ const menus: MenuTypes[] = [
     path: "/chat",
   },
   {
+    id: "profileUser",
+    name: { en: "My Profile", vn: "Hồ sơ" },
+    icon: HiUser,
+    path: "/profile",
+  },
+  {
     id: "notice",
     name: { en: "Notification", vn: "Thông báo" },
     icon: HiBell,
-    path: "/notification",
+    path: "/notifications",
   },
   {
-    id: "managePosts",
-    name: { en: "Manage posts", vn: "Quản lý bài viết" },
+    id: "management",
+    name: { en: "Management", vn: "Quản lý cá nhân" },
     icon: HiDocumentDuplicate,
-    path: "/manage",
+    path: "/managements",
   },
 ];
 export default menus;
