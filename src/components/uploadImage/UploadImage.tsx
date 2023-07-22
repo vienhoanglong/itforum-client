@@ -45,7 +45,6 @@ const UploadImage: React.FC<UploadImageProps> = ({
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
       onImageUpload(imageUrl);
-      setUploadComplete(true);
     }, 3000);
   };
 

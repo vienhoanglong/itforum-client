@@ -26,7 +26,8 @@ interface PostAddNewPageProps {
 }
 
 export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
-  const [uploadComplete, setUploadComplete] = useState(false);
+  const [uploadComplete, setUploadComplete] = useState<boolean>(false);
+  console.log(uploadComplete);
   const isDarkMode = true;
   const [content, setContent] = useState<string>("");
 
@@ -41,11 +42,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
     setContent(value);
   };
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<FormDataPosting>({
+  const { handleSubmit, control } = useForm<FormDataPosting>({
     mode: "onSubmit",
   });
 

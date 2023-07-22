@@ -10,7 +10,6 @@ import {
 import ReactPaginate from "react-paginate";
 import { exampleData, topicColors } from "../constants/global.ts";
 import Modal from "@/components/modal/Modal.tsx";
-import DeletedPostsPage from "../modules/post/DeletedPosts.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 import AddNewDiscussion from "@/modules/discuss/AddNewDiscussion.tsx";
 import DeletedDiscussions from "@/modules/discuss/DeletedDiscussions.tsx";

@@ -3,8 +3,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { discuss, topicColors } from "@/constants/global";
-import Avatar from "@/components/image/Avatar";
-import avt from "assets/avt1.jpg";
 
 const SliderDiscuss: React.FC = () => {
   const settings = {

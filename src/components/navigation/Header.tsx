@@ -3,13 +3,11 @@ import { Container } from "../common";
 import { AvatarImage } from "../image";
 import {
   HiDocumentDuplicate,
-  HiOutlineCog,
   HiOutlineLogout,
   HiPlusCircle,
   HiUser,
 } from "react-icons/hi";
 import logo from "assets/logo-text.png";
-import { Link } from "react-router-dom";
 import { Button } from "../button";
 import Modal from "../modal/Modal";
 import PostAddNewPage from "@/modules/post/PostAddNew";

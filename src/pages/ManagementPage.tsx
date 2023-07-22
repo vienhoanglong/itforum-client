@@ -1,7 +1,4 @@
-import { notifications } from "@/constants/global";
-import LayoutDefault from "@/layout/LayoutDefault";
-import { Notification } from "@/modules/home/Notification";
-import React, { useState } from "react";
+import React from "react";
 import notification from "../assets/notification.png";
 import discussion from "../assets/discussion.png";
 import posts from "../assets/post.png";
@@ -9,17 +6,6 @@ import posts from "../assets/post.png";
 import LayoutSecondary from "@/layout/LayoutSecondary";
 
 const ManagementPage: React.FC = () => {
-  const [isModalOpenAddNotifi, setIsModalOpenAddNotifi] = useState(false); // config modal add
-  const handleAddNewNotifi = () => {
-    setIsModalOpenAddNotifi(true);
-  };
-
-  const handleCloseModalAdd = () => {
-    setIsModalOpenAddNotifi(false);
-  };
-  const handleFormSubmit = () => {
-    console.log("Form submitted!");
-  };
   return (
     <LayoutSecondary>
       <div className="flex justify-between items-center">

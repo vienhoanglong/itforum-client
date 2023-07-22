@@ -1,4 +1,3 @@
-import { Button } from "@/components/button";
 import React, { useState } from "react";
 import { HiArrowCircleUp, HiFilter, HiSearch, HiTrash } from "react-icons/hi";
 import ReactPaginate from "react-paginate";

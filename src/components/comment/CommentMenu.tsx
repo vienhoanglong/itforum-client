@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { HiDotsVertical, HiFlag, HiTrash, HiEyeOff } from "react-icons/hi";
 
 interface CommentMenuProps {

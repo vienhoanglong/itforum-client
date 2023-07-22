@@ -1,8 +1,7 @@
-import { Button } from "@/components/button";
 import React, { useState } from "react";
 import { HiArrowCircleUp, HiFilter, HiSearch, HiTrash } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
-import { exampleDataNotifi, topicColors } from "../../constants/global.ts";
+import { exampleDataNotifi } from "../../constants/global.ts";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog.tsx";
 import Modal from "@/components/modal/Modal.tsx";
 
