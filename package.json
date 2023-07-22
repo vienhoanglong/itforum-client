@@ -7,6 +7,7 @@
     "dev": "vite",
     "start": "pnpm start",
     "build": "tsc && vite build",
+    "start:production": "nodemon --watch src/ --exec vite dev --mode production",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
