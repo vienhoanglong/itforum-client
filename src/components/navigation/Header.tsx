@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container } from "../common";
 import { AvatarImage } from "../image";
 import {
+  HiDocumentDuplicate,
   HiOutlineCog,
   HiOutlineLogout,
   HiPlusCircle,
@@ -11,7 +12,7 @@ import logo from "assets/logo-text.png";
 import { Link } from "react-router-dom";
 import { Button } from "../button";
 import Modal from "../modal/Modal";
-import PostAddNewPage from "@/pages/PostAddNewPage";
+import PostAddNewPage from "@/modules/post/PostAddNew";
 export const Header: React.FC = () => {
   const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
   const handleAddNewPost = () => {
@@ -51,9 +52,12 @@ export const Header: React.FC = () => {
                   <HiUser size={18} title="Settings" />
                   <span className="text-sm">Profile</span>
                 </a>
-                <a className="flex flex-row items-center space-x-5 cursor-pointer hover:text-mainColor">
-                  <HiOutlineCog size={18} title="Settings" />
-                  <span className="text-sm">Settings</span>
+                <a
+                  className="flex flex-row items-center space-x-5 cursor-pointer hover:text-mainColor"
+                  href="/managements"
+                >
+                  <HiDocumentDuplicate size={18} title="Manegement" />
+                  <span className="text-sm">Dashboard</span>
                 </a>
                 <a className="flex flex-row items-center space-x-5 cursor-pointer hover:text-red2">
                   <HiOutlineLogout size={18} title="Log out" />

@@ -1,16 +1,30 @@
 import { notifications } from "@/constants/global";
 import LayoutDefault from "@/layout/LayoutDefault";
 import { Notification } from "@/modules/home/Notification";
-import React from "react";
-import notification from "../assets/notification.png";
+import React, { useState } from "react";
+import notification from "../assets/notifications.png";
 import event from "../assets/event.png";
+import other from "../assets/other.png";
 import subject from "../assets/subject.png";
 import job from "../assets/job.png";
 import { Button } from "@/components/button";
 import { HiPlusCircle } from "react-icons/hi";
 import SliderNotification from "@/modules/notification/SliderNotification";
+import Modal from "@/components/modal/Modal";
+import { AddNewNotifications } from "@/modules/notification/AddNewNotifications";
 
 const NotificationPage: React.FC = () => {
+  const [isModalOpenAddNotifi, setIsModalOpenAddNotifi] = useState(false); // config modal add
+  const handleAddNewNotifi = () => {
+    setIsModalOpenAddNotifi(true);
+  };
+
+  const handleCloseModalAdd = () => {
+    setIsModalOpenAddNotifi(false);
+  };
+  const handleFormSubmit = () => {
+    console.log("Form submitted!");
+  };
   return (
     <LayoutDefault
       childrenOther={<Notification notifications={notifications} />}
@@ -24,12 +38,18 @@ const NotificationPage: React.FC = () => {
           className="p-1 flex space-x-1"
           type="button"
           kind="secondary"
+          handle={handleAddNewNotifi}
         >
           <span className="text-[12px]">New notification</span>
           <HiPlusCircle size={15}></HiPlusCircle>
         </Button>
+        <Modal isOpen={isModalOpenAddNotifi} onClose={handleCloseModalAdd}>
+          <AddNewNotifications
+            onSubmit={handleFormSubmit}
+          ></AddNewNotifications>
+        </Modal>
       </div>
-      <div className=" min-[768px]:hidden">
+      <div className="">
         <SliderNotification></SliderNotification>
       </div>
 
@@ -52,7 +72,7 @@ const NotificationPage: React.FC = () => {
           </div>
 
           <a
-            href="/notification-detail"
+            href="/notification-list"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             Xem tất cả
@@ -77,7 +97,7 @@ const NotificationPage: React.FC = () => {
           </div>
 
           <a
-            href="/notification-detail"
+            href="/notification-list"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             Xem tất cả
@@ -102,7 +122,7 @@ const NotificationPage: React.FC = () => {
           </div>
 
           <a
-            href="/notification-detail"
+            href="/notification-list"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             Xem tất cả
@@ -126,7 +146,28 @@ const NotificationPage: React.FC = () => {
           </div>
 
           <a
-            href="/notification-detail"
+            href="/notification-list"
+            className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
+          >
+            Xem tất cả
+          </a>
+        </div>
+        <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
+          <div className="flex flex-col space-y-2 w-full ">
+            <span className="text-base font-bold block justify-start align-top">
+              Khác
+            </span>
+            <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
+              <img
+                src={other}
+                className=" object-fill max-w-full max-h-full"
+              ></img>
+            </div>
+            <span className="block justify-start">Các loại thông báo khác</span>
+          </div>
+
+          <a
+            href="/notification-list"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             Xem tất cả

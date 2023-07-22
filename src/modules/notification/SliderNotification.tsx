@@ -32,7 +32,7 @@ const SliderNotification: React.FC = () => {
           arrows: false,
           centerMode: true,
           centerPadding: "40px",
-          slidesToShow: 2,
+          slidesToShow: 1,
         },
       },
       {
@@ -48,9 +48,7 @@ const SliderNotification: React.FC = () => {
   };
   return (
     <div className=" slider-container bg-light2 dark:bg-dark1 rounded-lg">
-      <h1 className="text-sm font-bold mb-2 dark:text-light0">
-        New notifications
-      </h1>
+      <h1 className="text-sm font-bold mb-2 text-red2">Important</h1>
       <Slider {...settings}>
         {notifications.map((notifi, index) => (
           <div
