@@ -123,7 +123,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <LayoutSecondary>
-      <div className="max-w-4xl mx-auto p-8 bg-light4 shadow-sm dark:bg-dark1 rounded-lg dark:text-light0 relative">
+      <div className="max-w-4xl mx-auto md:p-8 p-4 bg-light4 shadow-sm dark:bg-dark1 rounded-lg dark:text-light0 relative">
         <h4 className="text-xl font-bold text-darker mb-4 ">Profile</h4>
         <div className="flex space-x-2 items-center absolute top-2 right-2">
           <span className=" text-sm font-bold">Edit</span>
