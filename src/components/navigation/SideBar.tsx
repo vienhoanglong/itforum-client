@@ -33,7 +33,7 @@ export const SideBar: React.FC = () => {
   const active =
     "bg-subtle dark:bg-dark1 text-mainColor border-l-2 border-mainColor";
   return (
-    <React.Fragment>
+    <div className="fixed">
       <ul className="flex flex-col h-full space-y-4 dark:text-light1 ">
         <li className="pb-3 font-bold text-sm text-center md:px-5 md:text-left">
           Menu
@@ -110,7 +110,7 @@ export const SideBar: React.FC = () => {
           </Button1>
         </li>
       </ul>
-    </React.Fragment>
+    </div>
   );
 };
 
