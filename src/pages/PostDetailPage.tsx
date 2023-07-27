@@ -24,15 +24,11 @@ import ListPostCard from "@/modules/post/ListPostCard";
 
 export const PostDetailPage: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isMenuComment, setMenuComment] = useState(false);
   const [isReportModalOpen, setReportModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleMenuToggle = () => {
     setMenuOpen(!isMenuOpen);
-  };
-  const handleMenuComment = () => {
-    setMenuComment(!isMenuComment);
   };
   const handleReportClick = () => {
     setReportModalOpen(true);
@@ -52,7 +48,6 @@ export const PostDetailPage: React.FC = () => {
         )
       ) {
         setMenuOpen(false);
-        setMenuComment(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);

@@ -1,12 +1,11 @@
-import { Button } from "@/components/button";
 import React, { useState } from "react";
 import { HiArrowCircleUp, HiFilter, HiSearch, HiTrash } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
-import { exampleData, topicColors } from "../constants/global.ts";
+import { exampleDataNotifi } from "../../constants/global.ts";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog.tsx";
 import Modal from "@/components/modal/Modal.tsx";
 
-export const DeletedPostsPage: React.FC = () => {
+export const DeletedNotifications: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -21,7 +20,7 @@ export const DeletedPostsPage: React.FC = () => {
   };
 
   const offset = currentPage * itemsPerPage;
-  const paginatedData = exampleData.slice(offset, offset + itemsPerPage);
+  const paginatedData = exampleDataNotifi.slice(offset, offset + itemsPerPage);
 
   const [isModalOpenDialog, setIsModalOpenDialog] = useState(false);
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -61,7 +60,9 @@ export const DeletedPostsPage: React.FC = () => {
   return (
     <div className="container h-auto mx-auto bg-light4 dark:bg-dark1  p-4 rounded-3xl">
       <div className=" py-4">
-        <h4 className="text-xl font-bold text-darker ">Deleted Posts</h4>
+        <h4 className="text-xl font-bold text-darker ">
+          Deleted Notifications
+        </h4>
       </div>
       <div className="flex flex-wrap items-center">
         <div className=" w-full md:w-1/2 mr-auto pt-2">
@@ -117,8 +118,8 @@ export const DeletedPostsPage: React.FC = () => {
               <th className="py-2 px-4  rounded-tl-md ">SN</th>
               <th className="py-2 px-4  ">Author</th>
               <th className="py-2 px-4  ">Title</th>
-              <th className="py-2 px-4  ">Topic</th>
-              <th className="py-2 px-4  ">Views</th>
+              <th className="py-2 px-4  ">Type</th>
+              <th className="py-2 px-4  ">Level</th>
               <th className="py-2 px-4  ">Date</th>
               <th className="py-2 px-4  ">Publish</th>
               <th className="py-2 px-4 rounded-tr-md ">Action</th>
@@ -128,7 +129,7 @@ export const DeletedPostsPage: React.FC = () => {
             {paginatedData.length === 0 ? (
               <tr>
                 <td colSpan={7} className="text-center">
-                  Không có bài viết nào
+                  Không có thông báo nào
                 </td>
               </tr>
             ) : (
@@ -146,19 +147,11 @@ export const DeletedPostsPage: React.FC = () => {
                   <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                     {item.title}
                   </td>
-                  <td className="py-2 px-4 border-y text-left border-light0 dark:border-dark3">
-                    {item.topic.map((topic) => (
-                      <div
-                        key={topic.id}
-                        className={`inline-block border-2 px-2 py-1 rounded-full  m-[1px] 
-                        ${topicColors[topic.name] || ""}`}
-                      >
-                        {topic.name}
-                      </div>
-                    ))}
+                  <td className="py-2 px-4 border-y  border-light0 dark:border-dark3">
+                    {item.type}
                   </td>
                   <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                    {item.views}
+                    {item.level}
                   </td>
                   <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                     {item.datePost}
@@ -200,7 +193,7 @@ export const DeletedPostsPage: React.FC = () => {
       <div className="flex items-center justify-center bg-light2 dark:bg-dark2 dark:text-light0 h-8 text-xs rounded-b-md">
         <div className="w-1/2 mr-2 pb-3 ml-1">
           <ReactPaginate
-            pageCount={Math.ceil(exampleData.length / itemsPerPage)}
+            pageCount={Math.ceil(exampleDataNotifi.length / itemsPerPage)}
             marginPagesDisplayed={2}
             pageRangeDisplayed={5}
             onPageChange={handlePageChange}
@@ -231,4 +224,4 @@ export const DeletedPostsPage: React.FC = () => {
   );
 };
 
-export default DeletedPostsPage;
+export default DeletedNotifications;

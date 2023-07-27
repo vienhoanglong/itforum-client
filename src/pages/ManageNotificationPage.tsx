@@ -8,13 +8,13 @@ import {
   HiTrash,
 } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
-import { exampleData, topicColors } from "../constants/global.ts";
+import { exampleDataNotifi } from "../constants/global.ts";
 import Modal from "@/components/modal/Modal.tsx";
-import PostAddNewPage from "../modules/post/PostAddNew.tsx";
-import DeletedPostsPage from "../modules/post/DeletedPosts.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
+import DeletedNotifications from "@/modules/notification/DeletedNotifications.tsx";
+import { AddNewNotifications } from "@/modules/notification/AddNewNotifications.tsx";
 
-export const ManagePosts: React.FC = () => {
+export const ManageNotificationPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -29,29 +29,34 @@ export const ManagePosts: React.FC = () => {
   };
 
   const offset = currentPage * itemsPerPage;
-  const paginatedData = exampleData.slice(offset, offset + itemsPerPage);
+  const paginatedData = exampleDataNotifi.slice(offset, offset + itemsPerPage);
 
-  const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
+  const [isModalOpenAddNotifi, setIsModalOpenAddNotifi] = useState(false); // config modal add
   const [isModalOpenTrash, setIsModalOpenTrash] = useState(false); // config modal trash
-  const handleAddNewPost = () => {
-    setIsModalOpenAddPost(true);
+  const handleAddNewNotification = () => {
+    setIsModalOpenAddNotifi(true);
   };
 
   const handleCloseModalAdd = () => {
-    setIsModalOpenAddPost(false);
+    setIsModalOpenAddNotifi(false);
   };
-  const handleDeletedPosts = () => {
+  const handleDeletedNotifications = () => {
     setIsModalOpenTrash(true);
   };
 
   const handleCloseModalTrash = () => {
     setIsModalOpenTrash(false);
   };
+  const handleFormSubmit = () => {
+    console.log("Form submitted!");
+  };
   return (
     <LayoutSecondary>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Manage posts</h4>
+          <h4 className="text-xl font-bold text-darker ">
+            Management notifications
+          </h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
@@ -89,7 +94,7 @@ export const ManagePosts: React.FC = () => {
               className=" w-full text-white text-xs bg-lighter hover:bg-darker  rounded px-4 shadow-md py-2"
               kind="primary"
               type="submit"
-              handle={handleAddNewPost}
+              handle={handleAddNewNotification}
             >
               {" "}
               New{" "}
@@ -102,7 +107,7 @@ export const ManagePosts: React.FC = () => {
               className=" w-full text-white bg-red3 hover:bg-red2  text-xs rounded shadow-md px-4 py-2"
               kind="custom"
               type="submit"
-              handle={handleDeletedPosts}
+              handle={handleDeletedNotifications}
             >
               {" "}
               Trash{" "}
@@ -113,11 +118,13 @@ export const ManagePosts: React.FC = () => {
           </div>
         </div>
 
-        <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
-          <PostAddNewPage onCancel={handleCloseModalAdd}></PostAddNewPage>
+        <Modal isOpen={isModalOpenAddNotifi} onClose={handleCloseModalAdd}>
+          <AddNewNotifications
+            onSubmit={handleFormSubmit}
+          ></AddNewNotifications>
         </Modal>
         <Modal isOpen={isModalOpenTrash} onClose={handleCloseModalTrash}>
-          <DeletedPostsPage></DeletedPostsPage>
+          <DeletedNotifications></DeletedNotifications>
         </Modal>
 
         <div className="w-full overflow-x-auto">
@@ -127,8 +134,8 @@ export const ManagePosts: React.FC = () => {
                 <th className="py-2 px-4  rounded-tl-md ">SN</th>
                 <th className="py-2 px-4  ">Author</th>
                 <th className="py-2 px-4  ">Title</th>
-                <th className="py-2 px-4  ">Topic</th>
-                <th className="py-2 px-4  ">Views</th>
+                <th className="py-2 px-4  ">Type</th>
+                <th className="py-2 px-4  ">Level</th>
                 <th className="py-2 px-4  ">Date</th>
                 <th className="py-2 px-4  ">Publish</th>
                 <th className="py-2 px-4 rounded-tr-md ">Action</th>
@@ -138,7 +145,7 @@ export const ManagePosts: React.FC = () => {
               {paginatedData.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center">
-                    Không có bài viết nào
+                    Không có thông báo nào
                   </td>
                 </tr>
               ) : (
@@ -156,19 +163,11 @@ export const ManagePosts: React.FC = () => {
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                       {item.title}
                     </td>
-                    <td className="py-2 px-4 border-y text-left border-light0 dark:border-dark3">
-                      {item.topic.map((topic) => (
-                        <div
-                          key={topic.id}
-                          className={`inline-block border-2 px-2 py-1 rounded-full  m-[1px] 
-                        ${topicColors[topic.name] || ""}`}
-                        >
-                          {topic.name}
-                        </div>
-                      ))}
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
+                      {item.type}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.views}
+                      {item.level}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                       {item.datePost}
@@ -196,7 +195,7 @@ export const ManagePosts: React.FC = () => {
         <div className="flex items-center justify-center bg-light2 dark:bg-dark2 dark:text-light0 h-8 text-xs rounded-b-md">
           <div className="w-1/2 mr-2 pb-3 ml-1">
             <ReactPaginate
-              pageCount={Math.ceil(exampleData.length / itemsPerPage)}
+              pageCount={Math.ceil(exampleDataNotifi.length / itemsPerPage)}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
               onPageChange={handlePageChange}
@@ -228,4 +227,4 @@ export const ManagePosts: React.FC = () => {
   );
 };
 
-export default ManagePosts;
+export default ManageNotificationPage;

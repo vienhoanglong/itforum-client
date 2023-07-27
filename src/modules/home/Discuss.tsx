@@ -1,34 +1,19 @@
 import React, { useState } from "react";
 import avt from "assets/avt1.jpg";
-import { exampleDataTopic, topicColors } from "constants/global";
+import { topicColors } from "constants/global";
 import { BsEyeFill, BsFillChatFill } from "react-icons/bs";
 import Avatar from "@/components/image/Avatar";
 import FiltersBox from "./FiltersBox";
 import Modal from "@/components/modal/Modal";
-import Select from "react-select";
-import { customStyles } from "@/constants/styleReactSelect";
-import { Button } from "@/components/button";
+import AddNewDiscussion from "../discuss/AddNewDiscussion";
 
 interface Discuss {
   title: string;
-}
-interface TagOption {
-  label: string;
-  value: string;
-  color: string;
 }
 interface ListDiscussProps {
   discuss: Discuss[];
 }
 export const Discuss: React.FC<ListDiscussProps> = ({ discuss }) => {
-  const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
-
-  const tagOptions = exampleDataTopic.map((topic) => ({
-    label: topic.name,
-    value: topic.name.toLowerCase().replace(/\s+/g, "-"),
-    color: topic.color,
-  }));
-  const isDarkMode = true;
   const [showModal, setShowModal] = useState(false);
 
   const handleInputClick = () => {
@@ -58,46 +43,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({ discuss }) => {
         </button>
 
         <Modal isOpen={showModal} onClose={closeModal}>
-          <div>
-            <div className="flex justify-center mb-3">
-              <span className=" dark:text-light0 text-lg  font-bold">
-                New discussion
-              </span>
-            </div>
-            <form>
-              <div className="mb-3">
-                <input
-                  className="w-full h-full bg-light2/80 text-sm dark:text-light0 px-4 py-2 rounded-2xl dark:bg-dark0/80"
-                  placeholder="Adding your title"
-                />
-              </div>
-              <Select
-                isMulti
-                options={tagOptions}
-                value={selectedTags}
-                placeholder="Choose topics..."
-                onChange={(selectedOptions) =>
-                  setSelectedTags(selectedOptions as TagOption[])
-                }
-                styles={customStyles(isDarkMode)}
-                className=" rounded-[12px] text-xs dark:bg-dark0 shadow-inner"
-              />
-
-              <textarea
-                placeholder="Typing your content here..."
-                className=" w-[290px] h-[300px] md:w-[500px] md:h-[300px] text-dark0 dark:bg-dark0/80 bg-light2/80 dark:text-light0 text-xs p-4 rounded-md mt-2"
-              ></textarea>
-
-              <Button
-                size="small"
-                className="w-full mt-2"
-                type="submit"
-                kind="primary"
-              >
-                Posting
-              </Button>
-            </form>
-          </div>
+          <AddNewDiscussion></AddNewDiscussion>
         </Modal>
       </div>
       <FiltersBox></FiltersBox>

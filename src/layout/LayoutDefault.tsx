@@ -2,7 +2,6 @@ import { BottomBar, Header } from "@/components/navigation";
 import SideBar from "@/components/navigation/SideBar";
 import { Container } from "@/components/common";
 import React from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 interface LayoutDefaultProps {
   children: React.ReactNode;

@@ -1,7 +1,6 @@
 import Avatar from "@/components/image/Avatar";
-import { discuss, listComment, posts, topicColors } from "@/constants/global";
+import { discuss, listComment, topicColors } from "@/constants/global";
 import LayoutDetail from "@/layout/LayoutDetail";
-import FeaturedArticle from "@/modules/home/FeaturedArticle";
 import React, {
   ChangeEvent,
   FormEvent,

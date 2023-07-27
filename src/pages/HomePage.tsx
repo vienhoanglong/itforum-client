@@ -1,7 +1,7 @@
-import { discuss, posts } from "@/constants/global";
+import { discuss, notifications, posts } from "@/constants/global";
 import LayoutDefault from "@/layout/LayoutDefault";
 import { Discuss } from "@/modules/home/Discuss";
-import FeaturedArticle from "@/modules/home/FeaturedArticle";
+import { Notification } from "@/modules/home/Notification";
 import { Posts } from "@/modules/home/Posts";
 import React from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -9,7 +9,9 @@ import "react-tabs/style/react-tabs.css";
 
 export const HomePage: React.FC = () => {
   return (
-    <LayoutDefault childrenOther={<FeaturedArticle></FeaturedArticle>}>
+    <LayoutDefault
+      childrenOther={<Notification notifications={notifications} />}
+    >
       <Tabs>
         <TabList>
           <Tab className="relative py-2 px-4 mr-1 bg-light2 dark:bg-dark1 dark:text-white rounded-t-lg">

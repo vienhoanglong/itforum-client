@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import logo404 from "assets/404.png";
-import arrowBack from "assets/arrowBack.png";
 import { Button } from "@/components/button";
 
 export const PageNotFound: React.FC = () => {

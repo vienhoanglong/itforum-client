@@ -29,13 +29,13 @@ const menus: MenuTypes[] = [
     id: "notice",
     name: { en: "Notification", vn: "Thông báo" },
     icon: HiBell,
-    path: "/notification",
+    path: "/notifications",
   },
   {
-    id: "managePosts",
-    name: { en: "Manage posts", vn: "Quản lý bài viết" },
+    id: "management",
+    name: { en: "Management", vn: "Quản lý cá nhân" },
     icon: HiDocumentDuplicate,
-    path: "/manage",
+    path: "/managements",
   },
 ];
 export default menus;

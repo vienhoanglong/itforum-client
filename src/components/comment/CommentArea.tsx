@@ -1,15 +1,8 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useRef } from "react";
 import { Button } from "../button";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-import QuillEditor from "../editor/QuillEditor";
 
 interface CommentAreaProps {
   avatar: string;
@@ -29,11 +22,6 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
   setComment,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [content, setContent] = useState<string>("");
-
-  const handleContentChange = (value: string) => {
-    setContent(value);
-  };
   useEffect(() => {
     const textarea = textareaRef.current;
 

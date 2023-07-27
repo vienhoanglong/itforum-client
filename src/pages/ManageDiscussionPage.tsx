@@ -10,11 +10,11 @@ import {
 import ReactPaginate from "react-paginate";
 import { exampleData, topicColors } from "../constants/global.ts";
 import Modal from "@/components/modal/Modal.tsx";
-import PostAddNewPage from "../modules/post/PostAddNew.tsx";
-import DeletedPostsPage from "../modules/post/DeletedPosts.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
+import AddNewDiscussion from "@/modules/discuss/AddNewDiscussion.tsx";
+import DeletedDiscussions from "@/modules/discuss/DeletedDiscussions.tsx";
 
-export const ManagePosts: React.FC = () => {
+export const ManageDiscussionPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -51,7 +51,7 @@ export const ManagePosts: React.FC = () => {
     <LayoutSecondary>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Manage posts</h4>
+          <h4 className="text-xl font-bold text-darker ">Manage discussions</h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
@@ -114,10 +114,10 @@ export const ManagePosts: React.FC = () => {
         </div>
 
         <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
-          <PostAddNewPage onCancel={handleCloseModalAdd}></PostAddNewPage>
+          <AddNewDiscussion />
         </Modal>
         <Modal isOpen={isModalOpenTrash} onClose={handleCloseModalTrash}>
-          <DeletedPostsPage></DeletedPostsPage>
+          <DeletedDiscussions />
         </Modal>
 
         <div className="w-full overflow-x-auto">
@@ -128,7 +128,7 @@ export const ManagePosts: React.FC = () => {
                 <th className="py-2 px-4  ">Author</th>
                 <th className="py-2 px-4  ">Title</th>
                 <th className="py-2 px-4  ">Topic</th>
-                <th className="py-2 px-4  ">Views</th>
+                <th className="py-2 px-4  ">Comment</th>
                 <th className="py-2 px-4  ">Date</th>
                 <th className="py-2 px-4  ">Publish</th>
                 <th className="py-2 px-4 rounded-tr-md ">Action</th>
@@ -161,7 +161,7 @@ export const ManagePosts: React.FC = () => {
                         <div
                           key={topic.id}
                           className={`inline-block border-2 px-2 py-1 rounded-full  m-[1px] 
-                        ${topicColors[topic.name] || ""}`}
+                      ${topicColors[topic.name] || ""}`}
                         >
                           {topic.name}
                         </div>
@@ -227,5 +227,4 @@ export const ManagePosts: React.FC = () => {
     </LayoutSecondary>
   );
 };
-
-export default ManagePosts;
+export default ManageDiscussionPage;
