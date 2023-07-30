@@ -52,7 +52,7 @@ export const SideBar: React.FC = () => {
           </li>
         ))}
       </ul>
-      <ul className="flex flex-col space-y-4">
+      <ul className="flex flex-col space-y-4 mt-8">
         <li
           title="Settings"
           className="flex flex-row items-center justify-center px-5 py-3 rounded cursor-pointer md:justify-start hover:text-mainColor dark:text-light0"
