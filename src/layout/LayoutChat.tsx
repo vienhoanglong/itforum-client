@@ -13,16 +13,16 @@ export const LayoutChat: React.FC<LayoutChatProps> = ({
   return (
     <React.Fragment>
       <Header />
-      <main className="h-full text-xs pt-4 overflow-y-scroll dark:bg-dark0">
+      <main className="h-full text-xs pt-4 dark:bg-dark0">
         <Container justify="justify-between">
           <nav
-            className="hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[230px]"
+            className="hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[200px]"
             aria-label="Primary"
           >
             <SideBar />
           </nav>
           <section
-            className="z-0 w-full sm:w-10/12 md:w-9/12 xl:w-4/5 scrollbar-hide sm:px-5"
+            className="z-0 flex-grow w-full xl:w-4/5 scrollbar-hide sm:px-5"
             role="main"
           >
             {children}

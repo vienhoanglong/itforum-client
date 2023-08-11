@@ -105,42 +105,36 @@ body {
     border: none !important;
 
   }
-  /* Custom styles for Tab */
 
-  
-  /* Custom styles for ::after */
- 
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: #cfcfcf;
+}
 
-  
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 8px;
+}
 
-  
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 
-// .mantine-RichTextEditor-toolbarControl {
-//     color: var(--font-color);
-// }
+@mixin no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
-// .mantine-RichTextEditor-toolbarControl:hover {
-//     @apply text-darker;
-// }
-
-// .ql-editor {
-//     height: 300px;
-// }
-
-// @layer components 
-// {
-//     /* custom classes */
-//     .sidebar-icon {
-//         @apply relative flex items-center justify-center h-12 w-12 my-2 mx-auto text-green-500 hover:cursor-pointer rounded-3xl hover:rounded-xl transition-all duration-200 ease-linear;
-//     }
-//     .sidebar-tooltip {
-//         @apply absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md
-//       text-white bg-gray-900 
-//       text-xs font-bold 
-//       transition-all duration-100 scale-0 origin-left z-50;
-//     }
-//     .btn-chanel {
-//         @apply rounded-[16px] border-solid border-[1px] border-[#f56857] hover:bg-[#f56857] hover:text-[#fff];
-//     }
-// }
+.no-scrollbar {
+  @include no-scrollbar;
+}
