@@ -1,11 +1,6 @@
 import { MenuTypes } from "@/types";
-import {
-  HiBell,
-  HiChatAlt2,
-  HiHome,
-  HiDocumentDuplicate,
-  HiUser,
-} from "react-icons/hi";
+import { BsViewList } from "react-icons/bs";
+import { HiBell, HiChatAlt2, HiHome, HiUser } from "react-icons/hi";
 const menus: MenuTypes[] = [
   {
     id: "home",
@@ -31,11 +26,17 @@ const menus: MenuTypes[] = [
     icon: HiBell,
     path: "/notifications",
   },
+  // {
+  //   id: "management",
+  //   name: { en: "Management", vn: "Quản lý cá nhân" },
+  //   icon: HiDocumentDuplicate,
+  //   path: "/managements",
+  // },
   {
-    id: "management",
-    name: { en: "Management", vn: "Quản lý cá nhân" },
-    icon: HiDocumentDuplicate,
-    path: "/managements",
+    id: "topic",
+    name: { en: "Topic", vn: "chủ đề" },
+    icon: BsViewList,
+    path: "/topics",
   },
 ];
 export default menus;

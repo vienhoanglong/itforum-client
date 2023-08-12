@@ -55,7 +55,7 @@ export const Header: React.FC = () => {
                   href="/managements"
                 >
                   <HiDocumentDuplicate size={18} title="Manegement" />
-                  <span className="text-sm">Dashboard</span>
+                  <span className="text-sm">Managements</span>
                 </a>
                 <a className="flex flex-row items-center space-x-5 cursor-pointer hover:text-red2">
                   <HiOutlineLogout size={18} title="Log out" />

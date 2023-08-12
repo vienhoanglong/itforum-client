@@ -1,6 +1,6 @@
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import React, { useEffect, useState } from "react";
-import { dataUser, exampleDataTopic } from "@/constants/global";
+import { dataUser, sampleTopics } from "@/constants/global";
 import "react-datepicker/dist/react-datepicker.css";
 import ContactSection from "@/modules/profile/contacts/ContactSection";
 import SkillsSection from "@/modules/profile/skills/SkillsSection";
@@ -162,7 +162,7 @@ const ProfilePage: React.FC = () => {
         <SkillsSection
           isEdit={isEdit}
           hanleUpdateSkills={handleUpdateSkills}
-          listSkills={exampleDataTopic}
+          listSkills={sampleTopics}
           userData={user}
         />
 
