@@ -29,7 +29,7 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
       {showConversation && (
         <div
           className={`sm:w-3/4
-          mr-5 md:mr-0 fixed lg:static md:flex md:flex-col px-0 w-[90%] h-full lg:min-h-[100vh] bg-dark1`}
+          mr-5 md:mr-0 fixed lg:static md:flex md:flex-col px-0 w-[90%] h-full lg:min-h-[100vh] dark:bg-dark1 bg-white`}
         >
           <div className="bg-[#fafafa] dark:bg-dark2 p-3 rounded-tr-md flex justify-between items-center">
             <div className="p-0 flex align-middle transition-all duration-300 ease mx-0 overflow-hidden">
