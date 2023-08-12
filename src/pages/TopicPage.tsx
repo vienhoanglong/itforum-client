@@ -45,7 +45,7 @@ export const TopicPage: React.FC = () => {
       <div className=" bg-transparent rounded-lg px-2 md:p-8">
         <div className="w-full relative mb-4">
           <ul
-            className="  py-4 pb-2hide-scrollbar mr-[-20px] flex min-h-[40px] items-center gap-x-4 overflow-x-auto overflow-y-hidden  text-center leading-loose  md:mx-auto md:min-h-0 md:justify-center md:gap-x-8 md:overflow-x-visible md:overflow-y-visible md:pr-0 lg:gap-x-12 after:absolute after:bottom-[0px] after:hidden after:h-[2px] after:w-full after:flex-shrink-0 after:bg-gradient-to-r after:md:block from-transparent via-[rgba(50,138,241,0.15)] to-transparent pr-[20px]"
+            className="  py-4 pb-2hide-scrollbar mr-[-20px] flex min-h-[40px] items-center gap-x-4 overflow-x-auto overflow-y-hidden no-scrollbar  text-center leading-loose  md:mx-auto md:min-h-0 md:justify-center md:gap-x-8 md:overflow-x-visible md:overflow-y-visible md:pr-0 lg:gap-x-12 after:absolute after:bottom-[0px] after:hidden after:h-[2px] after:w-full after:flex-shrink-0 after:bg-gradient-to-r after:md:block from-transparent via-[rgba(50,138,241,0.15)] to-transparent pr-[20px]"
             style={{ maxWidth: "800px" }}
           >
             <li className="relative inline-block flex-shrink-0">
@@ -96,7 +96,7 @@ export const TopicPage: React.FC = () => {
           </ul>
         </div>
         <div
-          className="mt-4 w-full gap-4 pb-2 items-center max-h-[700px] md:max-h-none container mx-auto mb-4 flex flex-wrap justify-center gap-x-5 gap-y-6 overflow-auto md:mt-8"
+          className="mt-4 w-full gap-4 pb-2 items-center max-h-[700px] md:max-h-none container mx-auto mb-4 flex flex-wrap no-scrollbar justify-center gap-x-5 gap-y-6 overflow-auto md:mt-8"
           style={{ maxWidth: "1350px" }}
         >
           {filteredTopics.map(
