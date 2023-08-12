@@ -14,11 +14,11 @@ export const HomePage: React.FC = () => {
     >
       <Tabs>
         <TabList>
-          <Tab className="relative py-2 px-4 mr-1 bg-light2 dark:bg-dark1 dark:text-white rounded-t-lg">
+          <Tab className="relative py-2 px-4 mr-1 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
             Discuss
             <div className="absolute inset-0 bg-transparent"></div>
           </Tab>
-          <Tab className="relative py-2 px-4 bg-light2 dark:bg-dark1 dark:text-white rounded-t-lg">
+          <Tab className="relative py-2 px-4 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
             Posts
             <div className="absolute inset-0 bg-transparent"></div>
           </Tab>

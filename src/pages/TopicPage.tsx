@@ -1,92 +1,8 @@
+import { sampleTopics } from "@/constants/global";
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-const sampleTopics = [
-  {
-    id: 1,
-    name: "JavaScript",
-    type: ["devops", "framework"],
-    img: "https://cdn-icons-png.flaticon.com/512/5968/5968292.png",
-  },
-  {
-    id: 2,
-    name: "ReactJS",
-    type: ["devops", "language"],
-    img: "https://cdn-icons-png.flaticon.com/128/753/753244.png",
-  },
-  {
-    id: 3,
-    name: "NodeJS",
-    type: ["devops", "subject"],
-    img: "https://cdn-icons-png.flaticon.com/128/919/919825.png",
-  },
-  {
-    id: 4,
-    name: "TypeScript",
-    type: ["devops", "framework"],
-    img: "https://cdn-icons-png.flaticon.com/128/5968/5968381.png",
-  },
-  {
-    id: 5,
-    name: "Docker",
-    type: ["language", "framework"],
-    img: "https://cdn-icons-png.flaticon.com/128/5969/5969059.png",
-  },
-  {
-    id: 6,
-    name: "MongoDB",
-    type: ["devops", "subject"],
-    img: "https://cdn-icons-png.flaticon.com/128/9850/9850774.png",
-  },
-  {
-    id: 7,
-    name: "Angular",
-    type: ["devops", "subject"],
-    img: "https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/21_Angular_logo_logos-512.png",
-  },
-  {
-    id: 8,
-    name: "Java",
-    type: ["devops", "subject"],
-    img: "https://cdn-icons-png.flaticon.com/128/5968/5968282.png",
-  },
-  {
-    id: 9,
-    name: "C-Sharp",
-    type: ["devops", "subject"],
-    img: "https://cdn-icons-png.flaticon.com/128/6132/6132221.png",
-  },
-  {
-    id: 10,
-    name: "Docker",
-    type: ["devops", "framework"],
-    img: "https://cdn-icons-png.flaticon.com/128/5969/5969059.png",
-  },
-  {
-    id: 11,
-    name: "MongoDB",
-    type: ["devops", "subject"],
-    img: "https://cdn-icons-png.flaticon.com/128/9850/9850774.png",
-  },
-  {
-    id: 12,
-    name: "Angular",
-    type: ["devops", "subject"],
-    img: "https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/21_Angular_logo_logos-512.png",
-  },
-  {
-    id: 13,
-    name: "Java",
-    type: ["devops", "subject"],
-    img: "https://cdn-icons-png.flaticon.com/128/5968/5968282.png",
-  },
-  {
-    id: 14,
-    name: "C-Sharp",
-    type: ["devops", "subject"],
-    img: "https://cdn-icons-png.flaticon.com/128/6132/6132221.png",
-  },
-];
+
 export const TopicPage: React.FC = () => {
   const { type } = useParams<{ type: string }>();
   const [activeTag, setActiveTag] = useState<string | null>(type || "all");
@@ -106,6 +22,9 @@ export const TopicPage: React.FC = () => {
 
     if (activeTag === "all" && !type) {
       navigate("/topics/all");
+    }
+    if (activeTag !== "all" && !filtered.length) {
+      navigate("/404");
     }
   }, [type, navigate]);
 
@@ -180,48 +99,54 @@ export const TopicPage: React.FC = () => {
           className="mt-4 w-full gap-4 pb-2 items-center max-h-[700px] md:max-h-none container mx-auto mb-4 flex flex-wrap justify-center gap-x-5 gap-y-6 overflow-auto md:mt-8"
           style={{ maxWidth: "1350px" }}
         >
-          {filteredTopics.map((topic) => (
-            <div
-              key={topic.id}
-              className=" cursor-pointer flex flex-1 justify-center text-center md:max-w-[225px] "
-            >
-              <a
-                className=" shadow-sm bg-light4 dark:bg-dark1/50 panel relative transition-colors duration-300 dark:hover:bg-dark2 hover:bg-light2 flex h-full w-full flex-shrink-0 flex-col justify-between rounded-2xl px-3 py-1 "
-                style={{ height: "70px", minWidth: "180px" }}
-              >
+          {filteredTopics.map(
+            (topic) =>
+              topic.hide === false && (
                 <div
-                  className="flex flex-1 items-center"
-                  style={{ height: "-4px" }}
+                  key={topic.id}
+                  className=" cursor-pointer flex flex-1 justify-center text-center md:max-w-[225px] "
                 >
-                  <div className="mr-4 flex flex-shrink-0 justify-center">
-                    <img
-                      width={35}
-                      height={35}
-                      className="h-full"
-                      src={topic.img}
-                    />
-                  </div>
-                  <div className="w-full lg:w-auto flex justify-between sm:block">
-                    <h3 className="text-left dark:text-white text-xs font-semibold leading-tight sm:mb-2">
-                      {" "}
-                      {topic.name}
-                    </h3>
-                    <div className="hidden text-left sm:block text-[10px] dark:text-white font-normal">
-                      8 Post{" "}
-                      <span
-                        className="relative inline-block px-1 text-xs"
-                        style={{ top: "1px" }}
-                      >
-                        {" "}
-                        •{" "}
-                      </span>{" "}
-                      70 Discuss{" "}
+                  <Link
+                    className=" shadow-sm bg-light4 dark:bg-dark1/50 panel relative transition-colors duration-300 dark:hover:bg-dark2 hover:bg-light2 flex h-full w-full flex-shrink-0 flex-col justify-between rounded-2xl px-3 py-1 "
+                    style={{ height: "70px", minWidth: "180px" }}
+                    to={`/topics/detail/${topic.name
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}`}
+                  >
+                    <div
+                      className="flex flex-1 items-center"
+                      style={{ height: "-4px" }}
+                    >
+                      <div className="mr-4 flex flex-shrink-0 justify-center">
+                        <img
+                          width={35}
+                          height={35}
+                          className="h-full"
+                          src={topic.img}
+                        />
+                      </div>
+                      <div className="w-full lg:w-auto flex justify-between sm:block">
+                        <h3 className="text-left dark:text-white text-xs font-semibold leading-tight sm:mb-2">
+                          {" "}
+                          {topic.name}
+                        </h3>
+                        <div className="hidden text-left sm:block text-[10px] dark:text-white font-normal">
+                          8 Post{" "}
+                          <span
+                            className="relative inline-block px-1 text-xs"
+                            style={{ top: "1px" }}
+                          >
+                            {" "}
+                            •{" "}
+                          </span>{" "}
+                          70 Discuss{" "}
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
-              </a>
-            </div>
-          ))}
+              )
+          )}
         </div>
       </div>
     </LayoutSecondary>

@@ -96,10 +96,12 @@ const PostHeader: React.FC<PostHeaderProps> = ({
           loading="lazy"
         />
       </div>
-      <TopicList
-        exampleDataTopic={exampleDataTopic}
-        topicColors={topicColors}
-      ></TopicList>
+      <div className="w-full my-2 flex flex-wrap">
+        <TopicList
+          exampleDataTopic={exampleDataTopic}
+          topicColors={topicColors}
+        ></TopicList>
+      </div>
     </div>
   );
 };

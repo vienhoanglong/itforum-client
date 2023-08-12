@@ -61,7 +61,15 @@ const DiscussDetailPage: React.FC = () => {
     setComment("");
   };
   return (
-    <LayoutDetail otherChildren={<ListDiscussCard discuss={discuss} />}>
+    <LayoutDetail
+      otherChildren={
+        <ListDiscussCard
+          topicName={["nodejs", "javascript"]}
+          numTopicsToShow={5}
+          discuss={discuss}
+        />
+      }
+    >
       <a
         className="dark:text-light0 rounded-full pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
         href="/"
@@ -69,7 +77,7 @@ const DiscussDetailPage: React.FC = () => {
         <HiArrowCircleLeft className="w-6 h-6 mr-1" />
         Back to discussion
       </a>
-      <div className="relative flex flex-col px-4 py-4 mb-3 duration-300 cursor-pointer rounded-xl md:flex-row bg-light4 dark:bg-dark1">
+      <div className="relative flex flex-col px-4 py-4 mb-3 duration-300 rounded-xl md:flex-row bg-light4 dark:bg-dark1">
         <div className="flex items-center self-start w-full mb-4 md:mr-5 md:mb-0 md:block md:w-auto">
           <div className="flex items-center">
             <a
@@ -140,11 +148,11 @@ const DiscussDetailPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="-mt-1 mb-2 dark:bg-dark0/80 p-4 rounded-lg md:flex md:items-start">
+            <div className="-mt-1 mb-2 dark:bg-dark0/80 bg-light2/80 p-4 rounded-lg md:flex md:items-start">
               <h3 className="tracking-normal md:pr-6 lg:mb-0 dark:text-light0">
-                <a href="" className="text-base font-semibold">
+                <div className="text-base font-semibold">
                   Deploy ứng dụng NodeJS lên EC2 instance của AWS (Phần 1)
-                </a>
+                </div>
               </h3>
             </div>
             <div className=" text-black/90 dark:text-light0 lg:mb-0 lg:pr-8 text-xs">
@@ -161,16 +169,16 @@ const DiscussDetailPage: React.FC = () => {
             <div className="flex justify-between items-center mt-2">
               <div className="">
                 <div
-                  className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
-                        ${topicColors["NodeJs"] || ""}`}
+                  className={` cursor-pointer  inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
+                        ${topicColors["javascript"] || ""}`}
                 >
-                  NodeJs
+                  javascript
                 </div>
                 <div
-                  className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
-                        ${topicColors["JavaScript"] || ""}`}
+                  className={` cursor-pointer inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
+                        ${topicColors["nodejs"] || ""}`}
                 >
-                  JavaScript
+                  nodejs
                 </div>
               </div>
               <div ref={menuRef}>

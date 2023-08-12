@@ -57,7 +57,7 @@ const NotificationPage: React.FC = () => {
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
             <span className="text-base font-bold block justify-start align-top">
-              Tất cả
+              All
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -66,8 +66,8 @@ const NotificationPage: React.FC = () => {
               ></img>
             </div>
             <span className="block justify-start">
-              Tất cả thông báo của Khoa, bao gồm các hoạt động, học tập, quy
-              định,...
+              All notifications from the Department, including activities,
+              studies, regulations,...
             </span>
           </div>
 
@@ -75,13 +75,13 @@ const NotificationPage: React.FC = () => {
             href="/notification-list"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
-            Xem tất cả
+            View all
           </a>
         </div>
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
             <span className="text-base font-bold block justify-start align-top">
-              Tuyển dụng
+              Recruitment
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -91,8 +91,8 @@ const NotificationPage: React.FC = () => {
             </div>
             <span className="block justify-start">
               {" "}
-              Các thông tin về tuyển dụng, cơ hội việc làm, và các chương trình
-              hỗ trợ sinh viên
+              Information about recruitment, job opportunities, and student
+              support programs.
             </span>
           </div>
 
@@ -100,14 +100,14 @@ const NotificationPage: React.FC = () => {
             href="/notification-list"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
-            Xem tất cả
+            View all
           </a>
         </div>
 
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
             <span className="text-base font-bold block justify-start align-top">
-              Sự kiện
+              Event
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -116,8 +116,8 @@ const NotificationPage: React.FC = () => {
               ></img>
             </div>
             <span className="block justify-start">
-              Các sự kiện sắp tới, bao gồm các buổi hội thảo, cuộc thi, và các
-              hoạt động thú vị{" "}
+              Upcoming events, including seminars, competitions, and exciting
+              activities.
             </span>
           </div>
 
@@ -125,14 +125,14 @@ const NotificationPage: React.FC = () => {
             href="/notification-list"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
-            Xem tất cả
+            View all
           </a>
         </div>
 
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col space-y-2 w-full ">
             <span className="text-base font-bold block justify-start align-top">
-              Môn học
+              Subject
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -141,7 +141,7 @@ const NotificationPage: React.FC = () => {
               ></img>
             </div>
             <span className="block justify-start">
-              Thông tin về các môn học, lịch học và giảng viên
+              Information about courses, class schedules, and instructors.
             </span>
           </div>
 
@@ -149,13 +149,13 @@ const NotificationPage: React.FC = () => {
             href="/notification-list"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
-            Xem tất cả
+            View all
           </a>
         </div>
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col space-y-2 w-full ">
             <span className="text-base font-bold block justify-start align-top">
-              Khác
+              Others
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -163,14 +163,16 @@ const NotificationPage: React.FC = () => {
                 className=" object-fill max-w-full max-h-full"
               ></img>
             </div>
-            <span className="block justify-start">Các loại thông báo khác</span>
+            <span className="block justify-start">
+              Other types of notifications.
+            </span>
           </div>
 
           <a
             href="/notification-list"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
-            Xem tất cả
+            View all
           </a>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { Button } from "@/components/button";
 import SkillModel from "@/interface/model/SkillModel";
 import UserModel from "@/interface/model/UserModel";
 import IUserUpdate from "@/interface/API/IUserUpdate";
+import { colorSelectTopic } from "@/constants/global";
 
 interface SkillsModalProps {
   listSkills: SkillModel[];
@@ -33,8 +34,6 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
     const newSkills = selectedOptions.map((option: any) => ({
       id: option.value,
       name: option.label,
-      description: option.description,
-      color: option.color,
     }));
     const updatedUserData: UserModel = {
       ...newSelectedSkills,
@@ -47,8 +46,7 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
   const selectOptions = listSkills.map((skill) => ({
     value: skill.id,
     label: skill.name,
-    description: skill.description,
-    color: skill.color,
+    color: `${colorSelectTopic[skill.color as keyof typeof colorSelectTopic]}`,
   }));
   const isDarkMode = true;
   return (
@@ -65,7 +63,6 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
           value={newSelectedSkills.skills.map((skill) => ({
             value: skill.id,
             label: skill.name,
-            description: skill.description,
             color: skill.color,
           }))}
           onChange={handleSkillChange}
