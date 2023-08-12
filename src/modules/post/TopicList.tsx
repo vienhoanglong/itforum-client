@@ -10,18 +10,19 @@ const TopicList: React.FC<TopicListProps> = ({
   topicColors,
 }) => {
   return (
-    <div className="w-full my-2 flex flex-wrap">
+    <>
       {exampleDataTopic.map((topic) => (
         <div
           key={topic.id}
-          className={`cursor-pointer inline-block text-xs border-2 px-2 py-1 rounded-full m-[1px] ${
-            topicColors[topic.name] || ""
-          }`}
+          className={`cursor-pointer 
+          inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
+          
+          ${topicColors[topic.name.toLocaleLowerCase()] || ""}`}
         >
           {topic.name}
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

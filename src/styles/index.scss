@@ -91,17 +91,23 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    border-color: #1c1c28 !important;
+    border-color: #f2f2f5  !important;
 
   }
-  
-  .dark-mode .react-tabs__tab.react-tabs__tab--selected {
-    background-color:  #393b47;
-    border: none !important;
+  .dark .react-tabs__tab-list {
+    border-color: #262837  !important;
+
   }
+
   .react-tabs__tab--selected{
-    background-color:  #393b47 !important;
-    color: white  !important;
+    background-color:  #fff !important;
+    color: #625a5a  !important;
+    border: none !important;
+
+  }
+  .dark .react-tabs__tab--selected{
+    background-color:  #262837 !important;
+    color: #fff  !important;
     border: none !important;
 
   }

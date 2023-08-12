@@ -1,8 +1,10 @@
 interface SkillModel {
-  id: string;
-  name: string;
-  description: string;
-  color: string;
+  id: number;
+  name?: string;
+  desc?: string;
+  type?: string;
+  color?: string;
+  hide?: boolean;
 }
 
 export default SkillModel;

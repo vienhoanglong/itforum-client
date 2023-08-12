@@ -8,7 +8,7 @@ import { Input } from "components/input";
 import "react-quill/dist/quill.snow.css";
 import UploadImage from "@/components/uploadImage/UploadImage";
 import Select from "react-select";
-import { exampleDataTopic } from "@/constants/global";
+import { colorSelectTopic, colorTopic, sampleTopics } from "@/constants/global";
 import { customStyles } from "@/constants/styleReactSelect";
 
 interface FormDataPosting {
@@ -53,10 +53,10 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
   };
 
   const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
-  const tagOptions = exampleDataTopic.map((topic) => ({
+  const tagOptions = sampleTopics.map((topic) => ({
     label: topic.name,
     value: topic.name.toLowerCase().replace(/\s+/g, "-"),
-    color: topic.color,
+    color: `${colorSelectTopic[topic.color as keyof typeof colorTopic]}`,
   }));
 
   return (

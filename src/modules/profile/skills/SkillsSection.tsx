@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SkillsModal from "./SkillsModal";
 import { HiPencil } from "react-icons/hi";
-import { topicColors } from "@/constants/global";
+import { colorTopic, sampleTopics } from "@/constants/global";
 import Modal from "@/components/modal/Modal";
 import SkillModel from "@/interface/model/SkillModel";
 import UserModel from "@/interface/model/UserModel";
@@ -38,11 +38,16 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
     <div className="mb-4 dark:bg-dark2 bg-light3 shadow-sm rounded-lg p-4 relative">
       <h2 className="text-base font-bold mb-4">Skills</h2>
       <div className="w-full my-2 flex flex-wrap">
-        {userData.skills.map((skill) => (
+        {userData.skills.map((skill, index) => (
           <div
-            key={skill.id}
-            className={`cursor-pointer inline-block text-xs border-2 px-2 py-1 rounded-full m-[1px] ${
-              topicColors[skill.name] || ""
+            key={index}
+            className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
+              colorTopic[
+                sampleTopics.find(
+                  (t) =>
+                    t.name.toLowerCase().replace(/\s+/g, "-") === skill.name
+                )?.color as keyof typeof colorTopic
+              ] || ""
             }`}
           >
             {skill.name}

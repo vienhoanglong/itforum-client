@@ -75,13 +75,13 @@ export const Posts: React.FC<ListPostProps> = ({ post }) => {
               <div className="mt-2">
                 <div
                   className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
-                    ${topicColors["NodeJs"] || ""}`}
+                    ${topicColors["nodejs"] || ""}`}
                 >
                   NodeJs
                 </div>
                 <div
                   className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
-                    ${topicColors["JavaScript"] || ""}`}
+                    ${topicColors["javascript"] || ""}`}
                 >
                   JavaScript
                 </div>

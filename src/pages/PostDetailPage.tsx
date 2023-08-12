@@ -70,7 +70,15 @@ export const PostDetailPage: React.FC = () => {
   };
 
   return (
-    <LayoutDetail otherChildren={<ListPostCard posts={posts}></ListPostCard>}>
+    <LayoutDetail
+      otherChildren={
+        <ListPostCard
+          topicName={["nodejs", "javascript"]}
+          numTopicsToShow={5}
+          posts={posts}
+        ></ListPostCard>
+      }
+    >
       <div className="z-10 md:w-full pb-2 bg-light4 dark:bg-dark1 dark:text-light0 rounded-lg p-8">
         <PostHeader
           menuRef={menuRef}
