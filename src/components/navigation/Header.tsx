@@ -11,7 +11,16 @@ import logo from "assets/logo-text.png";
 import { Button } from "../button";
 import Modal from "../modal/Modal";
 import PostAddNewPage from "@/modules/post/PostAddNew";
+import { useUserStore } from "@/store/userStore";
+import Avatar from "../image/Avatar";
 export const Header: React.FC = () => {
+  const { user, setUser } = useUserStore();
+
+  React.useEffect(() => {
+    setUser();
+  }, [setUser]);
+  console.log(user)
+
   const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
   const handleAddNewPost = () => {
     setIsModalOpenAddPost(true);
@@ -39,7 +48,9 @@ export const Header: React.FC = () => {
           </Button>
 
           <div className="relative cursor-pointer group sm:cursor-default">
-            <AvatarImage name="long" size={44} />
+            {user?.avatar ? (<Avatar cln="h-16 w-16 rounded-full ring-2 ring-white object-cover border" src={user.avatar}></Avatar>) : (
+            <AvatarImage name={user?.username ? user?.username :'A'} size={44} />
+            )}
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex ">
               <div className="h-[58px] bg-transparent"></div>
               <div className=" flex flex-col w-full p-5 space-y-5 bg-white rounded text-dark2 dark:bg-dark3 dark:text-light0">
@@ -66,10 +77,10 @@ export const Header: React.FC = () => {
           </div>
           <div className="flex-col hidden md:flex">
             <p className="text-sm font-bold text-primary text-mainColor">
-              Viên Hoàng Long
+              {user?.username}
             </p>
             <p className="text-xs font-light text-dark1 dark:text-light0 ">
-              vienlongdev@gmail.com
+              {user?.email}
             </p>
           </div>
         </div>
