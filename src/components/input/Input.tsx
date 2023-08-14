@@ -1,7 +1,6 @@
 import React from "react";
 import { useController, Control } from "react-hook-form";
 import classNames from "utils/classNames";
-
 interface InputProps {
   name: string;
   type?: string;
