@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
   React.useEffect(() => {
     setUser();
   }, [setUser]);
-  console.log(user)
+  console.log(user);
 
   const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
   const handleAddNewPost = () => {
@@ -48,8 +48,16 @@ export const Header: React.FC = () => {
           </Button>
 
           <div className="relative cursor-pointer group sm:cursor-default">
-            {user?.avatar ? (<Avatar cln="h-16 w-16 rounded-full ring-2 ring-white object-cover border" src={user.avatar}></Avatar>) : (
-            <AvatarImage name={user?.username ? user?.username :'A'} size={44} />
+            {user?.avatar ? (
+              <Avatar
+                cln="h-16 w-16 rounded-full ring-2 ring-white object-cover border"
+                src={user.avatar}
+              ></Avatar>
+            ) : (
+              <AvatarImage
+                name={user?.username ? user?.username : "A"}
+                size={44}
+              />
             )}
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex ">
               <div className="h-[58px] bg-transparent"></div>

@@ -18,6 +18,7 @@ import {
 } from "@/services/profileService";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import UserModel from "@/interface/model/UserModel";
+import { useUserStore } from "@/store/userStore";
 
 const ProfilePage: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -26,27 +27,21 @@ const ProfilePage: React.FC = () => {
     setIsEdit(!isEdit);
   };
   //example data user
-  const [user, setUser] = useState<UserModel>(dataUser[0]);
+  const [userData, setUserData] = useState<UserModel>(dataUser[0]);
+
+  //data from api
+  const { user, setUser } = useUserStore();
   //Get user
   useEffect(() => {
-    const fetchData = async (userId: string) => {
-      try {
-        const user: UserModel = await getUser(userId);
-        console.log(user);
-        // hanldle data
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData("idUser");
+    setUser();
   }, []);
 
   const handleUpdateAvatar = async (updatedAvatar: IUserUpdate) => {
     try {
       const response = await updateAvatar(updatedAvatar);
       //get new data user after updated
-      const updatedUser: UserModel = await getUser(user.id);
-      setUser(updatedUser);
+      const updatedUser: UserModel = await getUser(userData.id);
+      setUserData(updatedUser);
 
       console.log("Avatar image  updated:", response);
     } catch (error) {
@@ -59,8 +54,8 @@ const ProfilePage: React.FC = () => {
     try {
       const response = await updateCoverImage(updatedCoverImg);
       //get new data user after updated
-      const updatedUser: UserModel = await getUser(user.id);
-      setUser(updatedUser);
+      const updatedUser: UserModel = await getUser(userData.id);
+      setUserData(updatedUser);
 
       console.log("Cover image  updated:", response);
     } catch (error) {
@@ -72,8 +67,8 @@ const ProfilePage: React.FC = () => {
     try {
       const response = await updateAbout(updatedAbout);
       //get new data user after updated
-      const updatedUser: UserModel = await getUser(user.id);
-      setUser(updatedUser);
+      const updatedUser: UserModel = await getUser(userData.id);
+      setUserData(updatedUser);
 
       console.log("About info updated:", response);
     } catch (error) {
@@ -87,8 +82,8 @@ const ProfilePage: React.FC = () => {
       const response = await updatePersonal(updatedPersonal);
 
       //get new data user after updated
-      const updatedUser: UserModel = await getUser(user.id);
-      setUser(updatedUser);
+      const updatedUser: UserModel = await getUser(userData.id);
+      setUserData(updatedUser);
 
       console.log("Personal info updated:", response);
     } catch (error) {
@@ -101,8 +96,8 @@ const ProfilePage: React.FC = () => {
     try {
       const response = await updateSkill(updatedSkills);
       //get new data user after updated
-      const updatedUser: UserModel = await getUser(user.id);
-      setUser(updatedUser);
+      const updatedUser: UserModel = await getUser(userData.id);
+      setUserData(updatedUser);
       console.log("Skill updated:", response);
     } catch (error) {
       console.error("Failed to update skill:", error);
@@ -113,8 +108,8 @@ const ProfilePage: React.FC = () => {
     try {
       const response = await updateContact(updatedContact);
       //get new data user after updated
-      const updatedUser: UserModel = await getUser(user.id);
-      setUser(updatedUser);
+      const updatedUser: UserModel = await getUser(userData.id);
+      setUserData(updatedUser);
       console.log("Contact updated:", response);
     } catch (error) {
       console.error("Failed to update contact:", error);
@@ -142,7 +137,7 @@ const ProfilePage: React.FC = () => {
         </div>
 
         <AboutSection
-          userData={user}
+          userData={user ? user : null}
           onUpdateAbout={handleUpdateAbout}
           onUpdateAvatar={handleUpdateAvatar}
           onUpdateCoverImage={handleUpdateCoverImg}
@@ -150,7 +145,7 @@ const ProfilePage: React.FC = () => {
         ></AboutSection>
 
         <PersonalSection
-          userData={user}
+          userData={userData}
           isEdit={isEdit}
           hanldeUpdatePersonal={handleUpdatePersonal}
         />
@@ -163,12 +158,12 @@ const ProfilePage: React.FC = () => {
           isEdit={isEdit}
           hanleUpdateSkills={handleUpdateSkills}
           listSkills={sampleTopics}
-          userData={user}
+          userData={userData}
         />
 
         <ContactSection
           handleUpdateContact={handleUpdateContact}
-          userData={user}
+          userData={userData}
           isEdit={isEdit}
         />
       </div>

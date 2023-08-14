@@ -1,24 +1,38 @@
+import { IAvatar } from "./../interface/listAvatar";
 import { IUser } from "@/interface/user";
-import { getUserById } from "@/services/userService";
+import { getListAvatars, getUserById } from "@/services/userService";
 import decodeToken from "@/utils/decodeToken";
 import { create } from "zustand";
 interface UserState {
-    user: IUser | null;
-    setUser: () => void;
+  user: IUser | null;
+  listAvatar: IAvatar[] | null;
+  setUser: () => void;
+  getListAvatar: () => void;
 }
 export const useUserStore = create<UserState>((set) => ({
-    user: null,
-    setUser: async () => {
-        try {
-          const token = localStorage.getItem('accessToken');
-          if (token) {
-            const idUser: string = decodeToken(token)['sub'];
-            const response = await getUserById(idUser); 
-            set(()=> ({ user: response.data }));
-          }
-        } catch (error) {
-          console.error('Error setting user:', error);
-        }
-      },
+  user: null,
+  listAvatar: null,
+  setUser: async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        const idUser: string = decodeToken(token)["sub"];
+        const response = await getUserById(idUser);
+        set(() => ({ user: response.data }));
+      }
+    } catch (error) {
+      console.error("Error setting user:", error);
+    }
+  },
+  getListAvatar: async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        const response = await getListAvatars();
+        set(() => ({ listAvatar: response }));
+      }
+    } catch (error) {
+      console.error("Error get list avatar:", error);
+    }
+  },
 }));
-  

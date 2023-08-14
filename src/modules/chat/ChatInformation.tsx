@@ -11,7 +11,7 @@ import { HiOutlineSparkles, HiLogout } from "react-icons/hi";
 import avt1 from "@/assets/avt1.jpg";
 import avt2 from "@/assets/avt2.jpg";
 interface ChatInformationProps {
-  onCancel: ()=> void;
+  onCancel: () => void;
 }
 export const ChatInformation: React.FC<ChatInformationProps> = () => {
   const [activeTabChatInfo, setActiveTabChatInfo] =

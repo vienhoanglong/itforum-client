@@ -26,8 +26,8 @@ function App() {
     <Suspense>
       <Routes>
         <Route path="*" element={<PageNotFound />}></Route>
-        <Route element={<PrivateRouter authenticated={true}/>}>
-          <Route path="/" element={<HomePage />}/>
+        <Route element={<PrivateRouter authenticated={true} />}>
+          <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/notifications" element={<NotificationPage />}></Route>
           <Route
@@ -44,7 +44,10 @@ function App() {
           ></Route>
           <Route path="/post-detail" element={<PostDetailPage />}></Route>
           <Route path="/discuss-detail" element={<DiscussDetailPage />}></Route>
-          <Route path="/managements/posts" element={<ManagePostsPage />}></Route>
+          <Route
+            path="/managements/posts"
+            element={<ManagePostsPage />}
+          ></Route>
           <Route
             path="/managements/discussions"
             element={<ManageDiscussionPage />}
@@ -55,8 +58,8 @@ function App() {
           <Route path="/topics/:type" element={<TopicPage />}></Route>
           <Route path="/chat" element={<ChatPage />}></Route>
         </Route>
-        <Route element={<PrivateRouter authenticated={false}/>}>
-          <Route path="/sign-in" element={<SignInPage />}/>
+        <Route element={<PrivateRouter authenticated={false} />}>
+          <Route path="/sign-in" element={<SignInPage />} />
         </Route>
       </Routes>
     </Suspense>
