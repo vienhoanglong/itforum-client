@@ -55,7 +55,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({ discuss }) => {
           <div className="flex items-center self-start w-full mb-4 md:mr-5 md:mb-0 md:block md:w-auto">
             <div className="flex items-center">
               <a
-                href=""
+                href="/user/1"
                 className="flex items-center mr-3 brightness-90 w-14 h-14"
               >
                 <Avatar

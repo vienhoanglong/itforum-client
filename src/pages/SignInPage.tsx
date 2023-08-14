@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LayoutAuthentication from "../layout/LayoutAuthentication";
 import { Button, ButtonGoogle } from "components/button";
 import { FormGroup } from "components/common";
@@ -9,6 +9,9 @@ import { useForm } from "react-hook-form";
 import useToggleValue from "hooks/useToggleValue";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { login } from "@/services/authService";
+import { useAuthStore } from "@/store/authStore";
+import { useLoadingStore } from "@/store/loadingStore";
 interface SignInFormData {
   email: string;
   password: string;
@@ -22,6 +25,10 @@ const schema = yup.object({
     .min(8, "Password must be 8 characters"),
 });
 export const SignInPage: React.FC = () => {
+  const navigate = useNavigate();
+  const setToken = useAuthStore((state) => state.setToken);
+  const setLoading = useLoadingStore((state) => state.setLoading);
+  const { isLoading } = useLoadingStore();
   const {
     handleSubmit,
     control,
@@ -34,8 +41,17 @@ export const SignInPage: React.FC = () => {
   const { value: showPassword, handleToggleValue: handleTogglePassword } =
     useToggleValue();
 
-  const handleSignIn = (values: SignInFormData) => {
-    console.log(values);
+  const handleSignIn = async (values: SignInFormData) => {
+    try {
+      setLoading(true);
+      const responseSignIn = await login(values.email, values.password);
+      setToken(responseSignIn?.data?.accessToken);
+      setLoading(false);
+      navigate("/");
+    } catch (error) {
+      console.log("Error: ", error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,7 +95,12 @@ export const SignInPage: React.FC = () => {
             </span>
           </div>
         </FormGroup>
-        <Button className="w-full" kind="primary" type="submit">
+        <Button
+          className="w-full"
+          kind="primary"
+          type="submit"
+          isLoading={isLoading}
+        >
           Sign in
         </Button>
       </form>

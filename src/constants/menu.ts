@@ -1,6 +1,13 @@
 import { MenuTypes } from "@/types";
 import { BsViewList } from "react-icons/bs";
-import { HiBell, HiChatAlt2, HiHome, HiUser } from "react-icons/hi";
+import {
+  HiBell,
+  HiChatAlt2,
+  HiHome,
+  HiUser,
+  HiViewBoards,
+  HiViewGrid,
+} from "react-icons/hi";
 const menus: MenuTypes[] = [
   {
     id: "home",
@@ -35,7 +42,7 @@ const menus: MenuTypes[] = [
   {
     id: "topic",
     name: { en: "Topic", vn: "chủ đề" },
-    icon: BsViewList,
+    icon: HiViewGrid,
     path: "/topics",
   },
 ];

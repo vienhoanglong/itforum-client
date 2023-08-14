@@ -1,21 +1,18 @@
-import { Button } from "@/components/button";
 import React, { useState } from "react";
 import {
   HiArrowCircleLeft,
+  HiCheckCircle,
+  HiEye,
   HiFilter,
-  HiPencil,
-  HiPlusCircle,
+  HiOutlineBan,
   HiSearch,
-  HiTrash,
 } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
 import { exampleData, topicColors } from "../constants/global.ts";
-import Modal from "@/components/modal/Modal.tsx";
-import PostAddNewPage from "../modules/post/PostAddNew.tsx";
-import DeletedPostsPage from "../modules/post/DeletedPosts.tsx";
+
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 
-export const ManagePostsPage: React.FC = () => {
+export const ManageReportPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -32,22 +29,6 @@ export const ManagePostsPage: React.FC = () => {
   const offset = currentPage * itemsPerPage;
   const paginatedData = exampleData.slice(offset, offset + itemsPerPage);
 
-  const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
-  const [isModalOpenTrash, setIsModalOpenTrash] = useState(false); // config modal trash
-  const handleAddNewPost = () => {
-    setIsModalOpenAddPost(true);
-  };
-
-  const handleCloseModalAdd = () => {
-    setIsModalOpenAddPost(false);
-  };
-  const handleDeletedPosts = () => {
-    setIsModalOpenTrash(true);
-  };
-
-  const handleCloseModalTrash = () => {
-    setIsModalOpenTrash(false);
-  };
   return (
     <LayoutSecondary>
       <a
@@ -59,7 +40,7 @@ export const ManagePostsPage: React.FC = () => {
       </a>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Manage posts</h4>
+          <h4 className="text-xl font-bold text-darker ">Manage Report</h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
@@ -91,54 +72,18 @@ export const ManagePostsPage: React.FC = () => {
               </div>
             </div>
           </div>
-
-          <div className="w-full md:w-auto grid grid-cols-2 gap-2 justify-end py-4 ">
-            <Button
-              className=" w-full text-white text-xs bg-lighter hover:bg-darker  rounded px-4 shadow-md py-2"
-              kind="primary"
-              type="submit"
-              handle={handleAddNewPost}
-            >
-              {" "}
-              New{" "}
-              <span className="pl-1">
-                <HiPlusCircle size={20} />
-              </span>
-            </Button>
-
-            <Button
-              className=" w-full text-white bg-red3 hover:bg-red2  text-xs rounded shadow-md px-4 py-2"
-              kind="custom"
-              type="submit"
-              handle={handleDeletedPosts}
-            >
-              {" "}
-              Trash{" "}
-              <span className="pl-1">
-                <HiTrash size={20} />
-              </span>
-            </Button>
-          </div>
         </div>
-
-        <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
-          <PostAddNewPage onCancel={handleCloseModalAdd}></PostAddNewPage>
-        </Modal>
-        <Modal isOpen={isModalOpenTrash} onClose={handleCloseModalTrash}>
-          <DeletedPostsPage></DeletedPostsPage>
-        </Modal>
 
         <div className="w-full overflow-x-auto">
           <table className="min-w-full shadow-lg  ">
             <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
               <tr>
                 <th className="py-2 px-4  rounded-tl-md ">SN</th>
-                <th className="py-2 px-4  ">Author</th>
                 <th className="py-2 px-4  ">Title</th>
-                <th className="py-2 px-4  ">Topic</th>
-                <th className="py-2 px-4  ">Views</th>
+                <th className="py-2 px-4  ">Type</th>
                 <th className="py-2 px-4  ">Date</th>
-                <th className="py-2 px-4  ">Publish</th>
+                <th className="py-2 px-4  ">Status</th>
+                <th className="py-2 px-4  ">Review</th>
                 <th className="py-2 px-4 rounded-tr-md ">Action</th>
               </tr>
             </thead>
@@ -159,38 +104,32 @@ export const ManagePostsPage: React.FC = () => {
                       {item.id}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.author}
-                    </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                       {item.title}
                     </td>
-                    <td className="py-2 px-4 border-y text-left border-light0 dark:border-dark3">
-                      {item.topic.map((topic) => (
-                        <div
-                          key={topic.id}
-                          className={`inline-block border-2 px-2 py-1 rounded-full  m-[1px] 
-                        ${topicColors[topic.name] || ""}`}
-                        >
-                          {topic.name}
-                        </div>
-                      ))}
-                    </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.views}
+                      Spam
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                       {item.datePost}
                     </td>
+
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                       {item.publish ? "publish" : "unpublish"}
                     </td>
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
+                      <div className=" flex items-center justify-center">
+                        <a className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200">
+                          <HiEye size={16}></HiEye>
+                        </a>
+                      </div>
+                    </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
-                      <div className="flex items-center">
-                        <div className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200">
-                          <HiPencil size={16} />
+                      <div className="flex items-center justify-center">
+                        <div className="mx-1 p-1 rounded-full text-green-400 hover:bg-mainColor transition-colors duration-200">
+                          <HiCheckCircle size={16} />
                         </div>
-                        <div className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200">
-                          <HiTrash size={16} />
+                        <div className="mx-1 p-1 rounded-full text-red-400 hover:bg-mainColor transition-colors duration-200">
+                          <HiOutlineBan size={16} />
                         </div>
                       </div>
                     </td>
@@ -236,4 +175,4 @@ export const ManagePostsPage: React.FC = () => {
   );
 };
 
-export default ManagePostsPage;
+export default ManageReportPage;
