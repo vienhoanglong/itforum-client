@@ -1,6 +1,7 @@
 import { Button } from "@/components/button";
 import React, { useState } from "react";
 import {
+  HiArrowCircleLeft,
   HiFilter,
   HiPencil,
   HiPlusCircle,
@@ -49,6 +50,13 @@ export const ManageDiscussionPage: React.FC = () => {
   };
   return (
     <LayoutSecondary>
+      <a
+        className="dark:text-light0 bg- rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
+        href="/managements"
+      >
+        <HiArrowCircleLeft className="w-6 h-6 mr-1" />
+        Back to Managements
+      </a>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">Manage discussions</h4>
@@ -138,7 +146,7 @@ export const ManageDiscussionPage: React.FC = () => {
               {paginatedData.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center">
-                    Không có bài viết nào
+                    Không có bài thảo luận nào
                   </td>
                 </tr>
               ) : (

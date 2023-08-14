@@ -1,9 +1,16 @@
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
+
 const ManageNotificationPage = lazy(
   () => import("@/pages/ManageNotificationPage")
 );
+const ManageReportPage = lazy(() => import("@/pages/ManageReportPage"));
+const ManageApprove = lazy(() => import("@/pages/ManageApprovePage"));
+const ManageTopicsPage = lazy(() => import("@/pages/ManageTopicsPage"));
+const ManageUser = lazy(() => import("@/pages/ManageUserPage"));
 const TopicPage = lazy(() => import("@/pages/TopicPage"));
+const UserPage = lazy(() => import("@/pages/UserPage"));
+const DashBoardPage = lazy(() => import("@/pages/DashBoardPage"));
 const TopicDetail = lazy(() => import("@/modules/topic/TopicDetail"));
 const ListNotificationPage = lazy(() => import("@/pages/ListNotificationPage"));
 const NotificationPage = lazy(() => import("@/pages/NotificationPage"));
@@ -27,6 +34,7 @@ function App() {
         <Route path="*" element={<PageNotFound />}></Route>
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route path="/user/:id" element={<UserPage />}></Route>
         <Route path="/notifications" element={<NotificationPage />}></Route>
         <Route
           path="/notifications-detail"
@@ -46,8 +54,21 @@ function App() {
               path="/:slug"
               element={<PostDetailsPage></PostDetailsPage>}
             ></Route> */}
-
+        <Route
+          path="/managements/report"
+          element={<ManageReportPage />}
+        ></Route>
+        <Route path="/managements/approve" element={<ManageApprove />}></Route>
         <Route path="/managements/posts" element={<ManagePostsPage />}></Route>
+        <Route
+          path="/managements/topics"
+          element={<ManageTopicsPage />}
+        ></Route>
+        <Route
+          path="/managements/dashboard"
+          element={<DashBoardPage />}
+        ></Route>
+        <Route path="/managements/user" element={<ManageUser />}></Route>
         <Route
           path="/managements/discussions"
           element={<ManageDiscussionPage />}
