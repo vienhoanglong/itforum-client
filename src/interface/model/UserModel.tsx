@@ -1,4 +1,5 @@
-import IContactLink from "../API/IContactLinks";
+import IContact from "../API/IContact";
+
 import SkillModel from "./SkillModel";
 
 interface UserModel {
@@ -15,7 +16,7 @@ interface UserModel {
   email: string;
   address: string;
   phone: string;
-  links: IContactLink[];
+  links: IContact[];
 }
 
 export default UserModel;

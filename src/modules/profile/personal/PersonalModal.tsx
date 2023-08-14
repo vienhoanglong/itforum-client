@@ -1,6 +1,8 @@
 import { Button } from "@/components/button";
+import { Label } from "@/components/label";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import IUser from "@/interface/user";
+import convertDateTime from "@/utils/helper";
 import React, { useEffect, useState } from "react";
 
 interface PersonalModalProps {
@@ -8,7 +10,7 @@ interface PersonalModalProps {
   onSaveChanges: (userDataUpdate: IUserUpdate, id: string) => void;
 }
 interface InputErrors {
-  birthday: string;
+  birthDay: string;
   class: string;
   major: string;
   fullName: string;
@@ -18,14 +20,14 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
   onSaveChanges,
 }) => {
   const [newUserData, setNewUserData] = useState<IUserUpdate>({
-    birthday: userData?.birthDay,
+    birthDay: userData?.birthDay,
     class: userData?.class,
     major: userData?.major,
     fullName: userData?.fullName,
   });
 
   const [inputErrors, setInputErrors] = useState<InputErrors>({
-    birthday: "",
+    birthDay: "",
     class: "",
     major: "",
     fullName: "",
@@ -33,7 +35,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
 
   useEffect(() => {
     const newInputErrors: InputErrors = {
-      birthday: "",
+      birthDay: "",
       class: "",
       major: "",
       fullName: "",
@@ -46,7 +48,10 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
     setInputErrors(newInputErrors);
   }, [newUserData]);
   const handleSaveChanges = () => {
-    onSaveChanges(newUserData, userData ? userData._id : "");
+    onSaveChanges(
+      newUserData,
+      userData ? (userData._id ? userData._id : "") : ""
+    );
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,75 +63,105 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
   };
 
   return (
-    <form className="w-auto h-[300px] flex flex-col">
-      <div className="mb-4 flex justify-between items-center">
-        <label
+    <form className="w-auto h-auto flex flex-col">
+      <div className="mb-4 flex flex-col gap-1 justify-start">
+        <Label
           htmlFor="fullName"
           className="block text-xs dark:text-white font-semibold mr-2"
         >
           Full Name:
-        </label>
-        <input
-          type="text"
-          id="fullName"
-          name="fullName"
-          value={newUserData.fullName}
-          onChange={handleChange}
-          className={`border rounded-md px-2 py-1 text-xs ${
-            inputErrors.fullName ? "border-red-500" : "border-gray-300"
-          }`}
-        />
+        </Label>
+        <div className="flex justify-start items-center">
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            value={newUserData.fullName}
+            onChange={handleChange}
+            className={`border rounded-md px-2 py-1 text-xs ${
+              inputErrors.fullName ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+        </div>
         {inputErrors.fullName && (
-          <span className="text-red-500 text-xs">{inputErrors.fullName}</span>
+          <div className="text-red-500 text-xs w-full h-auto text-left">
+            Full name is {inputErrors.fullName}
+          </div>
         )}
       </div>
-      <div className="mb-4 flex justify-between items-center">
-        <label
-          htmlFor="birthday"
+
+      <div className="mb-4 flex flex-col justify-start gap-1  w-full">
+        <Label
+          htmlFor="birthDay"
           className="block text-xs dark:text-white font-semibold mr-2"
         >
           Birthday:
-        </label>
-        <input
-          type="text"
-          id="birthday"
-          name="birthday"
-          value={newUserData.birthday}
-          onChange={handleChange}
-          className="border border-gray-300 rounded-md px-2 py-1 text-xs"
-        />
+        </Label>
+        <div className="flex justify-start items-center">
+          <input
+            type="date"
+            id="birthDay"
+            name="birthDay"
+            value={
+              newUserData.birthDay &&
+              convertDateTime(newUserData.birthDay.toString())
+            }
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md px-2 py-1 text-xs"
+          />
+        </div>
+
+        {inputErrors.birthDay && (
+          <div className="text-red-500 text-xs w-full h-auto text-left">
+            Birthday is {inputErrors.birthDay}
+          </div>
+        )}
       </div>
-      <div className="mb-4 flex justify-between  items-center">
-        <label
+      <div className="mb-4 flex  flex-col  justify-start gap-1 ">
+        <Label
           htmlFor="class"
           className="block text-xs dark:text-white font-semibold mr-2"
         >
           Class:
-        </label>
-        <input
-          type="text"
-          id="class"
-          name="class"
-          value={newUserData.class}
-          onChange={handleChange}
-          className="border border-gray-300 rounded-md px-2 py-1 text-xs"
-        />
+        </Label>
+        <div className="flex justify-start items-center">
+          <input
+            type="text"
+            id="class"
+            name="class"
+            value={newUserData.class}
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md px-2 py-1 text-xs"
+          />
+        </div>
+        {inputErrors.class && (
+          <div className="text-red-500 text-xs w-full h-auto text-left">
+            Class is {inputErrors.class}
+          </div>
+        )}
       </div>
-      <div className="mb-4 flex justify-between items-center">
-        <label
+      <div className="mb-4 flex  flex-col  justify-start gap-1">
+        <Label
           htmlFor="major"
           className="block text-xs dark:text-white font-semibold mr-2"
         >
           Major:
-        </label>
-        <input
-          type="text"
-          id="major"
-          name="major"
-          value={newUserData.major}
-          onChange={handleChange}
-          className="border border-gray-300 rounded-md px-2 py-1 text-xs"
-        />
+        </Label>
+        <div className="flex justify-start items-center">
+          <input
+            type="text"
+            id="major"
+            name="major"
+            value={newUserData.major}
+            onChange={handleChange}
+            className="border border-gray-300 rounded-md px-2 py-1 text-xs"
+          />
+        </div>
+        {inputErrors.major && (
+          <div className="text-red-500 text-xs w-full h-auto text-left">
+            Major is {inputErrors.major}
+          </div>
+        )}
       </div>
       <div className="flex justify-end">
         {Object.values(inputErrors).some((error) => error) ? (
@@ -134,8 +169,9 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
             type="submit"
             kind="primary"
             size="small"
-            className="bg-mainColor text-xs text-white px-3 py-2 rounded-md"
+            className="bg-dark3 text-xs text-white px-3 py-2 rounded-md"
             handle={handleSaveChanges}
+            disable
           >
             Save Changes
           </Button>

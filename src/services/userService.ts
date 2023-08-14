@@ -36,7 +36,6 @@ export const UpdateDataUser = async (
     if (!token) {
       throw new Error("Access token not found");
     }
-
     const response = await axios.patch(
       `https://ict-forum-server.onrender.com/user/${id}`,
       userData,
@@ -47,7 +46,7 @@ export const UpdateDataUser = async (
         },
       }
     );
-
+    return response.data;
     console.log("Update response:", response.data);
   } catch (error) {
     console.error("Error sending update:", error);

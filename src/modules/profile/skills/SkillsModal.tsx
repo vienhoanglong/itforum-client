@@ -3,15 +3,15 @@ import Select from "react-select";
 import { Label } from "@/components/label";
 import { customStyles } from "@/constants/styleReactSelect";
 import { Button } from "@/components/button";
-import SkillModel from "@/interface/model/SkillModel";
-import UserModel from "@/interface/model/UserModel";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import { colorSelectTopic } from "@/constants/global";
+import Topic from "@/interface/topic";
+import IUser from "@/interface/user";
 
 interface SkillsModalProps {
-  listSkills: SkillModel[];
-  userData: UserModel;
-  onSaveChanges: (newSkills: IUserUpdate) => void;
+  listSkills: Topic[] | null;
+  userData: IUser | null;
+  onSaveChanges: (newSkills: IUserUpdate, id: string) => void;
 }
 
 const SkillsModal: React.FC<SkillsModalProps> = ({
@@ -19,32 +19,41 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
   userData,
   onSaveChanges,
 }) => {
-  const [newSelectedSkills, setNewSelectedSkills] =
-    useState<UserModel>(userData);
+  const [newSelectedSkills, setNewSelectedSkills] = useState<IUser | null>(
+    userData || null
+  );
 
   const handleSaveChanges = () => {
-    const newSkills: IUserUpdate = {
-      skills: newSelectedSkills.skills,
-    };
-    onSaveChanges(newSkills);
+    const newSkills: IUserUpdate = {};
+    if (newSelectedSkills !== null && newSelectedSkills.skill !== null) {
+      newSkills.skill = newSelectedSkills.skill;
+    }
+    onSaveChanges(
+      newSkills,
+      userData ? (userData._id ? userData._id : "") : ""
+    );
     console.log(newSkills);
   };
 
   const handleSkillChange = (selectedOptions: any) => {
     const newSkills = selectedOptions.map((option: any) => ({
       id: option.value,
-      name: option.label,
     }));
-    const updatedUserData: UserModel = {
+    const updatedSkill = [
+      ...(newSelectedSkills?.skill || []), // Giữ nguyên các skill ban đầu
+      ...newSkills, // Thêm các skill mới
+    ];
+
+    const updatedUserData: IUserUpdate | null = {
       ...newSelectedSkills,
-      skills: newSkills,
+      skill: updatedSkill,
     };
 
     setNewSelectedSkills(updatedUserData);
   };
 
-  const selectOptions = listSkills.map((skill) => ({
-    value: skill.id,
+  const selectOptions = listSkills?.map((skill) => ({
+    value: skill._id,
     label: skill.name,
     color: `${colorSelectTopic[skill.color as keyof typeof colorSelectTopic]}`,
   }));
@@ -60,10 +69,8 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
           placeholder="Choose skill..."
           options={selectOptions}
           styles={customStyles(isDarkMode)}
-          value={newSelectedSkills.skills.map((skill) => ({
-            value: skill.id,
-            label: skill.name,
-            color: skill.color,
+          value={newSelectedSkills?.skill?.map((skill) => ({
+            value: skill,
           }))}
           onChange={handleSkillChange}
           className=" rounded-[12px] text-xs dark:bg-dark0 shadow-inner"

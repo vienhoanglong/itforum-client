@@ -428,6 +428,12 @@ export const exampleSkillUser = [
     description: "React",
     color: "#61DAFB",
   },
+  {
+    id: "3",
+    name: "Nodejs",
+    description: "Nodejs",
+    color: "#61DAFB",
+  },
 ];
 
 export const topicColors: { [key: string]: string } = {
@@ -675,13 +681,25 @@ export const dataUser = [
         id: 1,
         name: "javascript",
         description: "JavaScript",
-        color: "#F7DF1E",
+        color: "yellow",
       },
       {
         id: 2,
         name: "reactjs",
         description: "React",
-        color: "#61DAFB",
+        color: "violet",
+      },
+      {
+        id: 3,
+        name: "nodejs",
+        description: "nodejs",
+        color: "green",
+      },
+      {
+        id: 4,
+        name: "c-sharp",
+        description: "c-sharp",
+        color: "green",
       },
     ],
     email: "hoanglong@example.com",
@@ -995,11 +1013,11 @@ export const colorTopic = {
 
 export const colorSelectTopic = {
   yellow: `#F7DF1E`,
-  blue: `bg-blue-400/25 text-blue-400 border-blue-400`,
-  violet: `bg-violet-400/25 text-violet-400 border-violet-400`,
+  blue: `#F7DF1E`,
+  violet: `#F7DF1E`,
   orange: `bg-orange-400/25 text-orange-400 border-orange-400`,
   red: `bg-red-400/25 text-red-400 border-red-400`,
-  green: `bg-green-400/25 text-green-400 border-green-400`,
+  green: `#F7DF1E`,
   sky: `bg-sky-400/25 text-sky-400 border-sky-400`,
   amber: `bg-amber-400/25 text-amber-400 border-amber-400`,
   teal: `bg-teal-400/25 text-teal-400 border-teal-400`,

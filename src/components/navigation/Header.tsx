@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Container } from "../common";
 import { AvatarImage } from "../image";
 import {
@@ -17,10 +17,10 @@ import { colorsAvatar } from "@/constants/global";
 export const Header: React.FC = () => {
   const { user, setUser } = useUserStore();
 
-  useEffect(() => {
+  useMemo(() => {
     setUser();
+    console.log(user);
   }, [setUser]);
-  console.log(user);
 
   const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
   const handleAddNewPost = () => {

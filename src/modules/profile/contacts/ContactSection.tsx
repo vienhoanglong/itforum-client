@@ -2,12 +2,12 @@ import Modal from "@/components/modal/Modal";
 import React, { useState } from "react";
 import ContactModal from "./ContactModal";
 import { HiPencil } from "react-icons/hi";
-import UserModel from "@/interface/model/UserModel";
 import IUserUpdate from "@/interface/API/IUserUpdate";
+import IUser from "@/interface/user";
 
 interface ContactSectionProps {
-  handleUpdateContact: (updateContact: IUserUpdate) => void;
-  userData: UserModel;
+  handleUpdateContact: (updateContact: IUserUpdate, id: string) => void;
+  userData: IUser | null;
   isEdit: boolean;
 }
 
@@ -24,7 +24,10 @@ const ContactSection: React.FC<ContactSectionProps> = ({
     setIsOpenModalContact(false);
   };
   const hanleSaveContact = (updateContact: IUserUpdate) => {
-    handleUpdateContact(updateContact);
+    handleUpdateContact(
+      updateContact,
+      userData ? (userData._id ? userData._id : "") : ""
+    );
     handleClose();
   };
 
@@ -32,15 +35,15 @@ const ContactSection: React.FC<ContactSectionProps> = ({
     <div className="dark:bg-dark2 bg-light3 shadow-sm rounded-lg p-4 relative">
       <h2 className="text-base font-bold mb-4">Contact</h2>
       <ul className="">
+        {userData?.address && <li>Address: {userData.address}</li>}
         <li>
           Email:{" "}
           <a href="https://example.com" className="text-blue-500">
-            {userData.email}
+            {userData?.email}
           </a>
         </li>
-        <li>Address: {userData.address}</li>
-        <li>Phone: {userData.phone}</li>
-        {userData.links.map((link) => (
+        {userData?.phoneNumber && <li>Phone: {userData.phoneNumber}</li>}
+        {userData?.links?.map((link) => (
           <li key={link.id}>
             {link.name}: {""}
             <a href={link.link} className="text-blue-500">

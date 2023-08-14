@@ -1,5 +1,6 @@
 import SkillModel from "../model/SkillModel";
-import IContactLink from "./IContactLinks";
+import Topic from "../topic";
+import IContact from "./IContact";
 
 interface IUserUpdate {
   id?: string;
@@ -7,19 +8,19 @@ interface IUserUpdate {
   fullName?: string;
   avatar?: string;
   color?: string;
-  birthday?: string;
+  birthDay?: Date;
   class?: string;
   major?: string;
   coverImage?: string;
   googleId?: string;
   desc?: string;
-  skills?: SkillModel[];
+  skill?: string[];
   email?: string;
-  address?: string;
-  phone?: string;
+  phoneNumber?: string;
   role?: number;
   ban?: boolean;
-  links?: IContactLink[];
+  address?: string;
+  links?: IContact[];
 }
 
 export default IUserUpdate;

@@ -114,8 +114,12 @@ const AboutSection: React.FC<AboutSectionProps> = ({
     const newAvatarUpdate: IUserUpdate = {
       avatar: selectedAvatar ? selectedAvatar : userData ? userData.avatar : "",
       color: selectedColor ? selectedColor : userData ? userData.color : "",
+      //role:2
     };
-    onUpdateAvatar(newAvatarUpdate, userData ? userData._id : "");
+    onUpdateAvatar(
+      newAvatarUpdate,
+      userData ? (userData._id ? userData._id : "") : ""
+    );
     handleCloseModal();
   };
   //update new about & full name
@@ -126,7 +130,10 @@ const AboutSection: React.FC<AboutSectionProps> = ({
       newAboutUpdate.desc = newAbout;
     }
 
-    onUpdateAbout(newAboutUpdate, userData ? userData._id : "");
+    onUpdateAbout(
+      newAboutUpdate,
+      userData ? (userData._id ? userData._id : "") : ""
+    );
     handleCloseModal();
   };
   return (
@@ -198,7 +205,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
               >
                 Choose your avatar:
               </Label>
-              <div className="flex flex-wrap max-w-[300px] gap-2">
+              <div className="flex flex-wrap max-w-[340px] gap-2">
                 {listAvatar &&
                   listAvatar.map((avatar, index) => (
                     <div
@@ -292,7 +299,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
             <BsEyeFill />
             <span className="ml-1">
               {userData
-                ? userData.followers.length != 0
+                ? userData.followers?.length != 0
                   ? userData.followers
                   : "0"
                 : ""}{" "}

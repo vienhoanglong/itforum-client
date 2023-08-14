@@ -5,6 +5,7 @@ import { Label } from "@/components/label";
 import PersonalModal from "./PersonalModal";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import IUser from "@/interface/user";
+import convertDateTime from "@/utils/helper";
 
 interface ProfileSectionProps {
   userData: IUser | null;
@@ -18,7 +19,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   hanldeUpdatePersonal,
 }) => {
   const [isUpdatePersonal, setUpdatePersonal] = useState(false);
-
+  const formatDate = "MM-DD-YYYY";
   const handleEditPersonal = () => {
     setUpdatePersonal(true);
   };
@@ -53,14 +54,24 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               <label htmlFor="title" className="block text-xs font-semibold">
                 Birthday:
               </label>
-              <div>{userData?.birthDay}</div>
+              <div>
+                {userData?.birthDay &&
+                  convertDateTime(userData.birthDay.toString(), formatDate)}
+              </div>
             </div>
-            <div>
-              <label htmlFor="title" className="block text-xs font-semibold">
-                Class:
-              </label>
-              <div>{userData?.class}</div>
-            </div>
+            {userData
+              ? userData.role === 2 && (
+                  <div>
+                    <label
+                      htmlFor="title"
+                      className="block text-xs font-semibold"
+                    >
+                      Class:
+                    </label>
+                    <div>{userData?.class}</div>
+                  </div>
+                )
+              : null}
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
                 Gender:
@@ -78,7 +89,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
                     >
                       ID:
                     </label>
-                    <div>{userData?.googleId}</div>
+                    <div>{userData ? userData.email?.split("@")[0] : ""}</div>
                   </div>
                 )
               : null}
