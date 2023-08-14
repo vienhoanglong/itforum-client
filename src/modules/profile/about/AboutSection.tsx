@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiPencil } from "react-icons/hi";
 import Modal from "@/components/modal/Modal";
 import { Label } from "@/components/label";
@@ -8,27 +8,13 @@ import UploadImage from "@/components/uploadImage/UploadImage";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import { IUser } from "@/interface/user";
 import { useUserStore } from "@/store/userStore";
+import { colorsAvatar } from "@/constants/global";
 
-const colors = [
-  { color: "bg-yellow-500", value: "Value 1" },
-  { color: "bg-blue-500", value: "Value 2" },
-  { color: "bg-orange-500", value: "Value 3" },
-  { color: "bg-red-500", value: "Value 3" },
-  { color: "bg-green-500", value: "Value 3" },
-  { color: "bg-violet-500", value: "Value 3" },
-  { color: "bg-purple-500", value: "Value 1" },
-  { color: "bg-cyan-500", value: "Value 2" },
-  { color: "bg-emerald-500", value: "Value 3" },
-  { color: "bg-lime-500", value: "Value 3" },
-  { color: "bg-teal-500", value: "Value 3" },
-  { color: "bg-amber-500", value: "Value 3" },
-  { color: "bg-sky-500", value: "Value 3" },
-];
 interface AboutSectionProps {
   userData: IUser | null;
-  onUpdateAbout: (newAbout: IUserUpdate) => void;
+  onUpdateAbout: (newAbout: IUserUpdate, id: string) => void;
   onUpdateCoverImage: (newCoverImage: IUserUpdate) => void;
-  onUpdateAvatar: (newAvatar: IUserUpdate) => void;
+  onUpdateAvatar: (newAvatar: IUserUpdate, id: string) => void;
   isEdit: boolean;
 }
 
@@ -42,18 +28,49 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   const [isUpdatingAbout, setIsUpdatingAbout] = useState(false);
   const [isUpdatingImg, setIsUpdatingImg] = useState(false);
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
-  const [newAbout, setNewAbout] = useState("");
   const [newCoverImg, setNewCoverImg] = useState("");
-  const [newAvatar, setNewAvatar] = useState("");
+
   const [uploadComplete, setUploadComplete] = useState(false);
 
+  const [newAbout, setNewAbout] = useState(userData ? userData.desc : "");
   const { listAvatar, getListAvatar } = useUserStore();
+  const getColorAvatar = userData
+    ? colorsAvatar.find((item) => item.color === userData.color)
+    : null;
+  const colorAvatar = getColorAvatar ? getColorAvatar.value : "";
+  const [selectedAvatar, setSelectedAvatar] = useState(
+    userData ? userData.avatar : null
+  );
+  const [selectedColor, setSelectedColor] = useState(
+    userData ? userData.color : null
+  );
+
+  const handleSelectAvatar = (avatar: string) => {
+    if (selectedAvatar === avatar) {
+      setSelectedAvatar(null);
+    } else {
+      setSelectedAvatar(avatar);
+    }
+  };
+
+  useEffect(() => {
+    setNewAbout(userData ? userData.desc : "");
+  }, [userData]);
+
+  const handleSelectColor = (color: string) => {
+    if (selectedColor === color) {
+      setSelectedColor(null);
+    } else {
+      setSelectedColor(color);
+    }
+  };
 
   const handleDeleteImage = () => {
     setUploadComplete(false);
   };
   const handleOpenModalAbout = () => {
     setIsUpdatingAbout(true);
+    console.log("newAbout", newAbout);
   };
   const handleOpenModalImg = () => {
     setIsUpdatingImg(true);
@@ -68,31 +85,19 @@ const AboutSection: React.FC<AboutSectionProps> = ({
     setIsUpdatingImg(false);
     setIsUpdatingAvatar(false);
     setUploadComplete(false);
+    setSelectedColor(null);
+    setSelectedAvatar(null);
   };
 
   const handleAboutChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewAbout(e.target.value);
   };
+
   const handleCoverImageUpload = (imageUrl: string) => {
     // handle upload image
     setNewCoverImg(imageUrl);
     setUploadComplete(true);
     console.log("Cover Image uploaded:", imageUrl);
-  };
-  const handleAvatarUpload = (imageUrl: string) => {
-    // handle upload image
-    setNewAvatar(imageUrl);
-    setUploadComplete(true);
-    console.log("Avatar Image uploaded:", imageUrl);
-  };
-
-  //update new about
-  const handleUpdateAbout = () => {
-    const newAboutUpdate: IUserUpdate = {
-      about: newAbout,
-    };
-    onUpdateAbout(newAboutUpdate);
-    handleCloseModal();
   };
 
   //Update Cover Img
@@ -107,13 +112,23 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   //Update avatar
   const handleUpdateAvatar = () => {
     const newAvatarUpdate: IUserUpdate = {
-      avatar: newAvatar,
+      avatar: selectedAvatar ? selectedAvatar : userData ? userData.avatar : "",
+      color: selectedColor ? selectedColor : userData ? userData.color : "",
     };
-    onUpdateAvatar(newAvatarUpdate);
-    setUploadComplete(false);
+    onUpdateAvatar(newAvatarUpdate, userData ? userData._id : "");
     handleCloseModal();
   };
+  //update new about & full name
+  const handleUpdateAbout = () => {
+    const newAboutUpdate: IUserUpdate = {};
 
+    if (newAbout !== "") {
+      newAboutUpdate.desc = newAbout;
+    }
+
+    onUpdateAbout(newAboutUpdate, userData ? userData._id : "");
+    handleCloseModal();
+  };
   return (
     <div className="dark:bg-dark2 bg-light3 shadow-sm flex flex-col rounded-t-xl rounded-b-lg mb-4">
       <div className="w-full h-[150px] relative">
@@ -163,7 +178,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
           <img
             src={userData ? userData.avatar : ""}
             alt="Avatar"
-            className="relative bg-white  w-full h-full dark:brightness-90 object-cover border-solid border-4 dark:border-dark2 align-middle rounded-full"
+            className={`relative ${colorAvatar}  w-full h-full dark:brightness-90 object-cover border-solid border-4 dark:border-dark2 align-middle rounded-full`}
           />
           {isEdit ? (
             <button
@@ -188,15 +203,20 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                   listAvatar.map((avatar, index) => (
                     <div
                       key={index}
-                      className=" inline-block rounded-lg border-[1px] border-dark3 cursor-pointer"
+                      onClick={() => handleSelectAvatar(avatar.url)}
+                      className="inline-flex justify-center items-center rounded-lg border-[1px] border-dark3 cursor-pointer"
+                      style={{ width: "50px", height: "50px" }}
                     >
                       <img
                         src={avatar.url}
                         alt={avatar.name}
-                        width={50}
-                        height={50}
-                        className=" object-cover rounded-lg"
-                      ></img>
+                        className={`object-cover rounded-lg ${
+                          selectedAvatar === avatar.url
+                            ? "border-2 border-blue-500"
+                            : ""
+                        }`}
+                        style={{ width: "100%", height: "100%" }}
+                      />
                     </div>
                   ))}
               </div>
@@ -208,22 +228,25 @@ const AboutSection: React.FC<AboutSectionProps> = ({
               >
                 Choose color
               </Label>
-              <div className=" flex flex-wrap max-w-[300px] gap-1 w-auto cursor-pointer ">
-                {colors.map((colorInfo, index) => (
+              <div className=" flex flex-wrap max-w-[300px] gap-1 w-auto ">
+                {colorsAvatar.map((colorInfo, index) => (
                   <div
                     key={index}
-                    className={`w-[30px] h-[30px] rounded-lg  ${colorInfo.color}`}
+                    className={`w-[30px] h-[30px] rounded-lg ${
+                      colorInfo.value
+                    } cursor-pointer ${
+                      selectedColor === colorInfo.color
+                        ? "border-2 border-blue-800"
+                        : ""
+                    }`}
+                    onClick={() => handleSelectColor(colorInfo.color)}
                   />
                 ))}
               </div>
             </div>
 
-            {/* <UploadImage
-              onImageUpload={handleAvatarUpload}
-              onDeleteImage={handleDeleteImage}
-            ></UploadImage>
             <div className="flex justify-end">
-              {uploadComplete ? (
+              {selectedAvatar || selectedColor ? (
                 <Button
                   size="small"
                   kind="primary"
@@ -234,17 +257,47 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                   Submit
                 </Button>
               ) : null}
-            </div> */}
+            </div>
           </Modal>
         </div>
         <div className="flex justify-between items-center flex-wrap mt-10">
           <div className=" px-4 min-w-[170px]">
-            <h1 className=" text-base font-bold mt-4">Tran Hoang Long</h1>
-            <p className="">Student</p>
+            <h1 className="text-base font-bold mt-4">
+              {userData
+                ? userData.fullName
+                  ? userData.fullName
+                  : userData.username
+                : ""}
+            </h1>
+            <p className="">
+              {userData
+                ? (() => {
+                    switch (userData.role) {
+                      case 0:
+                        return "Admin";
+                      case 1:
+                        return "Teacher";
+                      case 2:
+                        return "Student";
+                      case 3:
+                        return "Company";
+                      default:
+                        return "";
+                    }
+                  })()
+                : ""}
+            </p>
           </div>
           <div className="flex items-center mx-4 mt-2">
             <BsEyeFill />
-            <span className="ml-1">1000 follower</span>
+            <span className="ml-1">
+              {userData
+                ? userData.followers.length != 0
+                  ? userData.followers
+                  : "0"
+                : ""}{" "}
+              follower
+            </span>
           </div>
         </div>
       </div>
@@ -263,25 +316,32 @@ const AboutSection: React.FC<AboutSectionProps> = ({
 
         <Modal isOpen={isUpdatingAbout} onClose={handleCloseModal}>
           <div className="flex flex-col">
-            <Label htmlFor="about" className="block text-xs font-semibold mb-2">
-              About me:
-            </Label>
-            <textarea
-              id="about"
-              className="text-xs sm:w-[400px] sm:h-[200px] w-[250px] h-[100px] overflow-y-hidden p-2 break-words border rounded dark:bg-dark2 dark:text-light0"
-              placeholder="Typing about you..."
-              value={newAbout}
-              onChange={handleAboutChange}
-            ></textarea>
-            <div className="flex justify-end">
-              <Button
-                size="small"
-                kind="primary"
-                className="text-xs mt-2"
-                handle={handleUpdateAbout}
+            <div className="flex flex-col">
+              <Label
+                htmlFor="about"
+                className="block text-xs font-semibold mb-2"
               >
-                Submit
-              </Button>
+                About me:
+              </Label>
+              <textarea
+                id="about"
+                className="text-xs sm:w-[400px] sm:h-[200px] w-[250px] h-[100px] overflow-y-hidden p-2 break-words border rounded dark:bg-dark2 dark:text-light0"
+                placeholder="Typing about you..."
+                value={newAbout}
+                onChange={handleAboutChange}
+              ></textarea>
+            </div>
+            <div className="flex justify-end">
+              {newAbout && (
+                <Button
+                  size="small"
+                  kind="primary"
+                  className="text-xs mt-2"
+                  handle={handleUpdateAbout}
+                >
+                  Submit
+                </Button>
+              )}
             </div>
           </div>
         </Modal>

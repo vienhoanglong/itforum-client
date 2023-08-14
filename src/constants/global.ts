@@ -1459,3 +1459,19 @@ export const exampleDataDocument = [
     status: true,
   },
 ];
+export const colorsAvatar = [
+  { value: "bg-yellow-500", color: "yellow" },
+  { value: "bg-blue-500", color: "blue" },
+  { value: "bg-orange-500", color: "orange" },
+  { value: "bg-red-500", color: "red" },
+  { value: "bg-green-500", color: "green" },
+  { value: "bg-violet-500", color: "violet" },
+  { value: "bg-purple-500", color: "purple" },
+  { value: "bg-cyan-500", color: "cyan" },
+  { value: "bg-emerald-500", color: "emerald" },
+  { value: "bg-lime-500", color: "lime" },
+  { value: "bg-teal-500", color: "teal" },
+  { value: "bg-amber-500", color: "amber" },
+  { value: "bg-sky-500", color: "sky" },
+  { value: "bg-white", color: "white" },
+];

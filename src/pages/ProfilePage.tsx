@@ -12,13 +12,12 @@ import {
   updateContact,
   updatePersonal,
   updateSkill,
-  updateAbout,
   updateCoverImage,
-  updateAvatar,
 } from "@/services/profileService";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import UserModel from "@/interface/model/UserModel";
 import { useUserStore } from "@/store/userStore";
+import { UpdateDataUser } from "@/services/userService";
 
 const ProfilePage: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -36,18 +35,38 @@ const ProfilePage: React.FC = () => {
     setUser();
   }, []);
 
-  const handleUpdateAvatar = async (updatedAvatar: IUserUpdate) => {
+  const handleUpdateAvatar = async (updatedAvatar: IUserUpdate, id: string) => {
     try {
-      const response = await updateAvatar(updatedAvatar);
-      //get new data user after updated
-      const updatedUser: UserModel = await getUser(userData.id);
-      setUserData(updatedUser);
-
+      const response = await UpdateDataUser(updatedAvatar, id);
+      setUser();
       console.log("Avatar image  updated:", response);
     } catch (error) {
       console.error("Failed to update Avatar image:", error);
     }
     console.log("Avatar image updated:", updatedAvatar);
+  };
+  const handleUpdateAbout = async (updatedAbout: IUserUpdate, id: string) => {
+    try {
+      const response = await UpdateDataUser(updatedAbout, id);
+      setUser();
+      console.log("About info updated:", response);
+    } catch (error) {
+      console.error("Failed to update About info:", error);
+    }
+    console.log("About info updated:", updatedAbout);
+  };
+  const handleUpdatePersonal = async (
+    updatedPersonal: IUserUpdate,
+    id: string
+  ) => {
+    try {
+      const response = await UpdateDataUser(updatedPersonal, id);
+      setUser();
+      console.log("Personal info updated:", response);
+    } catch (error) {
+      console.error("Failed to update Personal info:", error);
+    }
+    console.log("Personal info updated:", updatedPersonal);
   };
 
   const handleUpdateCoverImg = async (updatedCoverImg: IUserUpdate) => {
@@ -62,34 +81,6 @@ const ProfilePage: React.FC = () => {
       console.error("Failed to update Cover image:", error);
     }
     console.log("Cover image updated:", updatedCoverImg);
-  };
-  const handleUpdateAbout = async (updatedAbout: IUserUpdate) => {
-    try {
-      const response = await updateAbout(updatedAbout);
-      //get new data user after updated
-      const updatedUser: UserModel = await getUser(userData.id);
-      setUserData(updatedUser);
-
-      console.log("About info updated:", response);
-    } catch (error) {
-      console.error("Failed to update About info:", error);
-    }
-    console.log("About info updated:", updatedAbout);
-  };
-
-  const handleUpdatePersonal = async (updatedPersonal: IUserUpdate) => {
-    try {
-      const response = await updatePersonal(updatedPersonal);
-
-      //get new data user after updated
-      const updatedUser: UserModel = await getUser(userData.id);
-      setUserData(updatedUser);
-
-      console.log("Personal info updated:", response);
-    } catch (error) {
-      console.error("Failed to update Personal info:", error);
-    }
-    console.log("Personal info updated:", updatedPersonal);
   };
 
   const handleUpdateSkills = async (updatedSkills: IUserUpdate) => {
@@ -145,13 +136,17 @@ const ProfilePage: React.FC = () => {
         ></AboutSection>
 
         <PersonalSection
-          userData={userData}
+          userData={user}
           isEdit={isEdit}
           hanldeUpdatePersonal={handleUpdatePersonal}
         />
 
-        {/* is company */}
-        <AccountSection isEdit={isEdit} />
+        {/* is company or admin */}
+        {user ? (
+          user.role === 4 || user.role === 0 ? (
+            <AccountSection isEdit={isEdit} />
+          ) : null
+        ) : null}
 
         {/* is student */}
         <SkillsSection

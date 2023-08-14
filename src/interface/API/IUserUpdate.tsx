@@ -4,17 +4,21 @@ import IContactLink from "./IContactLinks";
 interface IUserUpdate {
   id?: string;
   follower?: number;
-  fullname?: string;
+  fullName?: string;
   avatar?: string;
+  color?: string;
   birthday?: string;
   class?: string;
   major?: string;
   coverImage?: string;
-  about?: string;
+  googleId?: string;
+  desc?: string;
   skills?: SkillModel[];
   email?: string;
   address?: string;
   phone?: string;
+  role?: number;
+  ban?: boolean;
   links?: IContactLink[];
 }
 
