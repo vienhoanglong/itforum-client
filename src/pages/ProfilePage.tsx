@@ -136,8 +136,8 @@ const ProfilePage: React.FC = () => {
 
         {/* is company or admin */}
         {user ? (
-          user.role === 4 || user.role === 0 ? (
-            <AccountSection isEdit={isEdit} />
+          user.role === 3 || user.role === 0 ? (
+            <AccountSection userData={user} isEdit={isEdit} />
           ) : null
         ) : null}
 

@@ -154,7 +154,9 @@ const AboutSection: React.FC<AboutSectionProps> = ({
     <div className="dark:bg-dark2 bg-light3 shadow-sm flex flex-col rounded-t-xl rounded-b-lg mb-4">
       <div className="w-full h-[150px] relative">
         <img
-          src={userData ? userData.coverImg : coverDefault}
+          src={
+            userData && userData?.coverImg ? userData.coverImg : coverDefault
+          }
           className="w-full rounded-t-xl max-w-full max-h-full object-cover"
           loading="lazy"
         />
