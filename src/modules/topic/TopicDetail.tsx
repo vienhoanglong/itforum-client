@@ -20,13 +20,21 @@ import {
 } from "react-icons/bs";
 import doc from "../../assets/IconDocumentTopic/doc.png";
 import zip from "../../assets/IconDocumentTopic/zip.png";
+import { useTopicStore } from "@/store/topicStore";
 
 const TopicDetail: React.FC = () => {
-  const { topicName } = useParams<{ topicName: string }>();
+  const { topicId } = useParams<{ topicId: string }>();
+  const { topic, getById } = useTopicStore();
   const navigate = useNavigate();
-  const topic = sampleTopics.find(
-    (t) => t.name.toLowerCase().replace(/\s+/g, "-") === topicName
-  );
+  const [topicData, setTopicData] = useState(topic);
+  // const topic = sampleTopics.find(
+  //   (t) => t.name.toLowerCase().replace(/\s+/g, "-") === topicId
+  // );
+
+  useEffect(() => {
+    getById(topicId ? topicId : "");
+  }, [topicId, getById]);
+
   const handleBackTopic = () => {
     navigate("/topics");
   };
@@ -47,15 +55,20 @@ const TopicDetail: React.FC = () => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     }
   });
-  const filteredData = filterType
-    ? sortedData.filter((item) => item.type === filterType)
-    : sortedData;
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
-    setCurrentItems(filteredData.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(filteredData.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage, filteredData]);
+    const filteredData = filterType
+      ? sortedData.filter((item) => item.type === filterType)
+      : sortedData;
+    const newCurrentItems = filteredData.slice(itemOffset, endOffset);
+    const newPageCount = Math.ceil(filteredData.length / itemsPerPage);
+
+    setTimeout(() => {
+      setCurrentItems(newCurrentItems);
+      setPageCount(newPageCount);
+    }, 0);
+  }, [filterType, sortedData, itemOffset, itemsPerPage]);
 
   const handleBackButtonClick = () => {
     navigate(-1);
@@ -116,30 +129,26 @@ const TopicDetail: React.FC = () => {
           className={`${
             colorThumnailTopic[topic.color as keyof typeof colorTopic] ||
             "bg-light4 dark:bg-dark1/80"
-          } shadow-sm lg:col-span-2 lg:row-span-1 py-4 rounded-lg pr-8 flex h-auto `}
+          } shadow-sm lg:col-span-2 lg:row-span-1 py-4 rounded-lg pr-8 flex justify-center items-center h-auto `}
         >
-          <div className=" max-sm:hidden shrink-0 w-[170px] h-full flex items-center justify-center">
-            <img
-              loading="lazy"
-              className="block lazy lazyloaded rounded-lg"
-              src={topic.img}
-              width={110}
-              height={110}
-            />
-          </div>
-
-          <div className="py-2 max-sm:ml-4  flex flex-col justify-center items-start ">
-            <div className=" text-lg font-semibold">{topic.name}</div>
-            <div>
-              So you've mastered the basics of building an SPA with Laravel and
-              Inertia? Nice work, but of course there's always more to learn. In
-              this series, we'll review a variety of useful tips and techniques
-              to simplify and clean up your single page applications. So you've
-              mastered the basics of building an SPA with Laravel and Inertia?
-              Nice work, but of course there's always more to learn. In this
-              series, we'll review a variety of useful tips and techniques to
-              simplify and clean up your single page applications.{" "}
+          {topic.img ? (
+            <div className="max-sm:hidden shrink-0 w-[130px] h-full flex items-center justify-center">
+              <div className="flex flex-col items-center justify-center h-full">
+                <img
+                  loading="lazy"
+                  className="block lazy lazyloaded rounded-lg"
+                  src={topic.img}
+                  width={100}
+                  height={100}
+                  alt="Topic Thumbnail"
+                />
+              </div>
             </div>
+          ) : null}
+
+          <div className="py-2 ml-4  flex flex-col justify-center items-start ">
+            <div className=" text-lg font-semibold">{topic.name}</div>
+            <div>{topic.desc}</div>
           </div>
         </div>
 
@@ -157,14 +166,14 @@ const TopicDetail: React.FC = () => {
             </TabList>
             <TabPanel>
               <ListDiscussCard
-                topicName={topicName ? topicName : ""}
+                topicName={topic._id}
                 numTopicsToShow={4}
                 discuss={discuss}
               ></ListDiscussCard>
             </TabPanel>
             <TabPanel>
               <ListPostCard
-                topicName={topicName ? topicName : ""}
+                topicName={topic._id}
                 numTopicsToShow={4}
                 posts={posts}
               ></ListPostCard>
@@ -185,7 +194,7 @@ const TopicDetail: React.FC = () => {
               <option value="doc">DOC</option>
             </select>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto ">
             <table className="min-w-full shadow-md  ">
               <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
                 <tr>

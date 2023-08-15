@@ -8,6 +8,7 @@ export interface IUser {
   avatar?: string;
   desc?: string;
   gender?: string;
+  coverImg?: string;
   followers?: string;
   ban?: boolean;
   createdAt?: string;

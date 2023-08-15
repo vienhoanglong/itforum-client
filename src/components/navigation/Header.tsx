@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Container } from "../common";
 import { AvatarImage } from "../image";
 import {
@@ -18,6 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { colorsAvatar } from "@/constants/global";
 export const Header: React.FC = React.memo(() => {
   const {t}  = useTranslation();
   const { user, setUser } = useUserStore();
@@ -40,6 +41,10 @@ export const Header: React.FC = React.memo(() => {
   const handleCloseModalAdd = () => {
     setIsModalOpenAddPost(false);
   };
+  const getColorAvatar = user
+    ? colorsAvatar.find((item) => item.color === user.color)
+    : null;
+  const colorAvatar = getColorAvatar ? getColorAvatar.value : "";
   return (
     <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
       <Container>
@@ -59,8 +64,16 @@ export const Header: React.FC = React.memo(() => {
           </Button>
 
           <div className="relative cursor-pointer group sm:cursor-default">
-            {user?.avatar ? (<Avatar cln="max-h-12 max-w-12 rounded-full ring-2 ring-white object-cover border" src={user.avatar}></Avatar>) : (
-            <AvatarImage name={user?.username ? user?.username : 'user'} size={44} />
+            {user?.avatar ? (
+              <Avatar
+                cln={`h-12 w-12 rounded-full ring-2 ring-white dark:ring-dark1 object-cover border ${colorAvatar}`}
+                src={user.avatar}
+              ></Avatar>
+            ) : (
+              <AvatarImage
+                name={user?.username ? user?.username : "A"}
+                size={44}
+              />
             )}
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex ">
               <div className="h-[58px] bg-transparent"></div>

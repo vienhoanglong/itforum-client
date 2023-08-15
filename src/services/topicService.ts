@@ -23,6 +23,30 @@ export const getListTopicByListTopicId = async (
     return response.data.data;
   } catch (error) {
     console.error(error);
-    throw new Error("Error get list avatar");
+    throw new Error("Error get list topic");
+  }
+};
+
+export const getListTopicByType = async (type: string): Promise<Topic[]> => {
+  try {
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/topic/find-by-type?type=${type}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error get list topic");
+  }
+};
+
+export const getTopicById = async (id: string): Promise<Topic> => {
+  try {
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/topic/${id}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error get topic");
   }
 };

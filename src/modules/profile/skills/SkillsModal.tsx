@@ -40,7 +40,7 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
     const newSkills = selectedOptions.map((option: any) => option.value);
     const updatedSkill = newSkills;
 
-    const updatedUserData: IUserUpdate | null = {
+    const updatedUserData: IUserUpdate = {
       skill: updatedSkill,
     };
 
@@ -54,7 +54,7 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
   }));
 
   return (
-    <div className="container sm:w-[400px] w-[200px] h-auto">
+    <div className="container sm:w-[400px] w-[200px] h-[330px]">
       <Label htmlFor="skills" className="block text-xs font-semibold mb-8">
         Skills:
       </Label>
@@ -76,6 +76,13 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
           onChange={handleSkillChange}
           className=" rounded-[12px] text-xs dark:bg-dark0 shadow-inner"
           noOptionsMessage={() => "No skill found..."}
+          styles={{
+            menu: (provided) => ({
+              ...provided,
+              height: "200px",
+              overflowY: "auto",
+            }),
+          }}
         />
       </div>
 
