@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Container } from "../common";
 import { AvatarImage } from "../image";
 import {
@@ -13,13 +13,14 @@ import Modal from "../modal/Modal";
 import PostAddNewPage from "@/modules/post/PostAddNew";
 import { useUserStore } from "@/store/userStore";
 import Avatar from "../image/Avatar";
+import { colorsAvatar } from "@/constants/global";
 export const Header: React.FC = () => {
   const { user, setUser } = useUserStore();
 
-  React.useEffect(() => {
+  useMemo(() => {
     setUser();
+    console.log(user);
   }, [setUser]);
-  console.log(user)
 
   const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
   const handleAddNewPost = () => {
@@ -29,6 +30,10 @@ export const Header: React.FC = () => {
   const handleCloseModalAdd = () => {
     setIsModalOpenAddPost(false);
   };
+  const getColorAvatar = user
+    ? colorsAvatar.find((item) => item.color === user.color)
+    : null;
+  const colorAvatar = getColorAvatar ? getColorAvatar.value : "";
   return (
     <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
       <Container>
@@ -48,8 +53,18 @@ export const Header: React.FC = () => {
           </Button>
 
           <div className="relative cursor-pointer group sm:cursor-default">
-            {user?.avatar ? (<Avatar cln="h-16 w-16 rounded-full ring-2 ring-white object-cover border" src={user.avatar}></Avatar>) : (
-            <AvatarImage name={user?.username ? user?.username :'A'} size={44} />
+            {user?.avatar ? (
+              <Avatar
+                cln={`h-12 w-12 rounded-full ring-2 ring-white dark:ring-dark1 object-cover border ${colorAvatar}`}
+                src={user.avatar}
+              ></Avatar>
+            ) : (
+              <AvatarImage
+                name={
+                  user ? (user.fullName ? user.fullName : user.username) : ""
+                }
+                size={44}
+              />
             )}
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex ">
               <div className="h-[58px] bg-transparent"></div>
@@ -77,7 +92,7 @@ export const Header: React.FC = () => {
           </div>
           <div className="flex-col hidden md:flex">
             <p className="text-sm font-bold text-primary text-mainColor">
-              {user?.username}
+              {user ? (user.fullName ? user.fullName : user.username) : ""}
             </p>
             <p className="text-xs font-light text-dark1 dark:text-light0 ">
               {user?.email}

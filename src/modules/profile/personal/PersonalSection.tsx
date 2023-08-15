@@ -3,13 +3,14 @@ import { HiPencil } from "react-icons/hi";
 import Modal from "@/components/modal/Modal";
 import { Label } from "@/components/label";
 import PersonalModal from "./PersonalModal";
-import UserModel from "@/interface/model/UserModel";
 import IUserUpdate from "@/interface/API/IUserUpdate";
+import IUser from "@/interface/user";
+import convertDateTime from "@/utils/helper";
 
 interface ProfileSectionProps {
-  userData: UserModel;
+  userData: IUser | null;
   isEdit: boolean;
-  hanldeUpdatePersonal: (userDataUpdate: IUserUpdate) => void;
+  hanldeUpdatePersonal: (userDataUpdate: IUserUpdate, id: string) => void;
 }
 
 const ProfileSection: React.FC<ProfileSectionProps> = ({
@@ -18,7 +19,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   hanldeUpdatePersonal,
 }) => {
   const [isUpdatePersonal, setUpdatePersonal] = useState(false);
-
+  const formatDate = "MM-DD-YYYY";
   const handleEditPersonal = () => {
     setUpdatePersonal(true);
   };
@@ -26,8 +27,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   const handleClose = () => {
     setUpdatePersonal(false);
   };
-  const hanleSavePersonal = (updatePersonal: IUserUpdate) => {
-    hanldeUpdatePersonal(updatePersonal);
+  const hanleSavePersonal = (updatePersonal: IUserUpdate, id: string) => {
+    hanldeUpdatePersonal(updatePersonal, id);
     handleClose();
   };
 
@@ -41,39 +42,87 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               <label htmlFor="title" className="block text-xs font-semibold">
                 Full name:
               </label>
-              <div>{userData.fullname}</div>
+              <div>
+                {userData
+                  ? userData.fullName
+                    ? userData.fullName
+                    : userData.username
+                  : ""}
+              </div>
             </div>
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
                 Birthday:
               </label>
-              <div>{userData.birthday}</div>
+              <div>
+                {userData?.birthDay &&
+                  convertDateTime(userData.birthDay.toString(), formatDate)}
+              </div>
             </div>
+            {userData
+              ? userData.role === 2 && (
+                  <div>
+                    <label
+                      htmlFor="title"
+                      className="block text-xs font-semibold"
+                    >
+                      Class:
+                    </label>
+                    <div>{userData?.class}</div>
+                  </div>
+                )
+              : null}
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
-                Class:
+                Gender:
               </label>
-              <div>{userData.class}</div>
+              <div>{userData?.gender}</div>
             </div>
           </div>
           <div className="w-1/2 flex flex-col space-y-4 min-w-[120px]">
-            <div>
-              <label htmlFor="title" className="block text-xs font-semibold">
-                ID:
-              </label>
-              <div>{userData.id}</div>
-            </div>
+            {userData
+              ? userData.role === 2 && (
+                  <div>
+                    <label
+                      htmlFor="title"
+                      className="block text-xs font-semibold"
+                    >
+                      ID:
+                    </label>
+                    <div>{userData ? userData.email?.split("@")[0] : ""}</div>
+                  </div>
+                )
+              : null}
+
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
                 Major:
               </label>
-              <div>{userData.major}</div>
+              <div>{userData?.major}</div>
             </div>
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
                 Position:
               </label>
-              <div>Student</div>
+              <div>
+                {" "}
+                {userData
+                  ? (() => {
+                      switch (userData.role) {
+                        case 0:
+                          return "Admin";
+                        case 1:
+                          return "Teacher";
+                        case 2:
+                          return "Student";
+                        case 3:
+                          return "Company";
+                        default:
+                          return "";
+                      }
+                    })()
+                  : ""}
+              </div>
             </div>
           </div>
         </div>

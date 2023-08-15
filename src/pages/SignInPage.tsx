@@ -28,7 +28,7 @@ export const SignInPage: React.FC = () => {
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
   const setLoading = useLoadingStore((state) => state.setLoading);
-  const {isLoading} = useLoadingStore()
+  const { isLoading } = useLoadingStore();
   const {
     handleSubmit,
     control,
@@ -51,8 +51,7 @@ export const SignInPage: React.FC = () => {
     } catch (error) {
       console.log("Error: ", error);
       setLoading(false);
-    } 
-   
+    }
   };
 
   return (
@@ -96,7 +95,12 @@ export const SignInPage: React.FC = () => {
             </span>
           </div>
         </FormGroup>
-        <Button className="w-full" kind="primary" type="submit" isLoading={isLoading}>
+        <Button
+          className="w-full"
+          kind="primary"
+          type="submit"
+          isLoading={isLoading}
+        >
           Sign in
         </Button>
       </form>

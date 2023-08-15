@@ -11,6 +11,7 @@ interface ButtonProps {
   handle?: (() => void) | undefined;
   kind?: "primary" | "secondary" | "ghost" | "custom";
   size?: "small" | "medium" | "large";
+  disable?: true;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -74,6 +75,7 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={handle}
       {...rest}
+      disabled={rest.disable ? true : false}
     >
       {child}
     </button>
