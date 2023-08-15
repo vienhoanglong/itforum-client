@@ -13,7 +13,7 @@ import { colorsAvatar } from "@/constants/global";
 interface AboutSectionProps {
   userData: IUser | null;
   onUpdateAbout: (newAbout: IUserUpdate, id: string) => void;
-  onUpdateCoverImage: (newCoverImage: IUserUpdate) => void;
+  onUpdateCoverImage?: (newCoverImage: IUserUpdate) => void;
   onUpdateAvatar: (newAvatar: IUserUpdate, id: string) => void;
   isEdit: boolean;
 }

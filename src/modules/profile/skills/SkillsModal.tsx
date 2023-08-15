@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import { Label } from "@/components/label";
-import { customStyles } from "@/constants/styleReactSelect";
 import { Button } from "@/components/button";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import { colorSelectTopic } from "@/constants/global";
@@ -55,7 +54,7 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
   }));
 
   return (
-    <div className="container sm:w-[400px] sm:h-[200px] w-[200px] h-[200px]">
+    <div className="container sm:w-[400px] w-[200px] h-auto">
       <Label htmlFor="skills" className="block text-xs font-semibold mb-8">
         Skills:
       </Label>

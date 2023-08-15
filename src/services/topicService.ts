@@ -6,7 +6,6 @@ export const getAllTopic = async (): Promise<Topic[]> => {
     const response = await axios.get(
       `https://ict-forum-server.onrender.com/topic`
     );
-    console.log(response.data);
     return response.data.data;
   } catch (error) {
     console.error(error);

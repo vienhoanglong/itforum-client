@@ -1,21 +1,12 @@
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import React, { useEffect, useState } from "react";
-import { dataUser, sampleTopics } from "@/constants/global";
 import "react-datepicker/dist/react-datepicker.css";
 import ContactSection from "@/modules/profile/contacts/ContactSection";
 import SkillsSection from "@/modules/profile/skills/SkillsSection";
 import AccountSection from "@/modules/profile/account/AccountSection";
 import PersonalSection from "@/modules/profile/personal/PersonalSection";
 import AboutSection from "@/modules/profile/about/AboutSection";
-import {
-  getUser,
-  updateContact,
-  updatePersonal,
-  updateSkill,
-  updateCoverImage,
-} from "@/services/profileService";
 import IUserUpdate from "@/interface/API/IUserUpdate";
-import UserModel from "@/interface/model/UserModel";
 import { useUserStore } from "@/store/userStore";
 import { UpdateDataUser } from "@/services/userService";
 import { useTopicStore } from "@/store/topicStore";
@@ -26,8 +17,8 @@ const ProfilePage: React.FC = () => {
   const handleToggle = () => {
     setIsEdit(!isEdit);
   };
-  //example data user
-  const [userData, setUserData] = useState<UserModel>(dataUser[0]);
+  // //example data user
+  // const [userData, setUserData] = useState<UserModel>(dataUser[0]);
 
   //data from api
   const { user, setUser } = useUserStore();
@@ -96,19 +87,19 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  const handleUpdateCoverImg = async (updatedCoverImg: IUserUpdate) => {
-    try {
-      const response = await updateCoverImage(updatedCoverImg);
-      //get new data user after updated
-      const updatedUser: UserModel = await getUser(userData.id);
-      setUserData(updatedUser);
+  // const handleUpdateCoverImg = async (updatedCoverImg: IUserUpdate) => {
+  //   try {
+  //     const response = await updateCoverImage(updatedCoverImg);
+  //     //get new data user after updated
+  //     const updatedUser: UserModel = await getUser(userData.id);
+  //     setUserData(updatedUser);
 
-      console.log("Cover image  updated:", response);
-    } catch (error) {
-      console.error("Failed to update Cover image:", error);
-    }
-    console.log("Cover image updated:", updatedCoverImg);
-  };
+  //     console.log("Cover image  updated:", response);
+  //   } catch (error) {
+  //     console.error("Failed to update Cover image:", error);
+  //   }
+  //   console.log("Cover image updated:", updatedCoverImg);
+  // };
 
   return (
     <LayoutSecondary>
@@ -134,7 +125,6 @@ const ProfilePage: React.FC = () => {
           userData={user ? user : null}
           onUpdateAbout={handleUpdateAbout}
           onUpdateAvatar={handleUpdateAvatar}
-          onUpdateCoverImage={handleUpdateCoverImg}
           isEdit={isEdit}
         ></AboutSection>
 
