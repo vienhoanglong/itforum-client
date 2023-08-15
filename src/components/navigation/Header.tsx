@@ -13,14 +13,25 @@ import Modal from "../modal/Modal";
 import PostAddNewPage from "@/modules/post/PostAddNew";
 import { useUserStore } from "@/store/userStore";
 import Avatar from "../image/Avatar";
-export const Header: React.FC = () => {
+import { useAuthStore } from "@/store/authStore";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+export const Header: React.FC = React.memo(() => {
+  const {t}  = useTranslation();
   const { user, setUser } = useUserStore();
-
+  const {logout} = useAuthStore();
+  const navigate = useNavigate();
   React.useEffect(() => {
     setUser();
   }, [setUser]);
-  // console.log(user)
-
+  const handleLogout = async () => {
+    logout();
+    toast.success("Logged out successfully")
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    navigate("/sign-in")
+  }
   const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
   const handleAddNewPost = () => {
     setIsModalOpenAddPost(true);
@@ -43,7 +54,7 @@ export const Header: React.FC = () => {
             kind="primary"
             handle={handleAddNewPost}
           >
-            <span className="text-[12px]">New post</span>
+            <span className="text-[12px]">{t('newPost')}</span>
             <HiPlusCircle size={15}></HiPlusCircle>
           </Button>
 
@@ -68,7 +79,7 @@ export const Header: React.FC = () => {
                   <HiDocumentDuplicate size={18} title="Manegement" />
                   <span className="text-sm">Managements</span>
                 </a>
-                <a className="flex flex-row items-center space-x-5 cursor-pointer hover:text-red2">
+                <a className="flex flex-row items-center space-x-5 cursor-pointer hover:text-red2" onClick={handleLogout}>
                   <HiOutlineLogout size={18} title="Log out" />
                   <span className="text-sm">Log out</span>
                 </a>
@@ -88,8 +99,9 @@ export const Header: React.FC = () => {
       <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
         <PostAddNewPage onCancel={handleCloseModalAdd}></PostAddNewPage>
       </Modal>
+      <ToastContainer />
     </header>
   );
-};
+});
 
 export default Header;

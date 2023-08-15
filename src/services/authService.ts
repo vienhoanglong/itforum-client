@@ -22,3 +22,12 @@ export const loginGoogle = async (sub: string, email: string, name: string, pict
         throw new Error("Login fail");
     }
 }
+// export const logout = async(): Promise<AxiosResponse> =>{
+//     try {
+//         const response = await axios.get('https://ict-forum-server.onrender.com/auth/logout');
+//         return response.data;
+//     } catch (error) {
+//         console.error(error);
+//         throw new Error('Logout fail');
+//     }
+// }

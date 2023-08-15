@@ -67,13 +67,13 @@ export const SignInPage: React.FC = () => {
           <GoogleLogin
             onSuccess={async (credentialResponse) => {
               const decoded = credentialResponse.credential && decodeToken(credentialResponse?.credential)
+              console.log("🚀 ~ file: SignInPage.tsx:70 ~ onSuccess={ ~ decoded:", decoded)
               if(decoded?.hd !== "student.tdtu.edu.vn"){
                 return toast("Chỉ cho phép đăng nhập với mail @student.tdtu.edu.vn");
               }
               const {sub, email, name, picture} = decoded;
               const responseSignInGoogle = await loginGoogle(sub, email, name, picture);
               setToken(responseSignInGoogle?.data?.accessToken);
-              toast("Login successful");
               navigate("/");
             }}
             onError={() => {

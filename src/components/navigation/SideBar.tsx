@@ -4,16 +4,17 @@ import { HiOutlineCog, HiOutlineLogout } from "react-icons/hi";
 import { NavLink } from "react-router-dom";
 import { Button1 } from "../button";
 import Modal from "../modal/Modal";
+import { useTranslation } from "react-i18next";
 
-export const SideBar: React.FC = () => {
+export const SideBar: React.FC = React.memo(() => {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "light";
   });
   const [isOpenSetting, setIsOpenSetting] = useState(false);
-  const hanldeOpenSetting = () => {
+  const handleOpenSetting = () => {
     setIsOpenSetting(true);
   };
-  const hanldeCloseSetting = () => {
+  const handleCloseSetting = () => {
     setIsOpenSetting(false);
   };
 
@@ -25,9 +26,18 @@ export const SideBar: React.FC = () => {
       document.documentElement.classList.remove("dark");
     }
   }, [theme]);
-  const hanldeDarkMode = () => {
+  const handleDarkMode = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+  // bilingual
+  const { i18n } = useTranslation()
+  const [language, setLanguage] = useState<string>(()=> (localStorage.getItem('i18nextLng') ?? "vn"))
+  const handleLanguage = () => {
+    setLanguage(language === "vn" ? "en": "vn")
+  }
+  useEffect(() => {
+    i18n.changeLanguage(language)
+  }, [i18n, language])
   const classNavLink =
     "flex flex-row items-center px-5 py-3 cursor-pointer space-x-5 whitespace-nowrap rounded hover:text-mainColor transition-all justify-center md:justify-start";
   const active =
@@ -59,12 +69,12 @@ export const SideBar: React.FC = () => {
         >
           <HiOutlineCog size={20} />
           <button
-            onClick={hanldeOpenSetting}
+            onClick={handleOpenSetting}
             className="w-full text-left hidden md:block  md:pl-5"
           >
             Setting
           </button>
-          <Modal isOpen={isOpenSetting} onClose={hanldeCloseSetting}>
+          <Modal isOpen={isOpenSetting} onClose={handleCloseSetting}>
             <div className="text-sm font-semibold dark:text-light0">
               Settings
             </div>
@@ -76,7 +86,7 @@ export const SideBar: React.FC = () => {
                     className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
                       theme === "dark" ? "bg-blue-600" : "bg-gray-400"
                     }`}
-                    onClick={hanldeDarkMode}
+                    onClick={handleDarkMode}
                   >
                     <div
                       className={`absolute left-1 top-1 w-4 h-4 rounded-full transition-transform duration-300 transform ${
@@ -89,14 +99,22 @@ export const SideBar: React.FC = () => {
                 </div>
               </div>
 
-              <div className=" flex flex-col w-fullspace-y-5 bg-white rounded text-dark2 dark:bg-dark1 dark:text-light0">
+              <div className=" flex flex-col w-full space-y-5 bg-white rounded text-dark2 dark:bg-dark1 dark:text-light0">
                 <div className="flex space-x-2 items-center justify-between">
                   <span className=" block text-xs font-bold">Language:</span>
                   <div
-                    className="relative w-12 h-6 rounded-full bg-gray-400
-                    "
+                    className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
+                      language === "en" ? "bg-blue-600" : "bg-gray-400"
+                    }`}
+                    onClick={handleLanguage}
                   >
-                    <div className="absolute left-1 top-1 w-4 h-4 rounded-full  bg-gray-300"></div>
+                     <div
+                      className={`absolute left-1 top-1 w-4 h-4 rounded-full transition-transform duration-300 transform ${
+                        language === "en"
+                          ? "translate-x-6 bg-white"
+                          : "bg-gray-300"
+                      }`}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -112,6 +130,6 @@ export const SideBar: React.FC = () => {
       </ul>
     </div>
   );
-};
+});
 
 export default SideBar;
