@@ -1,11 +1,10 @@
-import SkillModel from "../model/SkillModel";
-import Topic from "../topic";
 import IContact from "./IContact";
 
 interface IUserUpdate {
   id?: string;
   follower?: number;
   fullName?: string;
+  username?: string;
   avatar?: string;
   color?: string;
   birthDay?: Date;

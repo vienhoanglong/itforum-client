@@ -102,10 +102,10 @@ const AboutSection: React.FC<AboutSectionProps> = ({
 
   //Update Cover Img
   const handleUpdateCoverImg = () => {
-    const newCoverImgUpdate: IUserUpdate = {
-      coverImage: newCoverImg,
-    };
-    onUpdateCoverImage(newCoverImgUpdate);
+    // const newCoverImgUpdate: IUserUpdate = {
+    //   coverImage: newCoverImg,
+    // };
+    // onUpdateCoverImage(newCoverImgUpdate);
     setUploadComplete(false);
     handleCloseModal();
   };

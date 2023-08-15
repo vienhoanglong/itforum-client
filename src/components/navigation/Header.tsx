@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Container } from "../common";
 import { AvatarImage } from "../image";
 import {
@@ -19,7 +19,6 @@ export const Header: React.FC = () => {
 
   useMemo(() => {
     setUser();
-    console.log(user);
   }, [setUser]);
 
   const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
@@ -60,9 +59,7 @@ export const Header: React.FC = () => {
               ></Avatar>
             ) : (
               <AvatarImage
-                name={
-                  user ? (user.fullName ? user.fullName : user.username) : ""
-                }
+                name={user?.username ? user?.username : "A"}
                 size={44}
               />
             )}
