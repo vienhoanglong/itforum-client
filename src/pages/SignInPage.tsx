@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import LayoutAuthentication from "../layout/LayoutAuthentication";
-import { Button, ButtonGoogle } from "components/button";
+import { Button } from "components/button";
 import { FormGroup } from "components/common";
 import { IconEyeToggle } from "components/icons";
 import { Label } from "components/label";
@@ -9,16 +9,23 @@ import { useForm } from "react-hook-form";
 import useToggleValue from "hooks/useToggleValue";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { login } from "@/services/authService";
+import { login, loginGoogle } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { useLoadingStore } from "@/store/loadingStore";
+import {
+  GoogleLogin,
+  GoogleOAuthProvider,
+} from "@react-oauth/google";
+import decodeToken from "@/utils/decodeToken";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface SignInFormData {
   email: string;
   password: string;
 }
 
 const schema = yup.object({
-  email: yup.string().email("").required("This field is required"),
+  email: yup.string().email("email").required("This field is required"),
   password: yup
     .string()
     .required("This field is required")
@@ -56,13 +63,26 @@ export const SignInPage: React.FC = () => {
 
   return (
     <LayoutAuthentication heading="Welcome Back!">
-      <p className="mb-6 text-xs font-normal text-center text-text3 lg:mb-8">
-        Don't have an account?{" "}
-        <Link to="/sign-up" className="font-medium underline text-primary">
-          Sign up
-        </Link>
-      </p>
-      <ButtonGoogle text="Sign in with google"></ButtonGoogle>
+      <div className="flex items-center justify-center w-full py-4 mb-5 text-xs font-semibold gap-x-3 rounded-xl text-text2 dark:text-white">
+        <GoogleOAuthProvider clientId="106166759784-gto4fegdleq238nfle0mv5cu222pestp.apps.googleusercontent.com">
+          <GoogleLogin
+            onSuccess={async (credentialResponse) => {
+              const decoded = credentialResponse.credential && decodeToken(credentialResponse?.credential)
+              console.log("🚀 ~ file: SignInPage.tsx:70 ~ onSuccess={ ~ decoded:", decoded)
+              if(decoded?.hd !== "student.tdtu.edu.vn"){
+                return toast("Chỉ cho phép đăng nhập với mail @student.tdtu.edu.vn");
+              }
+              const {sub, email, name, picture} = decoded;
+              const responseSignInGoogle = await loginGoogle(sub, email, name, picture);
+              setToken(responseSignInGoogle?.data?.accessToken);
+              navigate("/");
+            }}
+            onError={() => {
+              toast("Login Failed");
+            }}
+          />
+        </GoogleOAuthProvider>
+      </div>
       <form onSubmit={handleSubmit(handleSignIn)}>
         <FormGroup>
           <Label htmlFor="email">Email *</Label>
@@ -104,6 +124,7 @@ export const SignInPage: React.FC = () => {
           Sign in
         </Button>
       </form>
+      <ToastContainer />
     </LayoutAuthentication>
   );
 };

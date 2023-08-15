@@ -2,7 +2,7 @@ import menus from "@/constants/menu";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-export const BottomBar: React.FC = () => {
+export const BottomBar: React.FC = React.memo(() => {
   const classNavLink =
     "flex justify-center py-5 cursor-pointer hover:text-mainColor transition-all";
   const active =
@@ -23,6 +23,6 @@ export const BottomBar: React.FC = () => {
       ))}
     </ul>
   );
-};
+});
 
 export default BottomBar;

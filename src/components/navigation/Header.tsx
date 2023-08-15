@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Container } from "../common";
 import { AvatarImage } from "../image";
 import {
@@ -13,15 +13,25 @@ import Modal from "../modal/Modal";
 import PostAddNewPage from "@/modules/post/PostAddNew";
 import { useUserStore } from "@/store/userStore";
 import Avatar from "../image/Avatar";
-import { colorsAvatar } from "@/constants/global";
-export const Header: React.FC = () => {
+import { useAuthStore } from "@/store/authStore";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+export const Header: React.FC = React.memo(() => {
+  const {t}  = useTranslation();
   const { user, setUser } = useUserStore();
-
-  useMemo(() => {
+  const {logout} = useAuthStore();
+  const navigate = useNavigate();
+  React.useEffect(() => {
     setUser();
-    console.log(user);
   }, [setUser]);
-
+  const handleLogout = async () => {
+    logout();
+    toast.success("Logged out successfully")
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    navigate("/sign-in")
+  }
   const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
   const handleAddNewPost = () => {
     setIsModalOpenAddPost(true);
@@ -30,10 +40,6 @@ export const Header: React.FC = () => {
   const handleCloseModalAdd = () => {
     setIsModalOpenAddPost(false);
   };
-  const getColorAvatar = user
-    ? colorsAvatar.find((item) => item.color === user.color)
-    : null;
-  const colorAvatar = getColorAvatar ? getColorAvatar.value : "";
   return (
     <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
       <Container>
@@ -48,23 +54,13 @@ export const Header: React.FC = () => {
             kind="primary"
             handle={handleAddNewPost}
           >
-            <span className="text-[12px]">New post</span>
+            <span className="text-[12px]">{t('newPost')}</span>
             <HiPlusCircle size={15}></HiPlusCircle>
           </Button>
 
           <div className="relative cursor-pointer group sm:cursor-default">
-            {user?.avatar ? (
-              <Avatar
-                cln={`h-12 w-12 rounded-full ring-2 ring-white dark:ring-dark1 object-cover border ${colorAvatar}`}
-                src={user.avatar}
-              ></Avatar>
-            ) : (
-              <AvatarImage
-                name={
-                  user ? (user.fullName ? user.fullName : user.username) : ""
-                }
-                size={44}
-              />
+            {user?.avatar ? (<Avatar cln="max-h-12 max-w-12 rounded-full ring-2 ring-white object-cover border" src={user.avatar}></Avatar>) : (
+            <AvatarImage name={user?.username ? user?.username : 'user'} size={44} />
             )}
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex ">
               <div className="h-[58px] bg-transparent"></div>
@@ -83,7 +79,7 @@ export const Header: React.FC = () => {
                   <HiDocumentDuplicate size={18} title="Manegement" />
                   <span className="text-sm">Managements</span>
                 </a>
-                <a className="flex flex-row items-center space-x-5 cursor-pointer hover:text-red2">
+                <a className="flex flex-row items-center space-x-5 cursor-pointer hover:text-red2" onClick={handleLogout}>
                   <HiOutlineLogout size={18} title="Log out" />
                   <span className="text-sm">Log out</span>
                 </a>
@@ -92,7 +88,7 @@ export const Header: React.FC = () => {
           </div>
           <div className="flex-col hidden md:flex">
             <p className="text-sm font-bold text-primary text-mainColor">
-              {user ? (user.fullName ? user.fullName : user.username) : ""}
+              {user?.fullName ? user?.fullName : user?.username}
             </p>
             <p className="text-xs font-light text-dark1 dark:text-light0 ">
               {user?.email}
@@ -103,8 +99,9 @@ export const Header: React.FC = () => {
       <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
         <PostAddNewPage onCancel={handleCloseModalAdd}></PostAddNewPage>
       </Modal>
+      <ToastContainer />
     </header>
   );
-};
+});
 
 export default Header;
