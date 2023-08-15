@@ -15,6 +15,7 @@ interface TopicState {
   getUserTopic: (listId: string) => void;
   getByTypeTopic: (type: string) => void;
   getById: (id: string) => void;
+  reset: () => void;
 }
 export const useTopicStore = create<TopicState>((set) => ({
   listAllTopic: null,
@@ -65,5 +66,8 @@ export const useTopicStore = create<TopicState>((set) => ({
     } catch (error) {
       console.error("Error getting topic:", error);
     }
+  },
+  reset: () => {
+    set(() => ({ listUserTopic: null }));
   },
 }));

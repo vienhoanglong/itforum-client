@@ -22,13 +22,17 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
   hanleUpdateSkills,
 }) => {
   const [isUpdateSkills, setIsUpdateSkills] = useState(false);
-  const { listUserTopic, getUserTopic } = useTopicStore();
+  const { listUserTopic, getUserTopic, reset } = useTopicStore();
 
   useEffect(() => {
-    getUserTopic(
-      userData ? (userData.skill ? userData.skill.toString() : "") : ""
-    );
-  }, [userData, getUserTopic]);
+    if (userData && userData.skill?.length != 0) {
+      getUserTopic(
+        userData ? (userData.skill ? userData.skill.toString() : "") : ""
+      );
+    } else {
+      reset();
+    }
+  }, [getUserTopic, userData, reset]);
   const handleOpenModalSkill = () => {
     setIsUpdateSkills(true);
   };

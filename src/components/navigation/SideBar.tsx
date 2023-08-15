@@ -30,14 +30,16 @@ export const SideBar: React.FC = React.memo(() => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
   // bilingual
-  const { i18n } = useTranslation()
-  const [language, setLanguage] = useState<string>(()=> (localStorage.getItem('i18nextLng') ?? "vn"))
+  const { i18n } = useTranslation();
+  const [language, setLanguage] = useState<string>(
+    () => localStorage.getItem("i18nextLng") ?? "vn"
+  );
   const handleLanguage = () => {
-    setLanguage(language === "vn" ? "en": "vn")
-  }
+    setLanguage(language === "vn" ? "en" : "vn");
+  };
   useEffect(() => {
-    i18n.changeLanguage(language)
-  }, [i18n, language])
+    i18n.changeLanguage(language);
+  }, [i18n, language]);
   const classNavLink =
     "flex flex-row items-center px-5 py-3 cursor-pointer space-x-5 whitespace-nowrap rounded hover:text-mainColor transition-all justify-center md:justify-start";
   const active =
@@ -108,7 +110,7 @@ export const SideBar: React.FC = React.memo(() => {
                     }`}
                     onClick={handleLanguage}
                   >
-                     <div
+                    <div
                       className={`absolute left-1 top-1 w-4 h-4 rounded-full transition-transform duration-300 transform ${
                         language === "en"
                           ? "translate-x-6 bg-white"

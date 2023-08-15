@@ -12,13 +12,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { login, loginGoogle } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
 import { useLoadingStore } from "@/store/loadingStore";
-import {
-  GoogleLogin,
-  GoogleOAuthProvider,
-} from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import decodeToken from "@/utils/decodeToken";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface SignInFormData {
   email: string;
   password: string;
@@ -67,13 +64,25 @@ export const SignInPage: React.FC = () => {
         <GoogleOAuthProvider clientId="106166759784-gto4fegdleq238nfle0mv5cu222pestp.apps.googleusercontent.com">
           <GoogleLogin
             onSuccess={async (credentialResponse) => {
-              const decoded = credentialResponse.credential && decodeToken(credentialResponse?.credential)
-              console.log("🚀 ~ file: SignInPage.tsx:70 ~ onSuccess={ ~ decoded:", decoded)
-              if(decoded?.hd !== "student.tdtu.edu.vn"){
-                return toast("Chỉ cho phép đăng nhập với mail @student.tdtu.edu.vn");
+              const decoded =
+                credentialResponse.credential &&
+                decodeToken(credentialResponse?.credential);
+              console.log(
+                "🚀 ~ file: SignInPage.tsx:70 ~ onSuccess={ ~ decoded:",
+                decoded
+              );
+              if (decoded?.hd !== "student.tdtu.edu.vn") {
+                return toast(
+                  "Chỉ cho phép đăng nhập với mail @student.tdtu.edu.vn"
+                );
               }
-              const {sub, email, name, picture} = decoded;
-              const responseSignInGoogle = await loginGoogle(sub, email, name, picture);
+              const { sub, email, name, picture } = decoded;
+              const responseSignInGoogle = await loginGoogle(
+                sub,
+                email,
+                name,
+                picture
+              );
               setToken(responseSignInGoogle?.data?.accessToken);
               navigate("/");
             }}
