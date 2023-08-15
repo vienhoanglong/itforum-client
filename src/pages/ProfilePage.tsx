@@ -49,6 +49,7 @@ const ProfilePage: React.FC = () => {
     }
     console.log("Avatar image updated:", updatedAvatar);
   };
+
   const handleUpdateAbout = async (updatedAbout: IUserUpdate, id: string) => {
     try {
       await UpdateDataUser(updatedAbout, id);
@@ -58,6 +59,7 @@ const ProfilePage: React.FC = () => {
     }
     console.log("About info updated:", updatedAbout);
   };
+
   const handleUpdatePersonal = async (
     updatedPersonal: IUserUpdate,
     id: string
@@ -70,6 +72,7 @@ const ProfilePage: React.FC = () => {
     }
     console.log("Personal info updated:", updatedPersonal);
   };
+
   const handleUpdateContact = async (
     updatedContact: IUserUpdate,
     id: string
@@ -80,6 +83,16 @@ const ProfilePage: React.FC = () => {
       console.log("Contact updated:", response);
     } catch (error) {
       console.error("Failed to update contact:", error);
+    }
+  };
+
+  const handleUpdateSkills = async (updatedSkills: IUserUpdate, id: string) => {
+    try {
+      const response = await UpdateDataUser(updatedSkills, id);
+      setUser();
+      console.log("Skill updated:", response);
+    } catch (error) {
+      console.error("Failed to update skill:", error);
     }
   };
 
@@ -95,18 +108,6 @@ const ProfilePage: React.FC = () => {
       console.error("Failed to update Cover image:", error);
     }
     console.log("Cover image updated:", updatedCoverImg);
-  };
-
-  const handleUpdateSkills = async (updatedSkills: IUserUpdate) => {
-    try {
-      const response = await updateSkill(updatedSkills);
-      //get new data user after updated
-      const updatedUser: UserModel = await getUser(userData.id);
-      setUserData(updatedUser);
-      console.log("Skill updated:", response);
-    } catch (error) {
-      console.error("Failed to update skill:", error);
-    }
   };
 
   return (

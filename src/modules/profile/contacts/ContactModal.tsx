@@ -63,20 +63,22 @@ const ContactModal: React.FC<ContactModalProps> = ({
   };
 
   const handleSave = () => {
-    const updateContact: IUserUpdate = {};
-
-    if (editedContact?.address) {
-      updateContact.address = editedContact.address;
-    }
-    if (editedContact?.phoneNumber) {
-      updateContact.phoneNumber = editedContact.phoneNumber;
-    }
+    const updateContact: IUserUpdate = {
+      address: editedContact
+        ? editedContact.address
+          ? editedContact.address
+          : ""
+        : "",
+      phoneNumber: editedContact
+        ? editedContact.phoneNumber
+          ? editedContact.phoneNumber
+          : ""
+        : "",
+    };
     if (editedContact?.links) {
       updateContact.links = editedContact.links;
     }
-
     onSave(updateContact);
-    console.log(updateContact);
   };
 
   return (
@@ -93,21 +95,20 @@ const ContactModal: React.FC<ContactModalProps> = ({
             />
           </div>
         </li>
-        {editedContact?.phoneNumber && (
-          <li>
-            <div className="flex justify-between items-center mt-4">
-              Phone:{" "}
-              <input
-                type="text"
-                value={editedContact?.phoneNumber}
-                onChange={(e) =>
-                  handleContactChange("phoneNumber", e.target.value)
-                }
-                className="text-blue-500 rounded-lg dark:bg-dark1 p-2 w-[200px] "
-              />
-            </div>
-          </li>
-        )}
+
+        <li>
+          <div className="flex justify-between items-center mt-4">
+            Phone:{" "}
+            <input
+              type="text"
+              value={editedContact?.phoneNumber}
+              onChange={(e) =>
+                handleContactChange("phoneNumber", e.target.value)
+              }
+              className="text-blue-500 rounded-lg dark:bg-dark1 p-2 w-[200px] "
+            />
+          </div>
+        </li>
 
         {editedContact?.links?.map((link, index) => (
           <li key={link.id}>

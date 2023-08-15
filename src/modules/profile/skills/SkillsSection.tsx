@@ -12,7 +12,7 @@ interface SkillsSectionProps {
   listSkills: Topic[] | null;
   userData: IUser | null;
   isEdit: boolean;
-  hanleUpdateSkills: (newskills: IUserUpdate) => void;
+  hanleUpdateSkills: (newskills: IUserUpdate, id: string) => void;
 }
 
 const SkillsSection: React.FC<SkillsSectionProps> = ({
@@ -32,12 +32,12 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
   const handleOpenModalSkill = () => {
     setIsUpdateSkills(true);
   };
-  console.log("listUserTopic", listUserTopic);
+
   const handleClose = () => {
     setIsUpdateSkills(false);
   };
-  const handleSaveSkills = (newSkills: IUserUpdate) => {
-    hanleUpdateSkills(newSkills);
+  const handleSaveSkills = (newSkills: IUserUpdate, id: string) => {
+    hanleUpdateSkills(newSkills, id);
     handleClose();
   };
 

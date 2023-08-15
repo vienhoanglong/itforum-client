@@ -23,70 +23,85 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
     userData || null
   );
 
+  const [isSkillListEmpty, setIsSkillListEmpty] = useState(false);
+
   const handleSaveChanges = () => {
-    const newSkills: IUserUpdate = {};
-    if (newSelectedSkills !== null && newSelectedSkills.skill !== null) {
-      newSkills.skill = newSelectedSkills.skill;
-    }
     onSaveChanges(
-      newSkills,
+      newSelectedSkills ? { skill: newSelectedSkills.skill } : {},
       userData ? (userData._id ? userData._id : "") : ""
     );
-    console.log(newSkills);
+    console.log(newSelectedSkills);
+  };
+  const getSkillLabelById = (skillId: string) => {
+    const skill = listSkills?.find((skill) => skill._id === skillId);
+    return skill ? skill.name : "";
   };
 
   const handleSkillChange = (selectedOptions: any) => {
-    const newSkills = selectedOptions.map((option: any) => ({
-      id: option.value,
-    }));
-    const updatedSkill = [
-      ...(newSelectedSkills?.skill || []), // Giữ nguyên các skill ban đầu
-      ...newSkills, // Thêm các skill mới
-    ];
+    const newSkills = selectedOptions.map((option: any) => option.value);
+    const updatedSkill = newSkills;
 
     const updatedUserData: IUserUpdate | null = {
-      ...newSelectedSkills,
       skill: updatedSkill,
     };
 
     setNewSelectedSkills(updatedUserData);
+    setIsSkillListEmpty(updatedSkill.length === 0);
   };
-
   const selectOptions = listSkills?.map((skill) => ({
     value: skill._id,
     label: skill.name,
     color: `${colorSelectTopic[skill.color as keyof typeof colorSelectTopic]}`,
   }));
-  const isDarkMode = true;
+
   return (
     <div className="container sm:w-[400px] sm:h-[200px] w-[200px] h-[200px]">
       <Label htmlFor="skills" className="block text-xs font-semibold mb-8">
         Skills:
       </Label>
+      {isSkillListEmpty && (
+        <p className="text-red-500 text-xs">
+          Please select at least one skill.
+        </p>
+      )}
       <div>
         <Select
           isMulti
+          isSearchable
           placeholder="Choose skill..."
           options={selectOptions}
-          styles={customStyles(isDarkMode)}
           value={newSelectedSkills?.skill?.map((skill) => ({
             value: skill,
+            label: getSkillLabelById(skill),
           }))}
           onChange={handleSkillChange}
           className=" rounded-[12px] text-xs dark:bg-dark0 shadow-inner"
+          noOptionsMessage={() => "No skill found..."}
         />
       </div>
 
       <div className="flex justify-end mt-16">
-        <Button
-          handle={handleSaveChanges}
-          type="submit"
-          kind="primary"
-          size="small"
-          className="bg-mainColor text-xs text-white px-3 py-2 rounded-md"
-        >
-          Save Changes
-        </Button>
+        {isSkillListEmpty === true ? (
+          <Button
+            type="submit"
+            kind="primary"
+            size="small"
+            className="dark:bg-dark3 bg-dark3 text-xs text-white px-3 py-2 rounded-md"
+            disable
+          >
+            Save Changes
+          </Button>
+        ) : (
+          <Button
+            handle={handleSaveChanges}
+            type="submit"
+            kind="primary"
+            size="small"
+            className="bg-mainColor text-xs text-white px-3 py-2 rounded-md"
+          >
+            Save Changes
+          </Button>
+        )}
       </div>
     </div>
   );

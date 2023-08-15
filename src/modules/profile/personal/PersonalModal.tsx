@@ -169,7 +169,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
             type="submit"
             kind="primary"
             size="small"
-            className="bg-dark3 text-xs text-white px-3 py-2 rounded-md"
+            className="dark:bg-dark4 bg-dark4 text-xs text-white px-3 py-2 rounded-md"
             handle={handleSaveChanges}
             disable
           >
