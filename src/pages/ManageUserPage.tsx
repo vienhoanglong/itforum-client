@@ -3,19 +3,24 @@ import React, { useState } from "react";
 import {
   HiArrowCircleLeft,
   HiFilter,
+  HiOutlineBan,
   HiPencil,
   HiPlusCircle,
   HiSearch,
   HiTrash,
 } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
-import { exampleData, topicColors } from "../constants/global.ts";
+import {
+  exampleDataListUsers,
+  exampleDataNotifi,
+} from "../constants/global.ts";
 import Modal from "@/components/modal/Modal.tsx";
-import PostAddNewPage from "../modules/post/PostAddNew.tsx";
-import DeletedPostsPage from "../modules/post/DeletedPosts.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
+import AddNewUser from "@/modules/user/AddNewUser.tsx";
+import DeletedUser from "@/modules/user/DeletedUser.tsx";
+import ConfirmDialog from "@/components/confirm/ConfirmDialog.tsx";
 
-export const ManagePostsPage: React.FC = () => {
+export const ManageUser: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -28,25 +33,62 @@ export const ManagePostsPage: React.FC = () => {
   const handlePageChange = (selectedPage: { selected: number }) => {
     setCurrentPage(selectedPage.selected);
   };
+  const [isModalOpenDialog, setIsModalOpenDialog] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+  const [confirmMessage, setConfirmMessage] = useState("");
 
+  const handleConfirm = (action: () => void, message: string) => {
+    setIsModalOpenDialog(true);
+    setConfirmAction(() => action);
+    setConfirmMessage(message);
+  };
   const offset = currentPage * itemsPerPage;
-  const paginatedData = exampleData.slice(offset, offset + itemsPerPage);
+  const paginatedData = exampleDataListUsers.slice(
+    offset,
+    offset + itemsPerPage
+  );
 
-  const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
+  const [isModalOpenAddUser, setIsModalOpenAddUser] = useState(false); // config modal add
   const [isModalOpenTrash, setIsModalOpenTrash] = useState(false); // config modal trash
-  const handleAddNewPost = () => {
-    setIsModalOpenAddPost(true);
+  const handleAddNewUser = () => {
+    setIsModalOpenAddUser(true);
   };
 
   const handleCloseModalAdd = () => {
-    setIsModalOpenAddPost(false);
+    setIsModalOpenAddUser(false);
   };
-  const handleDeletedPosts = () => {
+  const handleDeletedUser = () => {
     setIsModalOpenTrash(true);
   };
+  const handleConfirmAction = () => {
+    if (confirmAction) {
+      confirmAction();
+    }
+    setIsModalOpenDialog(false);
+  };
 
-  const handleCloseModalTrash = () => {
+  const handleCancelAction = () => {
+    setIsModalOpenDialog(false);
+  };
+
+  const handleUpdate = () => {
+    handleConfirm(() => {
+      // Xử lý khôi phục
+      // ...
+    }, "Bạn có chắc muốn chỉnh sửa không?");
+  };
+
+  const handleDelete = () => {
+    handleConfirm(() => {
+      // Xử lý xoá
+      // ...
+    }, "Bạn có chắc muốn xoá không?");
+  };
+  const handleCloseModalBan = () => {
     setIsModalOpenTrash(false);
+  };
+  const handleFormSubmit = () => {
+    console.log("Form submitted!");
   };
   return (
     <LayoutSecondary>
@@ -59,7 +101,7 @@ export const ManagePostsPage: React.FC = () => {
       </a>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Manage posts</h4>
+          <h4 className="text-xl font-bold text-darker ">Management User</h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
@@ -97,7 +139,7 @@ export const ManagePostsPage: React.FC = () => {
               className=" w-full text-white text-xs bg-lighter hover:bg-darker  rounded px-4 shadow-md py-2"
               kind="primary"
               type="submit"
-              handle={handleAddNewPost}
+              handle={handleAddNewUser}
             >
               {" "}
               New{" "}
@@ -110,10 +152,10 @@ export const ManagePostsPage: React.FC = () => {
               className=" w-full text-white bg-red3 hover:bg-red2  text-xs rounded shadow-md px-4 py-2"
               kind="custom"
               type="submit"
-              handle={handleDeletedPosts}
+              handle={handleDeletedUser}
             >
               {" "}
-              Trash{" "}
+              Deleted{" "}
               <span className="pl-1">
                 <HiTrash size={20} />
               </span>
@@ -121,11 +163,11 @@ export const ManagePostsPage: React.FC = () => {
           </div>
         </div>
 
-        <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
-          <PostAddNewPage onCancel={handleCloseModalAdd}></PostAddNewPage>
+        <Modal isOpen={isModalOpenAddUser} onClose={handleCloseModalAdd}>
+          <AddNewUser onSubmit={handleFormSubmit}></AddNewUser>
         </Modal>
-        <Modal isOpen={isModalOpenTrash} onClose={handleCloseModalTrash}>
-          <DeletedPostsPage></DeletedPostsPage>
+        <Modal isOpen={isModalOpenTrash} onClose={handleCloseModalBan}>
+          <DeletedUser></DeletedUser>
         </Modal>
 
         <div className="w-full overflow-x-auto">
@@ -133,12 +175,11 @@ export const ManagePostsPage: React.FC = () => {
             <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
               <tr>
                 <th className="py-2 px-4  rounded-tl-md ">SN</th>
-                <th className="py-2 px-4  ">Author</th>
-                <th className="py-2 px-4  ">Title</th>
-                <th className="py-2 px-4  ">Topic</th>
-                <th className="py-2 px-4  ">Views</th>
-                <th className="py-2 px-4  ">Date</th>
-                <th className="py-2 px-4  ">Publish</th>
+                <th className="py-2 px-4  ">Name</th>
+                <th className="py-2 px-4  ">Email</th>
+                <th className="py-2 px-4  ">Gender</th>
+                <th className="py-2 px-4  ">Role</th>
+                <th className="py-2 px-4  ">Status</th>
                 <th className="py-2 px-4 rounded-tr-md ">Action</th>
               </tr>
             </thead>
@@ -146,7 +187,7 @@ export const ManagePostsPage: React.FC = () => {
               {paginatedData.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center">
-                    Không có bài viết nào
+                    Không có dữ liệu người dùng
                   </td>
                 </tr>
               ) : (
@@ -159,38 +200,42 @@ export const ManagePostsPage: React.FC = () => {
                       {item.id}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.author}
+                      {item.name}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.title}
-                    </td>
-                    <td className="py-2 px-4 border-y text-left border-light0 dark:border-dark3">
-                      {item.topic.map((topic) => (
-                        <div
-                          key={topic.id}
-                          className={`inline-block border-2 px-2 py-1 rounded-full  m-[1px] 
-                        ${topicColors[topic.name] || ""}`}
-                        >
-                          {topic.name}
-                        </div>
-                      ))}
+                      {item.email}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.views}
-                    </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.datePost}
-                    </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.publish ? "publish" : "unpublish"}
+                      {item.gender}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
-                      <div className="flex items-center">
-                        <div className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200">
+                      {item.role}
+                    </td>
+
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
+                      {item.status ? (
+                        <div className=" bg-green-400 text-white rounded-md">
+                          active
+                        </div>
+                      ) : (
+                        <div className=" bg-red-400 text-white rounded-md">
+                          deleted
+                        </div>
+                      )}
+                    </td>
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
+                      <div className="flex items-center justify-center">
+                        <div
+                          className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200"
+                          onClick={handleUpdate}
+                        >
                           <HiPencil size={16} />
                         </div>
-                        <div className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200">
-                          <HiTrash size={16} />
+                        <div
+                          className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200"
+                          onClick={handleDelete}
+                        >
+                          <HiOutlineBan size={16} />
                         </div>
                       </div>
                     </td>
@@ -200,11 +245,19 @@ export const ManagePostsPage: React.FC = () => {
             </tbody>
           </table>
         </div>
-
+        {isModalOpenDialog && (
+          <Modal isOpen={isModalOpenDialog} onClose={handleCancelAction}>
+            <ConfirmDialog
+              message={confirmMessage}
+              onConfirm={handleConfirmAction}
+              onCancel={handleCancelAction}
+            />
+          </Modal>
+        )}
         <div className="flex items-center justify-center bg-light2 dark:bg-dark2 dark:text-light0 h-8 text-xs rounded-b-md">
           <div className="w-1/2 mr-2 pb-3 ml-1">
             <ReactPaginate
-              pageCount={Math.ceil(exampleData.length / itemsPerPage)}
+              pageCount={Math.ceil(exampleDataNotifi.length / itemsPerPage)}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
               onPageChange={handlePageChange}
@@ -236,4 +289,4 @@ export const ManagePostsPage: React.FC = () => {
   );
 };
 
-export default ManagePostsPage;
+export default ManageUser;

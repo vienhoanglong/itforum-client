@@ -17,7 +17,7 @@ const ManagementPage: React.FC = () => {
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
             <span className="text-base font-bold block justify-start align-top">
-              Posts
+              My Posts
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -37,10 +37,11 @@ const ManagementPage: React.FC = () => {
             Chi tiết
           </a>
         </div>
+
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
             <span className="text-base font-bold block justify-start align-top">
-              Discussions
+              My Discussions
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -65,7 +66,7 @@ const ManagementPage: React.FC = () => {
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
             <span className="text-base font-bold block justify-start align-top">
-              Notifications
+              My Notifications
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -80,6 +81,120 @@ const ManagementPage: React.FC = () => {
 
           <a
             href="/managements/notifications"
+            className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
+          >
+            Chi tiết
+          </a>
+        </div>
+
+        <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
+          <div className="flex flex-col w-full space-y-2 ">
+            <span className="text-base font-bold block justify-start align-top">
+              Dashboard
+            </span>
+            <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/2936/2936709.png"
+                className=" object-fill max-w-full max-h-full"
+              ></img>
+            </div>
+            <span className="block justify-start">Thống kê số liệu.</span>
+          </div>
+
+          <a
+            href="/managements/dashboard"
+            className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
+          >
+            Chi tiết
+          </a>
+        </div>
+
+        <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
+          <div className="flex flex-col w-full space-y-2 ">
+            <span className="text-base font-bold block justify-start align-top">
+              Users
+            </span>
+            <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/1165/1165674.png"
+                className=" object-fill max-w-full max-h-full"
+              ></img>
+            </div>
+            <span className="block justify-start">
+              Quản lý tất cả người dùng.
+            </span>
+          </div>
+
+          <a
+            href="/managements/user"
+            className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
+          >
+            Chi tiết
+          </a>
+        </div>
+
+        <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
+          <div className="flex flex-col w-full space-y-2 ">
+            <span className="text-base font-bold block justify-start align-top">
+              Topics
+            </span>
+            <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/2875/2875807.png"
+                className=" object-fill max-w-full max-h-full"
+              ></img>
+            </div>
+            <span className="block justify-start">Quản lý chủ đề.</span>
+          </div>
+
+          <a
+            href="/managements/topics"
+            className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
+          >
+            Chi tiết
+          </a>
+        </div>
+
+        <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
+          <div className="flex flex-col w-full space-y-2 ">
+            <span className="text-base font-bold block justify-start align-top">
+              Approve
+            </span>
+            <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/5442/5442020.png"
+                className=" object-fill max-w-full max-h-full"
+              ></img>
+            </div>
+            <span className="block justify-start">
+              Phê duyệt bài viết và thảo luận.
+            </span>
+          </div>
+
+          <a
+            href="/managements/approve"
+            className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
+          >
+            Chi tiết
+          </a>
+        </div>
+
+        <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
+          <div className="flex flex-col w-full space-y-2 ">
+            <span className="text-base font-bold block justify-start align-top">
+              Report
+            </span>
+            <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
+              <img
+                src="https://cdn-icons-png.flaticon.com/128/985/985311.png"
+                className=" object-fill max-w-full max-h-full"
+              ></img>
+            </div>
+            <span className="block justify-start">Phê duyệt báo cáo.</span>
+          </div>
+
+          <a
+            href="/managements/report"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             Chi tiết

@@ -17,10 +17,11 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
     { id: 1, username: "Viên Hoàng Long" },
     { id: 2, username: "ChatGPT" },
   ];
-  const [showModalInformation, setShowModalInformation] = useState<boolean>(false);
+  const [showModalInformation, setShowModalInformation] =
+    useState<boolean>(false);
   const handleCloseModalInformation = () => {
     setShowModalInformation(false);
-  }
+  };
   const handleShowModalInformation = () => {
     setShowModalInformation(true);
   };
@@ -33,14 +34,16 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
         >
           <div className="bg-[#fafafa] dark:bg-dark2 p-3 rounded-tr-md flex justify-between items-center">
             <div className="p-0 flex align-middle transition-all duration-300 ease mx-0 overflow-hidden">
-              {showConversation && <Link
-                className="align-middle self-center mr-3 md:hidden"
-                to={""}
-                data-tooltip-id="tooltip"
-                data-tooltip-content="Chats"
-              >
-                <HiArrowNarrowLeft className="text-base dark:text-light1 cursor-pointer hover:text-darker"/>
-              </Link>}
+              {showConversation && (
+                <Link
+                  className="align-middle self-center mr-3 md:hidden"
+                  to={""}
+                  data-tooltip-id="tooltip"
+                  data-tooltip-content="Chats"
+                >
+                  <HiArrowNarrowLeft className="text-base dark:text-light1 cursor-pointer hover:text-darker" />
+                </Link>
+              )}
               <Avatar
                 src={avt1}
                 cln={"w-[40px] h-[40px] border-none align-middle object-cover"}
@@ -55,7 +58,8 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
               </div>
             </div>
             <HiInformationCircle
-              className="text-2xl text-dark1 dark:text-light1 cursor-pointer" onClick={handleShowModalInformation}
+              className="text-2xl text-dark1 dark:text-light1 cursor-pointer"
+              onClick={handleShowModalInformation}
             />
           </div>
           <div className="pt-4 dark:bg-dark1 flex-grow space-y-2 overflow-y-auto mb-20 min-h-[48vh]">
@@ -123,8 +127,11 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
           </div>
         </div>
       )}
-      <Modal isOpen={showModalInformation} onClose={handleCloseModalInformation}>
-        <ChatInformation onCancel={handleCloseModalInformation}/>
+      <Modal
+        isOpen={showModalInformation}
+        onClose={handleCloseModalInformation}
+      >
+        <ChatInformation onCancel={handleCloseModalInformation} />
       </Modal>
     </>
   );
