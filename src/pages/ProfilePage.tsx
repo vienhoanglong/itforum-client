@@ -87,19 +87,18 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  // const handleUpdateCoverImg = async (updatedCoverImg: IUserUpdate) => {
-  //   try {
-  //     const response = await updateCoverImage(updatedCoverImg);
-  //     //get new data user after updated
-  //     const updatedUser: UserModel = await getUser(userData.id);
-  //     setUserData(updatedUser);
-
-  //     console.log("Cover image  updated:", response);
-  //   } catch (error) {
-  //     console.error("Failed to update Cover image:", error);
-  //   }
-  //   console.log("Cover image updated:", updatedCoverImg);
-  // };
+  const handleUpdateCoverImg = async (
+    updatedCoverImg: IUserUpdate,
+    id: string
+  ) => {
+    try {
+      await UpdateDataUser(updatedCoverImg, id);
+      setUser();
+    } catch (error) {
+      console.error("Failed to update Cover image:", error);
+    }
+    console.log("Cover image updated:", updatedCoverImg);
+  };
 
   return (
     <LayoutSecondary>
@@ -125,6 +124,7 @@ const ProfilePage: React.FC = () => {
           userData={user ? user : null}
           onUpdateAbout={handleUpdateAbout}
           onUpdateAvatar={handleUpdateAvatar}
+          onUpdateCoverImage={handleUpdateCoverImg}
           isEdit={isEdit}
         ></AboutSection>
 

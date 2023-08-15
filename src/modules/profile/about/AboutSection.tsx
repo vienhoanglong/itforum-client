@@ -9,11 +9,13 @@ import IUserUpdate from "@/interface/API/IUserUpdate";
 import { IUser } from "@/interface/user";
 import { useUserStore } from "@/store/userStore";
 import { colorsAvatar } from "@/constants/global";
+import { uploadImage } from "@/services/userService";
+import { coverDefault } from "@/utils/helper";
 
 interface AboutSectionProps {
   userData: IUser | null;
   onUpdateAbout: (newAbout: IUserUpdate, id: string) => void;
-  onUpdateCoverImage?: (newCoverImage: IUserUpdate) => void;
+  onUpdateCoverImage: (newCoverImage: IUserUpdate, id: string) => void;
   onUpdateAvatar: (newAvatar: IUserUpdate, id: string) => void;
   isEdit: boolean;
 }
@@ -28,7 +30,8 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   const [isUpdatingAbout, setIsUpdatingAbout] = useState(false);
   const [isUpdatingImg, setIsUpdatingImg] = useState(false);
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
-  const [newCoverImg, setNewCoverImg] = useState("");
+  const [uploadImg, setNewUploadImg] = useState<File | null>(null);
+  const [newCoverImg, setNewCoverImg] = useState("A");
 
   const [uploadComplete, setUploadComplete] = useState(false);
 
@@ -92,23 +95,33 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   const handleAboutChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewAbout(e.target.value);
   };
-
-  const handleCoverImageUpload = (imageUrl: string) => {
-    // handle upload image
-    setNewCoverImg(imageUrl);
+  const handleCoverImageUpload = (file: File) => {
+    setNewUploadImg(file ? file : null);
     setUploadComplete(true);
-    console.log("Cover Image uploaded:", imageUrl);
   };
 
-  //Update Cover Img
-  const handleUpdateCoverImg = () => {
-    // const newCoverImgUpdate: IUserUpdate = {
-    //   coverImage: newCoverImg,
-    // };
-    // onUpdateCoverImage(newCoverImgUpdate);
-    setUploadComplete(false);
-    handleCloseModal();
+  //Update Cover Img to firebase
+  const handleUpload = async () => {
+    try {
+      if (uploadImg != null) {
+        const response = await uploadImage(uploadImg);
+        const newCoverImage: IUserUpdate = {
+          coverImg: response,
+        };
+
+        onUpdateCoverImage(
+          newCoverImage,
+          userData ? (userData._id ? userData._id : "") : ""
+        );
+        handleCloseModal();
+        return setNewCoverImg(response);
+      }
+      throw new Error("Upload failed");
+    } catch (error) {
+      console.error("Failed to upload image:", error);
+    }
   };
+
   //Update avatar
   const handleUpdateAvatar = () => {
     const newAvatarUpdate: IUserUpdate = {
@@ -122,10 +135,10 @@ const AboutSection: React.FC<AboutSectionProps> = ({
     );
     handleCloseModal();
   };
+
   //update new about & full name
   const handleUpdateAbout = () => {
     const newAboutUpdate: IUserUpdate = {};
-
     if (newAbout !== "") {
       newAboutUpdate.desc = newAbout;
     }
@@ -136,11 +149,12 @@ const AboutSection: React.FC<AboutSectionProps> = ({
     );
     handleCloseModal();
   };
+
   return (
     <div className="dark:bg-dark2 bg-light3 shadow-sm flex flex-col rounded-t-xl rounded-b-lg mb-4">
       <div className="w-full h-[150px] relative">
         <img
-          src="https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg"
+          src={userData ? userData.coverImg : coverDefault}
           className="w-full rounded-t-xl max-w-full max-h-full object-cover"
           loading="lazy"
         />
@@ -171,7 +185,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                 kind="primary"
                 className="text-xs mt-2"
                 type="submit"
-                handle={handleUpdateCoverImg}
+                handle={handleUpload}
               >
                 Submit
               </Button>

@@ -38,3 +38,15 @@ export const getListTopicByType = async (type: string): Promise<Topic[]> => {
     throw new Error("Error get list topic");
   }
 };
+
+export const getTopicById = async (id: string): Promise<Topic> => {
+  try {
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/topic/${id}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error get topic");
+  }
+};

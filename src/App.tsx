@@ -80,7 +80,7 @@ function App() {
           ></Route>
           <Route path="/managements" element={<ManagementPage />}></Route>
           <Route path="/topics" element={<TopicPage />}></Route>
-          <Route path="/topics/detail/:topicName" element={<TopicDetail />} />
+          <Route path="/topics/detail/:topicId" element={<TopicDetail />} />
           <Route path="/topics/:type" element={<TopicPage />}></Route>
           <Route path="/chat" element={<ChatPage />}></Route>
         </Route>

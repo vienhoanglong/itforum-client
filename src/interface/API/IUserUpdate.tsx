@@ -8,6 +8,7 @@ interface IUserUpdate {
   avatar?: string;
   color?: string;
   birthDay?: Date;
+  coverImg?: string;
   class?: string;
   major?: string;
   coverImage?: string;

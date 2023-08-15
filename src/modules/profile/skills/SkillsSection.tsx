@@ -28,7 +28,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
     getUserTopic(
       userData ? (userData.skill ? userData.skill.toString() : "") : ""
     );
-  }, [userData]);
+  }, [userData, getUserTopic]);
   const handleOpenModalSkill = () => {
     setIsUpdateSkills(true);
   };

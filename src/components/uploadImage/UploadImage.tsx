@@ -5,7 +5,7 @@ import logoUpload from "/src/assets/upload-image.png";
 import { HiTrash } from "react-icons/hi";
 
 interface UploadImageProps {
-  onImageUpload: (imageUrl: string) => void;
+  onImageUpload: (imageUrl: File) => void;
   initialImageUrl?: string;
   onDeleteImage: () => void;
 }
@@ -44,7 +44,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
       setUploadProgress(0);
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
-      onImageUpload(imageUrl);
+      onImageUpload(file);
     }, 3000);
   };
 

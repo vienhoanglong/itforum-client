@@ -1,4 +1,3 @@
-import Topic from "@/interface/topic";
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import { useTopicStore } from "@/store/topicStore";
 import React, { useEffect, useState } from "react";
@@ -6,38 +5,40 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 
 export const TopicPage: React.FC = () => {
   const { type } = useParams<{ type: string }>();
-  const [activeTag, setActiveTag] = useState<string | null>(type || "All");
-  const { listAllTopic, listTopicByType, getByTypeTopic, getTopic } =
-    useTopicStore();
-  const [filteredTopics, setFilteredTopics] = useState<Topic[] | null>(
-    listAllTopic || null
-  );
+  const [activeTag, setActiveTag] = useState<string | null>(type || "all");
 
+  const { listAllTopic, getTopic } = useTopicStore();
+  useEffect(() => {
+    getTopic();
+  }, [getTopic]);
+
+  const [filteredTopics, setFilteredTopics] = useState(listAllTopic);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getTopic();
+    const activeTag = type === "all" ? "all" : type || "all";
+    setActiveTag(activeTag);
+    const filtered =
+      type === "all" && listAllTopic
+        ? listAllTopic
+        : listAllTopic?.filter((topic) =>
+            topic.type
+              .toLowerCase()
+              .replace(/\s+/g, "-")
+              .includes(type || "")
+          );
+    setFilteredTopics(filtered ? filtered : []);
+
     if (activeTag === "all" && !type) {
       navigate("/topics/all");
     }
-    if (activeTag !== "all" && !filteredTopics?.length) {
+    if (activeTag !== "all" && !filtered?.length) {
       navigate("/404");
     }
-  }, [type, navigate]);
-
-  const handleTagClick = async (tagName: string) => {
+  }, [type, navigate, listAllTopic]);
+  const handleTagClick = (tagName: string) => {
     setActiveTag(tagName);
-
-    if (tagName === "All") {
-      await getTopic();
-    } else {
-      await getByTypeTopic(tagName);
-    }
-
-    // Dù có giá trị trả về hay không, bạn vẫn cập nhật filteredTopics
-    setFilteredTopics(listAllTopic || listTopicByType || []);
-
-    navigate(`/topics/${tagName.toLowerCase().replace(/\s+/g, "-")}`);
+    navigate(`/topics/${tagName}`);
   };
 
   const getTagClassName = (tagName: string) => {
@@ -52,71 +53,62 @@ export const TopicPage: React.FC = () => {
       <div className=" bg-transparent rounded-lg px-2 md:p-8">
         <div className="w-full relative mb-4">
           <ul
-            className="  py-4 pb-2hide-scrollbar mr-[-20px] flex min-h-[40px] items-center gap-x-4 overflow-x-auto overflow-y-hidden no-scrollbar  text-center leading-loose  md:mx-auto md:min-h-0 md:justify-center md:gap-x-8 md:overflow-x-visible md:overflow-y-visible md:pr-0 lg:gap-x-12 after:absolute after:bottom-[0px] after:hidden after:h-[2px] after:w-full after:flex-shrink-0 after:bg-gradient-to-r after:md:block from-transparent via-[rgba(50,138,241,0.15)] to-transparent pr-[20px]"
+            className="  py-4 pb-2hide-scrollbar mr-[-20px] flex min-h-[40px] items-center gap-x-4 overflow-x-auto overflow-y-hidden no-scrollbar  text-center leading-loose  lg:mx-auto lg:min-h-0 lg:justify-center lg:gap-x-8 lg:overflow-x-visible lg:overflow-y-visible lg:pr-0  after:absolute after:bottom-[0px] after:hidden after:h-[2px] after:w-full after:flex-shrink-0 after:bg-gradient-to-r after:lg:block from-transparent via-[rgba(50,138,241,0.15)] to-transparent pr-[20px]"
             style={{ maxWidth: "800px" }}
           >
             <li className="relative inline-block flex-shrink-0">
-              <a
+              <Link
                 className={getTagClassName("all")}
-                href="/topics/all"
-                onClick={() => handleTagClick("All")}
+                to="/topics/all"
+                onClick={() => handleTagClick("all")}
               >
                 All Topics
-              </a>
+              </Link>
             </li>
             <li className="relative inline-block flex-shrink-0">
-              <a
+              <Link
                 className={getTagClassName("devops")}
-                href="/topics/devops"
-                onClick={() => handleTagClick("DevOps")}
+                to="/topics/devops"
+                onClick={() => handleTagClick("devops")}
               >
                 DevOps
-              </a>
+              </Link>
             </li>
             <li className="relative inline-block flex-shrink-0">
-              <a
+              <Link
                 className={getTagClassName("frameworks")}
-                href="/topics/frameworks"
-                onClick={() => handleTagClick("Frameworks")}
+                to="/topics/frameworks"
+                onClick={() => handleTagClick("frameworks")}
               >
                 Frameworks
-              </a>
+              </Link>
             </li>
             <li className="relative inline-block flex-shrink-0">
-              <a
+              <Link
                 className={getTagClassName("languages")}
-                href="/topics/languages"
-                onClick={() => handleTagClick("Languages")}
+                to="/topics/languages"
+                onClick={() => handleTagClick("languages")}
               >
                 Languages
-              </a>
+              </Link>
             </li>
             <li className="relative inline-block flex-shrink-0">
-              <a
+              <Link
                 className={getTagClassName("subject")}
-                href="/topics/subject"
-                onClick={() => handleTagClick("Subject")}
+                to="/topics/subject"
+                onClick={() => handleTagClick("subject")}
               >
                 Subject
-              </a>
+              </Link>
             </li>
             <li className="relative inline-block flex-shrink-0">
-              <a
-                className={getTagClassName("testing")}
-                href="/topics/testing"
-                onClick={() => handleTagClick("Testing")}
-              >
-                Testing
-              </a>
-            </li>
-            <li className="relative inline-block flex-shrink-0">
-              <a
+              <Link
                 className={getTagClassName("tooling")}
-                href="/topics/tooling"
-                onClick={() => handleTagClick("Tooling")}
+                to="/topics/tooling"
+                onClick={() => handleTagClick("tooling")}
               >
                 Tooling
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -131,12 +123,10 @@ export const TopicPage: React.FC = () => {
                   key={topic._id}
                   className=" cursor-pointer flex flex-1 justify-center text-center md:max-w-[225px] "
                 >
-                  <a
+                  <Link
                     className=" shadow-sm bg-light4 dark:bg-dark1/50 panel relative transition-colors duration-300 dark:hover:bg-dark2 hover:bg-light2 flex h-full w-full flex-shrink-0 flex-col justify-between rounded-2xl px-3 py-1 "
                     style={{ height: "70px", minWidth: "180px" }}
-                    href={`/topics/detail/${topic?.name
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}`}
+                    to={`/topics/detail/${topic._id}`}
                   >
                     <div
                       className="flex flex-1 items-center"
@@ -152,6 +142,7 @@ export const TopicPage: React.FC = () => {
                           />
                         </div>
                       ) : null}
+
                       <div className="w-full lg:w-auto flex justify-between sm:block">
                         <h3 className="text-left dark:text-white text-xs font-semibold leading-tight sm:mb-2">
                           {" "}
@@ -170,7 +161,7 @@ export const TopicPage: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </Link>
                 </div>
               )
           )}
