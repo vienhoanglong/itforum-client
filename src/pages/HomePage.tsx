@@ -1,15 +1,36 @@
-import { discuss, notifications, posts } from "@/constants/global";
+import { notifications, posts } from "@/constants/global";
 import LayoutDefault from "@/layout/LayoutDefault";
 import { Discuss } from "@/modules/home/Discuss";
 import { Notification } from "@/modules/home/Notification";
 import { Posts } from "@/modules/home/Posts";
-import React from "react";
+import { useDiscussionStore } from "@/store/discussionStore";
+import React, { useEffect, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 export const HomePage: React.FC = () => {
+  const { listDiscuss, getListDiscussion } = useDiscussionStore();
+  const [sort, setSort] = useState<string>("desc");
+  const [filter, setFilter] = useState<string>("");
+
+  const [currentLimit, setCurrentLimit] = useState<number>(3);
+
+  useEffect(() => {
+    getListDiscussion(0, currentLimit, sort, filter);
+  }, [getListDiscussion, currentLimit, sort, filter]);
+
+  const handleScroll = (curr: number) => {
+    setCurrentLimit(currentLimit + curr);
+  };
+
+  const hanldeFilter = (filterOptions: { sort: string; topic: string }) => {
+    setSort(filterOptions.sort);
+    setFilter(filterOptions.topic);
+  };
+
   return (
     <LayoutDefault
+      checkScroll={handleScroll}
       childrenOther={<Notification notifications={notifications} />}
     >
       <Tabs>
@@ -24,7 +45,7 @@ export const HomePage: React.FC = () => {
           </Tab>
         </TabList>
         <TabPanel>
-          <Discuss discuss={discuss}></Discuss>
+          <Discuss discuss={listDiscuss} hanldeFilter={hanldeFilter}></Discuss>
         </TabPanel>
         <TabPanel>
           <Posts post={posts}></Posts>

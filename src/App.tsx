@@ -69,7 +69,10 @@ function App() {
             element={<ListNotificationPage />}
           ></Route>
           <Route path="/post-detail" element={<PostDetailPage />}></Route>
-          <Route path="/discuss-detail" element={<DiscussDetailPage />}></Route>
+          <Route
+            path="/discuss/:discussId"
+            element={<DiscussDetailPage />}
+          ></Route>
           <Route
             path="/managements/posts"
             element={<ManagePostsPage />}

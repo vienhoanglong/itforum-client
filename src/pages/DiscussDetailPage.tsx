@@ -1,5 +1,5 @@
 import Avatar from "@/components/image/Avatar";
-import { discuss, listComment, topicColors } from "@/constants/global";
+import { colorTopic, colorsAvatar, listComment } from "@/constants/global";
 import LayoutDetail from "@/layout/LayoutDetail";
 import React, {
   ChangeEvent,
@@ -9,7 +9,6 @@ import React, {
   useState,
 } from "react";
 import { BsEyeFill, BsFillChatFill } from "react-icons/bs";
-import avt from "assets/avt1.jpg";
 import CommentArea from "@/components/comment/CommentArea";
 import CommentList from "@/components/comment/CommentList";
 import ActionMenu from "@/modules/post/ActionMenu";
@@ -17,12 +16,23 @@ import { HiArrowCircleLeft, HiDotsHorizontal } from "react-icons/hi";
 import ReportModal from "@/components/report/ReportModal";
 import ListDiscussCard from "@/modules/discuss/ListDiscussCard";
 import SliderDiscuss from "@/modules/discuss/SliderDiscuss";
+import { useDiscussionStore } from "@/store/discussionStore";
+import { useParams } from "react-router-dom";
+import convertDateTime from "@/utils/helper";
+import { useTopicStore } from "@/store/topicStore";
+import { useUserStore } from "@/store/userStore";
 
 const DiscussDetailPage: React.FC = () => {
+  const { discussId } = useParams<{ discussId: string }>();
+  const { discussion, listDiscuss, getDiscussById, getListDiscussion } =
+    useDiscussionStore();
   const [comment, setComment] = useState<string>("");
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const { listAllTopic, getTopic } = useTopicStore();
   const [isReportModalOpen, setReportModalOpen] = useState(false);
+  const { userById, getById } = useUserStore();
+  const formatDate = "MM-DD-YYYY";
   const handleReportClick = () => {
     setReportModalOpen(true);
     setMenuOpen(false);
@@ -34,6 +44,29 @@ const DiscussDetailPage: React.FC = () => {
   const handleCloseModal = () => {
     setReportModalOpen(false);
   };
+
+  useEffect(() => {
+    getTopic();
+    getListDiscussion(0, 0, "desc");
+    getDiscussById(discussId ? discussId : "");
+    getById(discussion?.createBy ?? "");
+  }, [
+    getTopic,
+    getListDiscussion,
+    discussId,
+    getDiscussById,
+    getById,
+    discussion,
+  ]);
+
+  // useEffect(() => {
+
+  // },[getDiscussById,getById,discussion, discussId]);
+
+  // useEffect(() => {
+
+  // }, [getById,discussion, userById]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -56,17 +89,20 @@ const DiscussDetailPage: React.FC = () => {
   };
   const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Xử lý logic khi người dùng gửi bình luận
     console.log("Bình luận đã được gửi:", comment);
     setComment("");
   };
+  const getColorAvatar = userById
+    ? colorsAvatar.find((item) => item.color === userById.color)
+    : null;
+  const colorAvatar = getColorAvatar ? getColorAvatar.value : "";
   return (
     <LayoutDetail
       otherChildren={
         <ListDiscussCard
-          topicName={["nodejs", "javascript"]}
+          listTopic={discussion ? discussion.topic : ""}
           numTopicsToShow={5}
-          discuss={discuss}
+          listDiscuss={listDiscuss}
         />
       }
     >
@@ -85,17 +121,20 @@ const DiscussDetailPage: React.FC = () => {
               className="flex items-center mr-3 brightness-90 w-14 h-14"
             >
               <Avatar
-                src={avt}
+                src={userById?.avatar ?? ""}
                 alt=""
-                cln="rounded-[10px_!important] w-14 h-14 p-[1px] object-cover"
+                cln={`rounded-[10px_!important] w-14 h-14 p-[1px] object-cover ${colorAvatar}`}
               />
             </a>
             <div className="flex flex-col">
               <strong className="block uppercase md:hidden text-xs dark:text-light0 ">
-                Tran Hoang Long
+                By: {userById?.fullName ?? userById?.username}
               </strong>
-              <span className="block md:hidden text-xs dark:text-light0 ">
-                Publish: 10 hours ago
+              <span className="block md:hidden text-[10px] dark:text-light0 ">
+                Published:{" "}
+                {discussion?.createdAt
+                  ? convertDateTime(discussion.createdAt.toString(), formatDate)
+                  : ""}
               </span>
             </div>
           </div>
@@ -113,7 +152,7 @@ const DiscussDetailPage: React.FC = () => {
                 <BsEyeFill className="text-lg" />
               </div>
               <span className="text-xs font-medium leading-none text-left text-text1">
-                2552
+                {discussion?.totalView}
               </span>
             </div>
           </div>
@@ -123,10 +162,16 @@ const DiscussDetailPage: React.FC = () => {
             <div className=" flex justify-between">
               <div className=" mb-2 dark:text-light0 max-md:hidden">
                 <div className=" text-xs font-bold text-grey-600">
-                  By: Tran Hoang Long
+                  By: {userById?.fullName ?? userById?.username}
                 </div>
-                <div className="text-xs font-normal text-grey-600">
-                  Published: 10 hours ago
+                <div className="text-[10px] font-normal text-grey-600">
+                  Published:{" "}
+                  {discussion?.createdAt
+                    ? convertDateTime(
+                        discussion.createdAt.toString(),
+                        formatDate
+                      )
+                    : ""}
                 </div>
               </div>
               <div className="relative hidden text-center md:ml-auto md:flex md:flex-row-reverse md:items-center gap-2 dark:text-light0">
@@ -143,43 +188,44 @@ const DiscussDetailPage: React.FC = () => {
                     <BsEyeFill className="text-lg" />
                   </div>
                   <span className="text-xs font-medium leading-none text-left text-text1">
-                    2552
+                    {discussion?.totalView}
                   </span>
                 </div>
               </div>
             </div>
-            <div className="-mt-1 mb-2 dark:bg-dark0/80 bg-light2/80 p-4 rounded-lg md:flex md:items-start">
+            <div className="mt-1 mb-3 dark:bg-dark0/80 bg-light2/80 p-4 rounded-lg md:flex md:items-start">
               <h3 className="tracking-normal md:pr-6 lg:mb-0 dark:text-light0">
-                <div className="text-base font-semibold">
-                  Deploy ứng dụng NodeJS lên EC2 instance của AWS (Phần 1)
+                <div className=" text-sm font-semibold">
+                  {discussion?.title}
                 </div>
               </h3>
             </div>
             <div className=" text-black/90 dark:text-light0 lg:mb-0 lg:pr-8 text-xs">
-              Ở bài viết này mình sẽ hướng dẫn các bạn cách để deploy đơn giản 1
-              ứng dụng NodeJS có kết nối với MongoDB lên AWS Ở bài viết này mình
-              sẽ hướng dẫn các bạn cách để deploy đơn giản 1 ứng dụng NodeJS có
-              kết nối với MongoDB lên AWS Ở bài viết này mình sẽ hướng dẫn các
-              bạn cách để deploy đơn giản 1 ứng dụng NodeJS có kết nối với
-              MongoDB lên AWS Ở bài viết này mình sẽ hướng dẫn các bạn cách để
-              deploy đơn giản 1 ứng dụng NodeJS có kết nối với MongoDB lên AWS Ở
-              bài viết này mình sẽ hướng dẫn các bạn cách để deploy đơn giản 1
-              ứng dụng NodeJS có kết nối với MongoDB lên AWS
+              {discussion?.content}
             </div>
             <div className="flex justify-between items-center mt-2">
-              <div className="">
-                <div
-                  className={` cursor-pointer  inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
-                        ${topicColors["javascript"] || ""}`}
-                >
-                  javascript
-                </div>
-                <div
-                  className={` cursor-pointer inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
-                        ${topicColors["nodejs"] || ""}`}
-                >
-                  nodejs
-                </div>
+              <div className="flex justify-start items-center">
+                {discussion?.topic.map((topicId) => {
+                  const topic = listAllTopic?.find(
+                    (topic) => topic._id === topicId
+                  );
+                  if (topic) {
+                    return (
+                      <a key={topic._id} href={`/topics/detail/${topic._id}`}>
+                        <div
+                          className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
+                            colorTopic[
+                              topic.color as keyof typeof colorTopic
+                            ] || ""
+                          }`}
+                        >
+                          {topic.name}
+                        </div>
+                      </a>
+                    );
+                  }
+                  return null;
+                })}
               </div>
               <div ref={menuRef}>
                 <button

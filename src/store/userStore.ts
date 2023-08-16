@@ -5,12 +5,15 @@ import decodeToken from "@/utils/decodeToken";
 import { create } from "zustand";
 interface UserState {
   user: IUser | null;
+  userById: IUser | null;
   listAvatar: IAvatar[] | null;
   setUser: () => void;
   getListAvatar: () => void;
+  getById: (id: string) => void;
 }
 export const useUserStore = create<UserState>((set) => ({
   user: null,
+  userById: null,
   listAvatar: null,
   setUser: async () => {
     try {
@@ -19,6 +22,17 @@ export const useUserStore = create<UserState>((set) => ({
         const idUser: string = decodeToken(token)["sub"];
         const response = await getUserById(idUser);
         set(() => ({ user: response.data }));
+      }
+    } catch (error) {
+      console.error("Error setting user:", error);
+    }
+  },
+  getById: async (id: string) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        const response = await getUserById(id);
+        set(() => ({ userById: response.data }));
       }
     } catch (error) {
       console.error("Error setting user:", error);

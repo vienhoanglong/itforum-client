@@ -46,10 +46,10 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
     mode: "onSubmit",
   });
 
-  const handleImageUpload = (imageUrl: string) => {
+  const handleImageUpload = (file: File) => {
     // handle upload image
     setUploadComplete(true);
-    console.log("Image uploaded:", imageUrl);
+    console.log("Image uploaded:", file);
   };
 
   const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);

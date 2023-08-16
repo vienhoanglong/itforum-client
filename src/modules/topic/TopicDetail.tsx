@@ -106,7 +106,7 @@ const TopicDetail: React.FC = () => {
               onClick={handleBackTopic}
             >
               <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-              Back to Topics
+              Back
             </button>
           </div>
         </div>
@@ -121,7 +121,7 @@ const TopicDetail: React.FC = () => {
         onClick={handleBackButtonClick}
       >
         <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back to Topics
+        Back
       </button>
 
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 dark:text-white h-auto">
@@ -166,9 +166,9 @@ const TopicDetail: React.FC = () => {
             </TabList>
             <TabPanel>
               <ListDiscussCard
-                topicName={topic._id}
+                listTopic={topic ? topic._id : ""}
                 numTopicsToShow={4}
-                discuss={discuss}
+                listDiscuss={null}
               ></ListDiscussCard>
             </TabPanel>
             <TabPanel>

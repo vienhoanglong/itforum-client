@@ -1,5 +1,5 @@
 import IUserUpdate from "@/interface/API/IUserUpdate";
-import IListAvatar from "@/interface/listAvatar";
+import IAvatar from "@/interface/listAvatar";
 import axios from "axios";
 
 export const getUserById = async (id: string): Promise<any> => {
@@ -14,7 +14,7 @@ export const getUserById = async (id: string): Promise<any> => {
   }
 };
 
-export const getListAvatars = async (): Promise<IListAvatar[]> => {
+export const getListAvatars = async (): Promise<IAvatar[]> => {
   try {
     const response = await axios.get(
       `https://ict-forum-server.onrender.com/user/list-avatar`

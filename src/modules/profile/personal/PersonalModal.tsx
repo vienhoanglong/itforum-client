@@ -117,59 +117,64 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
           </div>
         )}
       </div>
-      <div className="mb-4 flex  flex-col  justify-start gap-1 ">
-        <Label
-          htmlFor="class"
-          className="block text-xs dark:text-white font-semibold mr-2"
-        >
-          Class:
-        </Label>
-        <div className="flex justify-start items-center">
-          <input
-            type="text"
-            id="class"
-            name="class"
-            value={newUserData.class}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md px-2 py-1 text-xs"
-          />
-        </div>
-        {inputErrors.class && (
-          <div className="text-red-500 text-xs w-full h-auto text-left">
-            Class is {inputErrors.class}
+      {userData?.role === 2 && (
+        <>
+          <div className="mb-4 flex  flex-col  justify-start gap-1 ">
+            <Label
+              htmlFor="class"
+              className="block text-xs dark:text-white font-semibold mr-2"
+            >
+              Class:
+            </Label>
+            <div className="flex justify-start items-center">
+              <input
+                type="text"
+                id="class"
+                name="class"
+                value={newUserData.class}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-md px-2 py-1 text-xs"
+              />
+            </div>
+            {inputErrors.class && (
+              <div className="text-red-500 text-xs w-full h-auto text-left">
+                Class is {inputErrors.class}
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <div className="mb-4 flex  flex-col  justify-start gap-1">
-        <Label
-          htmlFor="major"
-          className="block text-xs dark:text-white font-semibold mr-2"
-        >
-          Major:
-        </Label>
-        <div className="flex justify-start items-center">
-          <input
-            type="text"
-            id="major"
-            name="major"
-            value={newUserData.major}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md px-2 py-1 text-xs"
-          />
-        </div>
-        {inputErrors.major && (
-          <div className="text-red-500 text-xs w-full h-auto text-left">
-            Major is {inputErrors.major}
+          <div className="mb-4 flex  flex-col  justify-start gap-1">
+            <Label
+              htmlFor="major"
+              className="block text-xs dark:text-white font-semibold mr-2"
+            >
+              Major:
+            </Label>
+            <div className="flex justify-start items-center">
+              <input
+                type="text"
+                id="major"
+                name="major"
+                value={newUserData.major}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-md px-2 py-1 text-xs"
+              />
+            </div>
+            {inputErrors.major && (
+              <div className="text-red-500 text-xs w-full h-auto text-left">
+                Major is {inputErrors.major}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      )}
+
       <div className="flex justify-end">
         {Object.values(inputErrors).some((error) => error) ? (
           <Button
             type="submit"
             kind="primary"
             size="small"
-            className="dark:bg-dark4 bg-dark4 text-xs text-white px-3 py-2 rounded-md"
+            className="dark:bg-dark3 bg-dark3 text-xs text-white px-3 py-2 rounded-md"
             handle={handleSaveChanges}
             disable
           >
