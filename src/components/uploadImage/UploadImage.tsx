@@ -5,7 +5,7 @@ import logoUpload from "/src/assets/upload-image.png";
 import { HiTrash } from "react-icons/hi";
 
 interface UploadImageProps {
-  onImageUpload: (imageUrl: File) => void;
+  onImageUpload: (imageUrl: File | any) => void;
   initialImageUrl?: string;
   onDeleteImage: () => void;
 }

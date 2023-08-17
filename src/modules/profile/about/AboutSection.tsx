@@ -32,7 +32,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
   const [uploadImg, setNewUploadImg] = useState<File | null>(null);
   const [newCoverImg, setNewCoverImg] = useState("A");
-
+  console.log(newCoverImg)
   const [uploadComplete, setUploadComplete] = useState(false);
 
   const [newAbout, setNewAbout] = useState(userData ? userData.desc : "");

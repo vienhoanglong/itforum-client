@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LayoutAuthentication from "../layout/LayoutAuthentication";
 import { Button } from "components/button";
 import { FormGroup } from "components/common";
@@ -14,7 +14,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useLoadingStore } from "@/store/loadingStore";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import decodeToken from "@/utils/decodeToken";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 interface SignInFormData {
   email: string;
@@ -133,7 +133,6 @@ export const SignInPage: React.FC = () => {
           Sign in
         </Button>
       </form>
-      <ToastContainer />
     </LayoutAuthentication>
   );
 };

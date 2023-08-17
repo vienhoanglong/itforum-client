@@ -4,7 +4,6 @@ import {
   discuss,
   exampleDataDocument,
   posts,
-  sampleTopics,
 } from "@/constants/global";
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import React, { useEffect, useState } from "react";
