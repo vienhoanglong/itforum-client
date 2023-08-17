@@ -14,6 +14,18 @@ export const getDiscussionById = async (id: string): Promise<IDiscussion> => {
   }
 };
 
+export const incrementView = async (id: string): Promise<IDiscussion> => {
+  try {
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/discuss/${id}/increment-view`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error incrementView: ");
+  }
+};
+
 export const getAllDisscussion = async (
   skip: number,
   limit: number,

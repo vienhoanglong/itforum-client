@@ -12,7 +12,7 @@ interface ListPostProps {
 export const Posts: React.FC<ListPostProps> = ({ post }) => {
   return (
     <>
-      <FiltersBox></FiltersBox>
+      {/* <FiltersBox></FiltersBox> */}
       {post.map((post, index) => (
         <div
           key={index}

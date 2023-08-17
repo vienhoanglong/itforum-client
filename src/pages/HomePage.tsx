@@ -4,6 +4,7 @@ import { Discuss } from "@/modules/home/Discuss";
 import { Notification } from "@/modules/home/Notification";
 import { Posts } from "@/modules/home/Posts";
 import { useDiscussionStore } from "@/store/discussionStore";
+import { useUserStore } from "@/store/userStore";
 import React, { useEffect, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -12,7 +13,7 @@ export const HomePage: React.FC = () => {
   const { listDiscuss, getListDiscussion } = useDiscussionStore();
   const [sort, setSort] = useState<string>("desc");
   const [filter, setFilter] = useState<string>("");
-
+  const { user } = useUserStore();
   const [currentLimit, setCurrentLimit] = useState<number>(3);
 
   useEffect(() => {
@@ -31,7 +32,9 @@ export const HomePage: React.FC = () => {
   return (
     <LayoutDefault
       checkScroll={handleScroll}
-      childrenOther={<Notification notifications={notifications} />}
+      childrenOther={
+        user?.role != 3 && <Notification notifications={notifications} />
+      }
     >
       <Tabs>
         <TabList>

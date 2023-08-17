@@ -82,24 +82,29 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
           <div className="w-1/2 flex flex-col space-y-4 min-w-[120px]">
             {userData
               ? userData.role === 2 && (
-                  <div>
-                    <label
-                      htmlFor="title"
-                      className="block text-xs font-semibold"
-                    >
-                      ID:
-                    </label>
-                    <div>{userData ? userData.email?.split("@")[0] : ""}</div>
-                  </div>
+                  <>
+                    <div>
+                      <label
+                        htmlFor="title"
+                        className="block text-xs font-semibold"
+                      >
+                        ID:
+                      </label>
+                      <div>{userData ? userData.email?.split("@")[0] : ""}</div>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="title"
+                        className="block text-xs font-semibold"
+                      >
+                        Major:
+                      </label>
+                      <div>{userData?.major}</div>
+                    </div>
+                  </>
                 )
               : null}
 
-            <div>
-              <label htmlFor="title" className="block text-xs font-semibold">
-                Major:
-              </label>
-              <div>{userData?.major}</div>
-            </div>
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
                 Position:

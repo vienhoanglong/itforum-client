@@ -1,28 +1,40 @@
 import ActionMenu from "@/modules/post/ActionMenu";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { BsFillChatRightDotsFill } from "react-icons/bs";
 import { HiDotsVertical, HiMinusCircle, HiPlusCircle } from "react-icons/hi";
-
-interface Comment {
-  author: string;
-  avatar: string;
-  content: string;
-  timestamp: string;
-  replies: Reply[];
-}
-
-interface Reply {
-  author: string;
-  avatar: string;
-  content: string;
-  timestamp: string;
-}
+import ReplyArea from "./ReplyArea";
+import IUser from "@/interface/user";
+import ICommentCreate from "@/interface/API/ICommentCreate";
+import IComment from "@/interface/comment";
+import { getListComment } from "@/services/commentService";
 
 interface CommentListProps {
-  comments: Comment[];
+  onSaveChanges?: (comment: ICommentCreate) => void;
+  discussionId?: string;
+  commentList: IComment[] | null;
+  userData: IUser | null;
 }
 
-const CommentList: React.FC<CommentListProps> = ({ comments }) => {
+const CommentList: React.FC<CommentListProps> = ({
+  onSaveChanges,
+  discussionId,
+  commentList,
+  userData,
+}) => {
+  const [childComments, setChildComments] = useState<{
+    [parentId: string]: IComment[];
+  }>({});
+  const [selectedCommentIndex, setSelectedCommentIndex] = useState<
+    number | null
+  >(null);
+  const [commentId, setCommentId] = useState("");
+  const [listComment, setListCommentId] = useState<IComment[] | null>(null);
   const [activeComment, setActiveComment] = useState<number | null>(null);
   const [activeReply, setActiveReply] = useState<{
     commentIndex: number;
@@ -30,6 +42,9 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
   } | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const handleReplyArea = (commentIndex: number) => {
+    setSelectedCommentIndex(commentIndex);
+  };
   const handleMenuComment = (commentIndex: number) => {
     if (activeComment === commentIndex) {
       setActiveComment(null);
@@ -69,12 +84,23 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
     };
   }, []);
 
+  const handleGetIdComment = async (commentIndex: number, id: string) => {
+    setCommentId(id);
+    const existingChildComments = childComments[commentIndex] || [];
+    const response = await getListComment(discussionId || "", 0, 0, id);
+    const updatedChildComments = [...existingChildComments, ...response.data];
+    setChildComments((prevChildComments) => ({
+      ...prevChildComments,
+      [commentIndex]: updatedChildComments,
+    }));
+  };
+
   return (
     <div>
-      {comments.map((comment, commentIndex) => (
+      {commentList?.map((comment, commentIndex) => (
         <div
           key={commentIndex}
-          className="comment mb-4 dark:text-light0 bg-light3 dark:bg-dark1 rounded-lg p-2 ml-4 "
+          className="comment mb-1 dark:text-light0 bg-light3 dark:bg-dark1 rounded-lg p-2 ml-4 "
         >
           <div className="flex items-start dark:bg-dark0 rounded-lg p-2 ">
             <div className="ml-1">
@@ -82,13 +108,13 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                 <div className="flex-shrink-0">
                   <img
                     className="w-8 h-8 rounded-full brightness-90"
-                    src={comment.avatar}
+                    src={userData?.avatar}
                     alt="User Avatar"
                   />
                 </div>
-                <div className="font-bold">{comment.author}</div>
+                <div className="font-bold">{userData?.fullName}</div>
                 <div className="text-xs text-gray-500 dark:text-light0">
-                  {comment.timestamp}
+                  18-8-2023
                 </div>
               </div>
               <div
@@ -116,13 +142,21 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                 className="text-xs mt-1 w-full flex space-x-4 pl-[0.6rem]
               "
               >
-                <button className="flex items-center space-x-1 hover:underline hover:text-mainColor">
+                <button
+                  onClick={() =>
+                    handleGetIdComment(commentIndex, comment._id || "")
+                  }
+                  className="flex items-center space-x-1 hover:underline hover:text-mainColor"
+                >
                   <HiMinusCircle />
                   <span className="text-xs italic font-thin text-mainColor">
-                    100 more
+                    more
                   </span>
                 </button>
-                <button className="hover:underline hover:text-mainColor flex items-center space-x-1">
+                <button
+                  onClick={() => handleReplyArea(commentIndex)}
+                  className="hover:underline hover:text-mainColor flex items-center space-x-1"
+                >
                   <BsFillChatRightDotsFill />
                   <span className="text-xs italic font-thin text-mainColor">
                     Reply
@@ -154,10 +188,11 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
           xs:after:left-[15.5px]
           after:h-[calc(100%-36px)]"
           >
-            {comment.replies.map((reply, replyIndex) => (
-              <div
-                key={replyIndex}
-                className="ml-10 mt-2 relative after:content-['']
+            {comment?._id &&
+              childComments[commentIndex]?.map((reply, replyIndex) => (
+                <div
+                  key={replyIndex}
+                  className="ml-10 mt-2 relative after:content-['']
             after:absolute
             after:border-l-[1px]
             after:border-r-[0px]
@@ -172,24 +207,24 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
             after:-left-[13.5px] xs:after:left-[3.5px]
             after:w-[34px] xs:after:w-[23px]
             after:h-[calc(100%-36px)] xs:after:h-[calc(100%-52px)]"
-              >
-                <div className="flex items-start  dark:bg-dark0 rounded-lg p-2 ">
-                  <div className="ml-1">
-                    <div className="flex items-center space-x-1">
-                      <div className="flex-shrink-0">
-                        <img
-                          className="w-8 h-8 rounded-full brightness-90"
-                          src={reply.avatar}
-                          alt="User Avatar"
-                        />
+                >
+                  <div className="flex items-start  dark:bg-dark0 rounded-lg p-2 ">
+                    <div className="ml-1">
+                      <div className="flex items-center space-x-1">
+                        <div className="flex-shrink-0">
+                          <img
+                            className="w-8 h-8 rounded-full brightness-90"
+                            src={userData?.avatar}
+                            alt="User Avatar"
+                          />
+                        </div>
+                        <div className="font-bold">{userData?.fullName}</div>
+                        <div className="text-xs text-gray-500 dark:text-light0">
+                          18-8-2023
+                        </div>
                       </div>
-                      <div className="font-bold">{reply.author}</div>
-                      <div className="text-xs text-gray-500 dark:text-light0">
-                        {reply.timestamp}
-                      </div>
-                    </div>
-                    <div
-                      className="md pl-[28px] xs:pl-xl text-xs
+                      <div
+                        className="md pl-[28px] xs:pl-xl text-xs
                     relative  before:content-['']
                     before:absolute
                     before:border-l-[1px]
@@ -203,41 +238,58 @@ const CommentList: React.FC<CommentListProps> = ({ comments }) => {
                     before:left-[15.5px]
                     xs:before:left-[15.5px]
                     before:h-[calc(100%+6px)]"
-                    >
-                      <div className="text-gray-600 dark:text-light0">
-                        {reply.content}
+                      >
+                        <div className="text-gray-600 dark:text-light0">
+                          {reply.content}
+                        </div>
+                      </div>
+                      <div
+                        onClick={() =>
+                          handleGetIdComment(commentIndex, reply._id || "")
+                        }
+                        className="text-xs mt-1 flex space-x-4 pl-[0.6rem] w-full "
+                      >
+                        <button
+                          onClick={() =>
+                            handleGetIdComment(commentIndex, comment._id || "")
+                          }
+                          className="flex items-center space-x-1 hover:underline hover:text-mainColor"
+                        >
+                          <HiMinusCircle />
+                          <span className="text-xs italic font-thin text-mainColor">
+                            100 more
+                          </span>
+                        </button>
+
+                        <button
+                          onClick={() => handleReplyArea(commentIndex)}
+                          className="hover:underline hover:text-mainColor flex items-center space-x-1"
+                        >
+                          <BsFillChatRightDotsFill />
+                          <span className=" text-xs italic font-thin text-mainColor">
+                            Reply
+                          </span>
+                        </button>
                       </div>
                     </div>
-                    <div className="text-xs mt-1 flex space-x-4 pl-[0.6rem] w-full ">
-                      <button className="flex items-center space-x-1 hover:underline hover:text-mainColor">
-                        <HiPlusCircle />
-                        <span className="text-xs italic font-thin text-mainColor">
-                          100 more
-                        </span>
-                      </button>
-                      <button className="hover:underline hover:text-mainColor flex items-center space-x-1">
-                        <BsFillChatRightDotsFill />
-                        <span className=" text-xs italic font-thin text-mainColor">
-                          Reply
-                        </span>
-                      </button>
+                    <div
+                      ref={menuRef}
+                      onClick={() => handleMenuReply(commentIndex, replyIndex)}
+                      className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark0 dark:hover:bg-dark2 dark:text-light0 rounded-full py-2"
+                    >
+                      <HiDotsVertical size={15}></HiDotsVertical>
+                      {activeReply?.commentIndex === commentIndex &&
+                        activeReply?.replyIndex === replyIndex && (
+                          <ActionMenu></ActionMenu>
+                        )}
                     </div>
                   </div>
-                  <div
-                    ref={menuRef}
-                    onClick={() => handleMenuReply(commentIndex, replyIndex)}
-                    className="ml-auto relative bg-light2 hover:bg-light0 dark:bg-dark0 dark:hover:bg-dark2 dark:text-light0 rounded-full py-2"
-                  >
-                    <HiDotsVertical size={15}></HiDotsVertical>
-                    {activeReply?.commentIndex === commentIndex &&
-                      activeReply?.replyIndex === replyIndex && (
-                        <ActionMenu></ActionMenu>
-                      )}
-                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
+          {/* {selectedCommentIndex === commentIndex && 
+          <ReplyArea menuRef={menuRef} handleCommentChange={handleCommentChange} handleCommentSubmit={handleCommentSubmit} comment={cmt} setComment={setComment} ></ReplyArea>
+          } */}
         </div>
       ))}
     </div>

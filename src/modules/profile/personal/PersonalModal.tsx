@@ -14,6 +14,7 @@ interface InputErrors {
   class: string;
   major: string;
   fullName: string;
+  gender: string;
 }
 const PersonalModal: React.FC<PersonalModalProps> = ({
   userData,
@@ -24,6 +25,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
     class: userData?.class,
     major: userData?.major,
     fullName: userData?.fullName,
+    gender: userData?.gender || "",
   });
 
   const [inputErrors, setInputErrors] = useState<InputErrors>({
@@ -31,6 +33,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
     class: "",
     major: "",
     fullName: "",
+    gender: "",
   });
 
   useEffect(() => {
@@ -39,14 +42,31 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
       class: "",
       major: "",
       fullName: "",
+      gender: "",
     };
-    for (const field in newUserData) {
-      if (!newUserData[field as keyof IUserUpdate]) {
-        newInputErrors[field as keyof InputErrors] = "Required";
+    if (!newUserData.gender) {
+      newInputErrors.gender = "Required";
+    }
+    if (!newUserData.fullName) {
+      newInputErrors.fullName = "Required";
+    }
+
+    if (!newUserData.birthDay) {
+      newInputErrors.birthDay = "Required";
+    }
+    if (userData?.role === 2) {
+      // If the user's role is 2, check for empty class and major
+      if (!newUserData.class) {
+        newInputErrors.class = "Required";
+      }
+      if (!newUserData.major) {
+        newInputErrors.major = "Required";
       }
     }
+
     setInputErrors(newInputErrors);
-  }, [newUserData]);
+  }, [newUserData, userData]);
+
   const handleSaveChanges = () => {
     onSaveChanges(
       newUserData,
@@ -114,6 +134,55 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
         {inputErrors.birthDay && (
           <div className="text-red-500 text-xs w-full h-auto text-left">
             Birthday is {inputErrors.birthDay}
+          </div>
+        )}
+      </div>
+      <div className="mb-4 flex flex-col justify-start gap-1  w-full">
+        <Label
+          htmlFor="gender"
+          className="block text-xs dark:text-white font-semibold mr-2"
+        >
+          Gender:
+        </Label>
+        <div className="flex text-xs dark:text-white justify-start gap-2 flex-wrap items-center">
+          <label>
+            <input
+              type="radio"
+              id="genderMale"
+              name="gender"
+              value="Male"
+              checked={newUserData.gender === "Male"}
+              onChange={handleChange}
+            />
+            Male
+          </label>
+          <label>
+            <input
+              type="radio"
+              id="genderFemale"
+              name="gender"
+              value="Female"
+              checked={newUserData.gender === "Female"}
+              onChange={handleChange}
+            />
+            Female
+          </label>
+          <label>
+            <input
+              type="radio"
+              id="genderOther"
+              name="gender"
+              value="Other"
+              checked={newUserData.gender === "Other"}
+              onChange={handleChange}
+            />
+            Other
+          </label>
+        </div>
+
+        {inputErrors.gender && (
+          <div className="text-red-500 text-xs w-full h-auto text-left">
+            Gender is {inputErrors.gender}
           </div>
         )}
       </div>

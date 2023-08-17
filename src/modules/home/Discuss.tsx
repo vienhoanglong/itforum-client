@@ -14,6 +14,7 @@ import { CreateNewDiscussion } from "@/services/discussionService";
 import { useDiscussionStore } from "@/store/discussionStore";
 import { toast } from "react-toastify";
 import { useUserStore } from "@/store/userStore";
+import { Link } from "react-router-dom";
 
 interface ListDiscussProps {
   discuss: IDiscussion[] | null;
@@ -339,9 +340,9 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                       );
                       if (topic) {
                         return (
-                          <a
+                          <Link
                             key={topic._id}
-                            href={`/topics/detail/${topic._id}`}
+                            to={`/topics/detail/${topic._id}`}
                           >
                             <div
                               className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
@@ -352,7 +353,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                             >
                               {topic.name}
                             </div>
-                          </a>
+                          </Link>
                         );
                       }
                       return null;

@@ -1,5 +1,5 @@
 import Avatar from "@/components/image/Avatar";
-import { colorTopic, colorsAvatar, listComment } from "@/constants/global";
+import { colorTopic, colorsAvatar } from "@/constants/global";
 import LayoutDetail from "@/layout/LayoutDetail";
 import React, {
   ChangeEvent,
@@ -17,21 +17,38 @@ import ReportModal from "@/components/report/ReportModal";
 import ListDiscussCard from "@/modules/discuss/ListDiscussCard";
 import SliderDiscuss from "@/modules/discuss/SliderDiscuss";
 import { useDiscussionStore } from "@/store/discussionStore";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import convertDateTime from "@/utils/helper";
 import { useTopicStore } from "@/store/topicStore";
 import { useUserStore } from "@/store/userStore";
+import { incrementView } from "@/services/discussionService";
+import ICommentCreate from "@/interface/API/ICommentCreate";
+import { useCommentStore } from "@/store/commentStore";
 
 const DiscussDetailPage: React.FC = () => {
   const { discussId } = useParams<{ discussId: string }>();
   const { discussion, listDiscuss, getDiscussById, getListDiscussion } =
     useDiscussionStore();
-  const [comment, setComment] = useState<string>("");
+  const [cmt, setComment] = useState<string>("");
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { listAllTopic, getTopic } = useTopicStore();
   const [isReportModalOpen, setReportModalOpen] = useState(false);
-  const { userById, getById } = useUserStore();
+  const { user, userById, getById } = useUserStore();
+  const viewedDiscussionIdsString = localStorage.getItem(
+    `viewedDiscussionIds_${user?._id}`
+  );
+  const initialViewedDiscussionIds = viewedDiscussionIdsString
+    ? JSON.parse(viewedDiscussionIdsString)
+    : [];
+  const [viewedDiscussionIds, setViewedDiscussionIds] = useState<string[]>(
+    initialViewedDiscussionIds
+  );
+  const [commentCreate, setCommentCreate] = useState<ICommentCreate | null>(
+    null
+  );
+  const { listComment, getListComment } = useCommentStore();
+  const { createComment } = useCommentStore();
   const formatDate = "MM-DD-YYYY";
   const handleReportClick = () => {
     setReportModalOpen(true);
@@ -45,11 +62,15 @@ const DiscussDetailPage: React.FC = () => {
     setReportModalOpen(false);
   };
 
+  //Get information discuss, list discuss, user own discussion
   useEffect(() => {
-    getTopic();
-    getListDiscussion(0, 0, "desc");
-    getDiscussById(discussId ? discussId : "");
-    getById(discussion?.createBy ?? "");
+    const fetchData = async () => {
+      await getTopic();
+      await getListDiscussion(0, 0, "desc");
+      await getDiscussById(discussId ? discussId : "");
+      await getById(discussion?.createBy ?? "");
+    };
+    fetchData();
   }, [
     getTopic,
     getListDiscussion,
@@ -59,14 +80,28 @@ const DiscussDetailPage: React.FC = () => {
     discussion,
   ]);
 
-  // useEffect(() => {
+  //Increment view count
+  useEffect(() => {
+    if (discussion) {
+      if (!viewedDiscussionIds.includes(discussId ? discussId : "")) {
+        incrementView(discussId ? discussId : "");
+        const updatedIds = [
+          ...viewedDiscussionIds,
+          discussId ? discussId : "",
+        ].filter((id) => id !== undefined);
+        setViewedDiscussionIds((prevIds) => [...prevIds, ...updatedIds]);
+        localStorage.setItem(
+          `viewedDiscussionIds_${user?._id}`,
+          JSON.stringify([...viewedDiscussionIds, discussId])
+        );
+      }
+    }
+  }, [discussId, discussion, getDiscussById, viewedDiscussionIds, user?._id]);
 
-  // },[getDiscussById,getById,discussion, discussId]);
-
-  // useEffect(() => {
-
-  // }, [getById,discussion, userById]);
-
+  useEffect(() => {
+    getListComment(discussId ? discussId : "", 0, 0);
+  }, [getListComment, discussId]);
+  //Menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -84,14 +119,21 @@ const DiscussDetailPage: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const handleCommentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(event.target.value);
   };
-  const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("Bình luận đã được gửi:", comment);
-    setComment("");
+
+  //Create a new comment
+  const handleCommentSubmit = async (data: ICommentCreate) => {
+    try {
+      await createComment(data);
+      getListComment(discussId ? discussId : "", 0, 0);
+    } catch (error) {
+      console.error("Lỗi khi gửi dữ liệu:", error);
+    }
   };
+
   const getColorAvatar = userById
     ? colorsAvatar.find((item) => item.color === userById.color)
     : null;
@@ -106,13 +148,13 @@ const DiscussDetailPage: React.FC = () => {
         />
       }
     >
-      <a
+      <Link
         className="dark:text-light0 rounded-full pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        href="/"
+        to="/"
       >
         <HiArrowCircleLeft className="w-6 h-6 mr-1" />
         Back to discussion
-      </a>
+      </Link>
       <div className="relative flex flex-col px-4 py-4 mb-3 duration-300 rounded-xl md:flex-row bg-light4 dark:bg-dark1">
         <div className="flex items-center self-start w-full mb-4 md:mr-5 md:mb-0 md:block md:w-auto">
           <div className="flex items-center">
@@ -227,6 +269,7 @@ const DiscussDetailPage: React.FC = () => {
                   return null;
                 })}
               </div>
+
               <div ref={menuRef}>
                 <button
                   className="bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full px-2 py-1"
@@ -237,6 +280,8 @@ const DiscussDetailPage: React.FC = () => {
                 {isMenuOpen && (
                   <ActionMenu
                     handleReportClick={handleReportClick}
+                    userCurrentId={user}
+                    userOwnerId={userById}
                   ></ActionMenu>
                 )}
                 {isReportModalOpen && (
@@ -249,15 +294,16 @@ const DiscussDetailPage: React.FC = () => {
       </div>
       <div className="w-full mx-auto mt-2 rounded-lg bg-white dark:bg-dark1 p-4">
         <CommentArea
-          avatar="https://via.placeholder.com/50"
-          handleCommentChange={handleCommentChange}
-          handleCommentSubmit={handleCommentSubmit}
-          setComment={setComment}
+          onSaveChanges={handleCommentSubmit}
           menuRef={menuRef}
-          comment={comment}
+          discussionId={discussId ? discussId : ""}
         />
 
-        <CommentList comments={listComment}></CommentList>
+        <CommentList
+          userData={user}
+          commentList={listComment}
+          discussionId={discussId}
+        ></CommentList>
       </div>
 
       <SliderDiscuss></SliderDiscuss>

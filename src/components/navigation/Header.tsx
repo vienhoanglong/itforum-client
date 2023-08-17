@@ -48,7 +48,7 @@ export const Header: React.FC = React.memo(() => {
   return (
     <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
       <Container>
-        <div className="flex flex-row items-center flex-1 md:space-x-3">
+        <div className="flex flex-row items-center max-w-1/4 flex-1 md:space-x-3">
           <img srcSet={`${logo} 3.5x`} alt="ict-forum" />
         </div>
         <div className="flex flex-row items-center justify-end flex-1 space-x-3">
@@ -59,7 +59,7 @@ export const Header: React.FC = React.memo(() => {
             kind="primary"
             handle={handleAddNewPost}
           >
-            <span className="text-[12px]">{t("newPost")}</span>
+            <span className="text-[10px]">{t("newPost")}</span>
             <HiPlusCircle size={15}></HiPlusCircle>
           </Button>
 
