@@ -1,7 +1,7 @@
 import { Button } from "@/components/button";
 import { Label } from "@/components/label";
 
-import React, { useState } from "react";
+import React from "react";
 
 type CreateUserFormProps = {
   onSubmit: () => void;

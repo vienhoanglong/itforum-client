@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import {
   HiArrowCircleUp,
   HiFilter,
-  HiOutlineBan,
-  HiPencil,
   HiSearch,
   HiTrash,
 } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
 import {
-  exampleDataListUsers,
   exampleDataNotifi,
   sampleTopics,
 } from "../../constants/global.ts";
@@ -153,10 +150,10 @@ export const DeletedTopic: React.FC = () => {
                   <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
                     <div className="flex items-center justify-center">
                       <div className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200">
-                        <HiArrowCircleUp size={16} />
+                        <HiArrowCircleUp size={16} onClick={handleRestore}/>
                       </div>
                       <div className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200">
-                        <HiTrash size={16} />
+                        <HiTrash size={16} onClick={handleDelete} />
                       </div>
                     </div>
                   </td>

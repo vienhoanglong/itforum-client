@@ -863,7 +863,7 @@ export const sampleTopics = [
     type: "languages",
     img: "https://cdn-icons-png.flaticon.com/512/5968/5968292.png",
     color: "yellow",
-    hide: false,
+    hide: true,
   },
   {
     id: 2,
@@ -879,7 +879,7 @@ export const sampleTopics = [
     type: "frameworks",
     img: "https://cdn-icons-png.flaticon.com/128/919/919825.png",
     color: "green",
-    hide: false,
+    hide: true,
   },
   {
     id: 4,
@@ -887,7 +887,7 @@ export const sampleTopics = [
     type: "languages",
     img: "https://cdn-icons-png.flaticon.com/128/5968/5968381.png",
     color: "cyan",
-    hide: false,
+    hide: true,
   },
   {
     id: 5,
@@ -903,7 +903,7 @@ export const sampleTopics = [
     type: "tooling",
     img: "https://cdn-icons-png.flaticon.com/128/9850/9850774.png",
     color: "green",
-    hide: false,
+    hide: true,
   },
   {
     id: 7,
@@ -919,7 +919,7 @@ export const sampleTopics = [
     type: "languages",
     img: "https://cdn-icons-png.flaticon.com/128/5968/5968282.png",
     color: "orange",
-    hide: false,
+    hide: true,
   },
   {
     id: 9,
