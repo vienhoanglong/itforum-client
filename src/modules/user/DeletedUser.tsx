@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import {
-  HiArrowCircleUp,
   HiFilter,
   HiOutlineBan,
-  HiPencil,
   HiSearch,
-  HiTrash,
 } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
 import {
@@ -157,7 +154,7 @@ export const DeletedUser: React.FC = () => {
                   <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
                     <div className="flex items-center justify-center">
                       <div className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200">
-                        <HiOutlineBan size={16} />
+                        <HiOutlineBan size={16} onClick={handleDelete} onChange={handleRestore} />
                       </div>
                     </div>
                   </td>

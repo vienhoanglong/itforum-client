@@ -1,11 +1,9 @@
 import { MenuTypes } from "@/types";
-import { BsViewList } from "react-icons/bs";
 import {
   HiBell,
   HiChatAlt2,
   HiHome,
   HiUser,
-  HiViewBoards,
   HiViewGrid,
 } from "react-icons/hi";
 const menus: MenuTypes[] = [
