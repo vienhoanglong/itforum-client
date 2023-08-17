@@ -25,7 +25,7 @@ const TopicDetail: React.FC = () => {
   const { topicId } = useParams<{ topicId: string }>();
   const { topic, getById } = useTopicStore();
   const navigate = useNavigate();
-  const [topicData, setTopicData] = useState(topic);
+  // const [topicData, setTopicData] = useState(topic);
   // const topic = sampleTopics.find(
   //   (t) => t.name.toLowerCase().replace(/\s+/g, "-") === topicId
   // );
