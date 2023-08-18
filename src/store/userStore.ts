@@ -1,20 +1,27 @@
 import { IAvatar } from "./../interface/listAvatar";
 import { IUser } from "@/interface/user";
-import { getListAvatars, getUserById } from "@/services/userService";
+import {
+  getListAvatars,
+  getUserById,
+  getUserByListId,
+} from "@/services/userService";
 import decodeToken from "@/utils/decodeToken";
 import { create } from "zustand";
 interface UserState {
   user: IUser | null;
   userById: IUser | null;
   listAvatar: IAvatar[] | null;
+  listUser: IUser[] | null;
   setUser: () => void;
   getListAvatar: () => void;
   getById: (id: string) => void;
+  getListUser: (id: string[]) => void;
 }
 export const useUserStore = create<UserState>((set) => ({
   user: null,
-  userById: null,
+  userById: [],
   listAvatar: null,
+  listUser: null,
   setUser: async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -29,11 +36,11 @@ export const useUserStore = create<UserState>((set) => ({
   },
   getById: async (id: string) => {
     try {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        const response = await getUserById(id);
-        set(() => ({ userById: response.data }));
-      }
+      // const token = localStorage.getItem("accessToken");
+      // if (token) {
+      const response = await getUserById(id);
+      set({ userById: response.data });
+      // }
     } catch (error) {
       console.error("Error setting user:", error);
     }
@@ -47,6 +54,15 @@ export const useUserStore = create<UserState>((set) => ({
       }
     } catch (error) {
       console.error("Error get list avatar:", error);
+    }
+  },
+
+  getListUser: async (listId: string[]) => {
+    try {
+      const reponse = await getUserByListId(listId);
+      set(() => ({ listUser: reponse.data }));
+    } catch (err) {
+      console.error("Error get list user:", err);
     }
   },
 }));

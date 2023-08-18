@@ -36,7 +36,7 @@ const TopicDetail: React.FC = () => {
   }, [topicId, getById]);
 
   const handleBackTopic = () => {
-    navigate("/topics");
+    navigate(-1);
   };
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [filterType, setFilterType] = useState<string | null>(null);
@@ -168,7 +168,6 @@ const TopicDetail: React.FC = () => {
               <ListDiscussCard
                 listTopic={topic ? topic._id : ""}
                 numTopicsToShow={4}
-                listDiscuss={null}
               ></ListDiscussCard>
             </TabPanel>
             <TabPanel>

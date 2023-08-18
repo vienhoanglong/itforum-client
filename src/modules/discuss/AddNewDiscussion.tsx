@@ -5,7 +5,7 @@ import { colorSelectTopic } from "@/constants/global";
 import { useUserStore } from "@/store/userStore";
 import { useTopicStore } from "@/store/topicStore";
 import IDiscussionCreate from "@/interface/API/IDiscussionCreate";
-
+import "react-toastify/dist/ReactToastify.css";
 interface AddNewDiscussionProps {
   onSaveChanges: (dataDiscuss: IDiscussionCreate) => void;
 }

@@ -7,43 +7,67 @@ import React, {
   useState,
 } from "react";
 import { BsFillChatRightDotsFill } from "react-icons/bs";
-import { HiDotsVertical, HiMinusCircle, HiPlusCircle } from "react-icons/hi";
+import {
+  HiArrowCircleDown,
+  HiDotsVertical,
+  HiMinusCircle,
+  HiPlusCircle,
+} from "react-icons/hi";
 import ReplyArea from "./ReplyArea";
 import IUser from "@/interface/user";
 import ICommentCreate from "@/interface/API/ICommentCreate";
 import IComment from "@/interface/comment";
-import { getListComment } from "@/services/commentService";
+import { getListCommentById } from "@/services/commentService";
+import { useCommentStore } from "@/store/commentStore";
 
 interface CommentListProps {
-  onSaveChanges?: (comment: ICommentCreate) => void;
-  discussionId?: string;
-  commentList: IComment[] | null;
+  handleSaveChanges: (comment: ICommentCreate) => void;
+  discussionId: string;
   userData: IUser | null;
+  newComment: IComment | null;
+  newReply: IComment | null;
 }
 
 const CommentList: React.FC<CommentListProps> = ({
-  onSaveChanges,
+  handleSaveChanges,
   discussionId,
-  commentList,
   userData,
+  newComment,
+  newReply,
 }) => {
   const [childComments, setChildComments] = useState<{
-    [parentId: string]: IComment[];
+    [commentIndex: string]: IComment[];
   }>({});
+
+  const [newCommentList, setNewCommentList] = useState<IComment[] | null>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const reponse = await getListCommentById(discussionId || "", 0, 0);
+        setNewCommentList(reponse.data);
+      } catch (error) {
+        console.error("Error fetching comment data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const [selectedCommentIndex, setSelectedCommentIndex] = useState<
     number | null
   >(null);
   const [commentId, setCommentId] = useState("");
-  const [listComment, setListCommentId] = useState<IComment[] | null>(null);
   const [activeComment, setActiveComment] = useState<number | null>(null);
   const [activeReply, setActiveReply] = useState<{
     commentIndex: number;
     replyIndex: number;
   } | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [expandedComments, setExpandedComments] = useState<string[]>([]);
 
-  const handleReplyArea = (commentIndex: number) => {
+  const handleReplyArea = (commentIndex: number, id: string) => {
     setSelectedCommentIndex(commentIndex);
+    setCommentId(id);
   };
   const handleMenuComment = (commentIndex: number) => {
     if (activeComment === commentIndex) {
@@ -65,6 +89,7 @@ const CommentList: React.FC<CommentListProps> = ({
       setActiveComment(null);
     }
   };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -86,18 +111,60 @@ const CommentList: React.FC<CommentListProps> = ({
 
   const handleGetIdComment = async (commentIndex: number, id: string) => {
     setCommentId(id);
+    if (!expandedComments.includes(id)) {
+      setExpandedComments((prevExpandedComments) => [
+        ...prevExpandedComments,
+        id,
+      ]);
+    }
     const existingChildComments = childComments[commentIndex] || [];
-    const response = await getListComment(discussionId || "", 0, 0, id);
+    const response = await getListCommentById(discussionId || "", 0, 0, id);
     const updatedChildComments = [...existingChildComments, ...response.data];
     setChildComments((prevChildComments) => ({
       ...prevChildComments,
       [commentIndex]: updatedChildComments,
     }));
   };
+  useEffect(() => {
+    if (newComment) {
+      // Thêm comment mới vào đầu commentList
+      if (newCommentList !== null) {
+        const updatedCommentList = [newComment, ...newCommentList];
+        setNewCommentList(updatedCommentList);
+      }
+      // Tăng key của các phần tử trong childComments lên 1
+      const updatedChildComments: { [commentIndex: string]: IComment[] } = {};
+      Object.keys(childComments).forEach((commentIndex) => {
+        const incrementedCommentIndex = (parseInt(commentIndex) + 1).toString();
+        updatedChildComments[incrementedCommentIndex] =
+          childComments[commentIndex];
+      });
+      updatedChildComments["0"] = [];
+      setChildComments(updatedChildComments);
+    }
+    if (
+      newReply &&
+      selectedCommentIndex !== null &&
+      childComments[selectedCommentIndex] !== undefined
+    ) {
+      const updatedCommentList = [
+        ...childComments[selectedCommentIndex],
+        newReply,
+      ];
+      setChildComments((prevState) => ({
+        ...prevState,
+        [selectedCommentIndex]: updatedCommentList,
+      }));
+      console.log(selectedCommentIndex);
+    }
+  }, [newComment, newReply]);
 
+  const handleCommentReply = (comment: ICommentCreate) => {
+    handleSaveChanges(comment);
+  };
   return (
     <div>
-      {commentList?.map((comment, commentIndex) => (
+      {newCommentList?.map((comment, commentIndex) => (
         <div
           key={commentIndex}
           className="comment mb-1 dark:text-light0 bg-light3 dark:bg-dark1 rounded-lg p-2 ml-4 "
@@ -142,19 +209,30 @@ const CommentList: React.FC<CommentListProps> = ({
                 className="text-xs mt-1 w-full flex space-x-4 pl-[0.6rem]
               "
               >
+                {comment.countChildComments !== 0 &&
+                  !expandedComments.includes(
+                    comment._id ? comment._id : ""
+                  ) && (
+                    <button
+                      onClick={() =>
+                        handleGetIdComment(commentIndex, comment._id || "")
+                      }
+                      className="flex items-center space-x-1 hover:underline hover:text-mainColor"
+                    >
+                      <HiPlusCircle />
+                      <span className="text-xs italic font-thin text-mainColor">
+                        {comment.countChildComments} more
+                      </span>
+                    </button>
+                  )}
+
                 <button
                   onClick={() =>
-                    handleGetIdComment(commentIndex, comment._id || "")
+                    handleReplyArea(
+                      commentIndex,
+                      comment._id ? comment._id : ""
+                    )
                   }
-                  className="flex items-center space-x-1 hover:underline hover:text-mainColor"
-                >
-                  <HiMinusCircle />
-                  <span className="text-xs italic font-thin text-mainColor">
-                    more
-                  </span>
-                </button>
-                <button
-                  onClick={() => handleReplyArea(commentIndex)}
                   className="hover:underline hover:text-mainColor flex items-center space-x-1"
                 >
                   <BsFillChatRightDotsFill />
@@ -243,26 +321,33 @@ const CommentList: React.FC<CommentListProps> = ({
                           {reply.content}
                         </div>
                       </div>
-                      <div
-                        onClick={() =>
-                          handleGetIdComment(commentIndex, reply._id || "")
-                        }
-                        className="text-xs mt-1 flex space-x-4 pl-[0.6rem] w-full "
-                      >
+                      <div className="text-xs mt-1 flex space-x-4 pl-[0.6rem] w-full ">
+                        {reply.countChildComments !== 0 &&
+                          !expandedComments.includes(
+                            reply._id ? reply._id : ""
+                          ) && (
+                            <button
+                              onClick={() =>
+                                handleGetIdComment(
+                                  commentIndex,
+                                  reply._id || ""
+                                )
+                              }
+                              className="flex items-center space-x-1 hover:underline hover:text-mainColor"
+                            >
+                              <HiMinusCircle />
+                              <span className="text-xs italic font-thin text-mainColor">
+                                {reply.countChildComments} more
+                              </span>
+                            </button>
+                          )}
                         <button
                           onClick={() =>
-                            handleGetIdComment(commentIndex, comment._id || "")
+                            handleReplyArea(
+                              commentIndex,
+                              reply._id ? reply._id : ""
+                            )
                           }
-                          className="flex items-center space-x-1 hover:underline hover:text-mainColor"
-                        >
-                          <HiMinusCircle />
-                          <span className="text-xs italic font-thin text-mainColor">
-                            100 more
-                          </span>
-                        </button>
-
-                        <button
-                          onClick={() => handleReplyArea(commentIndex)}
                           className="hover:underline hover:text-mainColor flex items-center space-x-1"
                         >
                           <BsFillChatRightDotsFill />
@@ -287,11 +372,23 @@ const CommentList: React.FC<CommentListProps> = ({
                 </div>
               ))}
           </div>
-          {/* {selectedCommentIndex === commentIndex && 
-          <ReplyArea menuRef={menuRef} handleCommentChange={handleCommentChange} handleCommentSubmit={handleCommentSubmit} comment={cmt} setComment={setComment} ></ReplyArea>
-          } */}
+          {selectedCommentIndex === commentIndex && (
+            <ReplyArea
+              onSaveChanges={handleCommentReply}
+              menuRef={menuRef}
+              parentCommentId={commentId}
+              discussionId={discussionId ? discussionId : ""}
+            ></ReplyArea>
+          )}
         </div>
       ))}
+
+      <button className="hover:underline hover:text-mainColor flex items-center space-x-1">
+        <HiArrowCircleDown />
+        <span className=" text-xs italic font-thin text-mainColor">
+          See more
+        </span>
+      </button>
     </div>
   );
 };

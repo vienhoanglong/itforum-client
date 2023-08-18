@@ -12,7 +12,7 @@ export const ListNotificationPage: React.FC = () => {
       <div className=" py-4">
         <h4 className="text-xl font-bold text-darker ">Notifications</h4>
       </div>
-      <FiltersBox></FiltersBox>
+      {/* <FiltersBox></FiltersBox> */}
       {notifications.map((notifi, index) => (
         <div
           key={index}

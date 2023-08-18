@@ -13,12 +13,22 @@ export const HomePage: React.FC = () => {
   const { listDiscuss, getListDiscussion } = useDiscussionStore();
   const [sort, setSort] = useState<string>("desc");
   const [filter, setFilter] = useState<string>("");
-  const { user } = useUserStore();
+  const { user, listUser, getListUser } = useUserStore();
   const [currentLimit, setCurrentLimit] = useState<number>(3);
+  const [currentListUser, setCurrentListUser] = useState<string[]>([]);
 
   useEffect(() => {
     getListDiscussion(0, currentLimit, sort, filter);
   }, [getListDiscussion, currentLimit, sort, filter]);
+
+  useEffect(() => {
+    const lisCurrentUser = listDiscuss?.map((user) => user.createBy);
+    setCurrentListUser(lisCurrentUser ? lisCurrentUser : []);
+  }, [listDiscuss]);
+
+  useEffect(() => {
+    getListUser(currentListUser);
+  }, [currentListUser, getListUser]);
 
   const handleScroll = (curr: number) => {
     setCurrentLimit(currentLimit + curr);
@@ -48,7 +58,11 @@ export const HomePage: React.FC = () => {
           </Tab>
         </TabList>
         <TabPanel>
-          <Discuss discuss={listDiscuss} hanldeFilter={hanldeFilter}></Discuss>
+          <Discuss
+            currentUser={listUser}
+            discuss={listDiscuss}
+            hanldeFilter={hanldeFilter}
+          ></Discuss>
         </TabPanel>
         <TabPanel>
           <Posts post={posts}></Posts>

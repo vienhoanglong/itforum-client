@@ -1,13 +1,7 @@
 import Avatar from "@/components/image/Avatar";
 import { colorTopic, colorsAvatar } from "@/constants/global";
 import LayoutDetail from "@/layout/LayoutDetail";
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsEyeFill, BsFillChatFill } from "react-icons/bs";
 import CommentArea from "@/components/comment/CommentArea";
 import CommentList from "@/components/comment/CommentList";
@@ -23,13 +17,14 @@ import { useTopicStore } from "@/store/topicStore";
 import { useUserStore } from "@/store/userStore";
 import { incrementView } from "@/services/discussionService";
 import ICommentCreate from "@/interface/API/ICommentCreate";
-import { useCommentStore } from "@/store/commentStore";
+import IComment from "@/interface/comment";
+import Topic from "@/interface/topic";
+import { CreateNewComment } from "@/services/commentService";
 
 const DiscussDetailPage: React.FC = () => {
   const { discussId } = useParams<{ discussId: string }>();
   const { discussion, listDiscuss, getDiscussById, getListDiscussion } =
     useDiscussionStore();
-  const [cmt, setComment] = useState<string>("");
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { listAllTopic, getTopic } = useTopicStore();
@@ -44,11 +39,11 @@ const DiscussDetailPage: React.FC = () => {
   const [viewedDiscussionIds, setViewedDiscussionIds] = useState<string[]>(
     initialViewedDiscussionIds
   );
-  const [commentCreate, setCommentCreate] = useState<ICommentCreate | null>(
+  const [commentCreate, setCommentCreate] = useState<IComment | null>(null);
+  const [commentReplyCreate, setCommentReplyCreate] = useState<IComment | null>(
     null
   );
-  const { listComment, getListComment } = useCommentStore();
-  const { createComment } = useCommentStore();
+
   const formatDate = "MM-DD-YYYY";
   const handleReportClick = () => {
     setReportModalOpen(true);
@@ -98,9 +93,6 @@ const DiscussDetailPage: React.FC = () => {
     }
   }, [discussId, discussion, getDiscussById, viewedDiscussionIds, user?._id]);
 
-  useEffect(() => {
-    getListComment(discussId ? discussId : "", 0, 0);
-  }, [getListComment, discussId]);
   //Menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -120,18 +112,14 @@ const DiscussDetailPage: React.FC = () => {
     };
   }, []);
 
-  const handleCommentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(event.target.value);
-  };
-
   //Create a new comment
   const handleCommentSubmit = async (data: ICommentCreate) => {
-    try {
-      await createComment(data);
-      getListComment(discussId ? discussId : "", 0, 0);
-    } catch (error) {
-      console.error("Lỗi khi gửi dữ liệu:", error);
-    }
+    const reponse = await CreateNewComment(data);
+    setCommentCreate(reponse.data);
+  };
+  const handleCommentReplySubmit = async (data: ICommentCreate) => {
+    const reponse = await CreateNewComment(data);
+    setCommentReplyCreate(reponse.data);
   };
 
   const getColorAvatar = userById
@@ -144,7 +132,6 @@ const DiscussDetailPage: React.FC = () => {
         <ListDiscussCard
           listTopic={discussion ? discussion.topic : ""}
           numTopicsToShow={5}
-          listDiscuss={listDiscuss}
         />
       }
     >
@@ -158,8 +145,8 @@ const DiscussDetailPage: React.FC = () => {
       <div className="relative flex flex-col px-4 py-4 mb-3 duration-300 rounded-xl md:flex-row bg-light4 dark:bg-dark1">
         <div className="flex items-center self-start w-full mb-4 md:mr-5 md:mb-0 md:block md:w-auto">
           <div className="flex items-center">
-            <a
-              href=""
+            <Link
+              to={`/user/${userById}`}
               className="flex items-center mr-3 brightness-90 w-14 h-14"
             >
               <Avatar
@@ -167,10 +154,15 @@ const DiscussDetailPage: React.FC = () => {
                 alt=""
                 cln={`rounded-[10px_!important] w-14 h-14 p-[1px] object-cover ${colorAvatar}`}
               />
-            </a>
+            </Link>
             <div className="flex flex-col">
               <strong className="block uppercase md:hidden text-xs dark:text-light0 ">
-                By: {userById?.fullName ?? userById?.username}
+                <Link
+                  to={`/user/${userById}`}
+                  className=" hover:text-mainColor cursor-pointer"
+                >
+                  By: {userById?.fullName ?? userById?.username}
+                </Link>
               </strong>
               <span className="block md:hidden text-[10px] dark:text-light0 ">
                 Published:{" "}
@@ -204,7 +196,12 @@ const DiscussDetailPage: React.FC = () => {
             <div className=" flex justify-between">
               <div className=" mb-2 dark:text-light0 max-md:hidden">
                 <div className=" text-xs font-bold text-grey-600">
-                  By: {userById?.fullName ?? userById?.username}
+                  <Link
+                    to={`/user/${userById}`}
+                    className=" hover:text-mainColor cursor-pointer"
+                  >
+                    By: {userById?.fullName ?? userById?.username}
+                  </Link>
                 </div>
                 <div className="text-[10px] font-normal text-grey-600">
                   Published:{" "}
@@ -248,7 +245,7 @@ const DiscussDetailPage: React.FC = () => {
             <div className="flex justify-between items-center mt-2">
               <div className="flex justify-start items-center">
                 {discussion?.topic.map((topicId) => {
-                  const topic = listAllTopic?.find(
+                  const topic: Topic | undefined = listAllTopic?.find(
                     (topic) => topic._id === topicId
                   );
                   if (topic) {
@@ -300,9 +297,11 @@ const DiscussDetailPage: React.FC = () => {
         />
 
         <CommentList
+          newComment={commentCreate ? commentCreate : null}
           userData={user}
-          commentList={listComment}
-          discussionId={discussId}
+          newReply={commentReplyCreate ? commentReplyCreate : null}
+          handleSaveChanges={handleCommentReplySubmit}
+          discussionId={discussId ? discussId : ""}
         ></CommentList>
       </div>
 

@@ -42,6 +42,7 @@ export const ReplyArea: React.FC<ReplyAreaProps> = ({
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   }, [comment]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -59,6 +60,7 @@ export const ReplyArea: React.FC<ReplyAreaProps> = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const [showEmoji, setShowEmoji] = React.useState<boolean>(false);
   const addEmoji = (e: { unified: string }): void => {
     const sym: string[] = e.unified.split("_");
@@ -77,13 +79,12 @@ export const ReplyArea: React.FC<ReplyAreaProps> = ({
     const dataCommentCreate: ICommentCreate = {
       discussId: discussionId,
       createBy: user ? user._id : "",
-      commentParentId: parentCommentId,
+      ...(parentCommentId !== "" && { commentParentId: parentCommentId }),
       content: comment,
     };
     onSaveChanges(dataCommentCreate);
     setComment("");
   };
-
   return (
     <div className="bg-light3 dark:bg-dark0 flex mt-2 rounded-lg p-4 relative">
       <div className="flex-shrink-0 mr-2">

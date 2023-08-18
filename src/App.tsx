@@ -42,7 +42,7 @@ function App() {
             path="/notifications-detail"
             element={<NotificationDetailPage />}
           ></Route>
-          <Route path="/user/:id" element={<UserPage />}></Route>
+          <Route path="/user/:userId" element={<UserPage />}></Route>
           <Route
             path="/managements/report"
             element={<ManageReportPage />}

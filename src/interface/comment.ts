@@ -1,9 +1,13 @@
 export interface IComment {
   _id?: string;
+  _v?: number;
   content?: string;
-  left?: 2;
-  right?: 3;
+  left?: number;
+  right?: number;
   createdAt?: string;
+  createBy?: string;
+  discussId?: string;
+  countChildComments?: number;
   commentParentId?: string | null;
 }
 export default IComment;

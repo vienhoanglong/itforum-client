@@ -7,10 +7,23 @@ export const getUserById = async (id: string): Promise<any> => {
     const response = await axios.get(
       `https://ict-forum-server.onrender.com/user/${id}`
     );
+
     return response.data;
   } catch (error) {
     console.error(error);
     throw new Error("Error get profile");
+  }
+};
+
+export const getUserByListId = async (listId: string[]): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/user/list-user?listId=${listId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error get list user");
   }
 };
 

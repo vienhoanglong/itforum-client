@@ -1,11 +1,14 @@
 import ICommentCreate from "@/interface/API/ICommentCreate";
 import IComment from "@/interface/comment";
-import { CreateNewComment, getListComment } from "@/services/commentService";
+import {
+  CreateNewComment,
+  getListCommentById,
+} from "@/services/commentService";
 import { create } from "zustand";
 
 interface CommentState {
   listComment: IComment[] | null;
-  comment: ICommentCreate | null;
+  comment: IComment | null;
   getListComment: (
     discussionId: string,
     skip: number,
@@ -26,7 +29,7 @@ export const useCommentStore = create<CommentState>((set) => ({
     try {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        const response = await getListComment(
+        const response = await getListCommentById(
           discussionId,
           skip,
           limit,
@@ -44,7 +47,7 @@ export const useCommentStore = create<CommentState>((set) => ({
       const token = localStorage.getItem("accessToken");
       if (token) {
         const response = await CreateNewComment(cmt);
-        set(() => ({ comment: response }));
+        set(() => ({ comment: response.data }));
       }
     } catch (error) {
       console.error("Error create new comment:", error);
