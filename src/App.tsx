@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import PrivateRouter from "./PrivateRoute";
+import TestPage from "./pages/TestPage";
 const ManageNotificationPage = lazy(
   () => import("@/pages/ManageNotificationPage")
 );
@@ -83,6 +84,9 @@ function App() {
           <Route path="/topics/detail/:topicId" element={<TopicDetail />} />
           <Route path="/topics/:type" element={<TopicPage />}></Route>
           <Route path="/chat" element={<ChatPage />}></Route>
+          <Route path="/chat/:id" element={<ChatPage />}></Route>
+          <Route path="/test" element={<TestPage />}></Route>
+
         </Route>
         <Route element={<PrivateRouter authenticated={false} />}>
           <Route path="/sign-in" element={<SignInPage />} />

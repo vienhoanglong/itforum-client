@@ -1,3 +1,7 @@
+import { IMessageRequest } from "@/interface/message";
+import { createMessage } from "@/services/messageService";
+import { useConversationStore } from "@/store/conversationStore";
+import { useMessageStore } from "@/store/messageStore";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import React, { useState, ChangeEvent } from "react";
@@ -14,9 +18,12 @@ interface Mention {
 
 interface ChatBoxProps {
   users: Mention[];
+  chatId: string;
+  sender: string;
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
+  const { messages, setMessages } = useMessageStore();
   const [inputText, setInputText] = useState<string>("");
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<Mention[]>([]);
@@ -52,16 +59,45 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
     setInputText(`@${mention.username} `);
     setShowSuggestions(false);
   };
-
+  const handleSubmitMessage = async() => {
+    if (inputText.trim() !== '') {
+      // Thực hiện xử lý gửi tin nhắn tại đây, ví dụ:
+      // Gửi tin nhắn thông qua API, lưu vào state, hoặc thực hiện các tác vụ khác
+      const payload: IMessageRequest = {
+        contentMessage: inputText,
+        senderId: sender,
+        conversationId: chatId,
+      }
+      console.log(payload)
+      const response = await createMessage(payload)
+      if(response){
+        setMessages([...messages, response])
+      }
+      // Clear input text
+      setInputText('');
+  
+      // Hide suggestions and emoji picker (nếu cần)
+      setShowSuggestions(false);
+      setShowEmoji(false);
+    }
+  };
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSubmitMessage();
+    }
+  };
+  
   return (
     <>
-      <HiOutlinePaperClip className="text-xl cursor-pointer" />
+      <HiOutlinePaperClip className="text-xl cursor-pointer hover:text-mainColor" />
       <input
         className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] dark:bg-dark0 text-sm outline-none"
         type="text"
         value={inputText}
         placeholder="Nhập @, nhắn tin tới Trần Hoàng Long"
         onChange={handleInputChange}
+        onKeyDown={handleInputKeyDown}
       />
       {showEmoji && (
         <div className="absolute bottom-[100%] right-2 ">
@@ -91,9 +127,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
         className="text-xl cursor-pointer"
         onClick={() => setShowEmoji(!showEmoji)}
       >
-        <HiOutlineEmojiHappy />
+        <HiOutlineEmojiHappy className="hover:text-mainColor" />
       </span>
-      <HiPaperAirplane className="text-xl cursor-pointer" />
+      <HiPaperAirplane className="text-xl cursor-pointer  hover:text-mainColor" onClick={handleSubmitMessage}/>
     </>
   );
 };

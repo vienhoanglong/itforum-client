@@ -1,18 +1,108 @@
 import Avatar from "@/components/image/Avatar";
-import React, { useState } from "react";
-import { BsEmojiSmile } from "react-icons/bs";
+import React, { Fragment, useState } from "react";
 import { HiArrowNarrowLeft, HiInformationCircle } from "react-icons/hi";
 import ChatBox from "./ChatBox";
 import avt1 from "@/assets/avt1.jpg";
 import { Link } from "react-router-dom";
 import Modal from "@/components/modal/Modal";
 import ChatInformation from "./ChatInformation";
+import { useMessageStore } from "@/store/messageStore";
+import { useUserStore } from "@/store/userStore";
+import { useConversationStore } from "@/store/conversationStore";
+import { AvatarImage } from "@/components/image";
+import { formatTimeAuto, setColorBackgroundUser } from "@/utils/helper";
+
+interface MessageItemProps {
+  content: string;
+  isCurrentUser: boolean;
+  sender?: string;
+  time: string;
+  image: string;
+  color: string;
+}
+
+const MessageItem: React.FC<MessageItemProps> = ({
+  content,
+  sender,
+  time,
+  isCurrentUser,
+  image,
+  color,
+}) => {
+  return (
+    <div
+      className={`flex flex-wrap flex-col mx-8 self-end my-5 ${
+        isCurrentUser ? "justify-end" : ""
+      }`}
+    >
+      <div
+        className={`text-xs flex gap-2 ${
+          isCurrentUser
+            ? "ml-auto p-2 md:p-2 rounded-tr-xl rounded-bl-xl"
+            : "mr-auto p-2 rounded-tr-xl rounded-br-xl"
+        } bg-dark4 rounded-tl-xl animate-fadeIn max-w-[60%]`}
+      >
+        {!isCurrentUser && (
+          <Avatar
+            cln={`w-6 h-6 object-cover border-none align-middle mx-1 ${setColorBackgroundUser(
+              color
+            )}`}
+            src={image}
+          />
+        )}
+        <p className="cursor-pointer">{content}</p>
+        {isCurrentUser && (
+          <Avatar
+            cln={`w-6 h-6 object-cover border-none align-middle mx-1 ${setColorBackgroundUser(
+              color
+            )}`}
+            src={image}
+          />
+        )}
+      </div>
+      <div
+        className={`m-1 flex flex-row gap-1 ${
+          isCurrentUser ? "justify-end" : ""
+        }`}
+      >
+        <span className="text-[10px]">{formatTimeAuto(time)}</span>
+      </div>
+
+      {/* ... Additional components for emojis, etc. ... */}
+    </div>
+  );
+};
+
 interface ChatConversationProps {
   showConversation: boolean;
+  chatId: string | null;
 }
 export const ChatConversation: React.FC<ChatConversationProps> = ({
   showConversation,
+  chatId,
 }) => {
+  const { messages, fetchMessages } = useMessageStore();
+  const { conversations, members } = useConversationStore();
+  const { user } = useUserStore();
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  React.useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  React.useEffect(() => {
+    const fetchInitialMessages = () => {
+      if (showConversation && chatId) {
+        fetchMessages(chatId);
+        if (containerRef.current) {
+          containerRef.current.scrollTop = containerRef.current.scrollHeight;
+        }
+      }
+    };
+
+    fetchInitialMessages();
+  }, [showConversation, chatId, fetchMessages]);
   const users = [
     { id: 1, username: "Viên Hoàng Long" },
     { id: 2, username: "ChatGPT" },
@@ -25,9 +115,10 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
   const handleShowModalInformation = () => {
     setShowModalInformation(true);
   };
+
   return (
     <>
-      {showConversation && (
+      {showConversation ? (
         <div
           className={`sm:w-3/4
           mr-5 md:mr-0 fixed lg:static md:flex md:flex-col px-0 w-[90%] h-full lg:min-h-[100vh] dark:bg-dark1 bg-white`}
@@ -44,87 +135,82 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
                   <HiArrowNarrowLeft className="text-base dark:text-light1 cursor-pointer hover:text-darker" />
                 </Link>
               )}
-              <Avatar
-                src={avt1}
-                cln={"w-[40px] h-[40px] border-none align-middle object-cover"}
-              />
-              <div className="ml-3 w-[70%] max-w-xs">
-                <span className="mt-1 text-sm text-dark1 dark:text-light1">
-                  Tran Hoang Long
-                </span>
-                <p className="m-0 text-dark1 dark:text-light1 text-xs break-words truncate">
-                  Viết nội dung tại đây...
-                </p>
-              </div>
+              {conversations.map(
+                (conversation) =>
+                  conversation._id === chatId && (
+                    <Fragment key={conversation._id}>
+                      {conversation?.imgConversation ? (
+                        <Avatar
+                          src={conversation?.imgConversation ?? ""}
+                          cln={`w-[40px] h-[40px] object-cover border-none align-middle cursor-pointer`}
+                        />
+                      ) : (
+                        <AvatarImage
+                          name={"group"}
+                          size={0}
+                          cln={
+                            "w-[40px] h-[40px] object-cover border-none align-middle"
+                          }
+                        />
+                      )}
+                      <div className="ml-3 w-[70%] max-w-xs">
+                        <span className="mt-1 text-sm text-dark1 dark:text-light1">
+                          {conversation.nameConversation ?? "New Group Chat"}
+                        </span>
+                        <span className="mt-1 text-sm text-dark1 dark:text-light1"></span>
+                        <p className="m-0 text-dark1 dark:text-light1 text-xs break-words truncate">
+                          {conversation.descConversation ??
+                            "Description group chat"}
+                        </p>
+                      </div>
+                    </Fragment>
+                  )
+              )}
             </div>
             <HiInformationCircle
               className="text-2xl text-dark1 dark:text-light1 cursor-pointer"
               onClick={handleShowModalInformation}
             />
           </div>
-          <div className="pt-4 dark:bg-dark1 flex-grow space-y-2 overflow-y-auto mb-20 min-h-[48vh]">
-            <div className="flex flex-wrap flex-col mx-8">
-              <div className="m-1 flex flex-row gap-1 justify-end">
-                <p className="text-[10px]">Vien Hoang Long</p>
-                <span className="text-[10px]">11:31</span>
+          <div
+            className="pt-4 dark:bg-dark1 flex-grow flex-col-reverse h-[58vh] lg:h-[400px] overflow-y-scroll no-scrollbar"
+            ref={containerRef}
+          >
+            {messages.length > 0 ? (
+              messages.map((message) =>
+                members
+                  .filter((member) => member._id === message.senderId)
+                  .map((e) => (
+                    <MessageItem
+                      key={message._id}
+                      content={message.contentMessage}
+                      isCurrentUser={message.senderId === user?._id}
+                      sender={e?.fullName ?? e?.username}
+                      time={message.createdAt.toString()}
+                      image={e.avatar ?? avt1}
+                      color={e.color ?? ""}
+                    />
+                  ))
+              )
+            ) : (
+              <div className="flex items-center justify-center text-base h-full dark:text-white mt-10">
+               Chưa có nội dung cuộc trò chuyện...
               </div>
-              <div className="text-xs ml-auto p-2 md:p-2 bg-dark4 rounded-tl-xl rounded-tr-xl rounded-bl-xl animate-fadeIn max-w-[60%]">
-                <p className="cursor-pointer">
-                  Xin chào người anh em thiện lành
-                </p>
-              </div>
-              <div className="mt-2 m-1 flex relative group justify-end">
-                <BsEmojiSmile className="text-base cursor-pointer hover:dark:text-light1 mr-2 mt-1" />
-                <div className="flex space-x-2">
-                  <div className="p-1 text-xs outline rounded-lg">😊 2</div>
-                  <div className="p-1 text-xs outline rounded-lg">❤️ 6</div>
-                </div>
-                <div className="absolute invisible group-hover:visible gap-2 items-center ease-in-out bg-white p-3 rounded-tl-lg rounded-tr-lg rounded-br-lg w-fit -translate-y-full -mt-1">
-                  <button className="hover:scale-150">😊</button>
-                  <button className="hover:scale-150">👍</button>
-                  <button className="hover:scale-150">👎</button>
-                  <button className="hover:scale-150">😕</button>
-                  <button className="hover:scale-150">🎉</button>
-                  <button className="hover:scale-150">❤️</button>
-                  <button className="hover:scale-150">🚀</button>
-                  <button className="hover:scale-150">👀</button>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-wrap flex-col mx-8">
-              <div className="m-1 flex flex-row gap-1">
-                <p className="text-[10px]">Vien Hoang Long</p>
-                <span className="text-[10px]">11:31</span>
-              </div>
-              <div className="text-xs mr-auto p-2 md:p-3 bg-dark4 rounded-tl-xl rounded-tr-xl rounded-br-xl animate-fadeIn max-w-[60%]">
-                <p className="cursor-pointer">
-                  Xin chào người anh em thiện lành
-                </p>
-              </div>
-              <div className="mt-2 m-1 flex relative group">
-                <BsEmojiSmile className="text-base cursor-pointer hover:dark:text-light1 mr-2 mt-1" />
-                <div className="flex space-x-2">
-                  <div className="p-1 text-xs outline rounded-lg">😊 2</div>
-                  <div className="p-1 text-xs outline rounded-lg">❤️ 6</div>
-                </div>
-                <div className="absolute invisible group-hover:visible gap-2 items-center ease-in-out bg-white p-3 rounded-tl-lg rounded-tr-lg rounded-br-lg w-fit -translate-y-full -mt-1">
-                  <button className="hover:scale-150">😊</button>
-                  <button className="hover:scale-150">👍</button>
-                  <button className="hover:scale-150">👎</button>
-                  <button className="hover:scale-150">😕</button>
-                  <button className="hover:scale-150">🎉</button>
-                  <button className="hover:scale-150">❤️</button>
-                  <button className="hover:scale-150">🚀</button>
-                  <button className="hover:scale-150">👀</button>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
           <div className="sticky bottom-0 dark:bg-dark2 bg-light1">
-            <form className="flex items-center p-3 gap-3 sticky">
-              <ChatBox users={users}></ChatBox>
-            </form>
+            <div className="flex items-center p-3 gap-3 sticky">
+              <ChatBox
+                users={users}
+                chatId={chatId ?? ""}
+                sender={user?._id ?? ""}
+              ></ChatBox>
+            </div>
           </div>
+        </div>
+      ) : (
+        <div className="text-xl m-auto dark:text-white"> 
+          Hãy chọn một đoạn chat hoặc bắt đầu cuộc trò chuyện mới
         </div>
       )}
       <Modal

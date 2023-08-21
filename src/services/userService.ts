@@ -77,3 +77,22 @@ export const uploadImage = async (file: File): Promise<any> => {
     throw new Error("Error upload image");
   }
 };
+
+export const getListUserByListUserId = async (listUserId: string[]): Promise<any> =>{
+  try {
+    const response = await axios.get(`https://ict-forum-server.onrender.com/user/list-user?listId=${listUserId}`)
+    return response.data.data; 
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error list user by list user id");
+  }
+}
+
+export const searchUserByUsername = async(username: string): Promise<any> => {
+  try {
+    const response = await axios.get(`https://ict-forum-server.onrender.com/user/search?username=${username}`)
+    return response.data.data; 
+  } catch (error) {
+    throw new Error("Error searching user by username");
+  }
+}
