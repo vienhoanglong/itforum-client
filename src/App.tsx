@@ -5,6 +5,7 @@ import PrivateRouter from "./PrivateRoute";
 const ManageNotificationPage = lazy(
   () => import("@/pages/ManageNotificationPage")
 );
+const ReviewPostPage = lazy(() => import("@/pages/ReviewPostPage"));
 const ManageReportPage = lazy(() => import("@/pages/ManageReportPage"));
 const ManageApprove = lazy(() => import("@/pages/ManageApprovePage"));
 const ManageTopicsPage = lazy(() => import("@/pages/ManageTopicsPage"));
@@ -48,6 +49,10 @@ function App() {
             element={<ManageReportPage />}
           ></Route>
           <Route
+            path="/managements/approve/:postId"
+            element={<ReviewPostPage />}
+          ></Route>
+          <Route
             path="/managements/approve"
             element={<ManageApprove />}
           ></Route>
@@ -61,7 +66,7 @@ function App() {
           ></Route>
           <Route path="/managements/user" element={<ManageUser />}></Route>
           <Route
-            path="/managements/notifications"
+            path="/managements/notifications/:userId"
             element={<ManageNotificationPage />}
           ></Route>
           <Route
@@ -74,11 +79,11 @@ function App() {
             element={<DiscussDetailPage />}
           ></Route>
           <Route
-            path="/managements/posts"
+            path="/managements/posts/:userId"
             element={<ManagePostsPage />}
           ></Route>
           <Route
-            path="/managements/discussions"
+            path="/managements/discussions/:userId"
             element={<ManageDiscussionPage />}
           ></Route>
           <Route path="/managements" element={<ManagementPage />}></Route>

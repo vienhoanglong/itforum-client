@@ -10,7 +10,6 @@ export const getUserById = async (id: string): Promise<any> => {
 
     return response.data;
   } catch (error) {
-    console.error(error);
     throw new Error("Error get profile");
   }
 };
@@ -22,7 +21,6 @@ export const getUserByListId = async (listId: string[]): Promise<any> => {
     );
     return response.data;
   } catch (error) {
-    console.error(error);
     throw new Error("Error get list user");
   }
 };
@@ -35,7 +33,6 @@ export const getListAvatars = async (): Promise<IAvatar[]> => {
     console.log(response.data);
     return response.data.data;
   } catch (error) {
-    console.error(error);
     throw new Error("Error get list avatar");
   }
 };
@@ -60,9 +57,8 @@ export const UpdateDataUser = async (
       }
     );
     return response.data;
-    console.log("Update response:", response.data);
   } catch (error) {
-    console.error("Error sending update:", error);
+    throw new Error("Error update user");
   }
 };
 
@@ -83,10 +79,8 @@ export const uploadImage = async (file: File): Promise<any> => {
         },
       }
     );
-    console.log(response.data);
     return response.data.data.link;
   } catch (error) {
-    console.error(error);
     throw new Error("Error upload image");
   }
 };

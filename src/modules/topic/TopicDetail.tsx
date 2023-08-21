@@ -1,10 +1,8 @@
 import {
   colorThumnailTopic,
   colorTopic,
-  discuss,
   exampleDataDocument,
   posts,
-  sampleTopics,
 } from "@/constants/global";
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import React, { useEffect, useState } from "react";
@@ -23,17 +21,14 @@ import zip from "../../assets/IconDocumentTopic/zip.png";
 import { useTopicStore } from "@/store/topicStore";
 
 const TopicDetail: React.FC = () => {
-  const { topicId } = useParams<{ topicId: string }>();
   const { topic, getById } = useTopicStore();
   const navigate = useNavigate();
-  const [topicData, setTopicData] = useState(topic);
-  // const topic = sampleTopics.find(
-  //   (t) => t.name.toLowerCase().replace(/\s+/g, "-") === topicId
-  // );
+
+  const { topicId } = useParams<{ topicId: string }>();
 
   useEffect(() => {
-    getById(topicId ? topicId : "");
-  }, [topicId, getById]);
+    topicId && getById(topicId);
+  }, [topicId]);
 
   const handleBackTopic = () => {
     navigate(-1);
@@ -166,7 +161,7 @@ const TopicDetail: React.FC = () => {
             </TabList>
             <TabPanel>
               <ListDiscussCard
-                listTopic={topic ? topic._id : ""}
+                listTopic={topic._id}
                 numTopicsToShow={4}
               ></ListDiscussCard>
             </TabPanel>

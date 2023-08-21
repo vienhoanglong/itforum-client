@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import avt from "assets/avt1.jpg";
 import { colorTopic, colorsAvatar } from "constants/global";
 import { BsEyeFill, BsFillChatFill } from "react-icons/bs";
 import Avatar from "@/components/image/Avatar";
@@ -94,7 +93,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
     const result = colorsAvatar.find((item) => item.color === color);
     return result?.value ?? "bg-white";
   };
-
+  console.log(discuss);
   return (
     <>
       <div className=" bg-light4 dark:bg-dark1 p-4 rounded-lg shadow-sm dark:text-white mb-4 flex items-center">
@@ -124,7 +123,11 @@ export const Discuss: React.FC<ListDiscussProps> = ({
       ></FiltersBox>
       {search && listDiscussion ? (
         listDiscussion
-          .filter((discuss) => discuss.title.toLowerCase().includes(search))
+          .filter(
+            (discuss) =>
+              discuss.title.toLowerCase().includes(search) &&
+              discuss.isDraft == false
+          )
           .map((discuss, index) =>
             currentUser
               ?.filter((e) => e._id === discuss.createBy)
@@ -275,149 +278,151 @@ export const Discuss: React.FC<ListDiscussProps> = ({
           Không có thảo luận nào
         </div>
       ) : (
-        discuss?.map((discuss, index) =>
-          currentUser
-            ?.filter((e) => e._id === discuss.createBy)
-            .map((user) => (
-              <div
-                key={index}
-                className="relative flex flex-col shadow-sm px-4 py-4 mb-3 duration-300 cursor-pointer rounded-xl md:flex-row bg-light4 dark:bg-dark1"
-              >
-                <div className="flex items-center self-start w-full mb-4 md:mr-5 md:mb-0 md:block md:w-auto">
-                  <div className="flex items-center">
-                    <Link
-                      to={`/user/${user?._id}`}
-                      className="flex items-center mr-3 brightness-90 w-14 h-14"
-                    >
-                      <Avatar
-                        src={user?.avatar ?? ""}
-                        alt=""
-                        cln={`rounded-[10px_!important] w-14 h-14 p-[1px] object-cover ${getColorUser(
-                          user?.color ?? ""
-                        )}`}
-                      />
-                    </Link>
-                    <div className="flex flex-col">
-                      <strong className="block uppercase md:hidden text-xs dark:text-light0 ">
-                        <Link
-                          to={`/user/${user?._id}`}
-                          className=" hover:text-mainColor cursor-pointer"
-                        >
-                          {user.fullName ?? user.username}
-                        </Link>
-                      </strong>
-                      <span className="block md:hidden text-[10px] dark:text-light0 ">
-                        Publish:{" "}
-                        {convertDateTime(
-                          discuss.createdAt.toString(),
-                          formatDate
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center dark:text-light0 py-2 ml-auto rounded-xl bg-grey-400 md:hidden">
-                    <div className="flex items-center  px-3">
-                      <div className="mr-1">
-                        <BsFillChatFill className="text-lg " />
-                      </div>
-                      <span className="text-xs font-semibold leading-none text-grey-800">
-                        3
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <div className="mr-1">
-                        <BsEyeFill className="text-lg" />
-                      </div>
-                      <span className="text-xs font-medium leading-none text-left text-text1">
-                        {discuss.totalView}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-full md:mb-0 lg:mt-1">
-                  <div className="flex flex-col justify-between">
-                    <div className=" flex justify-between">
-                      <div className=" mb-2 dark:text-light0 max-md:hidden">
-                        <div className="text-xs font-bold text-grey-600">
+        discuss
+          ?.filter((e) => e.isDraft === false)
+          .map((discuss, index) =>
+            currentUser
+              ?.filter((e) => e._id === discuss.createBy)
+              .map((user) => (
+                <div
+                  key={index}
+                  className="relative flex flex-col shadow-sm px-4 py-4 mb-3 duration-300 cursor-pointer rounded-xl md:flex-row bg-light4 dark:bg-dark1"
+                >
+                  <div className="flex items-center self-start w-full mb-4 md:mr-5 md:mb-0 md:block md:w-auto">
+                    <div className="flex items-center">
+                      <Link
+                        to={`/user/${user?._id}`}
+                        className="flex items-center mr-3 brightness-90 w-14 h-14"
+                      >
+                        <Avatar
+                          src={user?.avatar ?? ""}
+                          alt=""
+                          cln={`rounded-[10px_!important] w-14 h-14 p-[1px] object-cover ${getColorUser(
+                            user?.color ?? ""
+                          )}`}
+                        />
+                      </Link>
+                      <div className="flex flex-col">
+                        <strong className="block uppercase md:hidden text-xs dark:text-light0 ">
                           <Link
                             to={`/user/${user?._id}`}
                             className=" hover:text-mainColor cursor-pointer"
                           >
                             {user.fullName ?? user.username}
                           </Link>
-                        </div>
-                        <div className="text-[10px] font-normal text-grey-600">
-                          Published:{" "}
+                        </strong>
+                        <span className="block md:hidden text-[10px] dark:text-light0 ">
+                          Publish:{" "}
                           {convertDateTime(
                             discuss.createdAt.toString(),
                             formatDate
                           )}
-                        </div>
-                      </div>
-                      <div className="relative hidden text-center md:ml-auto md:flex md:flex-row-reverse md:items-center gap-2 dark:text-light0">
-                        <div className="flex items-center justify-center ml-4">
-                          <div className="mr-1">
-                            <BsFillChatFill className="text-lg" />
-                          </div>
-                          <span className="relative text-xs font-medium leading-none text-left text-text1">
-                            3
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-center">
-                          <div className="mr-1">
-                            <BsEyeFill className="text-lg" />
-                          </div>
-                          <span className="text-xs font-medium leading-none text-left text-text1">
-                            {discuss.totalView}
-                          </span>
-                        </div>
+                        </span>
                       </div>
                     </div>
-                    <div className="-mt-1 mb-3 dark:bg-dark0 bg-light3 p-2 rounded-lg md:flex md:items-start">
-                      <h3 className="tracking-normal md:pr-6 lg:mb-0 dark:text-light0">
-                        <Link
-                          to={`/discuss/${discuss._id}`}
-                          className=" text-sm break-words line-clamp-3 font-semibold hover:text-mainColor"
-                        >
-                          {discuss.title}
-                        </Link>
-                      </h3>
+                    <div className="flex items-center justify-center dark:text-light0 py-2 ml-auto rounded-xl bg-grey-400 md:hidden">
+                      <div className="flex items-center  px-3">
+                        <div className="mr-1">
+                          <BsFillChatFill className="text-lg " />
+                        </div>
+                        <span className="text-xs font-semibold leading-none text-grey-800">
+                          3
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <div className="mr-1">
+                          <BsEyeFill className="text-lg" />
+                        </div>
+                        <span className="text-xs font-medium leading-none text-left text-text1">
+                          {discuss.totalView}
+                        </span>
+                      </div>
                     </div>
-                    <div className=" break-words line-clamp-3 text-black/90 dark:text-light0 lg:mb-0 lg:pr-8 text-xs">
-                      {discuss.content}
-                    </div>
-                    <div className="mt-2">
-                      {discuss.topic.map((topicId) => {
-                        const topic = listAllTopic?.find(
-                          (topic) => topic._id === topicId
-                        );
-                        if (topic) {
-                          return (
+                  </div>
+
+                  <div className="w-full md:mb-0 lg:mt-1">
+                    <div className="flex flex-col justify-between">
+                      <div className=" flex justify-between">
+                        <div className=" mb-2 dark:text-light0 max-md:hidden">
+                          <div className="text-xs font-bold text-grey-600">
                             <Link
-                              key={topic._id}
-                              to={`/topics/detail/${topic._id}`}
+                              to={`/user/${user?._id}`}
+                              className=" hover:text-mainColor cursor-pointer"
                             >
-                              <div
-                                className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
-                                  colorTopic[
-                                    topic.color as keyof typeof colorTopic
-                                  ] || ""
-                                }`}
-                              >
-                                {topic.name}
-                              </div>
+                              {user.fullName ?? user.username}
                             </Link>
+                          </div>
+                          <div className="text-[10px] font-normal text-grey-600">
+                            Published:{" "}
+                            {convertDateTime(
+                              discuss.createdAt.toString(),
+                              formatDate
+                            )}
+                          </div>
+                        </div>
+                        <div className="relative hidden text-center md:ml-auto md:flex md:flex-row-reverse md:items-center gap-2 dark:text-light0">
+                          <div className="flex items-center justify-center ml-4">
+                            <div className="mr-1">
+                              <BsFillChatFill className="text-lg" />
+                            </div>
+                            <span className="relative text-xs font-medium leading-none text-left text-text1">
+                              3
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-center">
+                            <div className="mr-1">
+                              <BsEyeFill className="text-lg" />
+                            </div>
+                            <span className="text-xs font-medium leading-none text-left text-text1">
+                              {discuss.totalView}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="-mt-1 mb-3 dark:bg-dark0 bg-light3 p-2 rounded-lg md:flex md:items-start">
+                        <h3 className="tracking-normal md:pr-6 lg:mb-0 dark:text-light0">
+                          <Link
+                            to={`/discuss/${discuss._id}`}
+                            className=" text-sm break-words line-clamp-3 font-semibold hover:text-mainColor"
+                          >
+                            {discuss.title}
+                          </Link>
+                        </h3>
+                      </div>
+                      <div className=" break-words line-clamp-3 text-black/90 dark:text-light0 lg:mb-0 lg:pr-8 text-xs">
+                        {discuss.content}
+                      </div>
+                      <div className="mt-2">
+                        {discuss.topic.map((topicId) => {
+                          const topic = listAllTopic?.find(
+                            (topic) => topic._id === topicId
                           );
-                        }
-                        return null;
-                      })}
+                          if (topic) {
+                            return (
+                              <Link
+                                key={topic._id}
+                                to={`/topics/detail/${topic._id}`}
+                              >
+                                <div
+                                  className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
+                                    colorTopic[
+                                      topic.color as keyof typeof colorTopic
+                                    ] || ""
+                                  }`}
+                                >
+                                  {topic.name}
+                                </div>
+                              </Link>
+                            );
+                          }
+                          return null;
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
-        )
+              ))
+          )
       )}
     </>
   );

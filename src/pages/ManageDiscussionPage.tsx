@@ -1,62 +1,217 @@
 import { Button } from "@/components/button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HiArrowCircleLeft,
   HiFilter,
   HiPencil,
   HiPlusCircle,
-  HiSearch,
   HiTrash,
 } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
-import { exampleData, topicColors } from "../constants/global.ts";
+import { colorTopic } from "../constants/global.ts";
 import Modal from "@/components/modal/Modal.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 import AddNewDiscussion from "@/modules/discuss/AddNewDiscussion.tsx";
 import DeletedDiscussions from "@/modules/discuss/DeletedDiscussions.tsx";
+import { Link, useNavigate } from "react-router-dom";
+import { useTopicStore } from "@/store/topicStore.ts";
+import { useUserStore } from "@/store/userStore.ts";
+import IDiscussionCreate from "@/interface/API/IDiscussionCreate.ts";
+import {
+  CreateNewDiscussion,
+  UpdatedDiscussion,
+  moveTrashOrRestore,
+} from "@/services/discussionService.ts";
+import { toast } from "react-toastify";
+import convertDateTime from "@/utils/helper.ts";
+import { useManagementStore } from "@/store/managementStore.ts";
+import IDiscussion from "@/interface/discussion.ts";
+import {
+  BsFillArrowDownSquareFill,
+  BsFillArrowUpSquareFill,
+} from "react-icons/bs";
+import UpdateDiscussion from "@/modules/discuss/UpdateDiscussion.tsx";
+import ConfirmDialog from "@/components/confirm/ConfirmDialog.tsx";
 
 export const ManageDiscussionPage: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const { listAllTopic, getTopic } = useTopicStore();
+  const { getListDiscussion, listDiscuss, getDiscussFromTrash } =
+    useManagementStore();
+
+  const { setUser, user } = useUserStore();
+  const navigate = useNavigate();
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const [filterType, setFilterType] = useState<string | null>(null);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const formatDate = "MM-DD-YYYY";
+  const [listDiscussDefault, setListDiscussDefault] = useState<
+    IDiscussion[] | null
+  >([]);
+  const [discussionUpdate, setDiscussionUpdate] = useState<string>("");
+  const [currentItems, setCurrentItems] = useState<IDiscussion[] | null>([]);
+  const [isModalOpenDialog, setIsModalOpenDialog] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+  const [confirmMessage, setConfirmMessage] = useState("");
+
+  useEffect(() => {
+    getListDiscussion(0, 0, "desc");
+    getTopic();
+    setUser();
+  }, [getListDiscussion, getTopic, setUser]);
+
+  useEffect(() => {
+    setListDiscussDefault(
+      listDiscuss &&
+        listDiscuss?.filter((disucuss) => disucuss.createBy === user?._id)
+    );
+    setCurrentItems(
+      listDiscuss &&
+        listDiscuss
+          ?.filter((disucuss) => disucuss.createBy === user?._id)
+          .slice(0, itemsPerPage)
+    );
+  }, [itemsPerPage, listDiscuss, user?._id]);
+
+  const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+  const [isModalOpenTrash, setIsModalOpenTrash] = useState(false);
+
+  const handleAddNew = () => {
+    setIsModalOpenAdd(true);
+  };
+
+  const handleDeleted = () => {
+    setIsModalOpenTrash(true);
+  };
+  const handleDiscussionUpdate = (id: string) => {
+    setDiscussionUpdate(id);
+    setIsModalOpenUpdate(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpenAdd(false);
+    setIsModalOpenTrash(false);
+    setIsModalOpenUpdate(false);
+    setIsModalOpenDialog(false);
+  };
+
+  const handleCreate = async (data: IDiscussionCreate) => {
+    try {
+      await CreateNewDiscussion(data);
+      getListDiscussion(0, 0, "desc");
+      toast.success(" Post discuss successfully! ", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+      setIsModalOpenAdd(false);
+    } catch (err) {
+      setIsModalOpenAdd(false);
+      throw new Error(" Error creating discussion");
+    }
+  };
+
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const sortedData =
+    listDiscussDefault &&
+    [...listDiscussDefault].sort((a, b) => {
+      if (sortDirection === "asc") {
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      } else {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      }
+    });
+
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    const filteredData = filterType
+      ? sortedData?.filter((item) => item.topic.includes(filterType))
+      : sortedData;
+    const newCurrentItems = filteredData?.slice(itemOffset, endOffset);
+    const newPageCount = Math.ceil((filteredData?.length ?? 0) / itemsPerPage);
+    setTimeout(() => {
+      newCurrentItems && setCurrentItems(newCurrentItems);
+      setPageCount(newPageCount);
+    }, 0);
+  }, [filterType, sortedData, itemOffset, itemsPerPage]);
+
+  const handleSort = () => {
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  };
+
   const handleItemsPerPageChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const selectedItemsPerPage = parseInt(event.target.value);
     setItemsPerPage(selectedItemsPerPage);
+  };
+
+  const handleFilter = (type: string | null) => {
+    setFilterType(type);
+    setItemOffset(0);
     setCurrentPage(0);
   };
-  const handlePageChange = (selectedPage: { selected: number }) => {
+  const handlePageClick = (selectedPage: { selected: number }) => {
+    const newOffset = selectedPage.selected * itemsPerPage;
+    setItemOffset(newOffset);
     setCurrentPage(selectedPage.selected);
   };
-
-  const offset = currentPage * itemsPerPage;
-  const paginatedData = exampleData.slice(offset, offset + itemsPerPage);
-
-  const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
-  const [isModalOpenTrash, setIsModalOpenTrash] = useState(false); // config modal trash
-  const handleAddNewPost = () => {
-    setIsModalOpenAddPost(true);
+  const handleUpdate = async (discussion: IDiscussionCreate, id: string) => {
+    try {
+      await UpdatedDiscussion(discussion, id);
+      getListDiscussion(0, 0, "desc");
+      toast.success(" Update discuss successfully! ", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+      setIsModalOpenUpdate(false);
+    } catch (err) {
+      throw new Error("fail to update");
+    }
   };
-
-  const handleCloseModalAdd = () => {
-    setIsModalOpenAddPost(false);
+  const handleConfirm = (action: () => void, message: string) => {
+    setConfirmAction(() => action);
+    setConfirmMessage(message);
+    setIsModalOpenDialog(true);
   };
-  const handleDeletedPosts = () => {
-    setIsModalOpenTrash(true);
+  const handleConfirmAction = () => {
+    if (confirmAction) {
+      confirmAction();
+    }
+    setIsModalOpenDialog(false);
   };
-
-  const handleCloseModalTrash = () => {
-    setIsModalOpenTrash(false);
+  const handleDelete = async (id: string) => {
+    handleConfirm(async () => {
+      try {
+        await moveTrashOrRestore(id);
+        getDiscussFromTrash();
+        getListDiscussion(0, 0, "desc");
+        toast.success(" Deleted discuss successfully! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error restore discussion");
+      }
+    }, "Bạn có chắc muốn xoá không?");
+  };
+  const handleBack = () => {
+    navigate(-1);
   };
   return (
     <LayoutSecondary>
-      <a
+      <button
         className="dark:text-light0 bg- rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        href="/managements"
+        onClick={handleBack}
       >
         <HiArrowCircleLeft className="w-6 h-6 mr-1" />
         Back to Managements
-      </a>
+      </button>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">Manage discussions</h4>
@@ -64,28 +219,21 @@ export const ManageDiscussionPage: React.FC = () => {
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
             <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
-              <div className="w-full mr-2 relative">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className=" dark:bg-dark0 dark:border-dark2 dark:text-light4 border w-3/4 px-8 py-2 text-xs rounded-lg shadow-inner   "
-                />
-                <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-                  <HiSearch className="text-darker" size={18}></HiSearch>
-                </span>
-              </div>
               <div className="w-2/5 relative">
                 <select
                   id="filterDropdown"
                   className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
+                  value={filterType || ""}
+                  onChange={(e) => handleFilter(e.target.value || null)}
                 >
-                  <option value="keyword">Filter</option>
-                  <option value="time">Thời gian</option>
-                  <option value="category">Thể loại</option>
-                  <option value="bookmark">Đánh dấu</option>
-                  <option value="author">Tác giả</option>
+                  <option value="">All</option>
+                  {listAllTopic?.map((topic) => (
+                    <option key={topic._id} value={topic._id}>
+                      {topic.name}
+                    </option>
+                  ))}
                 </select>
-                <span className="absolute inset-y-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
+                <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
                   <HiFilter className="text-darker" size={15} />
                 </span>
               </div>
@@ -97,7 +245,7 @@ export const ManageDiscussionPage: React.FC = () => {
               className=" w-full text-white text-xs bg-lighter hover:bg-darker  rounded px-4 shadow-md py-2"
               kind="primary"
               type="submit"
-              handle={handleAddNewPost}
+              handle={handleAddNew}
             >
               {" "}
               New{" "}
@@ -105,12 +253,11 @@ export const ManageDiscussionPage: React.FC = () => {
                 <HiPlusCircle size={20} />
               </span>
             </Button>
-
             <Button
               className=" w-full text-white bg-red3 hover:bg-red2  text-xs rounded shadow-md px-4 py-2"
               kind="custom"
               type="submit"
-              handle={handleDeletedPosts}
+              handle={() => handleDeleted()}
             >
               {" "}
               Trash{" "}
@@ -121,75 +268,141 @@ export const ManageDiscussionPage: React.FC = () => {
           </div>
         </div>
 
-        <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
-          <AddNewDiscussion />
+        <Modal isOpen={isModalOpenAdd} onClose={handleCloseModal}>
+          <AddNewDiscussion onSaveChanges={handleCreate} />
         </Modal>
-        <Modal isOpen={isModalOpenTrash} onClose={handleCloseModalTrash}>
+        <Modal isOpen={isModalOpenUpdate} onClose={handleCloseModal}>
+          <UpdateDiscussion
+            listTopic={listAllTopic}
+            discussionId={discussionUpdate}
+            onSaveChanges={handleUpdate}
+          />
+        </Modal>
+        <Modal isOpen={isModalOpenTrash} onClose={handleCloseModal}>
           <DeletedDiscussions />
         </Modal>
+        {isModalOpenDialog && (
+          <Modal isOpen={isModalOpenDialog} onClose={handleCloseModal}>
+            <ConfirmDialog
+              message={confirmMessage}
+              onConfirm={handleConfirmAction}
+              onCancel={handleCloseModal}
+            />
+          </Modal>
+        )}
 
         <div className="w-full overflow-x-auto">
           <table className="min-w-full shadow-lg  ">
             <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
               <tr>
                 <th className="py-2 px-4  rounded-tl-md ">SN</th>
-                <th className="py-2 px-4  ">Author</th>
                 <th className="py-2 px-4  ">Title</th>
                 <th className="py-2 px-4  ">Topic</th>
-                <th className="py-2 px-4  ">Comment</th>
-                <th className="py-2 px-4  ">Date</th>
-                <th className="py-2 px-4  ">Publish</th>
+                <th className="py-2 px-4  ">View</th>
+                <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
+                  <div className="flex justify-center items-center gap-2">
+                    <span>Date</span>
+                    {sortDirection === "asc" ? (
+                      <BsFillArrowUpSquareFill size={14} />
+                    ) : (
+                      <BsFillArrowDownSquareFill size={14} />
+                    )}
+                  </div>
+                </th>
+                <th className="py-2 px-4  ">Status</th>
                 <th className="py-2 px-4 rounded-tr-md ">Action</th>
               </tr>
             </thead>
             <tbody>
-              {paginatedData.length === 0 ? (
+              {currentItems === undefined || currentItems?.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center">
                     Không có bài thảo luận nào
                   </td>
                 </tr>
               ) : (
-                paginatedData.map((item) => (
+                currentItems?.map((item, index) => (
                   <tr
-                    key={item.id}
+                    key={item._id}
                     className=" even:bg-light3 odd:bg-light4 dark:odd:bg-dark2 dark:even:bg-dark2 dark:text-light0 text-xs cursor-pointer text-center"
                   >
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3 ">
-                      {item.id}
+                      {index + 1}
                     </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.author}
-                    </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.title}
+                    <td className="py-2  px-4 border-y border-light0 dark:border-dark3  ">
+                      <div className=" flex items-start justify-start">
+                        {/* <Link className=" " to={`/discuss/${item._id}`}>
+                          {item.title}
+                        </Link> */}
+                        <h6 className="tracking-normal text-xs md:pr-6 lg:mb-0 dark:text-light0">
+                          <Link
+                            to={`/discuss/${item._id}`}
+                            className=" text-xs break-words text-left line-clamp-2 hover:text-mainColor"
+                          >
+                            {item.title}
+                          </Link>
+                        </h6>
+                      </div>
                     </td>
                     <td className="py-2 px-4 border-y text-left border-light0 dark:border-dark3">
-                      {item.topic.map((topic) => (
-                        <div
-                          key={topic.id}
-                          className={`inline-block border-2 px-2 py-1 rounded-full  m-[1px] 
-                      ${topicColors[topic.name] || ""}`}
-                        >
-                          {topic.name}
+                      {item.topic.map((topicId, index) => {
+                        const topic = listAllTopic?.find(
+                          (topic) => topic._id === topicId
+                        );
+                        if (topic) {
+                          return (
+                            <div
+                              key={index}
+                              className={`inline-block w-max border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
+                                colorTopic[
+                                  topic.color as keyof typeof colorTopic
+                                ] || ""
+                              }`}
+                            >
+                              <h6 className="tracking-normal">
+                                <Link
+                                  className=""
+                                  key={topic._id}
+                                  to={`/topics/detail/${topic._id}`}
+                                >
+                                  {topic.name}
+                                </Link>
+                              </h6>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
+                    </td>
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
+                      {item.totalView}
+                    </td>
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
+                      {convertDateTime(item.createdAt.toString(), formatDate)}
+                    </td>
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
+                      {item.isDraft ? (
+                        <div className=" bg-red-400 text-[10px] text-white rounded-md">
+                          Unpublish
                         </div>
-                      ))}
-                    </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.views}
-                    </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.datePost}
-                    </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.publish ? "publish" : "unpublish"}
+                      ) : (
+                        <div className=" bg-green-400 text-white text-[10px] rounded-md">
+                          Publish
+                        </div>
+                      )}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
                       <div className="flex items-center">
-                        <div className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200">
+                        <div
+                          onClick={() => handleDiscussionUpdate(item._id)}
+                          className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200"
+                        >
                           <HiPencil size={16} />
                         </div>
-                        <div className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200">
+                        <div
+                          onClick={() => handleDelete(item._id)}
+                          className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200"
+                        >
                           <HiTrash size={16} />
                         </div>
                       </div>
@@ -204,18 +417,21 @@ export const ManageDiscussionPage: React.FC = () => {
         <div className="flex items-center justify-center bg-light2 dark:bg-dark2 dark:text-light0 h-8 text-xs rounded-b-md">
           <div className="w-1/2 mr-2 pb-3 ml-1">
             <ReactPaginate
-              pageCount={Math.ceil(exampleData.length / itemsPerPage)}
+              breakLabel="..."
+              nextLabel="next >"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={1}
               marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={handlePageChange}
+              pageCount={pageCount}
+              previousLabel="< prev"
+              renderOnZeroPageCount={null}
               containerClassName="flex justify-center items-center  mt-4 space-x-4"
               pageClassName="m-2"
               activeClassName="underline underline-offset-2"
-              previousLabel="<Prev"
-              nextLabel="Next>"
+              forcePage={currentPage}
             />
           </div>
-          <div className="w-1/2 ml-2 flex items-center justify-center">
+          <div className="w-auto mx-2 flex items-center justify-end">
             <label htmlFor="itemsPerPage" className="mr-2">
               Rows per page:
             </label>

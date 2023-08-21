@@ -1,31 +1,35 @@
 import LayoutSecondary from "@/layout/LayoutSecondary";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import ContactSection from "@/modules/profile/contacts/ContactSection";
 import SkillsSection from "@/modules/profile/skills/SkillsSection";
-import AccountSection from "@/modules/profile/account/AccountSection";
 import PersonalSection from "@/modules/profile/personal/PersonalSection";
 import AboutSection from "@/modules/profile/about/AboutSection";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import { useUserStore } from "@/store/userStore";
 import { UpdateDataUser } from "@/services/userService";
 import { useTopicStore } from "@/store/topicStore";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { HiArrowCircleLeft } from "react-icons/hi";
 
 const UserPage: React.FC = () => {
   //data from api
   const { setUser, getById, userById } = useUserStore();
   //get list skill topic
   const { listAllTopic, getTopic } = useTopicStore();
+
   const { userId } = useParams<string>();
+
+  const navigate = useNavigate();
   useEffect(() => {
     getTopic();
     userId && getById(userId);
     console.log(userById);
   }, [getById, getTopic, userId]);
 
-  console.log("userById", userId);
-
+  const handleBackButtonClick = () => {
+    navigate(-1);
+  };
   const handleUpdateAvatar = async (updatedAvatar: IUserUpdate, id: string) => {
     try {
       await UpdateDataUser(updatedAvatar, id);
@@ -98,6 +102,13 @@ const UserPage: React.FC = () => {
   return (
     <LayoutSecondary>
       <div className="max-w-4xl mx-auto md:p-8 p-4 bg-light4 shadow-sm dark:bg-dark1 rounded-lg dark:text-light0 relative">
+        <button
+          className="dark:text-light0 bg- rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
+          onClick={handleBackButtonClick}
+        >
+          <HiArrowCircleLeft className="w-6 h-6 mr-1" />
+          Back
+        </button>
         <AboutSection
           userData={userById}
           onUpdateAbout={handleUpdateAbout}
@@ -113,13 +124,16 @@ const UserPage: React.FC = () => {
         />
 
         {/* is student */}
-        <SkillsSection
-          isEdit={false}
-          hanleUpdateSkills={handleUpdateSkills}
-          listSkills={listAllTopic}
-          userData={userById}
-        />
-
+        {userById ? (
+          userById.role === 2 ? (
+            <SkillsSection
+              isEdit={false}
+              hanleUpdateSkills={handleUpdateSkills}
+              listSkills={listAllTopic}
+              userData={userById}
+            />
+          ) : null
+        ) : null}
         <ContactSection
           handleUpdateContact={handleUpdateContact}
           userData={userById}

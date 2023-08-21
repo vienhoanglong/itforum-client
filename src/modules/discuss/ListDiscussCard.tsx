@@ -17,7 +17,7 @@ const ListDiscussCard: React.FC<ListDiscussCardProps> = ({
   numTopicsToShow,
   listTopic,
 }) => {
-  const { listAllTopic } = useTopicStore();
+  const { listAllTopic, getTopic } = useTopicStore();
   const { listUser, getListUser } = useUserStore();
   const formatDate = "MM-DD-YYYY";
   const [currentListUser, setCurrentListUser] = useState<string[]>([]);
@@ -25,29 +25,32 @@ const ListDiscussCard: React.FC<ListDiscussCardProps> = ({
   const [filter, setFilter] = useState<IDiscussion[]>([]);
 
   useEffect(() => {
-    getListDiscussion(0, 0, "desc");
-    const filteredDiscussions = listDiscuss?.filter((discuss) =>
-      discuss.topic.some((topic) => {
-        if (typeof listTopic === "string") {
-          return topic === listTopic;
-        } else if (Array.isArray(listTopic)) {
-          return listTopic.every((topicToFilter) =>
-            discuss.topic.includes(topicToFilter)
-          );
-        }
-        return false;
-      })
-    );
-    setFilter(filteredDiscussions ?? []);
-  }, [listTopic, getListDiscussion]);
-
-  useEffect(() => {
     const lisCurrenttUser = filter?.map((user) => user.createBy);
     setCurrentListUser(lisCurrenttUser ? lisCurrenttUser : []);
+    getTopic();
   }, [filter]);
 
   useEffect(() => {
-    getListUser(currentListUser);
+    getListDiscussion(0, 0, "desc");
+    const filteredDiscussions =
+      listDiscuss &&
+      listDiscuss?.filter((discuss) =>
+        discuss.topic.some((topic) => {
+          if (typeof listTopic === "string") {
+            return topic === listTopic;
+          } else if (Array.isArray(listTopic)) {
+            return listTopic.every((topicToFilter) =>
+              discuss.topic.includes(topicToFilter)
+            );
+          }
+          return false;
+        })
+      );
+    setFilter(filteredDiscussions ?? []);
+  }, [listTopic, listDiscuss, getListDiscussion]);
+
+  useEffect(() => {
+    currentListUser && getListUser(currentListUser);
   }, [currentListUser, getListUser]);
 
   const getColorUser = (color: string): string => {

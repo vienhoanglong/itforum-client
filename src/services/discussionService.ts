@@ -14,6 +14,30 @@ export const getDiscussionById = async (id: string): Promise<IDiscussion> => {
   }
 };
 
+export const deleteDiscussion = async (id: string): Promise<any> => {
+  try {
+    const response = await axios.delete(
+      `https://ict-forum-server.onrender.com/discuss/${id}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error delete discussion: ");
+  }
+};
+
+export const moveTrashOrRestore = async (id: string): Promise<any> => {
+  try {
+    const response = await axios.patch(
+      `https://ict-forum-server.onrender.com/discuss/trash-or-restore/${id}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error ");
+  }
+};
+
 export const incrementView = async (id: string): Promise<IDiscussion> => {
   try {
     const response = await axios.get(
@@ -23,6 +47,18 @@ export const incrementView = async (id: string): Promise<IDiscussion> => {
   } catch (error) {
     console.error(error);
     throw new Error("Error incrementView: ");
+  }
+};
+
+export const getAllDisscussionFromTrash = async (): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/discuss/trash`
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error get all discussion: ");
   }
 };
 
@@ -73,6 +109,32 @@ export const CreateNewDiscussion = async (
     console.error("Error Create:", error);
   }
 };
+
+export const UpdatedDiscussion = async (
+  discussionData: IDiscussionCreate,
+  id: string
+): Promise<any> => {
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      throw new Error("Access token not found");
+    }
+    const response = await axios.patch(
+      `https://ict-forum-server.onrender.com/discuss/${id}`,
+      discussionData,
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Error update discussion");
+  }
+};
+
 // export const getListAvatars = async (): Promise<IListAvatar[]> => {
 //   try {
 //     const response = await axios.get(

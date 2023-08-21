@@ -1,11 +1,5 @@
 import ActionMenu from "@/modules/post/ActionMenu";
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsFillChatRightDotsFill } from "react-icons/bs";
 import {
   HiArrowCircleDown,
@@ -18,7 +12,6 @@ import IUser from "@/interface/user";
 import ICommentCreate from "@/interface/API/ICommentCreate";
 import IComment from "@/interface/comment";
 import { getListCommentById } from "@/services/commentService";
-import { useCommentStore } from "@/store/commentStore";
 
 interface CommentListProps {
   handleSaveChanges: (comment: ICommentCreate) => void;
@@ -43,8 +36,8 @@ const CommentList: React.FC<CommentListProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const reponse = await getListCommentById(discussionId || "", 0, 0);
-        setNewCommentList(reponse.data);
+        const reponse = await getListCommentById(discussionId, 0, 0);
+        reponse && setNewCommentList(reponse.data);
       } catch (error) {
         console.error("Error fetching comment data:", error);
       }
@@ -142,20 +135,21 @@ const CommentList: React.FC<CommentListProps> = ({
       updatedChildComments["0"] = [];
       setChildComments(updatedChildComments);
     }
-    if (
-      newReply &&
-      selectedCommentIndex !== null &&
-      childComments[selectedCommentIndex] !== undefined
-    ) {
-      const updatedCommentList = [
-        ...childComments[selectedCommentIndex],
-        newReply,
-      ];
-      setChildComments((prevState) => ({
-        ...prevState,
-        [selectedCommentIndex]: updatedCommentList,
-      }));
-      console.log(selectedCommentIndex);
+    if (newReply) {
+      if (
+        selectedCommentIndex !== null &&
+        childComments[selectedCommentIndex] !== undefined
+      ) {
+        const updatedCommentList = [
+          ...childComments[selectedCommentIndex],
+          newReply,
+        ];
+        setChildComments((prevState) => ({
+          ...prevState,
+          [selectedCommentIndex]: updatedCommentList,
+        }));
+        console.log(selectedCommentIndex);
+      }
     }
   }, [newComment, newReply]);
 

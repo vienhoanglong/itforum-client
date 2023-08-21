@@ -11,7 +11,7 @@ import ReportModal from "@/components/report/ReportModal";
 import ListDiscussCard from "@/modules/discuss/ListDiscussCard";
 import SliderDiscuss from "@/modules/discuss/SliderDiscuss";
 import { useDiscussionStore } from "@/store/discussionStore";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import convertDateTime from "@/utils/helper";
 import { useTopicStore } from "@/store/topicStore";
 import { useUserStore } from "@/store/userStore";
@@ -23,7 +23,8 @@ import { CreateNewComment } from "@/services/commentService";
 
 const DiscussDetailPage: React.FC = () => {
   const { discussId } = useParams<{ discussId: string }>();
-  const { discussion, listDiscuss, getDiscussById, getListDiscussion } =
+  const navigate = useNavigate();
+  const { discussion, getDiscussById, getListDiscussion } =
     useDiscussionStore();
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -43,7 +44,9 @@ const DiscussDetailPage: React.FC = () => {
   const [commentReplyCreate, setCommentReplyCreate] = useState<IComment | null>(
     null
   );
-
+  const handleBack = () => {
+    navigate(-1);
+  };
   const formatDate = "MM-DD-YYYY";
   const handleReportClick = () => {
     setReportModalOpen(true);
@@ -60,10 +63,10 @@ const DiscussDetailPage: React.FC = () => {
   //Get information discuss, list discuss, user own discussion
   useEffect(() => {
     const fetchData = async () => {
-      await getTopic();
-      await getListDiscussion(0, 0, "desc");
-      await getDiscussById(discussId ? discussId : "");
-      await getById(discussion?.createBy ?? "");
+      getTopic();
+      getListDiscussion(0, 0, "desc");
+      discussId && getDiscussById(discussId);
+      getById(discussion?.createBy ?? "");
     };
     fetchData();
   }, [
@@ -135,13 +138,13 @@ const DiscussDetailPage: React.FC = () => {
         />
       }
     >
-      <Link
+      <button
         className="dark:text-light0 rounded-full pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        to="/"
+        onClick={handleBack}
       >
         <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back to discussion
-      </Link>
+        Back
+      </button>
       <div className="relative flex flex-col px-4 py-4 mb-3 duration-300 rounded-xl md:flex-row bg-light4 dark:bg-dark1">
         <div className="flex items-center self-start w-full mb-4 md:mr-5 md:mb-0 md:block md:w-auto">
           <div className="flex items-center">

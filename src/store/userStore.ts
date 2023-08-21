@@ -31,7 +31,7 @@ export const useUserStore = create<UserState>((set) => ({
         set(() => ({ user: response.data }));
       }
     } catch (error) {
-      console.error("Error setting user:", error);
+      return;
     }
   },
   getById: async (id: string) => {
@@ -42,7 +42,7 @@ export const useUserStore = create<UserState>((set) => ({
       set({ userById: response.data });
       // }
     } catch (error) {
-      console.error("Error setting user:", error);
+      return;
     }
   },
   getListAvatar: async () => {
@@ -53,7 +53,7 @@ export const useUserStore = create<UserState>((set) => ({
         set(() => ({ listAvatar: response }));
       }
     } catch (error) {
-      console.error("Error get list avatar:", error);
+      return;
     }
   },
 
@@ -62,7 +62,7 @@ export const useUserStore = create<UserState>((set) => ({
       const reponse = await getUserByListId(listId);
       set(() => ({ listUser: reponse.data }));
     } catch (err) {
-      console.error("Error get list user:", err);
+      return;
     }
   },
 }));

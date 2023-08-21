@@ -2,22 +2,23 @@ import { Button } from "@/components/button";
 import Select from "react-select";
 import React, { useEffect, useState } from "react";
 import { colorSelectTopic } from "@/constants/global";
-import { useUserStore } from "@/store/userStore";
-import { useTopicStore } from "@/store/topicStore";
 import IDiscussionCreate from "@/interface/API/IDiscussionCreate";
 import "react-toastify/dist/ReactToastify.css";
 import Topic from "@/interface/topic";
-interface AddNewDiscussionProps {
-  onSaveChanges: (dataDiscuss: IDiscussionCreate) => void;
+import { useDiscussionStore } from "@/store/discussionStore";
+interface UpdateDiscussionProps {
+  listTopic: Topic[] | null;
+  discussionId: string;
+  onSaveChanges: (dataDiscuss: IDiscussionCreate, id: string) => void;
 }
-export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
+export const UpdateDiscussion: React.FC<UpdateDiscussionProps> = ({
   onSaveChanges,
+  listTopic,
+  discussionId,
 }) => {
-  const [dataDisussion, setDataDiscussion] = useState<IDiscussionCreate | null>(
-    null
-  );
-  const { user } = useUserStore();
-  const { listAllTopic, getTopic } = useTopicStore();
+  const { getDiscussById, discussion } = useDiscussionStore();
+  const [dataDisussion, setDataDiscussion] =
+    useState<IDiscussionCreate | null>();
   const [isTopicistEmpty, setIsTopicistEmpty] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -26,8 +27,19 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
   const [contentError, setContentError] = useState<string | null>(null);
 
   useEffect(() => {
-    getTopic();
-  }, [getTopic]);
+    if (discussionId) {
+      getDiscussById(discussionId);
+    }
+  }, [discussionId, getDiscussById]);
+
+  useEffect(() => {
+    if (discussion) {
+      setDataDiscussion(discussion);
+      setTitle(discussion.title);
+      setContent(discussion.content);
+    }
+  }, [discussion]);
+
   const validateFields = () => {
     let isValid = true;
 
@@ -55,12 +67,11 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
     return isValid;
   };
   const getSkillLabelById = (topicId: string) => {
-    const topic = listAllTopic?.find((topic: Topic) => topic._id === topicId);
+    const topic = listTopic?.find((topic: Topic) => topic._id === topicId);
     return topic ? topic.name : "";
   };
   const handleTopicChange = (selectedOptions: any) => {
-    const newTopic =
-      selectedOptions && selectedOptions.map((option: any) => option.value);
+    const newTopic = selectedOptions.map((option: any) => option.value);
     const updateTopic = newTopic;
 
     const createDiscusstion: IDiscussionCreate = {
@@ -70,18 +81,30 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
     setDataDiscussion(createDiscusstion);
     setIsTopicistEmpty(updateTopic.length === 0);
   };
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setDataDiscussion((prevUserData) => ({
+      ...prevUserData,
+      [name]: value,
+    }));
+  };
+
+  const handleChangeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setDataDiscussion((prevUserData) => ({
+      ...prevUserData,
+      [name]: value,
+    }));
+  };
+
   const handleSaveChanges = () => {
     if (validateFields()) {
-      onSaveChanges({
-        topic: dataDisussion?.topic,
-        createBy: user?._id,
-        content: content,
-        title: title,
-      });
+      dataDisussion && onSaveChanges(dataDisussion, discussionId);
     }
   };
 
-  const selectOptions = listAllTopic?.map((skill: Topic) => ({
+  const selectOptions = listTopic?.map((skill: any) => ({
     value: skill._id,
     label: skill.name,
     color: `${colorSelectTopic[skill.color as keyof typeof colorSelectTopic]}`,
@@ -91,7 +114,7 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
     <div>
       <div className="flex justify-center mb-3">
         <span className=" dark:text-light0 text-lg  font-bold">
-          New discussion
+          Update discussion
         </span>
       </div>
       <div className="sm:w-[400px] w-[200px] ">
@@ -99,8 +122,9 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
           <input
             className="w-full h-full bg-light2/80 text-sm dark:text-light0 px-4 py-2 rounded-2xl dark:bg-dark0/80"
             placeholder="Adding your title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={dataDisussion?.title}
+            name="title"
+            onChange={handleChangeTitle}
           />
         </div>
         {titleError && (
@@ -132,8 +156,9 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
         )}
         <textarea
           placeholder="Typing your content here..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          value={dataDisussion?.content}
+          name="content"
+          onChange={handleChangeContent}
           className=" w-full h-[300px]  md:h-[300px] text-dark0 dark:bg-dark0/80 bg-light2/80 dark:text-light0 text-xs p-4 rounded-md mt-2"
         ></textarea>
         {contentError && (
@@ -164,4 +189,4 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
     </div>
   );
 };
-export default AddNewDiscussion;
+export default UpdateDiscussion;
