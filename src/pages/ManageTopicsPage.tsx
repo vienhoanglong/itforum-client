@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import {
   HiArrowCircleLeft,
   HiFilter,
-  HiOutlineBan,
   HiPencil,
   HiPlusCircle,
   HiSearch,
@@ -13,7 +12,6 @@ import ReactPaginate from "react-paginate";
 import { exampleDataNotifi, sampleTopics } from "../constants/global.ts";
 import Modal from "@/components/modal/Modal.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
-import AddNewUser from "@/modules/user/AddNewUser.tsx";
 import DeletedTopic from "@/modules/topic/DeletedTopic.tsx";
 import AddNewTopic from "@/modules/topic/AddNewTopic.tsx";
 

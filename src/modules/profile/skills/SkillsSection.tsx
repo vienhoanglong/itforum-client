@@ -9,7 +9,7 @@ import IUser from "@/interface/user";
 import { useTopicStore } from "@/store/topicStore";
 
 interface SkillsSectionProps {
-  listSkills: Topic[] | null;
+  listSkills: Topic[] | null | any;
   userData: IUser | null;
   isEdit: boolean;
   hanleUpdateSkills: (newskills: IUserUpdate, id: string) => void;

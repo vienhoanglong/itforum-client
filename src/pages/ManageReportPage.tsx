@@ -8,7 +8,7 @@ import {
   HiSearch,
 } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
-import { exampleData, topicColors } from "../constants/global.ts";
+import { exampleData } from "../constants/global.ts";
 
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 
