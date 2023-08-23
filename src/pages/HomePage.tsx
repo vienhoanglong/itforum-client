@@ -13,7 +13,7 @@ export const HomePage: React.FC = () => {
   const { listDiscussByStatus, getDiscussByStatus } = useDiscussionStore();
   const [sort, setSort] = useState<string>("desc");
   const [filter, setFilter] = useState<string>("");
-  const { user, listUser, getListUser } = useUserStore();
+  const { listUser, getListUser } = useUserStore();
   const [currentLimit, setCurrentLimit] = useState<number>(0);
   const [currentListUser, setCurrentListUser] = useState<string[]>([]);
 

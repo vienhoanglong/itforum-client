@@ -1,15 +1,7 @@
 import React, { useState } from "react";
-import {
-  HiArrowCircleUp,
-  HiFilter,
-  HiSearch,
-  HiTrash,
-} from "react-icons/hi";
+import { HiArrowCircleUp, HiFilter, HiSearch, HiTrash } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
-import {
-  exampleDataNotifi,
-  sampleTopics,
-} from "../../constants/global.ts";
+import { exampleDataNotifi, sampleTopics } from "../../constants/global.ts";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog.tsx";
 import Modal from "@/components/modal/Modal.tsx";
 
@@ -150,7 +142,7 @@ export const DeletedTopic: React.FC = () => {
                   <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
                     <div className="flex items-center justify-center">
                       <div className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200">
-                        <HiArrowCircleUp size={16} onClick={handleRestore}/>
+                        <HiArrowCircleUp size={16} onClick={handleRestore} />
                       </div>
                       <div className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200">
                         <HiTrash size={16} onClick={handleDelete} />
