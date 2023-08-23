@@ -11,11 +11,13 @@ import { useDiscussionStore } from "@/store/discussionStore";
 interface ListDiscussCardProps {
   listTopic: string[] | string;
   numTopicsToShow: number;
+  discussId?: string;
 }
 
 const ListDiscussCard: React.FC<ListDiscussCardProps> = ({
   numTopicsToShow,
   listTopic,
+  discussId,
 }) => {
   const { listAllTopic, getTopic } = useTopicStore();
   const { listUser, getListUser } = useUserStore();
@@ -26,31 +28,35 @@ const ListDiscussCard: React.FC<ListDiscussCardProps> = ({
 
   useEffect(() => {
     const lisCurrenttUser = filter?.map((user) => user.createBy);
-    setCurrentListUser(lisCurrenttUser ? lisCurrenttUser : []);
+    lisCurrenttUser &&
+      setCurrentListUser(lisCurrenttUser ? lisCurrenttUser : []);
     getTopic();
-  }, [filter]);
+  }, [filter, getTopic]);
 
   useEffect(() => {
     getListDiscussion(0, 0, "desc");
-    const filteredDiscussions =
-      listDiscuss &&
-      listDiscuss?.filter((discuss) =>
-        discuss.topic.some((topic) => {
-          if (typeof listTopic === "string") {
-            return topic === listTopic;
-          } else if (Array.isArray(listTopic)) {
-            return listTopic.every((topicToFilter) =>
-              discuss.topic.includes(topicToFilter)
-            );
-          }
-          return false;
-        })
+    const filteredDiscussions = listDiscuss?.filter((discuss) =>
+      discuss.topic.some((topic) => {
+        if (typeof listTopic === "string") {
+          return discuss.topic.includes(listTopic);
+        } else if (Array.isArray(listTopic)) {
+          return listTopic.includes(topic);
+        }
+        return false;
+      })
+    );
+    filteredDiscussions &&
+      setFilter(
+        filteredDiscussions?.filter(
+          (discuss) => discuss.statusDiscuss === 1 && discuss._id != discussId
+        ) ?? []
       );
-    setFilter(filteredDiscussions ?? []);
-  }, [listTopic, listDiscuss, getListDiscussion]);
+  }, [listTopic, discussId, listDiscuss, getListDiscussion]);
 
   useEffect(() => {
-    currentListUser && getListUser(currentListUser);
+    if (currentListUser !== null && currentListUser.length > 0) {
+      getListUser(currentListUser);
+    }
   }, [currentListUser, getListUser]);
 
   const getColorUser = (color: string): string => {

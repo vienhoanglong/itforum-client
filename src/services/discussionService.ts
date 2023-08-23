@@ -14,6 +14,29 @@ export const getDiscussionById = async (id: string): Promise<IDiscussion> => {
   }
 };
 
+export const getDiscussionByStatus = async (
+  status: number,
+  isDraft: boolean,
+  skip: number,
+  limit: number,
+  sort: string,
+  topicId?: string
+): Promise<IDiscussion[]> => {
+  try {
+    let apiUrl = `https://ict-forum-server.onrender.com/discuss/discussions-by-status?skip=${skip}&limit=${limit}&sort=${sort}&statusDiscuss=${status}&isDraft=${isDraft}`;
+
+    if (topicId) {
+      apiUrl += `&topicId=${topicId}`;
+    }
+
+    const response = await axios.get(apiUrl);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error get discussion: ");
+  }
+};
+
 export const deleteDiscussion = async (id: string): Promise<any> => {
   try {
     const response = await axios.delete(
@@ -35,6 +58,21 @@ export const moveTrashOrRestore = async (id: string): Promise<any> => {
   } catch (error) {
     console.error(error);
     throw new Error("Error ");
+  }
+};
+
+export const updateStatusDiscussion = async (
+  id: string,
+  status: number
+): Promise<any> => {
+  try {
+    const response = await axios.patch(
+      `https://ict-forum-server.onrender.com/discuss/change-status/${id}/status/${status}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error to update status ");
   }
 };
 

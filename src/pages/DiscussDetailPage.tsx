@@ -15,16 +15,23 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import convertDateTime from "@/utils/helper";
 import { useTopicStore } from "@/store/topicStore";
 import { useUserStore } from "@/store/userStore";
-import { incrementView } from "@/services/discussionService";
+import {
+  incrementView,
+  moveTrashOrRestore,
+  updateStatusDiscussion,
+} from "@/services/discussionService";
 import ICommentCreate from "@/interface/API/ICommentCreate";
 import IComment from "@/interface/comment";
 import Topic from "@/interface/topic";
 import { CreateNewComment } from "@/services/commentService";
+import { toast } from "react-toastify";
+import ConfirmDialog from "@/components/confirm/ConfirmDialog";
+import Modal from "@/components/modal/Modal";
 
 const DiscussDetailPage: React.FC = () => {
   const { discussId } = useParams<{ discussId: string }>();
   const navigate = useNavigate();
-  const { discussion, getDiscussById, getListDiscussion } =
+  const { discussion, getDiscussById, listDiscuss, getListDiscussion } =
     useDiscussionStore();
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -44,6 +51,9 @@ const DiscussDetailPage: React.FC = () => {
   const [commentReplyCreate, setCommentReplyCreate] = useState<IComment | null>(
     null
   );
+  const [isModalOpenDialog, setIsModalOpenDialog] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+  const [confirmMessage, setConfirmMessage] = useState("");
   const handleBack = () => {
     navigate(-1);
   };
@@ -62,13 +72,10 @@ const DiscussDetailPage: React.FC = () => {
 
   //Get information discuss, list discuss, user own discussion
   useEffect(() => {
-    const fetchData = async () => {
-      getTopic();
-      getListDiscussion(0, 0, "desc");
-      discussId && getDiscussById(discussId);
-      getById(discussion?.createBy ?? "");
-    };
-    fetchData();
+    getTopic();
+    getListDiscussion(0, 0, "desc");
+    discussId && getDiscussById(discussId);
+    discussion && getById(discussion?.createBy);
   }, [
     getTopic,
     getListDiscussion,
@@ -129,12 +136,51 @@ const DiscussDetailPage: React.FC = () => {
     ? colorsAvatar.find((item) => item.color === userById.color)
     : null;
   const colorAvatar = getColorAvatar ? getColorAvatar.value : "";
+
+  const handleConfirm = (action: () => void, message: string) => {
+    setConfirmAction(() => action);
+    setConfirmMessage(message);
+    setIsModalOpenDialog(true);
+  };
+  const handleConfirmAction = () => {
+    if (confirmAction) {
+      confirmAction();
+    }
+    setIsModalOpenDialog(false);
+  };
+  const handleDelete = async () => {
+    handleConfirm(async () => {
+      try {
+        discussId && (await moveTrashOrRestore(discussId));
+        toast.success(" Deleted discuss successfully! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error restore discussion");
+      }
+    }, "Bạn có chắc muốn xoá không?");
+  };
+  const handleHidden = async () => {
+    handleConfirm(async () => {
+      try {
+        discussId && (await updateStatusDiscussion(discussId, 3));
+        toast.success(" Discussion is hidden! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error hidden discussion");
+      }
+    }, "Bạn có chắc muốn ẩn không?");
+  };
   return (
     <LayoutDetail
       otherChildren={
         <ListDiscussCard
           listTopic={discussion ? discussion.topic : ""}
           numTopicsToShow={5}
+          discussId={discussId != undefined ? discussId : ""}
         />
       }
     >
@@ -280,12 +326,23 @@ const DiscussDetailPage: React.FC = () => {
                 {isMenuOpen && (
                   <ActionMenu
                     handleReportClick={handleReportClick}
+                    handleHidden={handleHidden}
+                    hanldeDeleted={handleDelete}
                     userCurrentId={user}
                     userOwnerId={userById}
                   ></ActionMenu>
                 )}
                 {isReportModalOpen && (
                   <ReportModal closeModal={handleCloseModal} />
+                )}
+                {isModalOpenDialog && (
+                  <Modal isOpen={isModalOpenDialog} onClose={handleCloseModal}>
+                    <ConfirmDialog
+                      message={confirmMessage}
+                      onConfirm={handleConfirmAction}
+                      onCancel={handleCloseModal}
+                    />
+                  </Modal>
                 )}
               </div>
             </div>
@@ -308,7 +365,11 @@ const DiscussDetailPage: React.FC = () => {
         ></CommentList>
       </div>
 
-      <SliderDiscuss></SliderDiscuss>
+      <SliderDiscuss
+        listTopic={discussion ? discussion.topic : ""}
+        listDiscussion={listDiscuss}
+        discussId={discussId != undefined ? discussId : ""}
+      ></SliderDiscuss>
     </LayoutDetail>
   );
 };

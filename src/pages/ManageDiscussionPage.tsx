@@ -1,7 +1,9 @@
 import { Button } from "@/components/button";
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   HiArrowCircleLeft,
+  HiEye,
+  HiEyeOff,
   HiFilter,
   HiPencil,
   HiPlusCircle,
@@ -21,6 +23,7 @@ import {
   CreateNewDiscussion,
   UpdatedDiscussion,
   moveTrashOrRestore,
+  updateStatusDiscussion,
 } from "@/services/discussionService.ts";
 import { toast } from "react-toastify";
 import convertDateTime from "@/utils/helper.ts";
@@ -42,6 +45,7 @@ export const ManageDiscussionPage: React.FC = () => {
   const navigate = useNavigate();
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [filterType, setFilterType] = useState<string | null>(null);
+  const [filterStatus, setFilterStatus] = useState<string | null>(null);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
@@ -54,14 +58,16 @@ export const ManageDiscussionPage: React.FC = () => {
   const [isModalOpenDialog, setIsModalOpenDialog] = useState(false);
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
   const [confirmMessage, setConfirmMessage] = useState("");
-
-  useEffect(() => {
+  const HIDDEN = 3;
+  const PUBLISH = 1;
+  const PENDING = 0;
+  useMemo(() => {
     getListDiscussion(0, 0, "desc");
     getTopic();
     setUser();
   }, [getListDiscussion, getTopic, setUser]);
 
-  useEffect(() => {
+  useMemo(() => {
     setListDiscussDefault(
       listDiscuss &&
         listDiscuss?.filter((disucuss) => disucuss.createBy === user?._id)
@@ -87,6 +93,7 @@ export const ManageDiscussionPage: React.FC = () => {
   };
   const handleDiscussionUpdate = (id: string) => {
     setDiscussionUpdate(id);
+
     setIsModalOpenUpdate(true);
   };
   const handleCloseModal = () => {
@@ -127,18 +134,40 @@ export const ManageDiscussionPage: React.FC = () => {
       }
     });
 
-  useEffect(() => {
+  // useMemo(() => {
+  //   const endOffset = itemOffset + itemsPerPage;
+  //   const filteredData = filterType
+  //     ? sortedData?.filter((item) => item.topic.includes(filterType))
+  //     : sortedData;
+  //   const newCurrentItems = filteredData?.slice(itemOffset, endOffset);
+  //   const newPageCount = Math.ceil((filteredData?.length ?? 0) / itemsPerPage);
+  //   setTimeout(() => {
+  //     newCurrentItems && setCurrentItems(newCurrentItems);
+  //     setPageCount(newPageCount);
+  //   }, 0);
+  // }, [filterType, sortedData, itemOffset, itemsPerPage]);
+  useMemo(() => {
     const endOffset = itemOffset + itemsPerPage;
     const filteredData = filterType
       ? sortedData?.filter((item) => item.topic.includes(filterType))
       : sortedData;
-    const newCurrentItems = filteredData?.slice(itemOffset, endOffset);
-    const newPageCount = Math.ceil((filteredData?.length ?? 0) / itemsPerPage);
+
+    const filteredByStatus = filterStatus
+      ? filteredData?.filter(
+          (item) => item.statusDiscuss.toString() === filterStatus
+        )
+      : filteredData;
+
+    const newCurrentItems = filteredByStatus?.slice(itemOffset, endOffset);
+    const newPageCount = Math.ceil(
+      (filteredByStatus?.length ?? 0) / itemsPerPage
+    );
+
     setTimeout(() => {
       newCurrentItems && setCurrentItems(newCurrentItems);
       setPageCount(newPageCount);
     }, 0);
-  }, [filterType, sortedData, itemOffset, itemsPerPage]);
+  }, [filterType, filterStatus, sortedData, itemOffset, itemsPerPage]);
 
   const handleSort = () => {
     setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -151,6 +180,11 @@ export const ManageDiscussionPage: React.FC = () => {
     setItemsPerPage(selectedItemsPerPage);
   };
 
+  const handleStatusFilter = (status: string | null) => {
+    setFilterStatus(status);
+    setItemOffset(0);
+    setCurrentPage(0);
+  };
   const handleFilter = (type: string | null) => {
     setFilterType(type);
     setItemOffset(0);
@@ -200,6 +234,34 @@ export const ManageDiscussionPage: React.FC = () => {
       }
     }, "Bạn có chắc muốn xoá không?");
   };
+  const handleHidden = async (id: string) => {
+    handleConfirm(async () => {
+      try {
+        await updateStatusDiscussion(id, HIDDEN);
+        getListDiscussion(0, 0, "desc");
+        toast.success(" Discussion is hidden! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error hidden discussion");
+      }
+    }, "Bạn có chắc muốn ẩn không?");
+  };
+  const handlePublish = async (id: string) => {
+    handleConfirm(async () => {
+      try {
+        await updateStatusDiscussion(id, PUBLISH);
+        getListDiscussion(0, 0, "desc");
+        toast.success(" Discussion is publish! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error publish discussion");
+      }
+    }, "Bạn có chắc muốn công khai không?");
+  };
   const handleBack = () => {
     navigate(-1);
   };
@@ -219,23 +281,48 @@ export const ManageDiscussionPage: React.FC = () => {
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
             <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
-              <div className="w-2/5 relative">
-                <select
-                  id="filterDropdown"
-                  className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
-                  value={filterType || ""}
-                  onChange={(e) => handleFilter(e.target.value || null)}
-                >
-                  <option value="">All</option>
-                  {listAllTopic?.map((topic) => (
-                    <option key={topic._id} value={topic._id}>
-                      {topic.name}
-                    </option>
-                  ))}
-                </select>
-                <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
-                  <HiFilter className="text-darker" size={15} />
-                </span>
+              <div className="w-1/2 relative flex flex-wrap">
+                <div className="w-1/4 flex justify-center  dark:text-white items-center">
+                  <span>Topic:</span>
+                </div>
+                <div className="w-3/4">
+                  <select
+                    id="filterDropdown"
+                    className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
+                    value={filterType || ""}
+                    onChange={(e) => handleFilter(e.target.value || null)}
+                  >
+                    <option value="">All</option>
+                    {listAllTopic?.map((topic) => (
+                      <option key={topic._id} value={topic._id}>
+                        {topic.name}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
+                    <HiFilter className="text-darker" size={15} />
+                  </span>
+                </div>
+              </div>
+              <div className="w-1/2 relative flex flex-wrap">
+                <div className="w-1/4 flex justify-center  dark:text-white items-center">
+                  <span>Status:</span>
+                </div>
+                <div className="w-3/4">
+                  <select
+                    id="statusFilterDropdown"
+                    className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
+                    value={filterStatus || ""}
+                    onChange={(e) => handleStatusFilter(e.target.value || null)}
+                  >
+                    <option value="">All</option>
+                    <option value="1">Publish</option>
+                    <option value="3">Hidden</option>
+                  </select>
+                  <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
+                    <HiFilter className="text-darker" size={15} />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -331,9 +418,6 @@ export const ManageDiscussionPage: React.FC = () => {
                     </td>
                     <td className="py-2  px-4 border-y border-light0 dark:border-dark3  ">
                       <div className=" flex items-start justify-start">
-                        {/* <Link className=" " to={`/discuss/${item._id}`}>
-                          {item.title}
-                        </Link> */}
                         <h6 className="tracking-normal text-xs md:pr-6 lg:mb-0 dark:text-light0">
                           <Link
                             to={`/discuss/${item._id}`}
@@ -381,30 +465,72 @@ export const ManageDiscussionPage: React.FC = () => {
                       {convertDateTime(item.createdAt.toString(), formatDate)}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.isDraft ? (
-                        <div className=" bg-red-400 text-[10px] text-white rounded-md">
-                          Unpublish
-                        </div>
-                      ) : (
-                        <div className=" bg-green-400 text-white text-[10px] rounded-md">
-                          Publish
-                        </div>
-                      )}
+                      {(() => {
+                        switch (item.statusDiscuss) {
+                          case 0:
+                            return (
+                              <div className=" bg-amber-500 text-[10px] px-[2px] text-white rounded-md">
+                                Pending
+                              </div>
+                            );
+                          case 1:
+                            return (
+                              <div className="bg-green-400 text-white text-[10px] px-[2px] rounded-md">
+                                Publish
+                              </div>
+                            );
+                          case 2:
+                            return (
+                              <div className="bg-red-400 text-white text-[10px] px-[2px] rounded-md">
+                                Rejected
+                              </div>
+                            );
+                          case 3:
+                            return (
+                              <div className="bg-cyan-400 text-white text-[10px] px-[2px] rounded-md">
+                                Hidden
+                              </div>
+                            );
+                          default:
+                            return null;
+                        }
+                      })()}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
                       <div className="flex items-center">
-                        <div
-                          onClick={() => handleDiscussionUpdate(item._id)}
-                          className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200"
-                        >
-                          <HiPencil size={16} />
-                        </div>
-                        <div
-                          onClick={() => handleDelete(item._id)}
-                          className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200"
-                        >
-                          <HiTrash size={16} />
-                        </div>
+                        {item.statusDiscuss !== 0 && (
+                          <div
+                            onClick={() => handleDiscussionUpdate(item._id)}
+                            className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200"
+                          >
+                            <HiPencil size={16} />
+                          </div>
+                        )}
+                        {item.statusDiscuss !== 2 &&
+                          item.statusDiscuss !== 0 &&
+                          (item.statusDiscuss === 1 ? (
+                            <div
+                              onClick={() => handleHidden(item._id)}
+                              className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200"
+                            >
+                              <HiEyeOff size={16} />
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() => handlePublish(item._id)}
+                              className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200"
+                            >
+                              <HiEye size={16} />
+                            </div>
+                          ))}
+                        {item.statusDiscuss !== 0 && (
+                          <div
+                            onClick={() => handleDelete(item._id)}
+                            className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200"
+                          >
+                            <HiTrash size={16} />
+                          </div>
+                        )}
                       </div>
                     </td>
                   </tr>

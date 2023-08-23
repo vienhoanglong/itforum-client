@@ -8,6 +8,7 @@ export interface IDiscussion {
   createdAt: string;
   updatedAt: string;
   slug: string;
+  statusDiscuss: number;
   __v?: number;
   isDraft: boolean;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { HiArrowCircleUp, HiFilter, HiTrash } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog.tsx";
@@ -41,12 +41,12 @@ export const DeletedDiscussions: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   // Fetch data from the trash on component mount
-  useEffect(() => {
+  useMemo(() => {
     getDiscussFromTrash();
   }, [getDiscussFromTrash]);
 
   // Update discussions based on selected user and items per page
-  useEffect(() => {
+  useMemo(() => {
     if (discussTrash && user?._id) {
       const filteredDiscussions = discussTrash.filter(
         (discuss) => discuss.createBy === user?._id
@@ -56,7 +56,7 @@ export const DeletedDiscussions: React.FC = () => {
     }
   }, [discussTrash, itemsPerPage, user?._id]);
   // Update discussions based on sorting, filtering, pagination
-  useEffect(() => {
+  useMemo(() => {
     const sortedData =
       listDiscussDefault &&
       [...listDiscussDefault].sort((a, b) => {
@@ -82,15 +82,7 @@ export const DeletedDiscussions: React.FC = () => {
 
     newCurrentItems && setCurrentItems(newCurrentItems);
     setPageCount(newPageCount);
-  }, [
-    discussTrash,
-    filterType,
-    itemOffset,
-    itemsPerPage,
-    listDiscussDefault,
-    sortDirection,
-    user?._id,
-  ]);
+  }, [filterType, itemOffset, itemsPerPage, listDiscussDefault, sortDirection]);
 
   // Handlers for sorting, items per page change, filtering, and pagination
   const handleSort = () => {
@@ -170,7 +162,7 @@ export const DeletedDiscussions: React.FC = () => {
   };
 
   return (
-    <div className="container h-auto mx-auto bg-light4 dark:bg-dark1  p-4 rounded-3xl">
+    <div className="container h-[80vh] w-[80vw] mx-auto bg-light4 dark:bg-dark1  p-4 rounded-3xl">
       <div className=" py-4">
         <h4 className="text-xl font-bold text-darker ">Deleted Discussion</h4>
       </div>
@@ -277,15 +269,9 @@ export const DeletedDiscussions: React.FC = () => {
                     {convertDateTime(item.createdAt.toString(), formatDate)}
                   </td>
                   <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                    {item.isDraft ? (
-                      <div className=" bg-red-400 text-[10px] text-white rounded-md">
-                        Unpublish
-                      </div>
-                    ) : (
-                      <div className=" bg-green-400 text-white text-[10px] rounded-md">
-                        Publish
-                      </div>
-                    )}
+                    <div className=" bg-red-400 text-[10px] px-[2px] text-white rounded-md">
+                      deleted
+                    </div>
                   </td>
                   <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
                     <div className="flex items-center w-full">

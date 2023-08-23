@@ -5,29 +5,31 @@ import { Notification } from "@/modules/home/Notification";
 import { Posts } from "@/modules/home/Posts";
 import { useDiscussionStore } from "@/store/discussionStore";
 import { useUserStore } from "@/store/userStore";
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 export const HomePage: React.FC = () => {
-  const { listDiscuss, getListDiscussion } = useDiscussionStore();
+  const { listDiscussByStatus, getDiscussByStatus } = useDiscussionStore();
   const [sort, setSort] = useState<string>("desc");
   const [filter, setFilter] = useState<string>("");
   const { user, listUser, getListUser } = useUserStore();
-  const [currentLimit, setCurrentLimit] = useState<number>(3);
+  const [currentLimit, setCurrentLimit] = useState<number>(0);
   const [currentListUser, setCurrentListUser] = useState<string[]>([]);
 
-  useEffect(() => {
-    getListDiscussion(0, currentLimit, sort, filter);
-  }, [getListDiscussion, currentLimit, sort, filter]);
+  useMemo(() => {
+    getDiscussByStatus(1, false, 0, currentLimit, sort, filter);
+  }, [getDiscussByStatus, currentLimit, sort, filter]);
 
-  useEffect(() => {
-    const lisCurrentUser = listDiscuss?.map((user) => user.createBy);
-    setCurrentListUser(lisCurrentUser ? lisCurrentUser : []);
-  }, [listDiscuss]);
+  useMemo(() => {
+    const lisCurrentUser = listDiscussByStatus?.map((user) => user.createBy);
+    lisCurrentUser && setCurrentListUser(lisCurrentUser ? lisCurrentUser : []);
+  }, [listDiscussByStatus]);
 
-  useEffect(() => {
-    getListUser(currentListUser);
+  useMemo(() => {
+    if (currentListUser.length > 0) {
+      getListUser(currentListUser);
+    }
   }, [currentListUser, getListUser]);
 
   const handleScroll = (curr: number) => {
@@ -42,9 +44,7 @@ export const HomePage: React.FC = () => {
   return (
     <LayoutDefault
       checkScroll={handleScroll}
-      childrenOther={
-        user?.role != 3 && <Notification notifications={notifications} />
-      }
+      childrenOther={<Notification notifications={notifications} />}
     >
       <Tabs>
         <TabList>
@@ -59,8 +59,8 @@ export const HomePage: React.FC = () => {
         </TabList>
         <TabPanel>
           <Discuss
-            currentUser={listUser}
-            discuss={listDiscuss}
+            currentUser={listUser && listUser}
+            discuss={listDiscussByStatus}
             hanldeFilter={hanldeFilter}
           ></Discuss>
         </TabPanel>

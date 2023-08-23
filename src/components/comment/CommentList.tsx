@@ -1,5 +1,5 @@
 import ActionMenu from "@/modules/post/ActionMenu";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { BsFillChatRightDotsFill } from "react-icons/bs";
 import {
   HiArrowCircleDown,
@@ -12,6 +12,8 @@ import IUser from "@/interface/user";
 import ICommentCreate from "@/interface/API/ICommentCreate";
 import IComment from "@/interface/comment";
 import { getListCommentById } from "@/services/commentService";
+import { useCommentStore } from "@/store/commentStore";
+import { discuss } from "@/constants/global";
 
 interface CommentListProps {
   handleSaveChanges: (comment: ICommentCreate) => void;
@@ -31,20 +33,22 @@ const CommentList: React.FC<CommentListProps> = ({
   const [childComments, setChildComments] = useState<{
     [commentIndex: string]: IComment[];
   }>({});
-
+  const { listComment, getListComment } = useCommentStore();
   const [newCommentList, setNewCommentList] = useState<IComment[] | null>([]);
+  useMemo(() => {
+    if (
+      discussionId !== null &&
+      discussionId !== "" &&
+      discussionId !== undefined
+    ) {
+      discussionId && getListComment(discussionId, 0, 0);
+    }
+  }, [discussionId, getListComment]);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const reponse = await getListCommentById(discussionId, 0, 0);
-        reponse && setNewCommentList(reponse.data);
-      } catch (error) {
-        console.error("Error fetching comment data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    if (listComment != null) {
+      setNewCommentList(listComment);
+    }
+  }, [listComment]);
 
   const [selectedCommentIndex, setSelectedCommentIndex] = useState<
     number | null
