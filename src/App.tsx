@@ -40,7 +40,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/notifications" element={<NotificationPage />}></Route>
           <Route
-            path="/notifications-detail"
+            path="/notifications-detail/:notificationId"
             element={<NotificationDetailPage />}
           ></Route>
           <Route path="/user/:userId" element={<UserPage />}></Route>
@@ -70,7 +70,7 @@ function App() {
             element={<ManageNotificationPage />}
           ></Route>
           <Route
-            path="/notification-list"
+            path="/notification/:type"
             element={<ListNotificationPage />}
           ></Route>
           <Route path="/post-detail" element={<PostDetailPage />}></Route>

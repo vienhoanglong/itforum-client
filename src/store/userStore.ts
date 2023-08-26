@@ -12,14 +12,20 @@ interface UserState {
   userById: IUser | null;
   listAvatar: IAvatar[] | null;
   listUser: IUser[] | null;
+  listUserNotifi: IUser[] | null;
+  listUserNotifiLevel: IUser[] | null;
   setUser: () => void;
   getListAvatar: () => void;
   getById: (id: string) => void;
-  getListUser: (id: string[]) => void;
+  getListUser: (listId: string[]) => void;
+  getListUserNotifi: (listId: string[]) => void;
+  getListUserNotifiLevel: (listId: string[]) => void;
 }
 export const useUserStore = create<UserState>((set) => ({
   user: null,
   userById: [],
+  listUserNotifi: null,
+  listUserNotifiLevel: null,
   listAvatar: null,
   listUser: null,
   setUser: async () => {
@@ -61,6 +67,22 @@ export const useUserStore = create<UserState>((set) => ({
     try {
       const reponse = await getUserByListId(listId);
       set(() => ({ listUser: reponse.data }));
+    } catch (err) {
+      return;
+    }
+  },
+  getListUserNotifi: async (listId: string[]) => {
+    try {
+      const reponse = await getUserByListId(listId);
+      set(() => ({ listUserNotifi: reponse.data }));
+    } catch (err) {
+      return;
+    }
+  },
+  getListUserNotifiLevel: async (listId: string[]) => {
+    try {
+      const reponse = await getUserByListId(listId);
+      set(() => ({ listUserNotifiLevel: reponse.data }));
     } catch (err) {
       return;
     }

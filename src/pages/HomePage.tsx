@@ -1,4 +1,4 @@
-import { notifications, posts } from "@/constants/global";
+import { posts } from "@/constants/global";
 import LayoutDefault from "@/layout/LayoutDefault";
 import { Discuss } from "@/modules/home/Discuss";
 import { Notification } from "@/modules/home/Notification";
@@ -42,10 +42,7 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <LayoutDefault
-      checkScroll={handleScroll}
-      childrenOther={<Notification notifications={notifications} />}
-    >
+    <LayoutDefault checkScroll={handleScroll} childrenOther={<Notification />}>
       <Tabs>
         <TabList>
           <Tab className="relative py-2 px-4 mr-1 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">

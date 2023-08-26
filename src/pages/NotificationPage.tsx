@@ -1,4 +1,3 @@
-import { notifications } from "@/constants/global";
 import LayoutDefault from "@/layout/LayoutDefault";
 import { Notification } from "@/modules/home/Notification";
 import React, { useState } from "react";
@@ -12,8 +11,17 @@ import { HiPlusCircle } from "react-icons/hi";
 import SliderNotification from "@/modules/notification/SliderNotification";
 import Modal from "@/components/modal/Modal";
 import { AddNewNotifications } from "@/modules/notification/AddNewNotifications";
+import INotificationCreate from "@/interface/API/INotificationCreate";
+import { CreateNewNotification } from "@/services/notificationService";
+import { toast } from "react-toastify";
+import { useNotificationStore } from "@/store/notificationStore";
+import { useUserStore } from "@/store/userStore";
+import { Link } from "react-router-dom";
 
 const NotificationPage: React.FC = () => {
+  const { getListNotificationNav, getListNotificationLevel } =
+    useNotificationStore();
+  const { user } = useUserStore();
   const [isModalOpenAddNotifi, setIsModalOpenAddNotifi] = useState(false); // config modal add
   const handleAddNewNotifi = () => {
     setIsModalOpenAddNotifi(true);
@@ -22,27 +30,49 @@ const NotificationPage: React.FC = () => {
   const handleCloseModalAdd = () => {
     setIsModalOpenAddNotifi(false);
   };
-  const handleFormSubmit = () => {
-    console.log("Form submitted!");
+  const handleFormSubmit = (notifition: INotificationCreate, file?: File) => {
+    try {
+      if (file) {
+        CreateNewNotification(notifition, file);
+      } else {
+        CreateNewNotification(notifition);
+      }
+      if (notifition.typeNotice === "important") {
+        getListNotificationLevel("important");
+      }
+      getListNotificationNav(0, 4, "desc");
+      setIsModalOpenAddNotifi(false);
+      toast.success(" Create notification successfully! ", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+    } catch (err) {
+      if (err) {
+        toast.error(" Create notification failed! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      }
+    }
   };
   return (
-    <LayoutDefault
-      childrenOther={<Notification notifications={notifications} />}
-    >
+    <LayoutDefault childrenOther={<Notification />}>
       <div className="flex justify-between items-center">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">Notifications</h4>
         </div>
-        <Button
-          size="small"
-          className="p-1 flex space-x-1"
-          type="button"
-          kind="secondary"
-          handle={handleAddNewNotifi}
-        >
-          <span className="text-[12px]">New notification</span>
-          <HiPlusCircle size={15}></HiPlusCircle>
-        </Button>
+        {user?.role !== 2 && user?.role !== 3 && (
+          <Button
+            size="small"
+            className="p-1 flex space-x-1"
+            type="button"
+            kind="secondary"
+            handle={handleAddNewNotifi}
+          >
+            <span className="text-[12px]">New notification</span>
+            <HiPlusCircle size={15}></HiPlusCircle>
+          </Button>
+        )}
         <Modal isOpen={isModalOpenAddNotifi} onClose={handleCloseModalAdd}>
           <AddNewNotifications
             onSubmit={handleFormSubmit}
@@ -71,12 +101,12 @@ const NotificationPage: React.FC = () => {
             </span>
           </div>
 
-          <a
-            href="/notification-list"
+          <Link
+            to="/notification/all"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
@@ -96,12 +126,12 @@ const NotificationPage: React.FC = () => {
             </span>
           </div>
 
-          <a
-            href="/notification-list"
+          <Link
+            to="/notification/recruitment"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             View all
-          </a>
+          </Link>
         </div>
 
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
@@ -121,12 +151,12 @@ const NotificationPage: React.FC = () => {
             </span>
           </div>
 
-          <a
-            href="/notification-list"
+          <Link
+            to="/notification/event"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             View all
-          </a>
+          </Link>
         </div>
 
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
@@ -145,12 +175,12 @@ const NotificationPage: React.FC = () => {
             </span>
           </div>
 
-          <a
-            href="/notification-list"
+          <Link
+            to="/notification/subject"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             View all
-          </a>
+          </Link>
         </div>
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col space-y-2 w-full ">
@@ -168,12 +198,12 @@ const NotificationPage: React.FC = () => {
             </span>
           </div>
 
-          <a
-            href="/notification-list"
+          <Link
+            to="/notification/other"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             View all
-          </a>
+          </Link>
         </div>
       </div>
     </LayoutDefault>

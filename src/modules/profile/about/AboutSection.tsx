@@ -31,8 +31,6 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   const [isUpdatingImg, setIsUpdatingImg] = useState(false);
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
   const [uploadImg, setNewUploadImg] = useState<File | null>(null);
-  const [newCoverImg, setNewCoverImg] = useState("A");
-  console.log(newCoverImg);
   const [uploadComplete, setUploadComplete] = useState(false);
 
   const [newAbout, setNewAbout] = useState(userData ? userData.desc : "");
@@ -114,7 +112,6 @@ const AboutSection: React.FC<AboutSectionProps> = ({
           userData ? (userData._id ? userData._id : "") : ""
         );
         handleCloseModal();
-        return setNewCoverImg(response);
       }
       throw new Error("Upload failed");
     } catch (error) {

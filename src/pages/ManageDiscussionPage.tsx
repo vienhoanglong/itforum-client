@@ -60,7 +60,6 @@ export const ManageDiscussionPage: React.FC = () => {
   const [confirmMessage, setConfirmMessage] = useState("");
   const HIDDEN = 3;
   const PUBLISH = 1;
-  const PENDING = 0;
   useMemo(() => {
     getListDiscussion(0, 0, "desc");
     getTopic();
@@ -403,7 +402,7 @@ export const ManageDiscussionPage: React.FC = () => {
             <tbody>
               {currentItems === undefined || currentItems?.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center">
+                  <td colSpan={7} className="text-center dark:text-white">
                     Không có bài thảo luận nào
                   </td>
                 </tr>
