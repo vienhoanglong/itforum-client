@@ -4,8 +4,14 @@ export interface IConversation {
   createBy: string;
   nameConversation: string;
   descConversation: string;
-  createdBy: string;
   imgConversation: string;
+  theme: string;
 }
-  export default IConversation;
-  
+
+export interface IConversationRequest{
+  members?: string[];
+  createBy?: string;
+  nameConversation?: string;
+  descConversation?: string;
+  theme?: string;
+}

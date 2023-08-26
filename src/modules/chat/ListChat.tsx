@@ -10,7 +10,7 @@ import { useConversationStore } from "@/store/conversationStore";
 import { getListConversationsByUser } from "@/services/conversationService";
 import Modal from "@/components/modal/Modal";
 import CreateNewConversation from "./CreateNewConversation";
-import IConversation from "@/interface/conversation";
+import { IConversation } from "@/interface/conversation";
 
 export const ListChat: React.FC= () => {
   const { user } = useUserStore();

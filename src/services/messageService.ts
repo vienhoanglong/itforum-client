@@ -24,3 +24,23 @@ export const createMessage = async (payload: IMessageRequest): Promise<IMessage>
     throw new Error("Error create message in conversation");
   }
 }
+
+export const createMessageFile = async(payload: IMessageRequest, file: File): Promise<IMessage> => {
+  try {
+    const formData = new FormData();
+    formData.append('contentMessage', payload.contentMessage);
+    formData.append('senderId', payload.senderId);
+    formData.append('conversationId', payload.conversationId);
+    formData.append("file", file);
+    const response = await axios.post(`https://ict-forum-server.onrender.com/message/message-file`,
+      formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    )
+    return response.data.data;
+  } catch (error) {
+    throw new Error("Error create message in conversation");
+  }
+}

@@ -14,6 +14,8 @@ export const useMessageStore = create<MessageStoreState>((set) => ({
   fetchMessages: async (chatId) => {
     try {
       const response = await getAllMessagesInConversation(chatId);
+      console.log("🚀 ~ file: messageStore.ts:17 ~ fetchMessages: ~ response:", response)
+     
       set({ messages: response });
     } catch (error) {
       console.error(error);

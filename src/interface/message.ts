@@ -7,6 +7,8 @@ export interface IMessage{
   reactionMessage: any;
   createdAt: string;
   updatedAt: string;
+  file:string;
+  nameFile: string;
   __v: number;
 }
 

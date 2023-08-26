@@ -1,7 +1,7 @@
 import { Button } from "@/components/button";
 import Avatar from "@/components/image/Avatar";
 import { useDebounce } from "@/hooks/useDebounce";
-import IConversation from "@/interface/conversation";
+import { IConversation } from "@/interface/conversation";
 import IUser from "@/interface/user";
 import { createConversation } from "@/services/conversationService";
 import { searchUserByUsername } from "@/services/userService";
