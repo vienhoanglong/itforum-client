@@ -1,7 +1,7 @@
 import IDiscussion from "@/interface/discussion";
 import {
-  getAllDisscussion,
-  getAllDisscussionFromTrash,
+  getAllDiscussion,
+  getAllDiscussionFromTrash,
   getDiscussionById,
 } from "@/services/discussionService";
 import { create } from "zustand";
@@ -38,7 +38,7 @@ export const useManagementStore = create<ManagementState>((set) => ({
     topicId?: string
   ) => {
     try {
-      const response = await getAllDisscussion(skip, limit, sort, topicId);
+      const response = await getAllDiscussion(skip, limit, sort, topicId);
       set(() => ({ listDiscuss: response.data.data }));
     } catch (error) {
       console.error("Error get list discuss:", error);
@@ -53,7 +53,7 @@ export const useManagementStore = create<ManagementState>((set) => ({
     try {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        const response = await getAllDisscussion(skip, limit, sort, topicId);
+        const response = await getAllDiscussion(skip, limit, sort, topicId);
         set(() => ({ listDiscussForSearch: response.data.data }));
       }
     } catch (error) {
@@ -75,7 +75,7 @@ export const useManagementStore = create<ManagementState>((set) => ({
     try {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        const response = await getAllDisscussionFromTrash();
+        const response = await getAllDiscussionFromTrash();
         set(() => ({ discussTrash: response.data.data }));
       }
     } catch (error) {
