@@ -5,8 +5,6 @@ import "slick-carousel/slick/slick-theme.css";
 import {
   colorTopic,
   colorsAvatar,
-  discuss,
-  topicColors,
 } from "@/constants/global";
 import { useUserStore } from "@/store/userStore";
 import { useTopicStore } from "@/store/topicStore";
@@ -24,7 +22,6 @@ interface SliderDiscussProps {
 const SliderDiscuss: React.FC<SliderDiscussProps> = ({
   listTopic,
   discussId,
-  listDiscussion,
 }) => {
   const { listUser } = useUserStore();
   const { listDiscuss } = useDiscussionStore();

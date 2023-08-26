@@ -1,5 +1,4 @@
 import React from "react";
-import FiltersBox from "./FiltersBox";
 import { topicColors } from "@/constants/global";
 import { BsEyeFill, BsFillChatFill } from "react-icons/bs";
 

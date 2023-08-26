@@ -1,5 +1,4 @@
 import ICommentCreate from "@/interface/API/ICommentCreate";
-import IComment from "@/interface/comment";
 import axios from "axios";
 
 export const getListCommentById = async (

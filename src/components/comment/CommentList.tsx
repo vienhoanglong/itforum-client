@@ -13,7 +13,6 @@ import ICommentCreate from "@/interface/API/ICommentCreate";
 import IComment from "@/interface/comment";
 import { getListCommentById } from "@/services/commentService";
 import { useCommentStore } from "@/store/commentStore";
-import { discuss } from "@/constants/global";
 
 interface CommentListProps {
   handleSaveChanges: (comment: ICommentCreate) => void;

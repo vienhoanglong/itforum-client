@@ -10,8 +10,6 @@ import Thumbnail from "../assets/header-image-post-detail.png";
 import {
   content,
   exampleDataTopic,
-  listComment,
-  posts,
   topicColors,
 } from "@/constants/global";
 import LayoutDetail from "@/layout/LayoutDetail";
@@ -52,18 +50,18 @@ export const ReviewPostPage: React.FC = () => {
     };
   }, []);
 
-  const [comment, setComment] = useState<string>("");
+  // const [comment, setComment] = useState<string>("");
 
-  const handleCommentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(event.target.value);
-  };
+  // const handleCommentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  //   setComment(event.target.value);
+  // };
 
-  const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Xử lý logic khi người dùng gửi bình luận
-    console.log("Bình luận đã được gửi:", comment);
-    setComment("");
-  };
+  // const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   // Xử lý logic khi người dùng gửi bình luận
+  //   console.log("Bình luận đã được gửi:", comment);
+  //   setComment("");
+  // };
 
   return (
     <LayoutDetail>
