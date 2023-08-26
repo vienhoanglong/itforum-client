@@ -13,6 +13,7 @@ interface IUserUpdate {
   major?: string;
   coverImage?: string;
   googleId?: string;
+  gender?: string;
   desc?: string;
   skill?: string[];
   email?: string;

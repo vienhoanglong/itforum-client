@@ -1,21 +1,42 @@
 import { BottomBar, Header } from "@/components/navigation";
 import SideBar from "@/components/navigation/SideBar";
 import { Container } from "@/components/common";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "react-tabs/style/react-tabs.css";
 interface LayoutDefaultProps {
   children: React.ReactNode;
   childrenOther?: React.ReactNode;
+  checkScroll?: (currentLimit: number) => void;
 }
 
 export const LayoutDefault: React.FC<LayoutDefaultProps> = ({
   children,
   childrenOther,
+  checkScroll,
 }: LayoutDefaultProps) => {
+  const [currentLimit, setCurrentLimit] = useState<number>(0);
+  const [reachedEnd, setReachedEnd] = useState<boolean>(false);
+
+  const handleScroll = (e: React.UIEvent<HTMLElement>) => {
+    const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
+    if (!reachedEnd && scrollHeight - scrollTop === clientHeight) {
+      setCurrentLimit(currentLimit + 3);
+      setReachedEnd(true);
+      checkScroll?.(currentLimit + 3); // Truyền giá trị tăng lên 3
+    }
+  };
+
+  useEffect(() => {
+    setReachedEnd(false);
+  }, [currentLimit]);
+
   return (
     <React.Fragment>
       <Header />
-      <main className="h-full pt-4 mb-16 text-xs sm:mb-0 overflow-y-scroll dark:bg-dark0">
+      <main
+        onScroll={handleScroll}
+        className="h-full pt-4 mb-16 text-xs sm:mb-0 overflow-y-scroll dark:bg-dark0"
+      >
         <Container>
           <nav
             className="hidden mb-20 sm:flex flex-col sm:w-2/12 md:w-3/12 max-h-[700px] max-w-[230px]"

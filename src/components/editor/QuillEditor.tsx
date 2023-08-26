@@ -11,6 +11,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({ value, onChange }) => {
     ["bold", "italic", "underline", "strike"],
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
     [{ font: [] }],
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
     ["blockquote", "code-block"],
     [{ list: "ordered" }, { list: "bullet" }],
     [{ indent: "-1" }, { indent: "+1" }],

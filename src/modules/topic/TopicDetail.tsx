@@ -1,7 +1,6 @@
 import {
   colorThumnailTopic,
   colorTopic,
-  discuss,
   exampleDataDocument,
   posts,
 } from "@/constants/global";
@@ -22,20 +21,17 @@ import zip from "../../assets/IconDocumentTopic/zip.png";
 import { useTopicStore } from "@/store/topicStore";
 
 const TopicDetail: React.FC = () => {
-  const { topicId } = useParams<{ topicId: string }>();
   const { topic, getById } = useTopicStore();
   const navigate = useNavigate();
-  // const [topicData, setTopicData] = useState(topic);
-  // const topic = sampleTopics.find(
-  //   (t) => t.name.toLowerCase().replace(/\s+/g, "-") === topicId
-  // );
+
+  const { topicId } = useParams<{ topicId: string }>();
 
   useEffect(() => {
-    getById(topicId ? topicId : "");
-  }, [topicId, getById]);
+    topicId && getById(topicId);
+  }, [topicId]);
 
   const handleBackTopic = () => {
-    navigate("/topics");
+    navigate(-1);
   };
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [filterType, setFilterType] = useState<string | null>(null);
@@ -105,7 +101,7 @@ const TopicDetail: React.FC = () => {
               onClick={handleBackTopic}
             >
               <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-              Back to Topics
+              Back
             </button>
           </div>
         </div>
@@ -120,7 +116,7 @@ const TopicDetail: React.FC = () => {
         onClick={handleBackButtonClick}
       >
         <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back to Topics
+        Back
       </button>
 
       <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 dark:text-white h-auto">
@@ -165,9 +161,8 @@ const TopicDetail: React.FC = () => {
             </TabList>
             <TabPanel>
               <ListDiscussCard
-                topicName={topic._id}
+                listTopic={topic._id}
                 numTopicsToShow={4}
-                discuss={discuss}
               ></ListDiscussCard>
             </TabPanel>
             <TabPanel>
