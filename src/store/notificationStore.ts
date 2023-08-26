@@ -1,6 +1,6 @@
 import INotification from "@/interface/notification";
 import {
-  getAllNotfication,
+  getAllNotification,
   getNotificationById,
   getNotificationByLevel,
   getNotificationBySearch,
@@ -77,7 +77,7 @@ export const useNotificationStore = create<NotificationState>((set) => ({
     try {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        const response = await getAllNotfication(skip, limit, sort);
+        const response = await getAllNotification(skip, limit, sort);
         set(() => ({ listNotification: response.data.data }));
       }
     } catch (error) {
@@ -92,7 +92,7 @@ export const useNotificationStore = create<NotificationState>((set) => ({
     try {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        const response = await getAllNotfication(skip, limit, sort);
+        const response = await getAllNotification(skip, limit, sort);
         set(() => ({ listNotificationNav: response.data.data }));
       }
     } catch (error) {

@@ -58,7 +58,6 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
       typeNotice: typeNotice,
       level: selectedLevel,
     };
-    console.log(notification);
     onSubmit(notification, file ? file : undefined);
   };
   return (
@@ -136,7 +135,7 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
           ></QuillEditor>
 
           {submitted && (content === "" || content === "<p><br></p>") && (
-            <div className="block text-xs mt-2 text-red-500 mt-1">
+            <div className="block text-xs text-red-500 mt-1">
               Content is required.
             </div>
           )}

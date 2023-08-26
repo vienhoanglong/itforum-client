@@ -89,7 +89,7 @@ const SliderDiscuss: React.FC<SliderDiscussProps> = ({
   };
   return (
     <div className=" slider-container bg-light2 dark:bg-dark0 rounded-lg">
-      <h1 className="text-sm font-bold mb-2 text-darker">Realated discuss</h1>
+      <h1 className="text-sm font-bold mb-2 text-darker">Related discuss</h1>
       <Slider {...settings}>
         {filter.map((discuss, index) =>
           listUser

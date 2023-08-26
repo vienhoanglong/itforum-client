@@ -87,7 +87,7 @@ export const CreateNewNotification = async (
   }
 };
 
-export const getAllNotfication = async (
+export const getAllNotification = async (
   skip: number,
   limit: number,
   sort?: string

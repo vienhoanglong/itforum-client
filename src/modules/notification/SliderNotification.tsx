@@ -1,37 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useNotificationStore } from "@/store/notificationStore";
 import convertDateTime from "@/utils/helper";
 import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
+import { getNotificationByLevel } from "@/services/notificationService";
+import INotification from "@/interface/notification";
 
 const SliderNotification: React.FC = () => {
-  const { listNotificationLevel, getListNotificationLevel } =
-    useNotificationStore();
+  const [listNotificationImportant, setListNotificationImportant] = useState<INotification[]>([])
   const { getListUserNotifiLevel, listUserNotifiLevel } = useUserStore();
   const formatDate = "MM-DD-YYYY";
-  useEffect(() => {
-    getListNotificationLevel("important");
-  }, [listNotificationLevel]);
 
   useEffect(() => {
-    if (listNotificationLevel && listNotificationLevel.length > 0) {
-      const userIDs = listNotificationLevel.map((user) => user.createdBy);
-
-      if (userIDs.length > 0) {
-        getListUserNotifiLevel(userIDs);
+    const fetchData = async()=>{
+      const response = await getNotificationByLevel("important");
+      if(response){
+        setListNotificationImportant(response?.data?.data);
+        const userIDs = response?.data?.data.map((user: INotification) => user.createdBy);
+        if (userIDs.length > 0) {
+          getListUserNotifiLevel(userIDs);
+        }
       }
     }
-  }, [listNotificationLevel]);
-
-  //  useMemo(() => {
-  //   if (currentListUser && currentListUser.length > 0) {
-  //     getListUserNotifiLevel(currentListUser);
-  //   }
-  // }, [currentListUser, getListUserNotifiLevel]);
-  // getListUserNotifiLevel(currentListUser);
+    fetchData();
+  }, [getListUserNotifiLevel]);
   const settings = {
     dots: true,
     infinite: true,
@@ -77,7 +71,7 @@ const SliderNotification: React.FC = () => {
     <div className=" slider-container bg-light2 dark:bg-dark1 rounded-lg">
       <h1 className="text-sm font-bold mb-2 text-red2">Important</h1>
       <Slider {...settings}>
-        {listNotificationLevel?.map((notifi, index) =>
+        {listNotificationImportant?.map((notifi, index) =>
           listUserNotifiLevel
             ?.filter((e) => e._id === notifi.createdBy)
             .map((user) => (

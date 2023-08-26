@@ -16,6 +16,7 @@ import convertDateTime from "@/utils/helper";
 import { useTopicStore } from "@/store/topicStore";
 import { useUserStore } from "@/store/userStore";
 import {
+  getDiscussionById,
   incrementView,
   moveTrashOrRestore,
   updateStatusDiscussion,
@@ -27,12 +28,14 @@ import { CreateNewComment } from "@/services/commentService";
 import { toast } from "react-toastify";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog";
 import Modal from "@/components/modal/Modal";
+import IDiscussion from "@/interface/discussion";
 
-const DiscussDetailPage: React.FC = () => {
+const DiscussDetailPage: React.FC = React.memo(() => {
   const { discussId } = useParams<{ discussId: string }>();
   const navigate = useNavigate();
-  const { discussion, getDiscussById, listDiscuss, getListDiscussion } =
+  const { listDiscuss, getListDiscussion } =
     useDiscussionStore();
+  const [discussion, setDiscussion] = useState<IDiscussion | null>(null)
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { listAllTopic, getTopic } = useTopicStore();
@@ -74,34 +77,27 @@ const DiscussDetailPage: React.FC = () => {
   useEffect(() => {
     getTopic();
     getListDiscussion(0, 0, "desc");
-    discussId && getDiscussById(discussId);
-    discussion && getById(discussion?.createBy);
-  }, [
-    getTopic,
-    getListDiscussion,
-    discussId,
-    getDiscussById,
-    getById,
-    discussion,
-  ]);
-
-  //Increment view count
-  useEffect(() => {
-    if (discussion) {
-      if (!viewedDiscussionIds.includes(discussId ? discussId : "")) {
-        incrementView(discussId ? discussId : "");
-        const updatedIds = [
-          ...viewedDiscussionIds,
-          discussId ? discussId : "",
-        ].filter((id) => id !== undefined);
-        setViewedDiscussionIds((prevIds) => [...prevIds, ...updatedIds]);
-        localStorage.setItem(
-          `viewedDiscussionIds_${user?._id}`,
-          JSON.stringify([...viewedDiscussionIds, discussId])
-        );
+    const fetchData = async() => {
+      const response  = discussId && await getDiscussionById(discussId);
+      if(response){
+        getById(response?.createBy);
+        setDiscussion(response);
+        if (!viewedDiscussionIds.includes(discussId ? discussId : "")) {
+          incrementView(discussId ? discussId : "");
+          const updatedIds = [
+            ...viewedDiscussionIds,
+            discussId ? discussId : "",
+          ].filter((id) => id !== undefined);
+          setViewedDiscussionIds((prevIds) => [...prevIds, ...updatedIds]);
+          localStorage.setItem(
+            `viewedDiscussionIds_${user?._id}`,
+            JSON.stringify([...viewedDiscussionIds, discussId])
+          );
+        }
       }
     }
-  }, [discussId, discussion, getDiscussById, viewedDiscussionIds, user?._id]);
+    fetchData();
+  }, [discussId, getById, getListDiscussion, getTopic, user?._id, viewedDiscussionIds]);
 
   //Menu
   useEffect(() => {
@@ -327,7 +323,7 @@ const DiscussDetailPage: React.FC = () => {
                   <ActionMenu
                     handleReportClick={handleReportClick}
                     handleHidden={handleHidden}
-                    hanldeDeleted={handleDelete}
+                    handleDeleted={handleDelete}
                     userCurrentId={user}
                     userOwnerId={userById}
                   ></ActionMenu>
@@ -372,5 +368,5 @@ const DiscussDetailPage: React.FC = () => {
       ></SliderDiscuss>
     </LayoutDetail>
   );
-};
+});
 export default DiscussDetailPage;

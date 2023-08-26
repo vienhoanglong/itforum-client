@@ -88,7 +88,7 @@ export const incrementView = async (id: string): Promise<IDiscussion> => {
   }
 };
 
-export const getAllDisscussionFromTrash = async (): Promise<any> => {
+export const getAllDiscussionFromTrash = async (): Promise<any> => {
   try {
     const response = await axios.get(
       `https://ict-forum-server.onrender.com/discuss/trash`
@@ -100,7 +100,7 @@ export const getAllDisscussionFromTrash = async (): Promise<any> => {
   }
 };
 
-export const getAllDisscussion = async (
+export const getAllDiscussion = async (
   skip: number,
   limit: number,
   sort?: string,

@@ -5,7 +5,7 @@ import { HiFlag, HiTrash, HiEyeOff } from "react-icons/hi";
 interface ActionMenuProps {
   handleReportClick?: () => void;
   handleHidden?: () => void;
-  hanldeDeleted?: () => void;
+  handleDeleted?: () => void;
   userCurrentId?: IUser | null;
   userOwnerId?: IUser | null;
 }
@@ -15,7 +15,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
   userCurrentId,
   userOwnerId,
   handleHidden,
-  hanldeDeleted,
+  handleDeleted,
 }) => {
   return (
     <div className="bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 absolute top-full right-0 rounded-md shadow-lg z-10">
@@ -30,7 +30,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
         (userCurrentId?.role === userOwnerId?.role && (
           <>
             <button
-              onClick={hanldeDeleted}
+              onClick={handleDeleted}
               className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
             >
               <HiTrash className="mr-2" />

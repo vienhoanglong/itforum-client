@@ -1,6 +1,6 @@
 import IDiscussion from "@/interface/discussion";
 import {
-  getAllDisscussion,
+  getAllDiscussion,
   getDiscussionById,
   getDiscussionByStatus,
 } from "@/services/discussionService";
@@ -47,7 +47,7 @@ export const useDiscussionStore = create<DiscussionState>((set) => ({
     try {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        const response = await getAllDisscussion(skip, limit, sort, topicId);
+        const response = await getAllDiscussion(skip, limit, sort, topicId);
         set(() => ({ listDiscuss: response.data.data }));
       }
     } catch (error) {
@@ -63,7 +63,7 @@ export const useDiscussionStore = create<DiscussionState>((set) => ({
     try {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        const response = await getAllDisscussion(skip, limit, sort, topicId);
+        const response = await getAllDiscussion(skip, limit, sort, topicId);
         set(() => ({ listDiscussForSearch: response.data.data }));
       }
     } catch (error) {

@@ -30,14 +30,14 @@ const NotificationPage: React.FC = () => {
   const handleCloseModalAdd = () => {
     setIsModalOpenAddNotifi(false);
   };
-  const handleFormSubmit = (notifition: INotificationCreate, file?: File) => {
+  const handleFormSubmit = (notice: INotificationCreate, file?: File) => {
     try {
       if (file) {
-        CreateNewNotification(notifition, file);
+        CreateNewNotification(notice, file);
       } else {
-        CreateNewNotification(notifition);
+        CreateNewNotification(notice);
       }
-      if (notifition.typeNotice === "important") {
+      if (notice.typeNotice === "important") {
         getListNotificationLevel("important");
       }
       getListNotificationNav(0, 4, "desc");
@@ -82,7 +82,6 @@ const NotificationPage: React.FC = () => {
       <div className="">
         <SliderNotification></SliderNotification>
       </div>
-
       <div className="w-full p-2 grid gap-4 grid-cols-2 max-sm:grid-cols-1 dark:text-light0">
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">

@@ -6,7 +6,7 @@ import { useTopicStore } from "@/store/topicStore";
 import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
 import convertDateTime from "@/utils/helper";
-import { useDiscussionStore } from "@/store/discussionStore";
+import { getAllDiscussion } from "@/services/discussionService";
 
 interface ListDiscussCardProps {
   listTopic: string[] | string;
@@ -14,7 +14,7 @@ interface ListDiscussCardProps {
   discussId?: string;
 }
 
-const ListDiscussCard: React.FC<ListDiscussCardProps> = ({
+const ListDiscussCard: React.FC<ListDiscussCardProps> = React.memo(({
   numTopicsToShow,
   listTopic,
   discussId,
@@ -22,42 +22,41 @@ const ListDiscussCard: React.FC<ListDiscussCardProps> = ({
   const { listAllTopic, getTopic } = useTopicStore();
   const { listUser, getListUser } = useUserStore();
   const formatDate = "MM-DD-YYYY";
-  const [currentListUser, setCurrentListUser] = useState<string[]>([]);
-  const { listDiscuss, getListDiscussion } = useDiscussionStore();
   const [filter, setFilter] = useState<IDiscussion[]>([]);
-
   useEffect(() => {
-    const lisCurrenttUser = filter?.map((user) => user.createBy);
-    lisCurrenttUser &&
-      setCurrentListUser(lisCurrenttUser ? lisCurrenttUser : []);
-    getTopic();
-  }, [filter, getTopic]);
 
-  useEffect(() => {
-    getListDiscussion(0, 0, "desc");
-    const filteredDiscussions = listDiscuss?.filter((discuss) =>
-      discuss.topic.some((topic) => {
-        if (typeof listTopic === "string") {
-          return discuss.topic.includes(listTopic);
-        } else if (Array.isArray(listTopic)) {
-          return listTopic.includes(topic);
+    const fetchData = async () => {
+      const response = await getAllDiscussion(0, 0, "desc")
+      if(response){
+        const filteredDiscussions = response?.data?.data.filter((discuss: IDiscussion) =>
+          discuss.topic.some((topic) => {
+            if (typeof listTopic === "string") {
+              return discuss.topic.includes(listTopic);
+            } else if (Array.isArray(listTopic)) {
+              return listTopic.includes(topic);
+            }
+            return false;
+          })
+        );
+        if(filteredDiscussions){
+          const listDiscussRelated = filteredDiscussions?.filter(
+            (discuss: IDiscussion) => discuss.statusDiscuss === 1 && discuss._id != discussId
+          )
+          setFilter(listDiscussRelated);
+          if(listDiscussRelated && listDiscussRelated.length > 0){
+            const userInListDiscuss = listDiscussRelated?.map((user: IDiscussion) => user.createBy)
+            if (userInListDiscuss !== null && userInListDiscuss.length > 0) {
+              getListUser(userInListDiscuss);
+              getTopic();
+            }
+          } 
         }
-        return false;
-      })
-    );
-    filteredDiscussions &&
-      setFilter(
-        filteredDiscussions?.filter(
-          (discuss) => discuss.statusDiscuss === 1 && discuss._id != discussId
-        ) ?? []
-      );
-  }, [listTopic, discussId, listDiscuss, getListDiscussion]);
-
-  useEffect(() => {
-    if (currentListUser !== null && currentListUser.length > 0) {
-      getListUser(currentListUser);
+      }
     }
-  }, [currentListUser, getListUser]);
+    fetchData()
+    
+  }, [discussId, getListUser, getTopic, listTopic]);
+
 
   const getColorUser = (color: string): string => {
     const result = colorsAvatar.find((item) => item.color === color);
@@ -157,6 +156,6 @@ const ListDiscussCard: React.FC<ListDiscussCardProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default ListDiscussCard;

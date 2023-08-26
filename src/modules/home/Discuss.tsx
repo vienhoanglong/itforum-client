@@ -19,12 +19,12 @@ import IUser from "@/interface/user";
 interface ListDiscussProps {
   discuss: IDiscussion[] | null;
   currentUser: IUser[] | null;
-  hanldeFilter: (filterOptions: { sort: string; topic: string }) => void;
+  handleFilter: (filterOptions: { sort: string; topic: string }) => void;
 }
 export const Discuss: React.FC<ListDiscussProps> = ({
   discuss,
   currentUser,
-  hanldeFilter,
+  handleFilter,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
@@ -50,7 +50,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
     setShowModal(false);
   };
   const handleFiltered = (filterOptions: { sort: string; topic: string }) => {
-    hanldeFilter(filterOptions);
+    handleFilter(filterOptions);
     setSort(filterOptions.sort);
     setTopicId(filterOptions.topic);
   };

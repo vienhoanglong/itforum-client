@@ -1,38 +1,28 @@
-import { useNotificationStore } from "@/store/notificationStore";
+import INotification from "@/interface/notification";
+import { getAllNotification } from "@/services/notificationService";
 import { useUserStore } from "@/store/userStore";
 import convertDateTime from "@/utils/helper";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-// interface Notification {
-//   title: string;
-//   content: string;
-//   author: string;
-//   datePosting: string;
-// }
-
-// interface ListNotification {
-//   notifications: Notification[];
-// }
-export const Notification: React.FC = () => {
-  const { getListNotificationNav, listNotificationNav } =
-    useNotificationStore();
+export const Notification: React.FC = React.memo(() => {
   const { getListUserNotifi, listUserNotifi } = useUserStore();
+  const [listNofiti, setListNofiti ]= React.useState<INotification[]>([]);
   const formatDate = "MM-DD-YYYY";
-  useEffect(() => {
-    getListNotificationNav(0, 4, "desc");
-  }, [getListNotificationNav, listNotificationNav]);
 
   useEffect(() => {
-    if (listNotificationNav && listNotificationNav.length > 0) {
-      const userIDs = listNotificationNav.map((user) => user.createdBy);
-      if (userIDs.length > 0) {
-        getListUserNotifi(userIDs);
+    const fetchData = async () => {
+      const response = await getAllNotification(0, 4, 'desc');
+      if (response) {
+        const listUserIdNotification = response.data.data.map((user: INotification) => user.createdBy)
+        setListNofiti(response.data.data);
+        getListUserNotifi(listUserIdNotification);
       }
-    }
-  }, [listNotificationNav]);
-  console.log("hello");
-
+    };
+  
+    fetchData();
+  }, [getListUserNotifi]);
+  
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-row justify-between items-center mb-2 px-3">
@@ -44,7 +34,7 @@ export const Notification: React.FC = () => {
         </a>
       </div>
       <div className="flex flex-col cursor-pointer border-solid border-mainColor border-[1px] border-t-0 border-r-0 rounded-bl-3xl p-3 pt-0">
-        {listNotificationNav?.map((notifi, index) =>
+        {listNofiti?.map((notifi, index) =>
           listUserNotifi
             ?.filter((e) => e._id === notifi.createdBy)
             .map((user) => (
@@ -74,6 +64,6 @@ export const Notification: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Notification;
