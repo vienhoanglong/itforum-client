@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import {
-  colorTopic,
-  colorsAvatar,
-} from "@/constants/global";
+import { colorTopic, colorsAvatar } from "@/constants/global";
 import { useUserStore } from "@/store/userStore";
 import { useTopicStore } from "@/store/topicStore";
 import { useDiscussionStore } from "@/store/discussionStore";

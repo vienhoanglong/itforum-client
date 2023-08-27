@@ -19,10 +19,11 @@ import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
 
 const NotificationPage: React.FC = () => {
-  const { getListNotificationNav, getListNotificationLevel } =
-    useNotificationStore();
+  const { getListNotificationNav } = useNotificationStore();
   const { user } = useUserStore();
   const [isModalOpenAddNotifi, setIsModalOpenAddNotifi] = useState(false); // config modal add
+  const [update, setUpdate] = useState(true);
+  const [updateNotification, setUpdateNotification] = useState(true);
   const handleAddNewNotifi = () => {
     setIsModalOpenAddNotifi(true);
   };
@@ -30,17 +31,18 @@ const NotificationPage: React.FC = () => {
   const handleCloseModalAdd = () => {
     setIsModalOpenAddNotifi(false);
   };
-  const handleFormSubmit = (notice: INotificationCreate, file?: File) => {
+  const handleFormSubmit = async (notice: INotificationCreate, file?: File) => {
     try {
       if (file) {
-        CreateNewNotification(notice, file);
+        await CreateNewNotification(notice, file);
       } else {
-        CreateNewNotification(notice);
+        await CreateNewNotification(notice);
       }
-      if (notice.typeNotice === "important") {
-        getListNotificationLevel("important");
+      if (notice.level === "important") {
+        setUpdate(!update);
       }
-      getListNotificationNav(0, 4, "desc");
+      await getListNotificationNav(0, 4, "desc");
+      setUpdateNotification(!updateNotification);
       setIsModalOpenAddNotifi(false);
       toast.success(" Create notification successfully! ", {
         position: "bottom-right",
@@ -55,8 +57,11 @@ const NotificationPage: React.FC = () => {
       }
     }
   };
+
   return (
-    <LayoutDefault childrenOther={<Notification />}>
+    <LayoutDefault
+      childrenOther={<Notification newUpdate={updateNotification} />}
+    >
       <div className="flex justify-between items-center">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">Notifications</h4>
@@ -80,7 +85,7 @@ const NotificationPage: React.FC = () => {
         </Modal>
       </div>
       <div className="">
-        <SliderNotification></SliderNotification>
+        <SliderNotification newUpdate={update}></SliderNotification>
       </div>
       <div className="w-full p-2 grid gap-4 grid-cols-2 max-sm:grid-cols-1 dark:text-light0">
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">

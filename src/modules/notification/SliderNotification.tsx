@@ -8,24 +8,37 @@ import { Link } from "react-router-dom";
 import { getNotificationByLevel } from "@/services/notificationService";
 import INotification from "@/interface/notification";
 
-const SliderNotification: React.FC = () => {
-  const [listNotificationImportant, setListNotificationImportant] = useState<INotification[]>([])
+interface SliderNotification {
+  newUpdate: boolean;
+}
+const SliderNotification: React.FC<SliderNotification> = ({ newUpdate }) => {
+  const [listNotificationImportant, setListNotificationImportant] = useState<
+    INotification[]
+  >([]);
   const { getListUserNotifiLevel, listUserNotifiLevel } = useUserStore();
+  const [update, SetUpdate] = useState(true);
   const formatDate = "MM-DD-YYYY";
-
   useEffect(() => {
-    const fetchData = async()=>{
+    if (newUpdate && newUpdate != update) {
+      SetUpdate(newUpdate);
+    }
+  }, [newUpdate, update]);
+  console.log("slider", newUpdate);
+  useEffect(() => {
+    const fetchData = async () => {
       const response = await getNotificationByLevel("important");
-      if(response){
-        setListNotificationImportant(response?.data?.data);
-        const userIDs = response?.data?.data.map((user: INotification) => user.createdBy);
+      if (response) {
+        setListNotificationImportant(response?.data?.data.slice(-6));
+        const userIDs = response?.data?.data.map(
+          (user: INotification) => user.createdBy
+        );
         if (userIDs.length > 0) {
           getListUserNotifiLevel(userIDs);
         }
       }
-    }
+    };
     fetchData();
-  }, [getListUserNotifiLevel]);
+  }, [getListUserNotifiLevel, newUpdate, update]);
   const settings = {
     dots: true,
     infinite: true,

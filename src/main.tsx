@@ -7,10 +7,10 @@ import i18n from "./translations/i18n";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   // <React.StrictMode>
-    <I18nextProvider i18n={i18n}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </I18nextProvider>
+  <I18nextProvider i18n={i18n}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </I18nextProvider>
   // </React.StrictMode>
 );

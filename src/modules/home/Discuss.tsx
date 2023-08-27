@@ -9,7 +9,10 @@ import IDiscussion from "@/interface/discussion";
 import convertDateTime from "@/utils/helper";
 import { useTopicStore } from "@/store/topicStore";
 import IDiscussionCreate from "@/interface/API/IDiscussionCreate";
-import { CreateNewDiscussion } from "@/services/discussionService";
+import {
+  CreateNewDiscussion,
+  getDiscussionByStatus,
+} from "@/services/discussionService";
 import { useDiscussionStore } from "@/store/discussionStore";
 import { toast } from "react-toastify";
 import { useUserStore } from "@/store/userStore";
@@ -17,6 +20,7 @@ import { Link } from "react-router-dom";
 import IUser from "@/interface/user";
 
 interface ListDiscussProps {
+  currentLimit: number;
   discuss: IDiscussion[] | null;
   currentUser: IUser[] | null;
   handleFilter: (filterOptions: { sort: string; topic: string }) => void;
@@ -25,6 +29,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
   discuss,
   currentUser,
   handleFilter,
+  currentLimit,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
@@ -36,10 +41,16 @@ export const Discuss: React.FC<ListDiscussProps> = ({
   const [listDiscussion, setListDiscussion] = useState<IDiscussion[] | null>(
     listDiscussByStatus
   );
+  const [listDiscussionDefault, setListDiscussionDefault] = useState<
+    IDiscussion[] | null
+  >([]);
 
   useEffect(() => {
     getTopic();
-  }, [getTopic]);
+    if (discuss && discuss != null) {
+      setListDiscussionDefault(discuss);
+    }
+  }, [getTopic, discuss]);
 
   const formatDate = "MM-DD-YYYY";
   const handleInputClick = () => {
@@ -61,7 +72,21 @@ export const Discuss: React.FC<ListDiscussProps> = ({
   const handleCreate = async (data: IDiscussionCreate) => {
     try {
       await CreateNewDiscussion(data);
-      getDiscussByStatus(1, false, 0, 3, sort, topicId);
+      if (search && search !== "") {
+        getDiscussByStatus(1, false, 0, currentLimit, sort, topicId);
+      } else {
+        const response = await getDiscussionByStatus(
+          1,
+          false,
+          0,
+          currentLimit,
+          sort,
+          topicId
+        );
+        if (response) {
+          setListDiscussionDefault(response);
+        }
+      }
       toast.success(" Post discuss successfully! ", {
         position: "bottom-right",
         autoClose: 3000,
@@ -270,12 +295,12 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                 </div>
               ))
           )
-      ) : discuss?.length === 0 ? (
+      ) : listDiscussionDefault?.length === 0 ? (
         <div className=" dark:text-white text-sm font-semibold">
           Không có thảo luận nào
         </div>
       ) : (
-        discuss?.map((discuss, index) =>
+        listDiscussionDefault?.map((discuss, index) =>
           currentUser
             ?.filter((e) => e._id === discuss.createBy)
             .map((user) => (

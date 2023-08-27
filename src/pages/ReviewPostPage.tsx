@@ -1,15 +1,7 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Thumbnail from "../assets/header-image-post-detail.png";
 
-import {
-  content,
-  exampleDataTopic,
-  topicColors,
-} from "@/constants/global";
+import { content, exampleDataTopic, topicColors } from "@/constants/global";
 import LayoutDetail from "@/layout/LayoutDetail";
 import PostHeader from "@/modules/post/PostHeader";
 import PostContent from "@/modules/post/PostContent";

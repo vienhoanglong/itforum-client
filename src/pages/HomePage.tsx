@@ -15,18 +15,27 @@ export const HomePage: React.FC = () => {
   const [filter, setFilter] = useState<string>("");
   const { listUser, getListUser } = useUserStore();
   const [currentLimit, setCurrentLimit] = useState<number>(3);
-  const [listDiscuss, setListDiscuss] = useState<IDiscussion[]>([])
+  const [listDiscuss, setListDiscuss] = useState<IDiscussion[]>([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const response = await getDiscussionByStatus(1, false, 0, currentLimit, sort, filter);
+      const response = await getDiscussionByStatus(
+        1,
+        false,
+        0,
+        currentLimit,
+        sort,
+        filter
+      );
       if (response) {
-        const listUserIdDiscus= response.map((user: IDiscussion) => user.createBy)
+        const listUserIdDiscus = response.map(
+          (user: IDiscussion) => user.createBy
+        );
         getListUser(listUserIdDiscus);
         setListDiscuss(response);
       }
     };
-  
+
     fetchData();
   }, [currentLimit, filter, getListUser, sort]);
 
@@ -54,6 +63,7 @@ export const HomePage: React.FC = () => {
         </TabList>
         <TabPanel>
           <Discuss
+            currentLimit={currentLimit && currentLimit}
             currentUser={listUser && listUser}
             discuss={listDiscuss}
             handleFilter={handleFilter}

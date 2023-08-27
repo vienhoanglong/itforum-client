@@ -143,7 +143,13 @@ export const ListNotificationPage: React.FC = () => {
         }
       });
     }
-  }, [resetType, listNotificationSearch, type, sortDirection, listNotificationDefault]);
+  }, [
+    resetType,
+    listNotificationSearch,
+    type,
+    sortDirection,
+    listNotificationDefault,
+  ]);
 
   // Hàm chuyển trang
   const handlePageClick = (selectedPage: { selected: number }) => {

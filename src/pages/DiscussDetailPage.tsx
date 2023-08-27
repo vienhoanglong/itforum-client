@@ -33,9 +33,8 @@ import IDiscussion from "@/interface/discussion";
 const DiscussDetailPage: React.FC = React.memo(() => {
   const { discussId } = useParams<{ discussId: string }>();
   const navigate = useNavigate();
-  const { listDiscuss, getListDiscussion } =
-    useDiscussionStore();
-  const [discussion, setDiscussion] = useState<IDiscussion | null>(null)
+  const { listDiscuss, getListDiscussion } = useDiscussionStore();
+  const [discussion, setDiscussion] = useState<IDiscussion | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const { listAllTopic, getTopic } = useTopicStore();
@@ -77,9 +76,9 @@ const DiscussDetailPage: React.FC = React.memo(() => {
   useEffect(() => {
     getTopic();
     getListDiscussion(0, 0, "desc");
-    const fetchData = async() => {
-      const response  = discussId && await getDiscussionById(discussId);
-      if(response){
+    const fetchData = async () => {
+      const response = discussId && (await getDiscussionById(discussId));
+      if (response) {
         getById(response?.createBy);
         setDiscussion(response);
         if (!viewedDiscussionIds.includes(discussId ? discussId : "")) {
@@ -95,9 +94,16 @@ const DiscussDetailPage: React.FC = React.memo(() => {
           );
         }
       }
-    }
+    };
     fetchData();
-  }, [discussId, getById, getListDiscussion, getTopic, user?._id, viewedDiscussionIds]);
+  }, [
+    discussId,
+    getById,
+    getListDiscussion,
+    getTopic,
+    user?._id,
+    viewedDiscussionIds,
+  ]);
 
   //Menu
   useEffect(() => {

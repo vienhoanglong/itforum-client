@@ -1,9 +1,4 @@
-import React, {
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { Button } from "../button";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import Picker from "@emoji-mart/react";
