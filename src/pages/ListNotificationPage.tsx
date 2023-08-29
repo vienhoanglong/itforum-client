@@ -28,6 +28,7 @@ export const ListNotificationPage: React.FC = () => {
   const [sortDirection, setSortDirection] = useState<string>("desc");
   const [filter, setFilter] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [searchClick, setSearchClick] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
@@ -53,17 +54,35 @@ export const ListNotificationPage: React.FC = () => {
 
   useMemo(() => {
     if (type && type.toLowerCase() === "all") {
-      listNotification && setListNotificationDefault(listNotification);
+      listNotification &&
+        setListNotificationDefault(
+          listNotification.filter(
+            (e) => e.isPublished === true && e.isDeleted === false
+          )
+        );
     } else if (type && type !== "" && type !== "all") {
-      listNotificationType && setListNotificationDefault(listNotificationType);
+      listNotificationType &&
+        setListNotificationDefault(
+          listNotificationType.filter(
+            (e) => e.isPublished === true && e.isDeleted === false
+          )
+        );
     }
     if (type && type.toLowerCase() === "all") {
       listNotification &&
-        setCurrentItems(listNotification.slice(0, itemsPerPage));
+        setCurrentItems(
+          listNotification
+            .filter((e) => e.isPublished === true && e.isDeleted === false)
+            .slice(0, itemsPerPage)
+        );
     } else if (type && type !== "" && type !== "all") {
       type &&
         listNotificationType &&
-        setCurrentItems(listNotificationType.slice(0, itemsPerPage));
+        setCurrentItems(
+          listNotificationType
+            .filter((e) => e.isPublished === true && e.isDeleted === false)
+            .slice(0, itemsPerPage)
+        );
     }
   }, [itemsPerPage, listNotification, listNotificationType, type]);
 
@@ -87,6 +106,7 @@ export const ListNotificationPage: React.FC = () => {
       setItemOffset(0);
       setCurrentPage(0);
       setResetType("");
+      setSearchClick(true);
     }
   };
 
@@ -95,6 +115,7 @@ export const ListNotificationPage: React.FC = () => {
     setSearch("");
     setItemOffset(0);
     setCurrentPage(0);
+    setSearchClick(false);
   };
 
   const sortedData = useMemo(() => {
@@ -102,7 +123,12 @@ export const ListNotificationPage: React.FC = () => {
       if (!listNotificationSearch) return [];
       else if (type && type !== "all") {
         return [...listNotificationSearch]
-          .filter((e) => e.typeNotice === type)
+          .filter(
+            (e) =>
+              e.typeNotice === type &&
+              e.isPublished === true &&
+              e.isDeleted === false
+          )
           .sort((a, b) => {
             if (sortDirection === "asc") {
               return (
@@ -117,31 +143,35 @@ export const ListNotificationPage: React.FC = () => {
             }
           });
       }
-      return [...listNotificationSearch].sort((a, b) => {
-        if (sortDirection === "asc") {
-          return (
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-          );
-        } else {
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        }
-      });
+      return [...listNotificationSearch]
+        .filter((e) => e.isPublished === true && e.isDeleted === false)
+        .sort((a, b) => {
+          if (sortDirection === "asc") {
+            return (
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+            );
+          } else {
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+          }
+        });
     } else {
       if (!listNotificationDefault) return [];
 
-      return [...listNotificationDefault].sort((a, b) => {
-        if (sortDirection === "asc") {
-          return (
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-          );
-        } else {
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        }
-      });
+      return [...listNotificationDefault]
+        .filter((e) => e.isPublished === true && e.isDeleted === false)
+        .sort((a, b) => {
+          if (sortDirection === "asc") {
+            return (
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+            );
+          } else {
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+          }
+        });
     }
   }, [
     resetType,
@@ -169,15 +199,6 @@ export const ListNotificationPage: React.FC = () => {
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
-
-    // const searchData =   listNotificationSearch && listNotificationSearch.length > 0 && type !== "all"
-    // ? listNotificationSearch.filter((item: INotification) => item.typeNotice === type)
-    // : listNotificationSearch || sortedData;
-
-    // const searchData = search !== "" && listNotificationSearch && type && type != "all"
-    // ? listNotificationSearch.filter((item: INotification) => item.typeNotice === type)
-    // : sortedData;
-
     const filteredData = filter
       ? sortedData?.filter((item) => item.level === filter)
       : sortedData;
@@ -273,17 +294,28 @@ export const ListNotificationPage: React.FC = () => {
             <BsFilterRight className="text-dark1 dark:text-light1 text-base absolute right-4 top-[10px] fill-current pointer-events-none" />
           </div>
           <div>
-            <button
-              className="bg-mainColor h-auto w-full dark:text-white p-2 rounded-lg
+            {searchClick === true ? (
+              <button
+                className="bg-mainColor h-auto w-full dark:text-white p-2 rounded-lg
+     "
+                onClick={handleShowAllClick}
+              >
+                Clear search
+              </button>
+            ) : (
+              <button
+                className=" bg-dark3 h-auto w-full dark:text-white p-2 rounded-lg
     "
-              onClick={handleShowAllClick}
-            >
-              Clear search
-            </button>
+                disabled
+                onClick={handleShowAllClick}
+              >
+                Clear search
+              </button>
+            )}
           </div>
         </div>
 
-        <div className="flex justify-center items-center max-md:mb-3 h-9 w-full rounded-lg md:mt-0 md:w-64 bg-slate-100 text-dark1 dark:bg-dark1 dark:text-light0">
+        <div className="flex justify-center items-center max-md:mb-3 h-9 w-full rounded-lg md:mt-0 lg:w-64 bg-slate-100 text-dark1 dark:bg-dark1 dark:text-light0">
           <label htmlFor="q" className="flex w-full px-3 flex-row">
             <BsSearch className="text-dark1 dark:text-light1 text-base" />
             <input

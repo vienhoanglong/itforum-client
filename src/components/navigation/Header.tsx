@@ -16,7 +16,7 @@ import Avatar from "../image/Avatar";
 import { useAuthStore } from "@/store/authStore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { colorsAvatar } from "@/constants/global";
 export const Header: React.FC = React.memo(() => {
@@ -78,20 +78,20 @@ export const Header: React.FC = React.memo(() => {
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex ">
               <div className="h-[58px] bg-transparent"></div>
               <div className=" flex flex-col w-full p-5 space-y-5 bg-white rounded text-dark2 dark:bg-dark3 dark:text-light0">
-                <a
+                <Link
                   className="flex flex-row items-center space-x-5 cursor-pointer hover:text-mainColor"
-                  href="/profile"
+                  to="/profile"
                 >
                   <HiUser size={18} title="Settings" />
                   <span className="text-sm">Profile</span>
-                </a>
-                <a
+                </Link>
+                <Link
                   className="flex flex-row items-center space-x-5 cursor-pointer hover:text-mainColor"
-                  href="/managements"
+                  to="/managements"
                 >
                   <HiDocumentDuplicate size={18} title="Manegement" />
                   <span className="text-sm">Managements</span>
-                </a>
+                </Link>
                 <a
                   className="flex flex-row items-center space-x-5 cursor-pointer hover:text-red2"
                   onClick={handleLogout}

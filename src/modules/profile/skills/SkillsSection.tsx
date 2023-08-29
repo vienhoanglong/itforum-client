@@ -52,7 +52,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
         {listUserTopic?.map((skill, index) => (
           <a
             key={index}
-            href={`/topics/detail/${skill?.name
+            href={`/topics/detail/${skill?._id
               ?.toLowerCase()
               .replace(/\s+/g, "-")}`}
             className=" cursor-pointer"

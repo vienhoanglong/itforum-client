@@ -29,6 +29,7 @@ import { toast } from "react-toastify";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog";
 import Modal from "@/components/modal/Modal";
 import IDiscussion from "@/interface/discussion";
+import LayoutSecondary from "@/layout/LayoutSecondary";
 
 const DiscussDetailPage: React.FC = React.memo(() => {
   const { discussId } = useParams<{ discussId: string }>();
@@ -176,6 +177,25 @@ const DiscussDetailPage: React.FC = React.memo(() => {
       }
     }, "Bạn có chắc muốn ẩn không?");
   };
+
+  if (!discussion || discussion.statusDiscuss === 3) {
+    return (
+      <LayoutSecondary>
+        <div className="w-full h-full text-center flex flex-col text-lg font-bold p-10 gap-4">
+          <span>Discussion not found!</span>
+          <div>
+            <button
+              className="dark:text-light0 rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
+              onClick={handleBack}
+            >
+              <HiArrowCircleLeft className="w-6 h-6 mr-1" />
+              Back
+            </button>
+          </div>
+        </div>
+      </LayoutSecondary>
+    );
+  }
   return (
     <LayoutDetail
       otherChildren={

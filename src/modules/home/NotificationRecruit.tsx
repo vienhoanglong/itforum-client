@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 interface NotificationProps {
   newUpdate?: boolean;
 }
-export const Notification: React.FC<NotificationProps> = React.memo(
+export const NotificationRecruit: React.FC<NotificationProps> = React.memo(
   ({ newUpdate }) => {
     const { getListUserNotifi, listUserNotifi } = useUserStore();
     const [listNofiti, setListNofiti] = React.useState<INotification[]>([]);
@@ -21,19 +21,20 @@ export const Notification: React.FC<NotificationProps> = React.memo(
     }, [newUpdate, update]);
     useEffect(() => {
       const fetchData = async () => {
-        const response = await getAllNotification(0, 4, "desc");
+        const response = await getAllNotification(0, 0, "desc");
         if (response) {
           const listUserIdNotification = response.data.data.map(
             (user: INotification) => user.createdBy
           );
-          setListNofiti(response.data.data);
+          const data: INotification[] = response.data.data;
+          setListNofiti(data.filter((e) => e.typeNotice === "recruitment"));
           getListUserNotifi(listUserIdNotification);
         }
       };
 
       fetchData();
     }, [getListUserNotifi, newUpdate, update]);
-
+    console.log(listNofiti);
     return (
       <div className="flex flex-col gap-2">
         <div className="flex flex-row justify-between items-center mb-2 px-3">
@@ -41,7 +42,7 @@ export const Notification: React.FC<NotificationProps> = React.memo(
             New notification
           </h4>
           <Link
-            to="/notification/all"
+            to="/notification/recruitment"
             className="text-xs text-mainColor cursor-pointer hover:scale-105 hover:underline"
           >
             More
@@ -86,4 +87,4 @@ export const Notification: React.FC<NotificationProps> = React.memo(
   }
 );
 
-export default Notification;
+export default NotificationRecruit;

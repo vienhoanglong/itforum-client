@@ -317,6 +317,7 @@ export const ManageDiscussionPage: React.FC = () => {
                     <option value="">All</option>
                     <option value="1">Publish</option>
                     <option value="3">Hidden</option>
+                    <option value="2">Reject</option>
                   </select>
                   <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
                     <HiFilter className="text-darker" size={15} />

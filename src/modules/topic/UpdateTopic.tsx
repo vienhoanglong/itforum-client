@@ -1,9 +1,10 @@
 import { Label } from "@/components/label";
 import UploadImage from "@/components/uploadImage/UploadImage";
 import ITopicCreate from "@/interface/API/ITopicCreate";
+import { getTopicById } from "@/services/topicService";
 import { uploadImage } from "@/services/userService";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const colors = [
   { color: "bg-yellow-500", value: "yellow" },
@@ -21,10 +22,11 @@ const colors = [
   { color: "bg-sky-500", value: "sky" },
 ];
 
-type CreateTopicFormProps = {
+type CreateUserFormProps = {
   onSubmit: (topic: ITopicCreate) => void;
+  topicId: string;
 };
-const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
+const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
   const [uploadImg, setNewUploadImg] = useState<File | null>(null);
   const [uploadComplete, setUploadComplete] = useState(false);
 
@@ -37,8 +39,24 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
   const [newType, setNewType] = useState<string>("devOps");
   const [submitted, setSubmitted] = useState<boolean>(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = topicId && (await getTopicById(topicId));
+      if (response) {
+        setNewName(response.name);
+        setNewDesc(response.desc);
+        setNewColor(response.color);
+        setSelectedColor(response.color);
+        setNewType(response.type);
+        if (response.img) {
+          setNewLogo(response.img);
+        }
+      }
+    };
+    fetchData();
+  }, []);
   const handleCoverImageUpload = (file: File) => {
-    setNewUploadImg(file);
+    setNewUploadImg(file ? file : null);
     setUploadComplete(true);
   };
   const handleDeleteImage = () => {
@@ -79,8 +97,7 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
         }
       }
     } catch (error) {
-      console.error("Failed to upload image");
-      throw error;
+      console.error("Failed to upload image:", error);
     }
   };
 
@@ -88,13 +105,9 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
     e.preventDefault();
     setSubmitted(true);
 
-    const newLogoUrl = await handleUpload();
-    if (
-      newName === "" ||
-      newDesc === "" ||
-      newColor === "" ||
-      newLogoUrl === ""
-    ) {
+    const newLogoUpdate = uploadComplete === true ? await handleUpload() : null;
+
+    if (newName === "" || newDesc === "" || newColor === "") {
       console.log("Title and content are required.");
       return;
     }
@@ -102,13 +115,13 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
     const newTopic: ITopicCreate = {
       name: newName,
       desc: newDesc,
-      img: newLogoUrl,
+      img: newLogoUpdate !== null ? newLogoUpdate : newLogo,
       color: newColor,
       type: newType,
     };
+    console.log(newTopic);
     onSubmit(newTopic);
   };
-
   return (
     <>
       <div className="flex justify-start mb-8">
@@ -121,6 +134,7 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
               Name
             </Label>
             <input
+              value={newName}
               onChange={(e) => handleNameChange(e)}
               name="title"
               placeholder="Name..."
@@ -137,6 +151,7 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
               Description
             </Label>
             <input
+              value={newDesc}
               onChange={(e) => hanldeDescChange(e)}
               name="title"
               placeholder="Description..."
@@ -149,27 +164,27 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
             )}
           </div>
           <div className="mb-4">
-            {/* <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Image
-            </Label>
-            <input
-              name="title"
-              placeholder="Image..."
-              className=" dark:bg-dark0 border rounded-lg w-[300px] p-2 h-[30px] block dark:border-dark2 border-gray-500 text-xs shadow-inner "
-            ></input> */}
+            {newLogo !== "" && (
+              <div className=" mb-2">
+                <Label
+                  htmlFor="title"
+                  className="block mb-1 text-xs font-semibold"
+                >
+                  Old topic image:
+                </Label>
+                <div className=" flex item-center justify-center">
+                  <img src={`${newLogo}`} width={50} height={50}></img>
+                </div>
+              </div>
+            )}
             <Label htmlFor="title" className="block text-xs font-semibold">
-              Choose topic image:
+              Choose new topic image:
             </Label>
 
             <UploadImage
               onImageUpload={handleCoverImageUpload}
               onDeleteImage={handleDeleteImage}
             ></UploadImage>
-            {submitted && uploadComplete === false && (
-              <div className="block text-xs text-red-500 mt-1">
-                Logo is required.
-              </div>
-            )}
           </div>
           <div className=" mb-4">
             <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
@@ -220,7 +235,7 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
 
         <div className="flex justify-end">
           <button
-            className="p-4 rounded-lg bg-mainColor text-white flex space-x-1 my-2"
+            className="p-4 rounded-lg bg-mainColor flex space-x-1 my-2"
             onClick={hanldeCreate}
           >
             <span className="text-[12px]">Submit</span>
@@ -230,4 +245,4 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
     </>
   );
 };
-export default AddNewTopic;
+export default UpdateTopic;

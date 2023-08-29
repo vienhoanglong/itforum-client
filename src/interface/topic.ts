@@ -6,5 +6,7 @@ interface Topic {
   color: string;
   hide: boolean;
   img?: string;
+  isDraft: boolean;
+  createdAt: string;
 }
 export default Topic;

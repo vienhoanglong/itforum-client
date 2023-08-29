@@ -24,7 +24,7 @@ const UserPage: React.FC = () => {
   useEffect(() => {
     getTopic();
     userId && getById(userId);
-  }, [getById, getTopic, userById, userId]);
+  }, [getById, getTopic, userId]);
 
   const handleBackButtonClick = () => {
     navigate(-1);

@@ -12,7 +12,7 @@ const ManagementPage: React.FC = () => {
   useEffect(() => {
     setUser();
   }, []);
-  console.log(user);
+
   return (
     <LayoutSecondary>
       <div className="flex justify-between items-center">
@@ -87,7 +87,7 @@ const ManagementPage: React.FC = () => {
           </div>
 
           <Link
-            to="/managements/notifications"
+            to={`/managements/notifications/${user?._id}`}
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             Chi tiết

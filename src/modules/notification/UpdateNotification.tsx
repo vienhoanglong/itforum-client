@@ -1,27 +1,45 @@
 import QuillEditor from "@/components/editor/QuillEditor";
 import INotificationCreate from "@/interface/API/INotificationCreate";
+import { getNotificationById } from "@/services/notificationService";
 import { useUserStore } from "@/store/userStore";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiChevronDown } from "react-icons/hi";
 
 type NotificationFormProps = {
-  onSubmit: (notification: INotificationCreate, file?: File) => void;
+  onSubmit: (
+    notification: INotificationCreate,
+    id: string,
+    file?: File
+  ) => void;
+  notificationId: string;
 };
-export const AddNewNotifications: React.FC<NotificationFormProps> = ({
+export const UpdateNotifications: React.FC<NotificationFormProps> = ({
   onSubmit,
+  notificationId,
 }) => {
   const { user } = useUserStore();
   const [title, setTitle] = useState<string>("");
   const [createBy, setCreateBy] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [typeNotice, setTypeNotice] = useState<string>("recruitment");
+  const [typeNotice, setTypeNotice] = useState<string>("other");
   const [file, setFile] = useState<File | undefined>(undefined);
   const [selectedLevel, setSelectedLevel] = useState<string>("normal");
   const [submitted, setSubmitted] = useState<boolean>(false);
 
-  useMemo(() => {
-    user && user._id && setCreateBy(user._id);
-  }, [user]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response =
+        notificationId && (await getNotificationById(notificationId));
+      if (response) {
+        setTitle(response.titleNotice);
+        setCreateBy(response.createdBy);
+        setContent(response.descNotice);
+        setTypeNotice(response.typeNotice);
+        setSelectedLevel(response.level);
+      }
+    };
+    fetchData();
+  }, []);
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -46,6 +64,7 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
     setSubmitted(true);
 
     if (title === "" || content === "" || content === "<p><br></p>") {
+      // Hiển thị cảnh báo khi title hoặc content bị bỏ trống và đã ấn submit
       console.log("Title and content are required.");
       return;
     }
@@ -58,7 +77,8 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
       level: selectedLevel,
     };
     console.log(notification);
-    onSubmit(notification, file ? file : undefined);
+    notificationId &&
+      onSubmit(notification, notificationId, file ? file : undefined);
   };
   return (
     <>
@@ -74,7 +94,7 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
               <input
                 className="w-full h-full bg-light2/80 text-sm dark:text-light0 px-4 py-2 rounded-2xl dark:bg-dark0/80"
                 placeholder="Adding your title"
-                // value={title}
+                value={title}
                 onChange={(e) => handleTitleChange(e)}
               />
             </div>
@@ -88,10 +108,10 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
             <div className=" relative">
               <span className="mb-2">Type notification:</span>
               <select
+                value={typeNotice}
                 onChange={(e) => handleTypeNoticeChange(e)}
                 className="appearance-none -ml-2 flex cursor-pointer items-center rounded-lg bg-slate-100 px-4 py-2 text-xs leading-4 text-dark2 dark:bg-dark2 dark:text-light0 w-full mr-5"
               >
-                <option value="recruitment">Recruitment</option>
                 {user?.role !== 3 && (
                   <>
                     <option value="subject">Subject</option>
@@ -99,6 +119,7 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
                     <option value="other">Other</option>
                   </>
                 )}
+                <option value="recruitment">Recruitment</option>
               </select>
               <HiChevronDown className="text-dark1 dark:text-light1 text-base absolute right-4 top-[25px] fill-current pointer-events-none" />
             </div>

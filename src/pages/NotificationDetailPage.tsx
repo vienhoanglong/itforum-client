@@ -42,7 +42,7 @@ export const NotificationDetailPage: React.FC = () => {
         </Link>
         <HiChevronRight></HiChevronRight>
         <Link
-          to="/notification-list"
+          to={`/notification/${notifications?.typeNotice}`}
           className=" cursor-pointer underline hover:text-mainColor"
         >
           Notification List
@@ -58,12 +58,12 @@ export const NotificationDetailPage: React.FC = () => {
         </div>
         <div className="flex justify-between items-center space-x-1 dark:text-light0 mt-8">
           <Link
-            to="/"
+            to={`/notification/${notifications?.typeNotice}`}
             className="block cursor-pointer hover:underline hover:text-mainColor px-1 text-[10px] bg-teal0 rounded-full"
           >
             {notifications?.typeNotice}
           </Link>
-          <div className="flex justify-center items-center space-x-1">
+          <div className="flex underline justify-center items-center space-x-1">
             <Link
               to={`/user/${userById?._id}`}
               className="block hover:underline cursor-pointer hover:text-mainColor"
