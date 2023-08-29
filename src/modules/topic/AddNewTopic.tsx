@@ -30,7 +30,6 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
-  const [newLogo, setNewLogo] = useState("");
   const [newColor, setNewColor] = useState("");
   const [newDesc, setNewDesc] = useState("");
   const [newName, setNewName] = useState("");
@@ -74,7 +73,6 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
       if (uploadImg != null) {
         const response = await uploadImage(uploadImg);
         if (response) {
-          setNewLogo(response);
           return response;
         }
       }

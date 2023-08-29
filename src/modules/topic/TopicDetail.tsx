@@ -1,6 +1,6 @@
 import { colorThumnailTopic, colorTopic, posts } from "@/constants/global";
 import LayoutSecondary from "@/layout/LayoutSecondary";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { HiArrowCircleLeft, HiArrowDown, HiTrash } from "react-icons/hi";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -38,10 +38,8 @@ const TopicDetail: React.FC = () => {
   const navigate = useNavigate();
 
   const { topicId } = useParams<{ topicId: string }>();
-  const [idTopic, setIdTopic] = useState<string>("");
   useMemo(() => {
     topicId && getById(topicId);
-    topicId && setIdTopic(topicId);
   }, [topicId]);
 
   const handleBackTopic = () => {

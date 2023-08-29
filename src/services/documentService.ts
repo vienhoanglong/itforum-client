@@ -1,4 +1,3 @@
-import IDocumentCreate from "@/interface/API/IDocumentCreate";
 import IDocument from "@/interface/document";
 import axios from "axios";
 
