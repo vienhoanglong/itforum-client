@@ -8,10 +8,13 @@ interface UserState {
   listAvatar: IAvatar[] | null;
   setUser: () => void;
   getListAvatar: () => void;
+  theme: string;
+  setThemeUser: (theme: string) => void
 }
 export const useUserStore = create<UserState>((set) => ({
   user: null,
   listAvatar: null,
+  theme: '',
   setUser: async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -34,5 +37,9 @@ export const useUserStore = create<UserState>((set) => ({
     } catch (error) {
       console.error("Error get list avatar:", error);
     }
+  },
+  setThemeUser: (theme: string) => {
+    localStorage.setItem("theme", theme);
+    set(() => ({ theme }));
   },
 }));

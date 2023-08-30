@@ -1,10 +1,12 @@
 import { IMessage, IMessageRequest } from "@/interface/message";
 import axios from "axios";
 
-export const getAllMessagesInConversation = async (conversationId: string) : Promise<IMessage[] | []> =>{
+export const getAllMessagesInConversation = async (conversationId: string, page?: number, pageSize?: number, oldestMessageTimestamp?: Date ) : Promise<IMessage[] | []> =>{
     try {
+      const pagination = (page && pageSize) ? `&page=${page}&pageSize=${pageSize}` : '';
+      const oldestMessage = oldestMessageTimestamp ? `&oldestMessageTimestamp=${oldestMessageTimestamp}` : ''
         const response = await axios.get(
-          `https://ict-forum-server.onrender.com/message/conversation/${conversationId}`
+          `https://ict-forum-server.onrender.com/message/conversation?conversationId=${conversationId}${pagination}${oldestMessage}`
         );
         return response.data.data;
       } catch (error) {
@@ -39,6 +41,19 @@ export const createMessageFile = async(payload: IMessageRequest, file: File): Pr
         },
       }
     )
+    return response.data.data;
+  } catch (error) {
+    throw new Error("Error create message in conversation");
+  }
+}
+
+export const createMessageChatGPT = async (payload: IMessageRequest): Promise<IMessage> =>{
+  try {
+    const response = await axios.post(`https://ict-forum-server.onrender.com/message/chat-gpt`,{
+      contentMessage: payload.contentMessage,
+      senderId: payload.senderId,
+      conversationId: payload.conversationId,
+    })
     return response.data.data;
   } catch (error) {
     throw new Error("Error create message in conversation");

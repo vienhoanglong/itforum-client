@@ -1,20 +1,23 @@
 import Avatar from "@/components/image/Avatar";
 import React from "react";
 import {
-  BsPinAngle,
   BsFillImageFill,
   BsFileEarmarkFill,
   BsLink45Deg,
 } from "react-icons/bs";
 import { FaUserFriends } from "react-icons/fa";
 import { HiOutlineSparkles, HiLogout, HiPencil } from "react-icons/hi";
-import avt1 from "@/assets/avt1.jpg";
 import avt2 from "@/assets/avt2.jpg";
 import { colorThemeChat } from "@/constants/global";
 import { Label } from "@/components/label";
 import { IConversation } from "@/interface/conversation";
 import { updateConversationChat, updateImageConversation } from "@/services/conversationService";
 import { useConversationStore } from "@/store/conversationStore";
+import { HiPencilSquare } from "react-icons/hi2";
+import { MdTitle, MdOutlineDescription } from "react-icons/md";
+import { Button } from "@/components/button";
+import { setColorBackgroundUser } from "@/utils/helper";
+import socket from "@/utils/getSocketIo";
 interface ChatInformationProps {
   onCancel?: () => void;
   userId: string;
@@ -22,19 +25,26 @@ interface ChatInformationProps {
   conversation: IConversation[],
 }
 export const ChatInformation: React.FC<ChatInformationProps> = ({userId, chatId, conversation}) => {
-  const {updateConversation} = useConversationStore();
+  const {updateConversation, members} = useConversationStore();
   const [conversationUpdate, setConversationUpdate] = React.useState<IConversation| null>(null)
+  const [desc, setDesc] = React.useState<string>('')
+  const [name, setName] = React.useState<string>('')
+  const [inputEmpty, setInputEmpty] = React.useState(false);
   const [activeTabChatInfo, setActiveTabChatInfo] =
     React.useState<string>("file");
   const handleTabChatClick = (tab: string) => {
     setActiveTabChatInfo(tab);
   };
 
-  const [isCollapsed, setIsCollapsed] = React.useState<boolean>(true);
-
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
+  const [isCollapsedTheme, setIsCollapsedTheme] = React.useState<boolean>(true);
+  const toggleCollapseTheme = () => {
+    setIsCollapsedTheme(!isCollapsedTheme);
   };
+  const [isCollapsedEdit, setIsCollapsedEdit] = React.useState<boolean>(true);
+  const toggleCollapseEdit= () => {
+    setIsCollapsedEdit(!isCollapsedEdit);
+  };
+
   const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
   const [colorTheme, setColorTheme] = React.useState<string>();
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +76,40 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({userId, chatId,
     const response = await updateConversationChat(chatId, userId, {theme: theme});
     return setConversationUpdate(response);
   }
+  React.useEffect(()=> {
+    socket.on('conversationUpdated', (updated) => {
+      console.log("conversationUpdated", updated)
+      if(updated._id === chatId){
+        updateConversation(updated);
+      }
+    })
+    socket.on('conversationUpdatedImage', (updated) => {
+      console.log("conversationUpdatedImage", updated)
+      if(updated._id === chatId){
+        updateConversation(updated);
+      }
+    })
+  }, [chatId, updateConversation])
+  const handleEditConversation = async() => {
+    try {
+      if(!desc && !name){
+        setInputEmpty(true);
+        return;
+      }
+      const payload: {[x: string]: string} = {};
+      if (name) {
+        payload.nameConversation = name;
+      }
+      if (desc) {
+        payload.descConversation = desc;
+      }
+      const response = await updateConversationChat(chatId, userId, payload)
+      response && setIsCollapsedEdit(true);
+      return setConversationUpdate(response);
+    } catch (error) {
+      console.log("Error message:");
+    }
+  }
   return (
     <div
       className={`px-4 w-auto md:w-[500px] h-auto overflow-y-auto left-0 mr-5 bg-transparent sm:h-auto`}
@@ -77,7 +121,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({userId, chatId,
           </div>
           <div className="w-24 h-24 relative mx-auto my-4">
         <img
-          src={selectedImage || e.imgConversation}
+          src={selectedImage || e.imgConversation }
           className="w-full h-full rounded-xl max-w-full max-h-full object-cover ring-2 ring-white"
           loading="lazy"
           alt="Profile"
@@ -93,7 +137,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({userId, chatId,
         </label>
       </div>
           <div className={`overflow-hidden transition-all duration-300 ${
-                isCollapsed ? 'h-0' : 'h-auto' }`}>
+                isCollapsedTheme ? 'h-0' : 'h-auto' }`}>
               <div className="grid justify-items-center">
                 <Label
                   htmlFor="title"
@@ -112,12 +156,56 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({userId, chatId,
                 </div>
               </div>
           </div>
+          <div className={`overflow-hidden transition-all duration-300 ${
+                isCollapsedEdit ? 'h-0' : 'h-auto' }`}>
+              <div className="justify-items-center">
+                  <label htmlFor="input-group-1" className="block mb-1 text-xs font-semibold dark:text-white">Tên nhóm chat</label>
+                  <div className="relative mb-2">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                    <MdTitle />
+                    </div>
+                    <input type="text" id="input-group-1" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder={e.nameConversation} onChange={(e)=>setName(e.target.value)}/>
+                  </div>
+                  <label htmlFor="input-group-2" className="block mb-1 text-xs font-semibold dark:text-white">Mô tả nhóm</label>
+                  <div className="relative mb-2">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                    <MdOutlineDescription />
+                    </div>
+                    <input type="text" id="input-group-2" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder={e.descConversation} onChange={(e)=>setDesc(e.target.value)}/>
+                  </div>
+                  {inputEmpty && (
+                <div className="text-xs text-right mt-2 text-red-500">
+                  Vui lòng nhập thông tin cần thay đổi!
+                </div>
+              )}
+                 <div className="flex flex-row gap-2 justify-end mb-6">
+                  <Button
+                    kind="custom"
+                    type="submit"
+                    size="small"
+                    className="text-xs bg-dark4 rounded-lg"
+                    handle={()=>toggleCollapseEdit()}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    kind="secondary"
+                    type="submit"
+                    size="small"
+                    className="text-xs rounded-lg"
+                    handle={handleEditConversation}
+                  >
+                    Save
+                  </Button>
+                 </div>
+              </div>
+          </div>
           <div className="flex justify-between gap-4 mt-4">
-            <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 dark:bg-dark2 cursor-pointer hover:text-darker hover:font-bold">
-              <BsPinAngle />
-              <span className="text-xs mt-1 font-medium">Pin</span>
+            <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 dark:bg-dark2 cursor-pointer hover:text-darker hover:font-bold" onClick={toggleCollapseEdit}>
+              <HiPencilSquare />
+              <span className="text-xs mt-1 font-medium">Edit</span>
             </div>
-            <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 dark:bg-dark2 cursor-pointer hover:text-darker hover:font-bold" onClick={toggleCollapse}>
+            <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 dark:bg-dark2 cursor-pointer hover:text-darker hover:font-bold" onClick={toggleCollapseTheme}>
               <HiOutlineSparkles />
               <span className="text-xs mt-1 font-medium">Theme</span>
             </div>
@@ -126,6 +214,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({userId, chatId,
               <span className="text-xs mt-1 font-medium">Leave</span>
             </div>
           </div>
+          {members && (
           <div className="mt-5 border-t-2 w-full p-2">
             <div className="flex flex-row justify-between">
               <div className="flex flex-row gap-2 items-center">
@@ -133,44 +222,27 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({userId, chatId,
                 <div className="flex gap-2">
                   <span className="text-sm">Member</span>
                   <span className="text-mainColor bg-subtle p-[2px_6px] rounded-md text-xs">
-                    4
+                    {members.length}
                   </span>
                 </div>
               </div>
             </div>
             <div className="flex flex-col mt-3 gap-2">
-              <div className="flex gap-2">
+              {members.map((member)=> (
+              <div className="flex gap-2" key={member._id}>
                 <Avatar
-                  src={avt2}
-                  cln="h-10 w-10 object-cover border border-dark4"
+                  src={member.avatar || avt2}
+                  cln={`h-10 w-10 object-cover border border-dark4 ${setColorBackgroundUser(member.color??"")}`}
                 ></Avatar>
                 <div>
-                  <span className="text-sm">Viên Hoàng Long</span>
-                  <p className="text-xs">Quản trị viên</p>
+                  <span className="text-sm">{member.fullName ?? member.username}</span>
+                  {member._id === userId ? (<p className="text-xs">Quản trị viên</p>): null}
                 </div>
               </div>
-              <div className="flex gap-2">
-                <Avatar
-                  src={avt1}
-                  cln="h-10 w-10 object-cover border border-dark4"
-                ></Avatar>
-                <div>
-                  <span className="text-sm">Trần Hoàng Long</span>
-                  <p className="text-xs">Thành viên</p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Avatar
-                  src={avt1}
-                  cln="h-10 w-10 object-cover border border-dark4"
-                ></Avatar>
-                <div>
-                  <span className="text-sm">Trần Hoàng Long</span>
-                  <p className="text-xs">Thành viên</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
+          )}
           <div className="w-full mt-1">
             <ul className="flex gap-2 justify-center">
               <li

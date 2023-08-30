@@ -1,5 +1,5 @@
 import { IMessageRequest } from "@/interface/message";
-import { createMessage, createMessageFile } from "@/services/messageService";
+import { createMessage, createMessageChatGPT, createMessageFile } from "@/services/messageService";
 import { useMessageStore } from "@/store/messageStore";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
@@ -68,27 +68,35 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
       };
       const response = await createMessageFile(payload, selectedFile)
       if (response) {
-        setMessages([...messages, response]);
+        setMessages([response,...messages]);
       }
       setInputText("");
       setShowSuggestions(false);
       setShowEmoji(false);
       setShowAttachment(false);
+      return;
     }
     if (inputText.trim() !== "") {
+      console.log("S")
       const payload: IMessageRequest = {
         contentMessage: inputText,
         senderId: sender,
         conversationId: chatId,
       };
-      const response = await createMessage(payload);
-      if (response) {
-        setMessages([...messages, response]);
-        console.log(messages);
+      if (inputText.includes('@ChatGPT')) {
+        const response = await createMessageChatGPT(payload);
+        response && setMessages([response,...messages]);
+      } else {
+        const response = await createMessage(payload);
+        response && setMessages([response,...messages]);
       }
+      // if (response) {
+      //   setMessages([response,...messages]);
+      // }
       setInputText("");
       setShowSuggestions(false);
       setShowEmoji(false);
+      return;
     }
   };
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -162,7 +170,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
         className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] dark:bg-dark0 text-sm outline-none"
         type="text"
         value={inputText}
-        placeholder="Nhập @, nhắn tin tới Trần Hoàng Long"
+        placeholder="Nhập @ChatGPT, để đặt câu hỏi cho ChatGPT"
         onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}
       />
@@ -200,7 +208,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
         className={`text-xl cursor-pointer ${
           inputText || selectedFile ? 'text-mainColor' : ''
         }`}
-        onClick={handleSubmitMessage}
+        onClick={()=>handleSubmitMessage()}
       />
     </div>
   );

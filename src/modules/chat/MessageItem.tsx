@@ -2,7 +2,9 @@ import Avatar from "@/components/image/Avatar";
 import { colorThemeChat } from "@/constants/global";
 import { formatTimeAuto, setColorBackgroundUser } from "@/utils/helper";
 import React from "react";
-import fileIcon from 'assets/IconDocumentTopic/archive.png'
+import fileIcon from 'assets/IconDocumentTopic/archive.png';
+import parse from 'html-react-parser';
+import { hasCodeBlock } from "@/constants/hasCodeBlock";
 interface MessageItemProps {
   content: string;
   isCurrentUser: boolean;
@@ -33,7 +35,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
   const [colorBackground, setColorBackground] = React.useState<string>();
   React.useEffect(() => {
     const data = colorThemeChat.find((e) => e.color === theme)?.messageColor;
-    setColorBackground(data);
+    setColorBackground(data ?? 'bg-slate-400');
   }, [theme]);
   return (
     <>
@@ -44,12 +46,12 @@ const MessageItem: React.FC<MessageItemProps> = ({
       )}
       {typeMessage === "text" && (
         <div
-          className={`flex flex-wrap flex-col mx-8 self-end my-5 ${
+          className={`flex flex-wrap flex-col mx-8  my-5 ${
             isCurrentUser ? "justify-end" : ""
           }`}
         >
           <div
-            className={`text-xs flex gap-2 ${
+            className={`text-xs flex items-center gap-2 ${
               isCurrentUser
                 ? "ml-auto p-2 md:p-2 rounded-tr-xl rounded-bl-xl"
                 : "mr-auto p-2 rounded-tr-xl rounded-br-xl"
@@ -63,7 +65,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
                 src={image}
               />
             )}
-            <p className="cursor-pointer">{content}</p>
+            <p className="cursor-pointer text-xs">{content}</p>
             {isCurrentUser && (
               <Avatar
                 cln={`w-8 h-8 object-cover border-none align-middle mx-1 ${setColorBackgroundUser(
@@ -78,7 +80,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
               isCurrentUser ? "justify-end" : ""
             }`}
           >
-            <span className="text-[10px]">{formatTimeAuto(time)}</span>
+            <span className="text-[10px] text-white">{formatTimeAuto(time)}</span>
           </div>
 
           {/* ... Additional components for emojis, etc. ... */}
@@ -86,7 +88,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
       )}
       {typeMessage === "image" && (
         <div
-          className={`flex flex-wrap flex-col mx-8 self-end my-5 ${
+          className={`flex flex-wrap flex-col mx-8  my-5 ${
             isCurrentUser ? "justify-end" : ""
           }`}
         >
@@ -125,13 +127,13 @@ const MessageItem: React.FC<MessageItemProps> = ({
               isCurrentUser ? "justify-end" : ""
             }`}
           >
-            <span className="text-[10px]">{formatTimeAuto(time)}</span>
+            <span className="text-[10px] text-white">{formatTimeAuto(time)}</span>
           </div>
         </div>
       )}
       {typeMessage === "file" && (
         <div
-          className={`flex flex-wrap flex-col mx-8 self-end my-5 ${
+          className={`flex flex-wrap flex-col mx-8  my-5 ${
             isCurrentUser ? "justify-end" : ""
           }`}
         >
@@ -171,7 +173,30 @@ const MessageItem: React.FC<MessageItemProps> = ({
               isCurrentUser ? "justify-end" : ""
             }`}
           >
-            <span className="text-[10px]">{formatTimeAuto(time)}</span>
+            <span className="text-[10px] text-white">{formatTimeAuto(time)}</span>
+          </div>
+        </div>
+      )}
+      {typeMessage === "chatgpt" && (
+        <div
+          className={`flex flex-wrap flex-col mx-8  my-5
+          }`}
+        >
+          <div
+            className={`text-xs flex gap-2 mr-auto p-2 rounded-tr-xl rounded-br-xl rounded-tl-xl animate-fadeIn max-w-[60%] text-white ${colorBackground}`}
+          >
+              <Avatar
+                cln={`w-8 h-8 object-cover border-none align-middle mx-1 bg-white`}
+                src={file ?? ""}
+              />
+            <div className="cursor-pointer ql-snow">
+              <div className="ql-editor">{parse(hasCodeBlock(content) || content)}</div>
+            </div>
+          </div>
+          <div
+            className={`m-1 flex flex-row gap-1`}
+          >
+            <span className="text-[10px] text-white">{formatTimeAuto(time)}</span>
           </div>
         </div>
       )}

@@ -12,6 +12,7 @@ import { useConversationStore } from "@/store/conversationStore";
 import { AvatarImage } from "@/components/image";
 import { colorThemeChat } from "@/constants/global";
 import MessageItem from "./MessageItem";
+import socket from "@/utils/getSocketIo";
 
 
 interface ChatConversationProps {
@@ -22,33 +23,54 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
   showConversation,
   chatId,
 }) => {
-  const { messages, fetchMessages } = useMessageStore();
+  const { messages, fetchMessages, setMessages } = useMessageStore();
   const { conversations, members } = useConversationStore();
   const { user } = useUserStore();
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
-  const [theme, setThem] = React.useState<string>("")
-  React.useEffect(()=> {
-    setThem(conversations.find(e => e._id === chatId)?.theme ?? "");
-  }, [chatId, conversations])
+  // const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  const [theme, setTheme] = React.useState<string>("");
+
   React.useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
-  }, [messages]);
+    setTheme(conversations.find((e) => e._id === chatId)?.theme ?? "");
+  }, [chatId, conversations]);
+  // React.useEffect(() => {
+  //   if (containerRef.current){
+  //     containerRef.current.scrollIntoView({ behavior: "smooth", block: 'end' })
+  //   }
+  // }, [messages]);
   React.useEffect(() => {
-    const fetchInitialMessages = () => {
+    const fetchInitialMessages =  () => {
       if (showConversation && chatId) {
-        fetchMessages(chatId);
-        if (containerRef.current) {
-          containerRef.current.scrollTop = containerRef.current.scrollHeight;
-        }
+        fetchMessages(chatId, 1, 100);
       }
     };
-
     fetchInitialMessages();
-  }, [showConversation, chatId, fetchMessages, containerRef]);
+  }, [chatId, fetchMessages, showConversation]);
+
+  React.useEffect(() => {
+    socket.on('newMessage', (newMessage) => {
+      // Handle the new message
+      if(newMessage.conversationId === chatId){
+        setMessages([newMessage, ...messages]);
+      }
+    });
+    socket.on('newMessageFile', (newMessage) =>{
+      if(newMessage.conversationId === chatId){
+        setMessages([newMessage, ...messages]);
+      }
+    });
+    socket.on('newMessageChatGpt', (newMessage) => {
+      if(newMessage.conversationId === chatId){
+        setMessages([newMessage, ...messages]);
+      }
+    });
+  }, [chatId, messages, setMessages]);
+  // const handleScroll = () => {
+  //   if(containerRef.current){
+  //   console.log(containerRef.current.scrollTop, containerRef.current.clientHeight, containerRef.current.scrollHeight)
+  //   }
+  // }
   const users = [
-    { id: 1, username: "Viên Hoàng Long" },
     { id: 2, username: "ChatGPT" },
   ];
   const [showModalInformation, setShowModalInformation] =
@@ -117,8 +139,9 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
             />
           </div>
           <div
-            className={`pt-4 ${colorThemeChat.find(e=> e.color === theme)?.backgroundColor} mb-0 md:mb-20 flex-grow flex-col-reverse h-[58vh] lg:h-[400px] overflow-y-scroll no-scrollbar`}
-            ref={containerRef}
+            className={`pt-4 ${colorThemeChat.find(e=> e.color === theme)?.backgroundColor} mb-0 md:mb-20 flex flex-col-reverse flex-grow h-[58vh] lg:h-[400px] overflow-y-scroll`}
+            // ref={containerRef}
+            // onScroll={()=>handleScroll()}
           >
             {messages.length > 0 ? (
               messages.map((message) =>
@@ -148,12 +171,10 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
             )}
           </div>
           <div className="sticky bottom-0 dark:bg-dark2 bg-light1">
-            {/* <div className="flex items-center p-3 gap-3 sticky"> */}
               <ChatBox
                 users={users}
                 chatId={chatId ?? ""}
                 sender={user?._id ?? ""}></ChatBox>
-            {/* </div> */}
           </div>
         </div>
       ) : (
