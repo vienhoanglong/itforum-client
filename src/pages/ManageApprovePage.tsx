@@ -12,7 +12,7 @@ import { exampleData, topicColors } from "../constants/global.ts";
 
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 
-export const ManageApprove: React.FC = () => {
+export const ManageApprove: React.FC = React.memo(() => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -189,6 +189,6 @@ export const ManageApprove: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default ManageApprove;

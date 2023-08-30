@@ -15,7 +15,7 @@ import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 import DeletedTopic from "@/modules/topic/DeletedTopic.tsx";
 import AddNewTopic from "@/modules/topic/AddNewTopic.tsx";
 
-export const ManageTopicsPage: React.FC = () => {
+export const ManageTopicsPage: React.FC = React.memo(() => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -226,6 +226,6 @@ export const ManageTopicsPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default ManageTopicsPage;

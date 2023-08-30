@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
-export const HomePage: React.FC = () => {
+export const HomePage: React.FC = React.memo(() => {
   const [sort, setSort] = useState<string>("desc");
   const [filter, setFilter] = useState<string>("");
   const { listUser, getListUser } = useUserStore();
@@ -75,6 +75,6 @@ export const HomePage: React.FC = () => {
       </Tabs>
     </LayoutDefault>
   );
-};
+});
 
 export default HomePage;

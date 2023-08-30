@@ -6,7 +6,7 @@ import LayoutDetail from "@/layout/LayoutDetail";
 import PostHeader from "@/modules/post/PostHeader";
 import PostContent from "@/modules/post/PostContent";
 
-export const ReviewPostPage: React.FC = () => {
+export const ReviewPostPage: React.FC = React.memo(() => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isReportModalOpen, setReportModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -76,6 +76,6 @@ export const ReviewPostPage: React.FC = () => {
       </div>
     </LayoutDetail>
   );
-};
+});
 
 export default ReviewPostPage;

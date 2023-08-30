@@ -12,7 +12,7 @@ import { exampleData } from "../constants/global.ts";
 
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 
-export const ManageReportPage: React.FC = () => {
+export const ManageReportPage: React.FC = React.memo(() => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -173,6 +173,6 @@ export const ManageReportPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default ManageReportPage;

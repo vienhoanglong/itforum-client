@@ -18,7 +18,7 @@ import { useNotificationStore } from "@/store/notificationStore";
 import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
 
-const NotificationPage: React.FC = () => {
+const NotificationPage: React.FC = React.memo(() => {
   const { getListNotificationNav } = useNotificationStore();
   const { user } = useUserStore();
   const [isModalOpenAddNotifi, setIsModalOpenAddNotifi] = useState(false); // config modal add
@@ -212,6 +212,6 @@ const NotificationPage: React.FC = () => {
       </div>
     </LayoutDefault>
   );
-};
+});
 
 export default NotificationPage;

@@ -132,7 +132,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-const DashBoardPage: React.FC = () => {
+const DashBoardPage: React.FC = React.memo(() => {
   return (
     <LayoutSecondary>
       <a
@@ -280,6 +280,6 @@ const DashBoardPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default DashBoardPage;

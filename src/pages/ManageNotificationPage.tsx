@@ -15,7 +15,7 @@ import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 import DeletedNotifications from "@/modules/notification/DeletedNotifications.tsx";
 import { AddNewNotifications } from "@/modules/notification/AddNewNotifications.tsx";
 
-export const ManageNotificationPage: React.FC = () => {
+export const ManageNotificationPage: React.FC = React.memo(() => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -233,6 +233,6 @@ export const ManageNotificationPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default ManageNotificationPage;

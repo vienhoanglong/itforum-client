@@ -5,7 +5,7 @@ import ListChat from "@/modules/chat/ListChat";
 import ChatConversation from "@/modules/chat/ChatConversation";
 import { useConversationStore } from "@/store/conversationStore";
 import { useParams } from "react-router-dom";
-export const ChatPage: React.FC = () => {
+export const ChatPage: React.FC = React.memo(() => {
   const { selectedChatId, setSelectedChatId, conversations, setMembers } = useConversationStore();
   const { id } = useParams();
   useEffect(() => {
@@ -30,6 +30,6 @@ export const ChatPage: React.FC = () => {
     <Tooltip id="tooltip" place="right" />
   </LayoutChat>
   );
-};
+});
 
 export default ChatPage;

@@ -6,7 +6,7 @@ import React, { useMemo } from "react";
 import { HiArrowCircleLeft, HiBell, HiChevronRight } from "react-icons/hi";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import parse from "html-react-parser";
-export const NotificationDetailPage: React.FC = () => {
+export const NotificationDetailPage: React.FC = React.memo(() => {
   const formatDate = "MM-DD-YYYY";
   const { notificationId } = useParams<string>();
   const { notifications, getNotification } = useNotificationStore();
@@ -99,6 +99,6 @@ export const NotificationDetailPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default NotificationDetailPage;

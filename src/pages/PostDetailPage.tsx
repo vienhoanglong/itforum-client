@@ -13,7 +13,7 @@ import PostHeader from "@/modules/post/PostHeader";
 import PostContent from "@/modules/post/PostContent";
 import ListPostCard from "@/modules/post/ListPostCard";
 
-export const PostDetailPage: React.FC = () => {
+export const PostDetailPage: React.FC = React.memo(() => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isReportModalOpen, setReportModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -105,6 +105,6 @@ export const PostDetailPage: React.FC = () => {
       </div>
     </LayoutDetail>
   );
-};
+});
 
 export default PostDetailPage;

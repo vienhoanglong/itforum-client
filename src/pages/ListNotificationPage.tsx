@@ -11,7 +11,7 @@ import parse from "html-react-parser";
 import convertDateTime from "@/utils/helper";
 import { useUserStore } from "@/store/userStore";
 
-export const ListNotificationPage: React.FC = () => {
+export const ListNotificationPage: React.FC = React.memo(() => {
   const { type } = useParams<string>();
   const navigate = useNavigate();
   const { getListUserNotifi, listUserNotifi } = useUserStore();
@@ -386,6 +386,6 @@ export const ListNotificationPage: React.FC = () => {
       </div>
     </LayoutDefault>
   );
-};
+});
 
 export default ListNotificationPage;
