@@ -62,7 +62,7 @@ export default {
       },
       screens: {
         'custom200': '200px'
-      }
+      },
     },
   },
   variants: {

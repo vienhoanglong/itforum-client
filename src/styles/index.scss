@@ -147,3 +147,23 @@ body {
 .no-scrollbar {
   @include no-scrollbar;
 }
+
+@mixin message-hover() {
+  &:hover .more-hover {
+    @apply flex;
+  }
+}
+
+@mixin hover-react() {
+  &:hover .hover-react-item {
+    @apply block z-50;
+  }
+}
+
+.message-hover {
+  @include message-hover();
+}
+
+.hover-react {
+  @include hover-react();
+}

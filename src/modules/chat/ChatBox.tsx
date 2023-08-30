@@ -1,11 +1,16 @@
+import { IMessageRequest } from "@/interface/message";
+import { createMessage, createMessageChatGPT, createMessageFile } from "@/services/messageService";
+import { useMessageStore } from "@/store/messageStore";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import React, { useState, ChangeEvent } from "react";
+import { FaPaperPlane } from "react-icons/fa";
 import {
   HiOutlinePaperClip,
   HiOutlineEmojiHappy,
-  HiPaperAirplane,
+  HiX,
 } from "react-icons/hi";
+
 
 interface Mention {
   id: number;
@@ -14,14 +19,21 @@ interface Mention {
 
 interface ChatBoxProps {
   users: Mention[];
+  chatId: string;
+  sender: string;
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
+  const { messages, setMessages } = useMessageStore();
   const [inputText, setInputText] = useState<string>("");
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<Mention[]>([]);
-
   const [showEmoji, setShowEmoji] = React.useState<boolean>(false);
+  const [attachmentName, setAttachmentName] = useState<string | null>(null);
+  const [showAttachment, setShowAttachment] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
   // Add emoji
   const addEmoji = (e: { unified: string }): void => {
     const sym: string[] = e.unified.split("_");
@@ -33,35 +45,134 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setInputText(value);
-
     if (value.length > 0 && value[value.length - 1] === "@") {
       setShowSuggestions(true);
+      setFilteredSuggestions(users);
     } else {
       setShowSuggestions(false);
     }
-
-    // Filter suggestions based on input
-    const filtered = users.filter((mention) =>
-      mention.username.toLowerCase().includes(value.toLowerCase().slice(1))
-    );
-    setFilteredSuggestions(filtered);
+    setInputText(value);
   };
 
   const handleSuggestionClick = (mention: Mention) => {
-    setInputText(`@${mention.username} `);
+    setInputText((prevInputText) => `${prevInputText}${mention.username} `);
     setShowSuggestions(false);
   };
 
+  const handleSubmitMessage = async () => {
+    if(selectedFile){
+      const payload: IMessageRequest = {
+        contentMessage: inputText,
+        senderId: sender,
+        conversationId: chatId,
+      };
+      const response = await createMessageFile(payload, selectedFile)
+      if (response) {
+        setMessages([response,...messages]);
+      }
+      setInputText("");
+      setShowSuggestions(false);
+      setShowEmoji(false);
+      setShowAttachment(false);
+      return;
+    }
+    if (inputText.trim() !== "") {
+      console.log("S")
+      const payload: IMessageRequest = {
+        contentMessage: inputText,
+        senderId: sender,
+        conversationId: chatId,
+      };
+      if (inputText.includes('@ChatGPT')) {
+        const response = await createMessageChatGPT(payload);
+        response && setMessages([response,...messages]);
+      } else {
+        const response = await createMessage(payload);
+        response && setMessages([response,...messages]);
+      }
+      // if (response) {
+      //   setMessages([response,...messages]);
+      // }
+      setInputText("");
+      setShowSuggestions(false);
+      setShowEmoji(false);
+      return;
+    }
+  };
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSubmitMessage();
+    }
+  };
+  const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      if (file.type.startsWith("image/")) {
+        setAttachmentName(null);
+        setShowAttachment(true);
+      } else {
+        setAttachmentName(file.name);
+        setShowAttachment(true);
+      }
+    }
+  };
+  const resetFileInput = () => {
+    if (fileInputRef.current && fileInputRef.current.value) {
+      fileInputRef.current.value = "";
+    }
+  };
   return (
-    <>
-      <HiOutlinePaperClip className="text-xl cursor-pointer" />
+    <div className="flex items-center p-3 gap-3 relative">
+      {showAttachment && (
+        <div className="w-fit absolute -top-12 left-0 rounded-sm m-1">
+          <HiX
+            className="absolute right-0 top-0 cursor-pointer text-base text-white hover:text-red-500"
+            onClick={() => {
+              setSelectedFile(null);
+              setAttachmentName(null);
+              setShowAttachment(false);
+            }}
+          />
+          {attachmentName ? (
+            <div className="p-[14px] gap-1 flex flex-row bg-slate-300 items-center rounded-sm">
+              <HiOutlinePaperClip />
+              <span>{attachmentName}</span>
+            </div>
+          ) : (
+            selectedFile && (
+              <img
+                src={URL.createObjectURL(selectedFile)}
+                alt="Attached"
+                className="h-10 w-auto object-cover"
+              />
+            )
+          )}
+        </div>
+      )}
+
+      <HiOutlinePaperClip
+        className="text-xl cursor-pointer hover:text-mainColor"
+        onClick={() => fileInputRef.current?.click()}
+      />
+      <input
+        type="file"
+        accept="*"
+        style={{ display: "none" }}
+        ref={fileInputRef}
+        onChange={(event) => {
+          handleFileSelection(event);
+          resetFileInput();
+        }}
+      />
       <input
         className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] dark:bg-dark0 text-sm outline-none"
         type="text"
         value={inputText}
-        placeholder="Nhập @, nhắn tin tới Trần Hoàng Long"
+        placeholder="Nhập @ChatGPT, để đặt câu hỏi cho ChatGPT"
         onChange={handleInputChange}
+        onKeyDown={handleInputKeyDown}
       />
       {showEmoji && (
         <div className="absolute bottom-[100%] right-2 ">
@@ -91,10 +202,15 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users }) => {
         className="text-xl cursor-pointer"
         onClick={() => setShowEmoji(!showEmoji)}
       >
-        <HiOutlineEmojiHappy />
+        <HiOutlineEmojiHappy className="hover:text-mainColor" />
       </span>
-      <HiPaperAirplane className="text-xl cursor-pointer" />
-    </>
+      <FaPaperPlane
+        className={`text-xl cursor-pointer ${
+          inputText || selectedFile ? 'text-mainColor' : ''
+        }`}
+        onClick={()=>handleSubmitMessage()}
+      />
+    </div>
   );
 };
 
