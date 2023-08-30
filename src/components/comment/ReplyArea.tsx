@@ -7,16 +7,18 @@ import { useUserStore } from "@/store/userStore";
 import { colorsAvatar } from "@/constants/global";
 import ICommentCreate from "@/interface/API/ICommentCreate";
 
-interface CommentAreaProps {
+interface ReplyAreaProps {
   onSaveChanges: (comment: ICommentCreate) => void;
   menuRef: React.RefObject<HTMLDivElement>;
   discussionId: string;
+  parentCommentId: string;
 }
 
-export const CommentArea: React.FC<CommentAreaProps> = ({
+export const ReplyArea: React.FC<ReplyAreaProps> = ({
   onSaveChanges,
-  discussionId,
   menuRef,
+  discussionId,
+  parentCommentId,
 }) => {
   const { user } = useUserStore();
   const [comment, setComment] = useState("");
@@ -34,6 +36,7 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   }, [comment]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -51,8 +54,8 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const [showEmoji, setShowEmoji] = React.useState<boolean>(false);
-  // Add emoji to comment
   const addEmoji = (e: { unified: string }): void => {
     const sym: string[] = e.unified.split("_");
     const codeArray: number[] = [];
@@ -70,13 +73,14 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
     const dataCommentCreate: ICommentCreate = {
       discussId: discussionId,
       createBy: user ? user._id : "",
+      ...(parentCommentId !== "" && { commentParentId: parentCommentId }),
       content: comment,
     };
     onSaveChanges(dataCommentCreate);
     setComment("");
   };
   return (
-    <div className="bg-light3 dark:bg-dark0 flex rounded-lg p-4 mb-2 relative">
+    <div className="bg-light3 dark:bg-dark0 flex mt-2 rounded-lg p-4 relative">
       <div className="flex-shrink-0 mr-2">
         <img
           className={`w-8 h-8 ${colorAvatar} rounded-full`}
@@ -153,4 +157,4 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
     </div>
   );
 };
-export default CommentArea;
+export default ReplyArea;

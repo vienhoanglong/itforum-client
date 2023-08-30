@@ -1,5 +1,4 @@
 import React from "react";
-import FiltersBox from "./FiltersBox";
 import { topicColors } from "@/constants/global";
 import { BsEyeFill, BsFillChatFill } from "react-icons/bs";
 
@@ -12,7 +11,7 @@ interface ListPostProps {
 export const Posts: React.FC<ListPostProps> = ({ post }) => {
   return (
     <>
-      <FiltersBox></FiltersBox>
+      {/* <FiltersBox></FiltersBox> */}
       {post.map((post, index) => (
         <div
           key={index}

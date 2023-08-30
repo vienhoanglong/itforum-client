@@ -14,6 +14,7 @@ interface InputErrors {
   class: string;
   major: string;
   fullName: string;
+  gender: string;
 }
 const PersonalModal: React.FC<PersonalModalProps> = ({
   userData,
@@ -24,6 +25,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
     class: userData?.class,
     major: userData?.major,
     fullName: userData?.fullName,
+    gender: userData?.gender || "",
   });
 
   const [inputErrors, setInputErrors] = useState<InputErrors>({
@@ -31,6 +33,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
     class: "",
     major: "",
     fullName: "",
+    gender: "",
   });
 
   useEffect(() => {
@@ -39,14 +42,31 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
       class: "",
       major: "",
       fullName: "",
+      gender: "",
     };
-    for (const field in newUserData) {
-      if (!newUserData[field as keyof IUserUpdate]) {
-        newInputErrors[field as keyof InputErrors] = "Required";
+    if (!newUserData.gender) {
+      newInputErrors.gender = "Required";
+    }
+    if (!newUserData.fullName) {
+      newInputErrors.fullName = "Required";
+    }
+
+    if (!newUserData.birthDay) {
+      newInputErrors.birthDay = "Required";
+    }
+    if (userData?.role === 2) {
+      // If the user's role is 2, check for empty class and major
+      if (!newUserData.class) {
+        newInputErrors.class = "Required";
+      }
+      if (!newUserData.major) {
+        newInputErrors.major = "Required";
       }
     }
+
     setInputErrors(newInputErrors);
-  }, [newUserData]);
+  }, [newUserData, userData]);
+
   const handleSaveChanges = () => {
     onSaveChanges(
       newUserData,
@@ -117,59 +137,113 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
           </div>
         )}
       </div>
-      <div className="mb-4 flex  flex-col  justify-start gap-1 ">
+      <div className="mb-4 flex flex-col justify-start gap-1  w-full">
         <Label
-          htmlFor="class"
+          htmlFor="gender"
           className="block text-xs dark:text-white font-semibold mr-2"
         >
-          Class:
+          Gender:
         </Label>
-        <div className="flex justify-start items-center">
-          <input
-            type="text"
-            id="class"
-            name="class"
-            value={newUserData.class}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md px-2 py-1 text-xs"
-          />
+        <div className="flex text-xs dark:text-white justify-start gap-2 flex-wrap items-center">
+          <label>
+            <input
+              type="radio"
+              id="genderMale"
+              name="gender"
+              value="Male"
+              checked={newUserData.gender === "Male"}
+              onChange={handleChange}
+            />
+            Male
+          </label>
+          <label>
+            <input
+              type="radio"
+              id="genderFemale"
+              name="gender"
+              value="Female"
+              checked={newUserData.gender === "Female"}
+              onChange={handleChange}
+            />
+            Female
+          </label>
+          <label>
+            <input
+              type="radio"
+              id="genderOther"
+              name="gender"
+              value="Other"
+              checked={newUserData.gender === "Other"}
+              onChange={handleChange}
+            />
+            Other
+          </label>
         </div>
-        {inputErrors.class && (
+
+        {inputErrors.gender && (
           <div className="text-red-500 text-xs w-full h-auto text-left">
-            Class is {inputErrors.class}
+            Gender is {inputErrors.gender}
           </div>
         )}
       </div>
-      <div className="mb-4 flex  flex-col  justify-start gap-1">
-        <Label
-          htmlFor="major"
-          className="block text-xs dark:text-white font-semibold mr-2"
-        >
-          Major:
-        </Label>
-        <div className="flex justify-start items-center">
-          <input
-            type="text"
-            id="major"
-            name="major"
-            value={newUserData.major}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-md px-2 py-1 text-xs"
-          />
-        </div>
-        {inputErrors.major && (
-          <div className="text-red-500 text-xs w-full h-auto text-left">
-            Major is {inputErrors.major}
+      {userData?.role === 2 && (
+        <>
+          <div className="mb-4 flex  flex-col  justify-start gap-1 ">
+            <Label
+              htmlFor="class"
+              className="block text-xs dark:text-white font-semibold mr-2"
+            >
+              Class:
+            </Label>
+            <div className="flex justify-start items-center">
+              <input
+                type="text"
+                id="class"
+                name="class"
+                value={newUserData.class}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-md px-2 py-1 text-xs"
+              />
+            </div>
+            {inputErrors.class && (
+              <div className="text-red-500 text-xs w-full h-auto text-left">
+                Class is {inputErrors.class}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+          <div className="mb-4 flex  flex-col  justify-start gap-1">
+            <Label
+              htmlFor="major"
+              className="block text-xs dark:text-white font-semibold mr-2"
+            >
+              Major:
+            </Label>
+            <div className="flex justify-start items-center">
+              <input
+                type="text"
+                id="major"
+                name="major"
+                value={newUserData.major}
+                onChange={handleChange}
+                className="border border-gray-300 rounded-md px-2 py-1 text-xs"
+              />
+            </div>
+            {inputErrors.major && (
+              <div className="text-red-500 text-xs w-full h-auto text-left">
+                Major is {inputErrors.major}
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
       <div className="flex justify-end">
         {Object.values(inputErrors).some((error) => error) ? (
           <Button
             type="submit"
             kind="primary"
             size="small"
-            className="dark:bg-dark4 bg-dark4 text-xs text-white px-3 py-2 rounded-md"
+            className="dark:bg-dark3 bg-dark3 text-xs text-white px-3 py-2 rounded-md"
             handle={handleSaveChanges}
             disable
           >

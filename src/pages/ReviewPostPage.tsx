@@ -1,19 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Thumbnail from "../assets/header-image-post-detail.png";
 
-import {
-  content,
-  exampleDataTopic,
-  posts,
-  topicColors,
-} from "@/constants/global";
+import { content, exampleDataTopic, topicColors } from "@/constants/global";
 import LayoutDetail from "@/layout/LayoutDetail";
-import Carousel from "@/modules/post/Carousel";
 import PostHeader from "@/modules/post/PostHeader";
 import PostContent from "@/modules/post/PostContent";
-import ListPostCard from "@/modules/post/ListPostCard";
 
-export const PostDetailPage: React.FC = () => {
+export const ReviewPostPage: React.FC = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isReportModalOpen, setReportModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -61,15 +54,7 @@ export const PostDetailPage: React.FC = () => {
   // };
 
   return (
-    <LayoutDetail
-      otherChildren={
-        <ListPostCard
-          topicName={["nodejs", "javascript"]}
-          numTopicsToShow={5}
-          posts={posts}
-        ></ListPostCard>
-      }
-    >
+    <LayoutDetail>
       <div className="z-10 md:w-full pb-2 bg-light4 dark:bg-dark1 dark:text-light0 rounded-lg p-8">
         <PostHeader
           menuRef={menuRef}
@@ -88,23 +73,9 @@ export const PostDetailPage: React.FC = () => {
           topicColors={topicColors}
         />
         <PostContent content={content}></PostContent>
-        <div className="w-full mx-auto mt-16 bg-white dark:bg-dark1 p-4">
-          {/* <CommentArea
-            // avatar="https://via.placeholder.com/50"
-            // handleCommentChange={handleCommentChange}
-            // handleCommentSubmit={handleCommentSubmit}
-            // setComment={setComment}
-            menuRef={menuRef}
-            // comment={comment}
-          /> */}
-          {/* 
-          <CommentList comments={listComment}></CommentList> */}
-        </div>
-
-        <Carousel></Carousel>
       </div>
     </LayoutDetail>
   );
 };
 
-export default PostDetailPage;
+export default ReviewPostPage;

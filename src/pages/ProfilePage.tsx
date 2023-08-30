@@ -142,13 +142,16 @@ const ProfilePage: React.FC = () => {
         ) : null}
 
         {/* is student */}
-        <SkillsSection
-          isEdit={isEdit}
-          hanleUpdateSkills={handleUpdateSkills}
-          listSkills={listAllTopic}
-          userData={user}
-        />
-
+        {user ? (
+          user.role === 2 ? (
+            <SkillsSection
+              isEdit={isEdit}
+              hanleUpdateSkills={handleUpdateSkills}
+              listSkills={listAllTopic}
+              userData={user}
+            />
+          ) : null
+        ) : null}
         <ContactSection
           handleUpdateContact={handleUpdateContact}
           userData={user}

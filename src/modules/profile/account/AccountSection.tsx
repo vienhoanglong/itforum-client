@@ -54,6 +54,13 @@ const AccountSection: React.FC<AccountSectionProps> = ({
         setPasswordsMatch(false);
         return;
       }
+      if (newPassword.length < 6 || !/[A-Z]/.test(newPassword)) {
+        setError(
+          "New password must be at least 6 characters long and contain at least one uppercase letter."
+        );
+        setWarning(true);
+        return;
+      }
       const responseVerify = await verifyOTP(userData?.email ?? "", otpCode);
       if (responseVerify.error) {
         setError(responseVerify.error.message);
@@ -139,7 +146,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
                   type="password"
                   id="major"
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="border w-40 border-gray-300 dark:bg-dark0 rounded-md px-2 py-1 text-xs"
+                  className="border w-40 dark:text-white  border-gray-300 dark:bg-dark0 rounded-md px-2 py-1 text-xs"
                 />
               </div>
               <div className="mb-4">
@@ -151,7 +158,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
                     type="password"
                     id="major"
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="border  w-40 border-gray-300 dark:bg-dark0 rounded-md px-2 py-1 text-xs"
+                    className="border dark:text-white  w-40 border-gray-300 dark:bg-dark0 rounded-md px-2 py-1 text-xs"
                   />
                 </div>
                 {!passwordsMatch && (
@@ -185,7 +192,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
                   {error}
                 </div>
               )}
-              {inputEmpty && (
+              {inputEmpty && (!newPassword || !confirmPassword || !otpCode) && (
                 <div className="text-xs text-right mt-2 text-red-500">
                   Please fill out all fields
                 </div>
