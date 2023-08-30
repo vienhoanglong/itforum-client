@@ -8,7 +8,6 @@ import { hasCodeBlock } from "@/constants/hasCodeBlock";
 interface MessageItemProps {
   content: string;
   isCurrentUser: boolean;
-  sender?: string;
   time: string;
   image: string;
   color: string;
@@ -21,7 +20,6 @@ interface MessageItemProps {
 
 const MessageItem: React.FC<MessageItemProps> = ({
   content,
-  sender,
   time,
   isCurrentUser,
   image,

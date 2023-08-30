@@ -74,16 +74,11 @@ export const Header: React.FC = React.memo(() => {
   return (
     <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
       <Container>
-<<<<<<< HEAD
         <div className="flex-row items-center flex-1 md:space-x-3 hidden md:flex">
           <img
             srcSet={`${theme === "dark" ? logoDark : logoLight} 2.5x`}
             alt="ict-forum"
           />
-=======
-        <div className="flex flex-row items-center max-w-1/4 flex-1 md:space-x-3">
-          <img srcSet={`${logo} 3.5x`} alt="ict-forum" />
->>>>>>> master
         </div>
         <div className="flex flex-row items-center justify-end flex-1 gap-3">
           <Button
@@ -94,11 +89,7 @@ export const Header: React.FC = React.memo(() => {
             handle={handleAddNewPost}
           >
             <span className="text-[10px]">{t("newPost")}</span>
-<<<<<<< HEAD
-            <HiPlusCircle size={25}></HiPlusCircle>
-=======
             <HiPlusCircle size={15}></HiPlusCircle>
->>>>>>> master
           </Button>
           <div className="relative flex cursor-pointer p-1" onClick={handleShowNotification}>
             <div className="absolute -top-1 right-0">

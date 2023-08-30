@@ -16,15 +16,12 @@ interface UserState {
   listUserNotifiLevel: IUser[] | null;
   setUser: () => void;
   getListAvatar: () => void;
-<<<<<<< HEAD
   theme: string;
   setThemeUser: (theme: string) => void
-=======
   getById: (id: string) => void;
   getListUser: (listId: string[]) => void;
   getListUserNotifi: (listId: string[]) => void;
   getListUserNotifiLevel: (listId: string[]) => void;
->>>>>>> master
 }
 export const useUserStore = create<UserState>((set) => ({
   user: null,
@@ -32,11 +29,8 @@ export const useUserStore = create<UserState>((set) => ({
   listUserNotifi: null,
   listUserNotifiLevel: null,
   listAvatar: null,
-<<<<<<< HEAD
   theme: '',
-=======
   listUser: null,
->>>>>>> master
   setUser: async () => {
     try {
       const token = localStorage.getItem("accessToken");

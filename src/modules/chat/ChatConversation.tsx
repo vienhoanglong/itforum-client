@@ -152,7 +152,6 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
                       key={message._id}
                       content={message.contentMessage}
                       isCurrentUser={message.senderId === user?._id}
-                      sender={e?.fullName ?? e?.username}
                       time={message.createdAt.toString()}
                       image={e.avatar ?? avt1}
                       color={e.color ?? ""}
