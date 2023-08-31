@@ -7,8 +7,10 @@ import {
 import { create } from "zustand";
 
 interface CommentState {
+  isDeleted: boolean;
   listComment: IComment[] | null;
   comment: IComment | null;
+  setIsDeleted: (isDelete: boolean) => void;
   getListComment: (
     discussionId: string,
     skip: number,
@@ -18,8 +20,13 @@ interface CommentState {
   createComment: (comment: ICommentCreate) => void;
 }
 export const useCommentStore = create<CommentState>((set) => ({
+  isDeleted: false,
   listComment: null,
   comment: null,
+
+  setIsDeleted: (isDelete: boolean) => {
+    set(() => ({ isDeleted: isDelete }));
+  },
   getListComment: async (
     discussionId: string,
     skip: number,

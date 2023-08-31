@@ -4,7 +4,6 @@ import LayoutDetail from "@/layout/LayoutDetail";
 import React, { useEffect, useRef, useState } from "react";
 import { BsEyeFill, BsFillChatFill } from "react-icons/bs";
 import CommentArea from "@/components/comment/CommentArea";
-import CommentList from "@/components/comment/CommentList";
 import ActionMenu from "@/modules/post/ActionMenu";
 import { HiArrowCircleLeft, HiDotsHorizontal } from "react-icons/hi";
 import ReportModal from "@/components/report/ReportModal";
@@ -24,12 +23,19 @@ import {
 import ICommentCreate from "@/interface/API/ICommentCreate";
 import IComment from "@/interface/comment";
 import Topic from "@/interface/topic";
-import { CreateNewComment } from "@/services/commentService";
+import {
+  CreateNewComment,
+  UpdatedComment,
+  deleteComment,
+  getListCommentById,
+} from "@/services/commentService";
 import { toast } from "react-toastify";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog";
 import Modal from "@/components/modal/Modal";
 import IDiscussion from "@/interface/discussion";
 import LayoutSecondary from "@/layout/LayoutSecondary";
+import Comments from "@/components/comment/Comments";
+import { useCommentStore } from "@/store/commentStore";
 
 const DiscussDetailPage: React.FC = React.memo(() => {
   const { discussId } = useParams<{ discussId: string }>();
@@ -41,19 +47,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
   const { listAllTopic, getTopic } = useTopicStore();
   const [isReportModalOpen, setReportModalOpen] = useState(false);
   const { user, userById, getById } = useUserStore();
-  const viewedDiscussionIdsString = localStorage.getItem(
-    `viewedDiscussionIds_${user?._id}`
-  );
-  const initialViewedDiscussionIds = viewedDiscussionIdsString
-    ? JSON.parse(viewedDiscussionIdsString)
-    : [];
-  const [viewedDiscussionIds, setViewedDiscussionIds] = useState<string[]>(
-    initialViewedDiscussionIds
-  );
-  const [commentCreate, setCommentCreate] = useState<IComment | null>(null);
-  const [commentReplyCreate, setCommentReplyCreate] = useState<IComment | null>(
-    null
-  );
+
   const [isModalOpenDialog, setIsModalOpenDialog] = useState(false);
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
   const [confirmMessage, setConfirmMessage] = useState("");
@@ -61,6 +55,24 @@ const DiscussDetailPage: React.FC = React.memo(() => {
     navigate(-1);
   };
   const formatDate = "MM-DD-YYYY";
+
+  const viewedDiscussionIdsKey = user?._id
+    ? `viewedDiscussionIds_${user._id}`
+    : "";
+  const [increment, setIncrement] = useState(false);
+
+  const [parentComment, setParentComment] = useState<IComment[]>([]);
+  const [activeComment, setActiveComment] = useState<{
+    type: string;
+    id: string;
+  } | null>(null);
+  const { isDeleted, setIsDeleted } = useCommentStore();
+  const [idDelete, setIdDelete] = useState("");
+  const [idUpdate, setIdUpdate] = useState<{
+    content: string;
+    id: string;
+  } | null>(null);
+
   const handleReportClick = () => {
     setReportModalOpen(true);
     setMenuOpen(false);
@@ -71,9 +83,19 @@ const DiscussDetailPage: React.FC = React.memo(() => {
 
   const handleCloseModal = () => {
     setReportModalOpen(false);
+    setIsModalOpenDialog(false);
   };
 
-  //Get information discuss, list discuss, user own discussion
+  useEffect(() => {
+    const fectData = async () => {
+      const response = discussId && (await getListCommentById(discussId, 0, 0));
+      if (response) {
+        setParentComment(response.data);
+      }
+    };
+    fectData();
+  }, []);
+
   useEffect(() => {
     getTopic();
     getListDiscussion(0, 0, "desc");
@@ -82,29 +104,39 @@ const DiscussDetailPage: React.FC = React.memo(() => {
       if (response) {
         getById(response?.createBy);
         setDiscussion(response);
-        if (!viewedDiscussionIds.includes(discussId ? discussId : "")) {
-          incrementView(discussId ? discussId : "");
-          const updatedIds = [
-            ...viewedDiscussionIds,
-            discussId ? discussId : "",
-          ].filter((id) => id !== undefined);
-          setViewedDiscussionIds((prevIds) => [...prevIds, ...updatedIds]);
-          localStorage.setItem(
-            `viewedDiscussionIds_${user?._id}`,
-            JSON.stringify([...viewedDiscussionIds, discussId])
+        if (viewedDiscussionIdsKey !== "") {
+          const viewedDiscussionIdsString = localStorage.getItem(
+            viewedDiscussionIdsKey
           );
+          if (viewedDiscussionIdsString === null) {
+            discussId && incrementView(discussId);
+            discussId &&
+              localStorage.setItem(
+                `viewedDiscussionIds_${user?._id}`,
+                JSON.stringify([discussId])
+              );
+            setIncrement(!increment);
+          } else {
+            const initialViewedDiscussionIds =
+              viewedDiscussionIdsString != null
+                ? JSON.parse(viewedDiscussionIdsString)
+                : [];
+            if (
+              !initialViewedDiscussionIds.includes(discussId ? discussId : "")
+            ) {
+              discussId && incrementView(discussId);
+              localStorage.setItem(
+                `viewedDiscussionIds_${user?._id}`,
+                JSON.stringify([...initialViewedDiscussionIds, discussId])
+              );
+              setIncrement(!increment);
+            }
+          }
         }
       }
     };
     fetchData();
-  }, [
-    discussId,
-    getById,
-    getListDiscussion,
-    getTopic,
-    user?._id,
-    viewedDiscussionIds,
-  ]);
+  }, [discussId, user?._id, increment]);
 
   //Menu
   useEffect(() => {
@@ -128,11 +160,27 @@ const DiscussDetailPage: React.FC = React.memo(() => {
   //Create a new comment
   const handleCommentSubmit = async (data: ICommentCreate) => {
     const reponse = await CreateNewComment(data);
-    setCommentCreate(reponse.data);
+    if (data.commentParentId === undefined) {
+      setParentComment([reponse.data, ...parentComment]);
+    }
   };
-  const handleCommentReplySubmit = async (data: ICommentCreate) => {
-    const reponse = await CreateNewComment(data);
-    setCommentReplyCreate(reponse.data);
+  //Delete comment
+  const handleDeleteCmt = async (commentId: string) => {
+    handleConfirm(async () => {
+      try {
+        discussId && (await deleteComment(discussId, commentId));
+        const updateComment = parentComment.filter((c) => c._id !== commentId);
+        setParentComment(updateComment);
+        setIsDeleted(true);
+        setIdDelete(commentId);
+        toast.success(" Deleted comment successfully! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error hidden comment");
+      }
+    }, "Bạn có chắc muốn xoá không?");
   };
 
   const getColorAvatar = userById
@@ -160,7 +208,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
           autoClose: 3000,
         });
       } catch (err) {
-        console.log("error restore discussion");
+        console.log("error delete discussion");
       }
     }, "Bạn có chắc muốn xoá không?");
   };
@@ -178,7 +226,33 @@ const DiscussDetailPage: React.FC = React.memo(() => {
     }, "Bạn có chắc muốn ẩn không?");
   };
 
-  if (!discussion || discussion.statusDiscuss === 3) {
+  const handleUpdate = async (data: ICommentCreate, id: string) => {
+    try {
+      const dataUpdate: ICommentCreate = { content: data.content };
+      const response = await UpdatedComment(dataUpdate, id);
+      if (response) {
+        if (data.content) {
+          setIdUpdate({ id: id, content: data.content });
+        }
+        const newUpdate = parentComment.map((comment) => {
+          if (comment._id === id) {
+            return { ...comment, content: data.content };
+          }
+          return comment;
+        });
+        setParentComment(newUpdate);
+      }
+    } catch (e) {
+      console.log("fail to update comment");
+    }
+  };
+
+  if (
+    !discussion ||
+    discussion.statusDiscuss === 3 ||
+    discussion.statusDiscuss === 2 ||
+    discussion.isDraft === true
+  ) {
     return (
       <LayoutSecondary>
         <div className="w-full h-full text-center flex flex-col text-lg font-bold p-10 gap-4">
@@ -321,7 +395,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
                   );
                   if (topic) {
                     return (
-                      <a key={topic._id} href={`/topics/detail/${topic._id}`}>
+                      <Link key={topic._id} to={`/topics/detail/${topic._id}`}>
                         <div
                           className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
                             colorTopic[
@@ -331,7 +405,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
                         >
                           {topic.name}
                         </div>
-                      </a>
+                      </Link>
                     );
                   }
                   return null;
@@ -376,15 +450,26 @@ const DiscussDetailPage: React.FC = React.memo(() => {
           onSaveChanges={handleCommentSubmit}
           menuRef={menuRef}
           discussionId={discussId ? discussId : ""}
+          parentId={null}
+          postsId={null}
         />
-
-        <CommentList
-          newComment={commentCreate ? commentCreate : null}
-          userData={user}
-          newReply={commentReplyCreate ? commentReplyCreate : null}
-          handleSaveChanges={handleCommentReplySubmit}
-          discussionId={discussId ? discussId : ""}
-        ></CommentList>
+        {parentComment.map((comment) => (
+          <Comments
+            postsId={null}
+            idUpdate={idUpdate}
+            handleUpdated={handleUpdate}
+            nestedLevel={0}
+            idDelete={idDelete}
+            isDeleted={isDeleted}
+            activeComment={activeComment}
+            setActiveComment={setActiveComment}
+            handleDelete={handleDeleteCmt}
+            currentUserId={user && user._id ? user._id : ""}
+            key={comment._id}
+            discussId={discussId ? discussId : ""}
+            comment={comment}
+          ></Comments>
+        ))}
       </div>
 
       <SliderDiscuss

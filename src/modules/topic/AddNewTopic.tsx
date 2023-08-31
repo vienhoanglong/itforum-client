@@ -147,14 +147,6 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
             )}
           </div>
           <div className="mb-4">
-            {/* <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Image
-            </Label>
-            <input
-              name="title"
-              placeholder="Image..."
-              className=" dark:bg-dark0 border rounded-lg w-[300px] p-2 h-[30px] block dark:border-dark2 border-gray-500 text-xs shadow-inner "
-            ></input> */}
             <Label htmlFor="title" className="block text-xs font-semibold">
               Choose topic image:
             </Label>

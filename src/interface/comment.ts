@@ -7,6 +7,7 @@ export interface IComment {
   createdAt?: string;
   createBy?: string;
   discussId?: string;
+  postsId?: string;
   countChildComments?: number;
   commentParentId?: string | null;
 }

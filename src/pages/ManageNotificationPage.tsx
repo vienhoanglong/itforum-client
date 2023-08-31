@@ -1,7 +1,6 @@
 import { Button } from "@/components/button";
 import React, { useMemo, useState } from "react";
 import {
-  HiArrowCircleLeft,
   HiEye,
   HiEyeOff,
   HiFilter,
@@ -14,7 +13,6 @@ import Modal from "@/components/modal/Modal.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 import DeletedNotifications from "@/modules/notification/DeletedNotifications.tsx";
 import { AddNewNotifications } from "@/modules/notification/AddNewNotifications.tsx";
-import { useNavigate } from "react-router";
 import { useManagementStore } from "@/store/managementStore.ts";
 import { useUserStore } from "@/store/userStore.ts";
 import INotification from "@/interface/notification.ts";
@@ -34,9 +32,9 @@ import INotificationCreate from "@/interface/API/INotificationCreate.ts";
 import { toast } from "react-toastify";
 import { UpdateNotifications } from "@/modules/notification/UpdateNotification.tsx";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog";
+import Navigation from "@/components/navigation/Navigation";
 
 export const ManageNotificationPage: React.FC = () => {
-  const navigate = useNavigate();
   const { listNotification, getListNotification } = useManagementStore();
   const { user } = useUserStore();
   const [notificationUpdate, setNotificationUpdate] = useState<string>("");
@@ -266,18 +264,9 @@ export const ManageNotificationPage: React.FC = () => {
       throw new Error("fail to update");
     }
   };
-  const handleBack = () => {
-    navigate(-1);
-  };
   return (
     <LayoutSecondary>
-      <button
-        className="dark:text-light0 bg- rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        onClick={handleBack}
-      >
-        <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back to Managements
-      </button>
+      <Navigation></Navigation>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">

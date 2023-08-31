@@ -253,9 +253,8 @@ const TopicDetail: React.FC = () => {
             </TabPanel>
             <TabPanel>
               <ListPostCard
-                topicName={topic._id}
+                listTopic={topic._id}
                 numTopicsToShow={4}
-                posts={posts}
               ></ListPostCard>
             </TabPanel>
           </Tabs>
@@ -463,12 +462,14 @@ const TopicDetail: React.FC = () => {
                           >
                             <HiArrowDown size={16} />
                           </Link>
-                          <div
-                            onClick={() => hanldeDeleted(item._id)}
-                            className="mx-1 p-1 rounded-full hover:bg-red-400 transition-colors duration-200"
-                          >
-                            <HiTrash size={16} />
-                          </div>
+                          {user?.role === 0 && (
+                            <div
+                              onClick={() => hanldeDeleted(item._id)}
+                              className="mx-1 p-1 rounded-full hover:bg-red-400 transition-colors duration-200"
+                            >
+                              <HiTrash size={16} />
+                            </div>
+                          )}
                         </div>
                       </td>
                     </tr>

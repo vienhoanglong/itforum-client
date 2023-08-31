@@ -73,7 +73,7 @@ function App() {
             path="/notification/:type"
             element={<ListNotificationPage />}
           ></Route>
-          <Route path="/post-detail" element={<PostDetailPage />}></Route>
+          <Route path="/post/:postId" element={<PostDetailPage />}></Route>
           <Route
             path="/discuss/:discussId"
             element={<DiscussDetailPage />}

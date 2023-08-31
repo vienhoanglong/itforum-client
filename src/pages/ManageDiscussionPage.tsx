@@ -15,7 +15,7 @@ import Modal from "@/components/modal/Modal.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 import AddNewDiscussion from "@/modules/discuss/AddNewDiscussion.tsx";
 import DeletedDiscussions from "@/modules/discuss/DeletedDiscussions.tsx";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTopicStore } from "@/store/topicStore.ts";
 import { useUserStore } from "@/store/userStore.ts";
 import IDiscussionCreate from "@/interface/API/IDiscussionCreate.ts";
@@ -35,6 +35,7 @@ import {
 } from "react-icons/bs";
 import UpdateDiscussion from "@/modules/discuss/UpdateDiscussion.tsx";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog.tsx";
+import Navigation from "@/components/navigation/Navigation.tsx";
 
 export const ManageDiscussionPage: React.FC = () => {
   const { listAllTopic, getTopic } = useTopicStore();
@@ -42,7 +43,6 @@ export const ManageDiscussionPage: React.FC = () => {
     useManagementStore();
 
   const { setUser, user } = useUserStore();
-  const navigate = useNavigate();
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [filterType, setFilterType] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
@@ -132,19 +132,6 @@ export const ManageDiscussionPage: React.FC = () => {
         );
       }
     });
-
-  // useMemo(() => {
-  //   const endOffset = itemOffset + itemsPerPage;
-  //   const filteredData = filterType
-  //     ? sortedData?.filter((item) => item.topic.includes(filterType))
-  //     : sortedData;
-  //   const newCurrentItems = filteredData?.slice(itemOffset, endOffset);
-  //   const newPageCount = Math.ceil((filteredData?.length ?? 0) / itemsPerPage);
-  //   setTimeout(() => {
-  //     newCurrentItems && setCurrentItems(newCurrentItems);
-  //     setPageCount(newPageCount);
-  //   }, 0);
-  // }, [filterType, sortedData, itemOffset, itemsPerPage]);
   useMemo(() => {
     const endOffset = itemOffset + itemsPerPage;
     const filteredData = filterType
@@ -261,18 +248,10 @@ export const ManageDiscussionPage: React.FC = () => {
       }
     }, "Bạn có chắc muốn công khai không?");
   };
-  const handleBack = () => {
-    navigate(-1);
-  };
+
   return (
     <LayoutSecondary>
-      <button
-        className="dark:text-light0 bg- rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        onClick={handleBack}
-      >
-        <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back to Managements
-      </button>
+      <Navigation></Navigation>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">Manage discussions</h4>

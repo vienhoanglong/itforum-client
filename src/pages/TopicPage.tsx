@@ -172,7 +172,7 @@ export const TopicPage: React.FC = () => {
                             {" "}
                             {topic.name}
                           </h3>
-                          <div className="hidden text-left sm:block text-[10px] dark:text-white font-normal">
+                          {/* <div className="hidden text-left sm:block text-[10px] dark:text-white font-normal">
                             8 Post{" "}
                             <span
                               className="relative inline-block px-1 text-xs"
@@ -182,7 +182,7 @@ export const TopicPage: React.FC = () => {
                               •{" "}
                             </span>{" "}
                             70 Discuss{" "}
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </Link>

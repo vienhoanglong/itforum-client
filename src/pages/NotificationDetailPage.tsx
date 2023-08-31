@@ -6,6 +6,7 @@ import React, { useMemo } from "react";
 import { HiArrowCircleLeft, HiBell, HiChevronRight } from "react-icons/hi";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import parse from "html-react-parser";
+import Navigation from "@/components/navigation/Navigation";
 export const NotificationDetailPage: React.FC = () => {
   const formatDate = "MM-DD-YYYY";
   const { notificationId } = useParams<string>();
@@ -25,13 +26,7 @@ export const NotificationDetailPage: React.FC = () => {
   }, [getById, notifications]);
   return (
     <LayoutSecondary>
-      <button
-        className="dark:text-light0 bg- rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        onClick={handleBackButtonClick}
-      >
-        <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back
-      </button>
+      <Navigation></Navigation>
       <div className=" shadow-sm flex dark:text-light0 space-x-1 items-center p-4 dark:bg-dark1 rounded-lg bg-light4">
         <HiBell></HiBell>
         <Link
