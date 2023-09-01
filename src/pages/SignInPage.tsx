@@ -14,7 +14,7 @@ import { useAuthStore } from "@/store/authStore";
 import { useLoadingStore } from "@/store/loadingStore";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import decodeToken from "@/utils/decodeToken";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 interface SignInFormData {
   email: string;
@@ -29,6 +29,8 @@ const schema = yup.object({
     .min(8, "Password must be 8 characters"),
 });
 export const SignInPage: React.FC = () => {
+  const clientId =
+    "106166759784-gto4fegdleq238nfle0mv5cu222pestp.apps.googleusercontent.com";
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
   const setLoading = useLoadingStore((state) => state.setLoading);
@@ -53,7 +55,7 @@ export const SignInPage: React.FC = () => {
       setLoading(false);
       navigate("/");
     } catch (error) {
-      console.log("Error: ", error);
+      toast.error("Tài khoản hoặc mật khẩu không chính xác");
       setLoading(false);
     }
   };
@@ -61,18 +63,14 @@ export const SignInPage: React.FC = () => {
   return (
     <LayoutAuthentication heading="Welcome Back!">
       <div className="flex items-center justify-center w-full py-4 mb-5 text-xs font-semibold gap-x-3 rounded-xl text-text2 dark:text-white">
-        <GoogleOAuthProvider clientId="106166759784-gto4fegdleq238nfle0mv5cu222pestp.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={clientId}>
           <GoogleLogin
             onSuccess={async (credentialResponse) => {
               const decoded =
                 credentialResponse.credential &&
                 decodeToken(credentialResponse?.credential);
-              console.log(
-                "🚀 ~ file: SignInPage.tsx:70 ~ onSuccess={ ~ decoded:",
-                decoded
-              );
               if (decoded?.hd !== "student.tdtu.edu.vn") {
-                return toast(
+                return toast.error(
                   "Chỉ cho phép đăng nhập với mail @student.tdtu.edu.vn"
                 );
               }
@@ -133,6 +131,7 @@ export const SignInPage: React.FC = () => {
           Sign in
         </Button>
       </form>
+      <ToastContainer />
     </LayoutAuthentication>
   );
 };

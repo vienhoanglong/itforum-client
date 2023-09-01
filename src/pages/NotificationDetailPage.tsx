@@ -3,8 +3,8 @@ import { useNotificationStore } from "@/store/notificationStore";
 import { useUserStore } from "@/store/userStore";
 import convertDateTime from "@/utils/helper";
 import React, { useMemo } from "react";
-import { HiArrowCircleLeft, HiBell, HiChevronRight } from "react-icons/hi";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { HiBell, HiChevronRight } from "react-icons/hi";
+import { Link, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import Navigation from "@/components/navigation/Navigation";
 export const NotificationDetailPage: React.FC = () => {
@@ -12,11 +12,7 @@ export const NotificationDetailPage: React.FC = () => {
   const { notificationId } = useParams<string>();
   const { notifications, getNotification } = useNotificationStore();
   const { getById, userById } = useUserStore();
-  const navigate = useNavigate();
 
-  const handleBackButtonClick = () => {
-    navigate(-1);
-  };
   useMemo(() => {
     notificationId && getNotification(notificationId);
   }, [getNotification, notificationId]);

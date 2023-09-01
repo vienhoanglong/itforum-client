@@ -7,7 +7,7 @@ import LayoutSecondary from "@/layout/LayoutSecondary";
 import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
 
-const ManagementPage: React.FC = () => {
+const ManagementPage: React.FC = React.memo(() => {
   const { user, setUser } = useUserStore();
   useEffect(() => {
     setUser();
@@ -215,6 +215,6 @@ const ManagementPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default ManagementPage;

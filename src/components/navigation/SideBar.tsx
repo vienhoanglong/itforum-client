@@ -5,8 +5,10 @@ import { NavLink } from "react-router-dom";
 import { Button1 } from "../button";
 import Modal from "../modal/Modal";
 import { useTranslation } from "react-i18next";
+import { useUserStore } from "@/store/userStore";
 
 export const SideBar: React.FC = React.memo(() => {
+  const { setThemeUser } = useUserStore();
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "light";
   });
@@ -28,6 +30,7 @@ export const SideBar: React.FC = React.memo(() => {
   }, [theme]);
   const handleDarkMode = () => {
     setTheme(theme === "dark" ? "light" : "dark");
+    setThemeUser(theme === "dark" ? "light" : "dark");
   };
   // bilingual
   const { i18n } = useTranslation();

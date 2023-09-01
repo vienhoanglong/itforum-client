@@ -37,7 +37,7 @@ import UpdateDiscussion from "@/modules/discuss/UpdateDiscussion.tsx";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog.tsx";
 import Navigation from "@/components/navigation/Navigation.tsx";
 
-export const ManageDiscussionPage: React.FC = () => {
+export const ManageDiscussionPage: React.FC = React.memo(() => {
   const { listAllTopic, getTopic } = useTopicStore();
   const { getListDiscussion, listDiscuss, getDiscussFromTrash } =
     useManagementStore();
@@ -555,5 +555,5 @@ export const ManageDiscussionPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 export default ManageDiscussionPage;

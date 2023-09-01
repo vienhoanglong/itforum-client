@@ -12,7 +12,7 @@ import { useTopicStore } from "@/store/topicStore";
 import { useNavigate, useParams } from "react-router-dom";
 import { HiArrowCircleLeft } from "react-icons/hi";
 
-const UserPage: React.FC = () => {
+const UserPage: React.FC = React.memo(() => {
   //data from api
   const { setUser, getById, userById } = useUserStore();
   //get list skill topic
@@ -141,6 +141,6 @@ const UserPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default UserPage;

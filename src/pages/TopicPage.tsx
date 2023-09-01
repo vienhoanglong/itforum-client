@@ -3,7 +3,7 @@ import { useTopicStore } from "@/store/topicStore";
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-export const TopicPage: React.FC = () => {
+export const TopicPage: React.FC = React.memo(() => {
   const { type } = useParams<{ type: string }>();
   const [activeTag, setActiveTag] = useState<string | null>(type || "all");
   const listTypeTopic = [
@@ -194,6 +194,6 @@ export const TopicPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default TopicPage;

@@ -14,7 +14,7 @@ interface ListPostCardProps {
 }
 
 const Carousel: React.FC<ListPostCardProps> = ({ listTopic, postId }) => {
-  const {  getTopic } = useTopicStore();
+  const { getTopic } = useTopicStore();
   const formatDate = "MM-DD-YYYY";
   const [filter, setFilter] = useState<IPost[]>([]);
   useEffect(() => {

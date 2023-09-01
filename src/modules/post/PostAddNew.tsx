@@ -175,7 +175,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
               </div>
               {submitted && dataPost.hashtag.length === 0 && (
                 <div className="block text-xs text-red-500 mt-1">
-                 {topicError}
+                  {topicError}
                 </div>
               )}
             </div>

@@ -1671,3 +1671,49 @@ export const exampleDataListUsers = [
     status: true,
   },
 ];
+
+export const colorThemeChat = [
+  {
+    backgroundColor: "bg-gradient-to-r from-teal-200 to-lime-200",
+    messageColor: "bg-[#22A699]",
+    color: "earth",
+  },
+  {
+    backgroundColor: "bg-gradient-to-r from-cyan-200 to-cyan-400",
+    messageColor: "bg-[#3A98B9]",
+    color: "sea",
+  },
+  {
+    backgroundColor:
+      "bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900",
+    messageColor: "bg-[#525FE1]",
+    color: "sky",
+  },
+  {
+    backgroundColor: "bg-gradient-to-r from-gray-100 to-gray-300",
+    messageColor: "bg-[#ED7B7B]",
+    color: "silver",
+  },
+  {
+    backgroundColor:
+      "bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400",
+    messageColor: "bg-[#FF2171]",
+    color: "strawberry",
+  },
+  {
+    backgroundColor: "bg-gradient-to-t from-orange-400 to-sky-400",
+    messageColor: "bg-[#6C3428]",
+    color: "oahu",
+  },
+  {
+    backgroundColor:
+      "bg-gradient-to-b from-gray-900 via-purple-900 to-violet-600",
+    messageColor: "bg-[#322653]",
+    color: "salem",
+  },
+  {
+    backgroundColor: "bg-gradient-to-b from-gray-900 to-gray-600",
+    messageColor: "bg-[#352F44]",
+    color: "space",
+  },
+];

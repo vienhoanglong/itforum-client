@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container } from "../common";
 import { AvatarImage } from "../image";
 import {
+  HiBell,
   HiDocumentDuplicate,
   HiOutlineLogout,
   HiPlusCircle,
   HiUser,
 } from "react-icons/hi";
-import logo from "assets/logo-text.png";
+import logoDark from "assets/LogoDark.png";
+import logoLight from "assets/LogoLight.png";
+
 import { Button } from "../button";
 import Modal from "../modal/Modal";
 import PostAddNewPage from "@/modules/post/PostAddNew";
@@ -19,11 +22,15 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { colorsAvatar } from "@/constants/global";
+import notice from "assets/notification.png";
+import { BiCheckDouble } from "react-icons/bi";
 export const Header: React.FC = React.memo(() => {
   const { t } = useTranslation();
-  const { user, setUser } = useUserStore();
+  const { user, setUser, theme } = useUserStore();
   const { logout } = useAuthStore();
   const navigate = useNavigate();
+  const [openNotice, setOpenNotice] = useState<boolean>(false);
+  const notificationRef = useRef<HTMLDivElement | null>(null);
   React.useEffect(() => {
     setUser();
   }, [setUser]);
@@ -45,16 +52,44 @@ export const Header: React.FC = React.memo(() => {
     ? colorsAvatar.find((item) => item.color === user.color)
     : null;
   const colorAvatar = getColorAvatar ? getColorAvatar.value : "";
+  const handleShowNotification = () => {
+    setOpenNotice(!openNotice);
+  };
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        event.target &&
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
+        setOpenNotice(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  const handleNotificationClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+  };
   return (
     <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
       <Container>
-        <div className="flex flex-row items-center max-w-1/4 flex-1 md:space-x-3">
-          <img srcSet={`${logo} 3.5x`} alt="ict-forum" />
+        <div className="flex-row items-center flex-1 md:space-x-3 hidden md:flex">
+          <img
+            srcSet={`${theme === "dark" ? logoDark : logoLight} 2.5x`}
+            alt="ict-forum"
+          />
         </div>
-        <div className="flex flex-row items-center justify-end flex-1 space-x-3">
+        <div className="flex flex-row items-center justify-end flex-1 gap-3">
           <Button
             size="small"
-            className="p-1 flex space-x-1"
+            className="p-1 flex space-x-1 text-[10px]"
             type="button"
             kind="primary"
             handle={handleAddNewPost}
@@ -62,7 +97,57 @@ export const Header: React.FC = React.memo(() => {
             <span className="text-[10px]">{t("newPost")}</span>
             <HiPlusCircle size={15}></HiPlusCircle>
           </Button>
-
+          <div
+            className="relative flex cursor-pointer p-1"
+            onClick={handleShowNotification}
+          >
+            <div className="absolute -top-1 right-0">
+              <div className="relative flex h-5 w-5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-5 w-5 bg-sky-500 justify-center items-center text-white text-[10px] font-semibold">
+                  9+
+                </span>
+              </div>
+            </div>
+            <HiBell
+              className={`block ${openNotice ? "text-mainColor" : ""}`}
+              size={30}
+            ></HiBell>
+            {openNotice && (
+              <div
+                ref={notificationRef}
+                onClick={(e) => handleNotificationClick(e)}
+                className="w-[300px] h-auto absolute top-[60px] -right-10 md:left-0 rounded-lg shadow-md p-2 space-y-1 bg-white text-dark2 dark:bg-dark3 dark:text-light0 outline-1 mr-6"
+              >
+                <div className="flex flex-row border-b-2 justify-between items-center p-2">
+                  <div className="text-sm font-bold">Thông báo</div>
+                  <div className="flex flex-row gap-1 cursor-pointer">
+                    <BiCheckDouble />
+                    <div className="text-xs">Đánh dấu đọc tất cả</div>
+                  </div>
+                </div>
+                <div className="border-b-2 p-2">
+                  <div className="rounded-lg relative flex flex-row gap-2 p-2 transition-all duration-300 ease dark:text-light0 focus:bg-subtle hover:bg-subtle hover:outline-mainColor dark:focus:bg-darker dark:hover:text-mainColor cursor-pointer ">
+                    <span className="absolute inline-flex rounded-full h-2 w-2 bg-mainColor drop-shadow-2xl top-2 right-2"></span>
+                    <img
+                      src={notice}
+                      className="rounded-full object-cover h-8 w-8"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-xs break-words line-clamp-2 w-11/12 font-semibold">
+                        Bạn vừa nhận được một thông báo mới từ Khoa CNTT về việc
+                        báo cáo dự án công nghệ thông tin 2 năm học 2022-2023
+                      </span>
+                      <span className="text-[10px] font-normal">
+                        10 phút trước
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-xs text-center">Xem tất cả</div>
+              </div>
+            )}
+          </div>
           <div className="relative cursor-pointer group sm:cursor-default">
             {user?.avatar ? (
               <Avatar

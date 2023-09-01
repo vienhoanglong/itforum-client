@@ -11,7 +11,7 @@ import { useUserStore } from "@/store/userStore";
 import { UpdateDataUser } from "@/services/userService";
 import { useTopicStore } from "@/store/topicStore";
 
-const ProfilePage: React.FC = () => {
+const ProfilePage: React.FC = React.memo(() => {
   const [isEdit, setIsEdit] = useState(false);
 
   const handleToggle = () => {
@@ -160,6 +160,6 @@ const ProfilePage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default ProfilePage;

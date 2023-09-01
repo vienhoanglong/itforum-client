@@ -15,7 +15,7 @@ import PostAddNewPage from "../modules/post/PostAddNew.tsx";
 import DeletedPostsPage from "../modules/post/DeletedPosts.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
 
-export const ManagePostsPage: React.FC = () => {
+export const ManagePostsPage: React.FC = React.memo(() => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const handleItemsPerPageChange = (
@@ -234,6 +234,6 @@ export const ManagePostsPage: React.FC = () => {
       </div>
     </LayoutSecondary>
   );
-};
+});
 
 export default ManagePostsPage;

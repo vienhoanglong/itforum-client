@@ -16,6 +16,8 @@ interface UserState {
   listUserNotifiLevel: IUser[] | null;
   setUser: () => void;
   getListAvatar: () => void;
+  theme: string;
+  setThemeUser: (theme: string) => void;
   getById: (id: string) => void;
   getListUser: (listId: string[]) => void;
   getListUserNotifi: (listId: string[]) => void;
@@ -27,6 +29,7 @@ export const useUserStore = create<UserState>((set) => ({
   listUserNotifi: null,
   listUserNotifiLevel: null,
   listAvatar: null,
+  theme: "",
   listUser: null,
   setUser: async () => {
     try {
@@ -86,5 +89,9 @@ export const useUserStore = create<UserState>((set) => ({
     } catch (err) {
       return;
     }
+  },
+  setThemeUser: (theme: string) => {
+    localStorage.setItem("theme", theme);
+    set(() => ({ theme }));
   },
 }));
