@@ -12,7 +12,7 @@ const ManagementPage: React.FC = React.memo(() => {
   useEffect(() => {
     setUser();
   }, []);
-  console.log(user);
+
   return (
     <LayoutSecondary>
       <div className="flex justify-between items-center">
@@ -69,30 +69,31 @@ const ManagementPage: React.FC = React.memo(() => {
             Chi tiết
           </Link>
         </div>
-
-        <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
-          <div className="flex flex-col w-full space-y-2 ">
-            <span className="text-base font-bold block justify-start align-top">
-              My Notifications
-            </span>
-            <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
-              <img
-                src={notification}
-                className=" object-fill max-w-full max-h-full"
-              ></img>
+        {user?.role !== 2 && (
+          <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
+            <div className="flex flex-col w-full space-y-2 ">
+              <span className="text-base font-bold block justify-start align-top">
+                My Notifications
+              </span>
+              <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
+                <img
+                  src={notification}
+                  className=" object-fill max-w-full max-h-full"
+                ></img>
+              </div>
+              <span className="block justify-start">
+                Quản lý tất cả các thông báo của bạn.
+              </span>
             </div>
-            <span className="block justify-start">
-              Quản lý tất cả các thông báo của bạn.
-            </span>
-          </div>
 
-          <Link
-            to="/managements/notifications"
-            className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
-          >
-            Chi tiết
-          </Link>
-        </div>
+            <Link
+              to={`/managements/notifications/${user?._id}`}
+              className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
+            >
+              Chi tiết
+            </Link>
+          </div>
+        )}
 
         {user?.role === 0 && (
           <>

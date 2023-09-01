@@ -3,19 +3,16 @@ import { useNotificationStore } from "@/store/notificationStore";
 import { useUserStore } from "@/store/userStore";
 import convertDateTime from "@/utils/helper";
 import React, { useMemo } from "react";
-import { HiArrowCircleLeft, HiBell, HiChevronRight } from "react-icons/hi";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { HiBell, HiChevronRight } from "react-icons/hi";
+import { Link, useParams } from "react-router-dom";
 import parse from "html-react-parser";
-export const NotificationDetailPage: React.FC = React.memo(() => {
+import Navigation from "@/components/navigation/Navigation";
+export const NotificationDetailPage: React.FC = () => {
   const formatDate = "MM-DD-YYYY";
   const { notificationId } = useParams<string>();
   const { notifications, getNotification } = useNotificationStore();
   const { getById, userById } = useUserStore();
-  const navigate = useNavigate();
 
-  const handleBackButtonClick = () => {
-    navigate(-1);
-  };
   useMemo(() => {
     notificationId && getNotification(notificationId);
   }, [getNotification, notificationId]);
@@ -25,13 +22,7 @@ export const NotificationDetailPage: React.FC = React.memo(() => {
   }, [getById, notifications]);
   return (
     <LayoutSecondary>
-      <button
-        className="dark:text-light0 bg- rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        onClick={handleBackButtonClick}
-      >
-        <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back
-      </button>
+      <Navigation></Navigation>
       <div className=" shadow-sm flex dark:text-light0 space-x-1 items-center p-4 dark:bg-dark1 rounded-lg bg-light4">
         <HiBell></HiBell>
         <Link
@@ -42,7 +33,7 @@ export const NotificationDetailPage: React.FC = React.memo(() => {
         </Link>
         <HiChevronRight></HiChevronRight>
         <Link
-          to="/notification-list"
+          to={`/notification/${notifications?.typeNotice}`}
           className=" cursor-pointer underline hover:text-mainColor"
         >
           Notification List
@@ -58,12 +49,12 @@ export const NotificationDetailPage: React.FC = React.memo(() => {
         </div>
         <div className="flex justify-between items-center space-x-1 dark:text-light0 mt-8">
           <Link
-            to="/"
+            to={`/notification/${notifications?.typeNotice}`}
             className="block cursor-pointer hover:underline hover:text-mainColor px-1 text-[10px] bg-teal0 rounded-full"
           >
             {notifications?.typeNotice}
           </Link>
-          <div className="flex justify-center items-center space-x-1">
+          <div className="flex underline justify-center items-center space-x-1">
             <Link
               to={`/user/${userById?._id}`}
               className="block hover:underline cursor-pointer hover:text-mainColor"
@@ -99,6 +90,6 @@ export const NotificationDetailPage: React.FC = React.memo(() => {
       </div>
     </LayoutSecondary>
   );
-});
+};
 
 export default NotificationDetailPage;

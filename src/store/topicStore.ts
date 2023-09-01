@@ -10,15 +10,18 @@ interface TopicState {
   listAllTopic: Topic[] | null;
   listTopicByType: Topic[] | null;
   listUserTopic: Topic[] | null;
+  listTopicByListId: Topic[] | null;
   topic: Topic | null;
   getTopic: () => void;
   getUserTopic: (listId: string) => void;
   getByTypeTopic: (type: string) => void;
   getById: (id: string) => void;
+  getListByListTopicId: (listId: string) => void;
   reset: () => void;
 }
 export const useTopicStore = create<TopicState>((set) => ({
   listAllTopic: null,
+  listTopicByListId: null,
   listUserTopic: null,
   listTopicByType: null,
   topic: null,
@@ -40,6 +43,17 @@ export const useTopicStore = create<TopicState>((set) => ({
       if (token) {
         const response = await getListTopicByListTopicId(listId);
         set(() => ({ listUserTopic: response }));
+      }
+    } catch (error) {
+      console.error("Error getting topic:", error);
+    }
+  },
+  getListByListTopicId: async (listId: string) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        const response = await getListTopicByListTopicId(listId);
+        set(() => ({ listTopicByListId: response }));
       }
     } catch (error) {
       console.error("Error getting topic:", error);

@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useUserStore } from "@/store/userStore";
 
 export const SideBar: React.FC = React.memo(() => {
-  const {setThemeUser} = useUserStore();
+  const { setThemeUser } = useUserStore();
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "light";
   });

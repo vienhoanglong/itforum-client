@@ -56,7 +56,7 @@ export const ReviewPostPage: React.FC = React.memo(() => {
   return (
     <LayoutDetail>
       <div className="z-10 md:w-full pb-2 bg-light4 dark:bg-dark1 dark:text-light0 rounded-lg p-8">
-        <PostHeader
+        {/* <PostHeader
           menuRef={menuRef}
           title="AI Introducing Lary 'Quickdraw' AI"
           author="Tran Hoang Long"
@@ -71,7 +71,7 @@ export const ReviewPostPage: React.FC = React.memo(() => {
           Thumbnail={Thumbnail}
           exampleDataTopic={exampleDataTopic}
           topicColors={topicColors}
-        />
+        /> */}
         <PostContent content={content}></PostContent>
       </div>
     </LayoutDetail>

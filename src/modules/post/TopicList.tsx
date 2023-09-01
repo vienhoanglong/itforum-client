@@ -1,26 +1,25 @@
+import { colorTopic } from "@/constants/global";
+import Topic from "@/interface/topic";
 import React from "react";
+import { Link } from "react-router-dom";
 
 type TopicListProps = {
-  exampleDataTopic: { id: string; name: string }[];
-  topicColors: Record<string, string>;
+  listTopic: Topic[] | null;
 };
 
-const TopicList: React.FC<TopicListProps> = ({
-  exampleDataTopic,
-  topicColors,
-}) => {
+const TopicList: React.FC<TopicListProps> = ({ listTopic }) => {
   return (
     <>
-      {exampleDataTopic.map((topic) => (
-        <div
-          key={topic.id}
-          className={`cursor-pointer 
-          inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px]
-          
-          ${topicColors[topic.name.toLocaleLowerCase()] || ""}`}
-        >
-          {topic.name}
-        </div>
+      {listTopic?.map((topic, index) => (
+        <Link key={index} to={`/topics/detail/${topic._id}`}>
+          <div
+            className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
+              colorTopic[topic.color as keyof typeof colorTopic] || ""
+            }`}
+          >
+            {topic.name}
+          </div>
+        </Link>
       ))}
     </>
   );

@@ -10,16 +10,26 @@ import ICommentCreate from "@/interface/API/ICommentCreate";
 interface CommentAreaProps {
   onSaveChanges: (comment: ICommentCreate) => void;
   menuRef: React.RefObject<HTMLDivElement>;
-  discussionId: string;
+  discussionId: string | null;
+  postsId: string | null;
+  parentId: string | null;
+  isEditing?: boolean;
+  handleCancel?: () => void;
+  content?: string;
 }
 
 export const CommentArea: React.FC<CommentAreaProps> = ({
   onSaveChanges,
+  handleCancel,
   discussionId,
   menuRef,
+  parentId,
+  isEditing,
+  content,
+  postsId,
 }) => {
   const { user } = useUserStore();
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState(content ? content : "");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isTextareaEmpty, setIsTextareaEmpty] = useState<boolean>(true);
 
@@ -68,15 +78,18 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
   const handleCommentSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const dataCommentCreate: ICommentCreate = {
-      discussId: discussionId,
       createBy: user ? user._id : "",
       content: comment,
+      ...(parentId !== null ? { commentParentId: parentId } : {}),
+      ...(discussionId !== null ? { discussId: discussionId } : {}),
+      ...(postsId !== null ? { postsId: postsId } : {}),
     };
+    handleCancel && handleCancel();
     onSaveChanges(dataCommentCreate);
     setComment("");
   };
   return (
-    <div className="bg-light3 dark:bg-dark0 flex rounded-lg p-4 mb-2 relative">
+    <div className="bg-light3 dark:bg-dark0 flex rounded-lg p-4 mb-2 mt-2 relative">
       <div className="flex-shrink-0 mr-2">
         <img
           className={`w-8 h-8 ${colorAvatar} rounded-full`}
@@ -101,13 +114,13 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
             }}
           ></textarea>
           {/* <QuillEditor value={content} onChange={handleContentChange} /> */}
-          <div className="flex cursor-pointer justify-end mt-2">
+          <div className="flex justify-end mt-2">
             {isTextareaEmpty == true ? (
               <Button
                 size="small"
                 type="submit"
                 kind="primary"
-                className="text-xs dark:bg-dark3 bg-dark3 "
+                className="text-xs dark:bg-dark3 bg-dark3 hover:cursor-pointer "
                 disable
               >
                 Send
@@ -117,10 +130,19 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
                 size="small"
                 type="submit"
                 kind="primary"
-                className="text-xs"
+                className="text-xs hover:cursor-pointer"
               >
                 Send
               </Button>
+            )}
+            {isEditing && (
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="text-[10px] hover:cursor-pointer font-semibold ml-2 p-2 rounded-xl bg-red-400 text-white"
+              >
+                Cancel
+              </button>
             )}
           </div>
         </form>

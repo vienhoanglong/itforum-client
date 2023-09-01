@@ -57,7 +57,7 @@ export const formatTimeAuto = (date: string | number | Date): string => {
   }
 };
 
-export const setColorBackgroundUser = (color: string): string =>{
-  const result = colorsAvatar.find((item) => item.color === color)
+export const setColorBackgroundUser = (color: string): string => {
+  const result = colorsAvatar.find((item) => item.color === color);
   return result?.value ?? "bg-white";
-}
+};

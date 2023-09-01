@@ -3,6 +3,7 @@ import IDiscussion from "@/interface/discussion";
 import LayoutDefault from "@/layout/LayoutDefault";
 import { Discuss } from "@/modules/home/Discuss";
 import { Notification } from "@/modules/home/Notification";
+import NotificationRecruit from "@/modules/home/NotificationRecruit";
 import Posts from "@/modules/home/Posts";
 import { getDiscussionByStatus } from "@/services/discussionService";
 import { useUserStore } from "@/store/userStore";
@@ -16,7 +17,7 @@ export const HomePage: React.FC = React.memo(() => {
   const { listUser, getListUser } = useUserStore();
   const [currentLimit, setCurrentLimit] = useState<number>(3);
   const [listDiscuss, setListDiscuss] = useState<IDiscussion[]>([]);
-
+  const { user } = useUserStore();
   React.useEffect(() => {
     const fetchData = async () => {
       const response = await getDiscussionByStatus(
@@ -49,14 +50,23 @@ export const HomePage: React.FC = React.memo(() => {
   };
 
   return (
-    <LayoutDefault checkScroll={handleScroll} childrenOther={<Notification />}>
+    <LayoutDefault
+      checkScroll={handleScroll}
+      childrenOther={
+        user?.role !== 3 ? (
+          <Notification />
+        ) : (
+          <NotificationRecruit></NotificationRecruit>
+        )
+      }
+    >
       <Tabs>
         <TabList>
-          <Tab className="relative py-2 px-4 mr-1 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
+          <Tab className=" hover:cursor-pointer relative py-2 px-4 mr-1 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
             Discuss
             <div className="absolute inset-0 bg-transparent"></div>
           </Tab>
-          <Tab className="relative py-2 px-4 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
+          <Tab className="hover:cursor-pointer relative py-2 px-4 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
             Posts
             <div className="absolute inset-0 bg-transparent"></div>
           </Tab>

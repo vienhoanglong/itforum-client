@@ -1,84 +1,121 @@
-import { colorTopic, sampleTopics } from "@/constants/global";
-import React from "react";
+import { colorTopic } from "@/constants/global";
+import IPost from "@/interface/post";
+import { getAllPost } from "@/services/postService";
+import { useTopicStore } from "@/store/topicStore";
+import convertDateTime from "@/utils/helper";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-interface PostCard {
-  title: string;
-  img: string;
-  topic: string[];
-}
 interface ListPostCardProps {
-  posts: PostCard[];
+  listTopic: string[] | string;
   numTopicsToShow: number;
-  topicName: string | "" | string[];
+  postId?: string;
 }
 
 const ListPostCard: React.FC<ListPostCardProps> = ({
-  posts,
+  listTopic,
   numTopicsToShow,
-  topicName,
+  postId,
 }) => {
-  const filteredPost = posts.filter((post) =>
-    post.topic.some((topic) => {
-      if (typeof topicName === "string") {
-        return topic === topicName;
-      } else if (Array.isArray(topicName)) {
-        return topicName.every((topicToFilter) =>
-          post.topic.includes(topicToFilter)
+  const { listAllTopic, getTopic } = useTopicStore();
+  const formatDate = "MM-DD-YYYY";
+  const [filter, setFilter] = useState<IPost[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getAllPost(0, 0, "desc");
+      if (response) {
+        const filteredPost = response?.data?.data.filter((post: IPost) =>
+          post.hashtag.some((topic) => {
+            if (typeof listTopic === "string") {
+              return post.hashtag.includes(listTopic);
+            } else if (Array.isArray(listTopic)) {
+              return listTopic.includes(topic);
+            }
+            return false;
+          })
         );
+        if (filteredPost) {
+          const listPostRelated = filteredPost?.filter(
+            (post: IPost) =>
+              post.status === 1 && post.isDraft === false && post._id !== postId
+          );
+          setFilter(listPostRelated);
+          if (listPostRelated && listPostRelated.length > 0) {
+            const userInListDiscuss = listPostRelated?.map(
+              (user: IPost) => user.createdBy
+            );
+            if (userInListDiscuss !== null && userInListDiscuss.length > 0) {
+              getTopic();
+            }
+          }
+        }
       }
-      return false;
-    })
-  );
+    };
+    fetchData();
+  }, [postId, getTopic, listTopic]);
+
   return (
     <div className="w-full h-auto  dark:bg-dark1/80 rounded-lg mt-2 flex pt-4 flex-col space-y-2">
       <div className=" flex justify-between items-center mb-2 px-2">
         <span className="font-bold text-sm text-darker">Related posts</span>
-        {filteredPost.length === 0 ? null : (
-          <a
+        {filter.length === 0 ? null : (
+          <Link
             className=" dark:text-light0 px-4 rounded-full link inline-flex items-center text-xs !text-grey-600 underline font-medium bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0"
-            href="/"
+            to="/"
           >
             More
-          </a>
+          </Link>
         )}
       </div>
-      {filteredPost.length === 0 ? (
+      {filter.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-white py-4">
           Không có bài viết liên quan
         </div>
       ) : (
-        filteredPost.slice(0, numTopicsToShow).map((post, index) => (
-          <div
+        filter.slice(0, numTopicsToShow).map((post, index) => (
+          <Link
+            to={`/post/${post._id}`}
             key={index}
             className="flex hover:cursor-pointer hover:text-mainColor dark:text-light0 bg-light4 dark:bg-dark2 shadow hover:shadow-md p-2 rounded-lg transform transition-all duration-100 "
           >
             <div className="w-1/2 rounded-lg">
               <img
-                src={post.img}
+                src={post.thumbnail}
                 className="w-full rounded-xl max-w-full max-h-[300px] object-cover"
               ></img>
             </div>
             <div className="w-1/2 ml-2">
-              <span className="text-sm font-medium">{post.title}</span>
+              <span className="text-xs font-medium break-words line-clamp-2">
+                {post.title}
+              </span>
+              <span className="font-thin text-[10px] block dark:text-light0">
+                {convertDateTime(post.createdAt.toString(), formatDate)}
+              </span>
               <div className="mt-2">
-                {post.topic.map((topic, index) => (
-                  <div
-                    key={index}
-                    className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
-                      colorTopic[
-                        sampleTopics.find(
-                          (t) =>
-                            t.name.toLowerCase().replace(/\s+/g, "-") === topic
-                        )?.color as keyof typeof colorTopic
-                      ] || ""
-                    }`}
-                  >
-                    {topic}
-                  </div>
-                ))}
+                {post?.hashtag.map((topicId) => {
+                  const topic = listAllTopic?.find(
+                    (topic) => topic._id === topicId
+                  );
+                  if (topic) {
+                    return (
+                      <Link key={topic._id} to={`/topics/detail/${topic._id}`}>
+                        <div
+                          className={`inline-block border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
+                            colorTopic[
+                              topic.color as keyof typeof colorTopic
+                            ] || ""
+                          }`}
+                        >
+                          {topic.name}
+                        </div>
+                      </Link>
+                    );
+                  }
+                  return null;
+                })}
               </div>
             </div>
-          </div>
+          </Link>
         ))
       )}
     </div>

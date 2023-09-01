@@ -6,7 +6,15 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 export const TopicPage: React.FC = React.memo(() => {
   const { type } = useParams<{ type: string }>();
   const [activeTag, setActiveTag] = useState<string | null>(type || "all");
-
+  const listTypeTopic = [
+    "all",
+    "devops",
+    "frameworks",
+    "languages",
+    "subject",
+    "tooling",
+    "testing",
+  ];
   const { listAllTopic, getTopic } = useTopicStore();
   useEffect(() => {
     getTopic();
@@ -32,10 +40,12 @@ export const TopicPage: React.FC = React.memo(() => {
     if (activeTag === "all" && !type) {
       navigate("/topics/all");
     }
-    if (activeTag !== "all" && !filtered?.length) {
+    if (!listTypeTopic.includes(activeTag)) {
       navigate("/404");
     }
   }, [type, navigate, listAllTopic]);
+
+  console.log(filteredTopics);
   const handleTagClick = (tagName: string) => {
     setActiveTag(tagName);
     navigate(`/topics/${tagName}`);
@@ -110,60 +120,75 @@ export const TopicPage: React.FC = React.memo(() => {
                 Tooling
               </Link>
             </li>
+            <li className="relative inline-block flex-shrink-0">
+              <Link
+                className={getTagClassName("testing")}
+                to="/topics/testing"
+                onClick={() => handleTagClick("testing")}
+              >
+                Testing
+              </Link>
+            </li>
           </ul>
         </div>
         <div
           className="mt-4 w-full gap-4 pb-2 items-center max-h-[700px] md:max-h-none container mx-auto mb-4 flex flex-wrap no-scrollbar justify-center gap-x-5 gap-y-6 overflow-auto md:mt-8"
           style={{ maxWidth: "1350px" }}
         >
-          {filteredTopics?.map(
-            (topic) =>
-              topic.hide === false && (
-                <div
-                  key={topic._id}
-                  className=" cursor-pointer flex flex-1 justify-center text-center md:max-w-[225px] "
-                >
-                  <Link
-                    className=" shadow-sm bg-light4 dark:bg-dark1/50 panel relative transition-colors duration-300 dark:hover:bg-dark2 hover:bg-light2 flex h-full w-full flex-shrink-0 flex-col justify-between rounded-2xl px-3 py-1 "
-                    style={{ height: "70px", minWidth: "180px" }}
-                    to={`/topics/detail/${topic._id}`}
+          {filteredTopics && filteredTopics?.length === 0 ? (
+            <div className="w-full h-full text-center flex flex-col text-lg font-bold p-10 gap-4">
+              <span>No topic yet</span>
+            </div>
+          ) : (
+            filteredTopics?.map(
+              (topic) =>
+                topic.hide === false && (
+                  <div
+                    key={topic._id}
+                    className=" cursor-pointer flex flex-1 justify-center text-center md:max-w-[225px] "
                   >
-                    <div
-                      className="flex flex-1 items-center"
-                      style={{ height: "-4px" }}
+                    <Link
+                      className=" shadow-sm bg-light4 dark:bg-dark1/50 panel relative transition-colors duration-300 dark:hover:bg-dark2 hover:bg-light2 flex h-full w-full flex-shrink-0 flex-col justify-between rounded-2xl px-3 py-1 "
+                      style={{ height: "70px", minWidth: "180px" }}
+                      to={`/topics/detail/${topic._id}`}
                     >
-                      {topic.img ? (
-                        <div className="mr-4 flex flex-shrink-0 justify-center">
-                          <img
-                            width={35}
-                            height={35}
-                            className="h-full"
-                            src={topic.img}
-                          />
-                        </div>
-                      ) : null}
+                      <div
+                        className="flex flex-1 items-center"
+                        style={{ height: "-4px" }}
+                      >
+                        {topic.img ? (
+                          <div className="mr-4 flex flex-shrink-0 justify-center">
+                            <img
+                              width={35}
+                              height={35}
+                              className="h-full"
+                              src={topic.img}
+                            />
+                          </div>
+                        ) : null}
 
-                      <div className="w-full lg:w-auto flex justify-between sm:block">
-                        <h3 className="text-left dark:text-white text-xs font-semibold leading-tight sm:mb-2">
-                          {" "}
-                          {topic.name}
-                        </h3>
-                        <div className="hidden text-left sm:block text-[10px] dark:text-white font-normal">
-                          8 Post{" "}
-                          <span
-                            className="relative inline-block px-1 text-xs"
-                            style={{ top: "1px" }}
-                          >
+                        <div className="w-full lg:w-auto flex justify-between sm:block">
+                          <h3 className="text-left dark:text-white text-xs font-semibold leading-tight sm:mb-2">
                             {" "}
-                            •{" "}
-                          </span>{" "}
-                          70 Discuss{" "}
+                            {topic.name}
+                          </h3>
+                          {/* <div className="hidden text-left sm:block text-[10px] dark:text-white font-normal">
+                            8 Post{" "}
+                            <span
+                              className="relative inline-block px-1 text-xs"
+                              style={{ top: "1px" }}
+                            >
+                              {" "}
+                              •{" "}
+                            </span>{" "}
+                            70 Discuss{" "}
+                          </div> */}
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                </div>
-              )
+                    </Link>
+                  </div>
+                )
+            )
           )}
         </div>
       </div>

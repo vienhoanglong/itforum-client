@@ -8,7 +8,7 @@ export interface IConversation {
   theme: string;
 }
 
-export interface IConversationRequest{
+export interface IConversationRequest {
   members?: string[];
   createBy?: string;
   nameConversation?: string;

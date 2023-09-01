@@ -27,7 +27,7 @@ export const Posts: React.FC<ListPostProps> = ({ post }) => {
           <div className="w-full h-full flex flex-col">
             <div className="flex">
               <a
-                href="/post-detail"
+                href="/post"
                 className="break-words leading-normal text-black/90 dark:text-light0 p-1 text-sm font-semibold line-clamp-3 w-4/5 hover:text-mainColor"
               >
                 {post.title}

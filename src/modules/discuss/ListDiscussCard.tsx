@@ -38,7 +38,9 @@ const ListDiscussCard: React.FC<ListDiscussCardProps> = React.memo(
           if (filteredDiscussions) {
             const listDiscussRelated = filteredDiscussions?.filter(
               (discuss: IDiscussion) =>
-                discuss.statusDiscuss === 1 && discuss._id != discussId
+                discuss.statusDiscuss === 1 &&
+                discuss.isDraft === false &&
+                discuss._id != discussId
             );
             setFilter(listDiscussRelated);
             if (listDiscussRelated && listDiscussRelated.length > 0) {

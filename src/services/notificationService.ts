@@ -106,3 +106,90 @@ export const getAllNotification = async (
     throw new Error("Error get all notification: ");
   }
 };
+
+export const getAllNotificationWithIsDelete = async (
+  isDeleted: boolean
+): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/notification/trash?isDeleted=${isDeleted}`
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error get all notification: ");
+  }
+};
+export const UpdateNotification = async (
+  notification: INotificationCreate,
+  id: string,
+  file?: File
+): Promise<any> => {
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      throw new Error("Access token not found");
+    }
+    const formData = new FormData();
+    if (file) {
+      formData.append("file", file);
+    }
+    formData.append("titleNotice", notification.titleNotice);
+    formData.append("descNotice", notification.descNotice);
+    formData.append("createdBy", notification.createdBy);
+    formData.append("typeNotice", notification.typeNotice);
+    formData.append("level", notification.level);
+    const response = await axios.patch(
+      `https://ict-forum-server.onrender.com/notification/${id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("Create response:", response.data);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const moveTrashOrRestoreNotification = async (
+  id: string
+): Promise<any> => {
+  try {
+    const response = await axios.patch(
+      `https://ict-forum-server.onrender.com/notification/trash-or-restore/${id}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error ");
+  }
+};
+
+export const deleteNotification = async (id: string): Promise<any> => {
+  try {
+    const response = await axios.delete(
+      `https://ict-forum-server.onrender.com/notification/${id}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error delete notification: ");
+  }
+};
+
+export const changeStatusNotification = async (id: string): Promise<any> => {
+  try {
+    const response = await axios.patch(
+      `https://ict-forum-server.onrender.com/notification/change-publish/${id}`
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error change status notification: ");
+  }
+};

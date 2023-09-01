@@ -50,7 +50,11 @@ const Input: React.FC<InputProps> = ({
         </span>
       )}
       {children && (
-        <span className={`absolute cursor-pointer select-none right-6 ${error.length > 0?'top-[30%]': 'top-2/4'} -translate-y-2/4`}>
+        <span
+          className={`absolute cursor-pointer select-none right-6 ${
+            error.length > 0 ? "top-[30%]" : "top-2/4"
+          } -translate-y-2/4`}
+        >
           {children}
         </span>
       )}

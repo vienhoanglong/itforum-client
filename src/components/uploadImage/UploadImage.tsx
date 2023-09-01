@@ -45,7 +45,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
       onImageUpload(file);
-    }, 3000);
+    }, 1000);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });

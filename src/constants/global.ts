@@ -574,194 +574,194 @@ export const posts = [
 export const content =
   "Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before. Hello, everyone! My name is Lary Quickdraw AI, and I'm here to introduce you to an exciting new feature on the Laracasts forum: automatic AI-generated replies! And, given the nature of this new feature, it's only appropriate (and fun) that this blog post - and only this one - was generated entirely by AI. We all know how frustrating it can be to wait for a reply on a forum post, especially when you need help with a coding problem or  have a question about a new tool or framework. With our new AI-powered replies, you'll get faster responses than ever before.";
 
-export const listComment = [
-  {
-    id: 1,
-    author: "Tran Hoang Long",
-    avatar: "https://via.placeholder.com/50",
-    content:
-      "This is a comment. This is a comment. This is a comment. This is a comment. This is a comment. This is a comment. ",
-    timestamp: "2 hours ago",
-    replies: [
-      {
-        id: 1,
-        author: "Vien Hoang Long",
-        avatar: "https://via.placeholder.com/50",
-        content: "This is a reply to the comment.",
-        timestamp: "1 hour ago",
-      },
-    ],
-  },
-  {
-    id: 2,
-    author: "Tran Hoang Long",
-    avatar: "https://via.placeholder.com/50",
-    content: "Another comment.",
-    timestamp: "3 hours ago",
-    replies: [
-      {
-        id: 5,
-        author: "Vien Hoang Long",
-        avatar: "https://via.placeholder.com/50",
-        content: "Another reply to Bob's comment.",
-        timestamp: "2 hours ago",
-      },
-      {
-        id: 6,
-        author: "Vien Hoang Long",
-        avatar: "https://via.placeholder.com/50",
-        content: "Another reply to Bob's comment.",
-        timestamp: "2 hours ago",
-      },
-    ],
-  },
-  {
-    id: 3,
-    author: "Tran Hoang Long",
-    avatar: "https://via.placeholder.com/50",
-    content: "Yet another comment.",
-    timestamp: "4 hours ago",
-    replies: [
-      {
-        id: 2,
-        author: "Vien Hoang Long",
-        avatar: "https://via.placeholder.com/50",
-        content: "Reply to Bob's comment.",
-        timestamp: "3 hours ago",
-      },
-      {
-        id: 3,
-        author: "Vien Hoang Long",
-        avatar: "https://via.placeholder.com/50",
-        content: "Another reply to Bob's comment.",
-        timestamp: "2 hours ago",
-      },
-      {
-        id: 4,
-        author: "Vien Hoang Long",
-        avatar: "https://via.placeholder.com/50",
-        content: "Another reply to Bob's comment.",
-        timestamp: "2 hours ago",
-      },
-      {
-        id: 4,
-        author: "Vien Hoang Long",
-        avatar: "https://via.placeholder.com/50",
-        content: "Another reply to Bob's comment.",
-        timestamp: "2 hours ago",
-      },
+// export const listComment = [
+//   {
+//     id: 1,
+//     author: "Tran Hoang Long",
+//     avatar: "https://via.placeholder.com/50",
+//     content:
+//       "This is a comment. This is a comment. This is a comment. This is a comment. This is a comment. This is a comment. ",
+//     timestamp: "2 hours ago",
+//     replies: [
+//       {
+//         id: 1,
+//         author: "Vien Hoang Long",
+//         avatar: "https://via.placeholder.com/50",
+//         content: "This is a reply to the comment.",
+//         timestamp: "1 hour ago",
+//       },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     author: "Tran Hoang Long",
+//     avatar: "https://via.placeholder.com/50",
+//     content: "Another comment.",
+//     timestamp: "3 hours ago",
+//     replies: [
+//       {
+//         id: 5,
+//         author: "Vien Hoang Long",
+//         avatar: "https://via.placeholder.com/50",
+//         content: "Another reply to Bob's comment.",
+//         timestamp: "2 hours ago",
+//       },
+//       {
+//         id: 6,
+//         author: "Vien Hoang Long",
+//         avatar: "https://via.placeholder.com/50",
+//         content: "Another reply to Bob's comment.",
+//         timestamp: "2 hours ago",
+//       },
+//     ],
+//   },
+//   {
+//     id: 3,
+//     author: "Tran Hoang Long",
+//     avatar: "https://via.placeholder.com/50",
+//     content: "Yet another comment.",
+//     timestamp: "4 hours ago",
+//     replies: [
+//       {
+//         id: 2,
+//         author: "Vien Hoang Long",
+//         avatar: "https://via.placeholder.com/50",
+//         content: "Reply to Bob's comment.",
+//         timestamp: "3 hours ago",
+//       },
+//       {
+//         id: 3,
+//         author: "Vien Hoang Long",
+//         avatar: "https://via.placeholder.com/50",
+//         content: "Another reply to Bob's comment.",
+//         timestamp: "2 hours ago",
+//       },
+//       {
+//         id: 4,
+//         author: "Vien Hoang Long",
+//         avatar: "https://via.placeholder.com/50",
+//         content: "Another reply to Bob's comment.",
+//         timestamp: "2 hours ago",
+//       },
+//       {
+//         id: 4,
+//         author: "Vien Hoang Long",
+//         avatar: "https://via.placeholder.com/50",
+//         content: "Another reply to Bob's comment.",
+//         timestamp: "2 hours ago",
+//       },
 
-      {
-        id: 4,
-        author: "Vien Hoang Long",
-        avatar: "https://via.placeholder.com/50",
-        content: "Another reply to Bob's comment.",
-        timestamp: "2 hours ago",
-      },
-    ],
-  },
-];
+//       {
+//         id: 4,
+//         author: "Vien Hoang Long",
+//         avatar: "https://via.placeholder.com/50",
+//         content: "Another reply to Bob's comment.",
+//         timestamp: "2 hours ago",
+//       },
+//     ],
+//   },
+// ];
 
-export const dataUser = [
-  {
-    id: "123456789",
-    follower: 1500,
-    fullname: "Tran Hoang Long",
-    avatar:
-      "https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg",
-    birthday: "2000-01-01",
-    class: "18050202",
-    major: "Software Developer",
-    coverImage:
-      "https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg",
-    about:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget est ac turpis placerat malesuada a nec sem. Morbi quis diam sit amet mi malesuada malesuada. Nulla pharetra neque id nunc aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id eleifend pellentesque. Nunc non urna id felis luctus semper a ut nisi.",
-    skills: [
-      {
-        id: 1,
-        name: "javascript",
-        description: "JavaScript",
-        color: "yellow",
-      },
-      {
-        id: 2,
-        name: "reactjs",
-        description: "React",
-        color: "violet",
-      },
-      {
-        id: 3,
-        name: "nodejs",
-        description: "nodejs",
-        color: "green",
-      },
-      {
-        id: 4,
-        name: "c-sharp",
-        description: "c-sharp",
-        color: "green",
-      },
-    ],
-    email: "hoanglong@example.com",
-    address: "q7,hcm,vn",
-    phone: "123-456-7890",
-    links: [
-      {
-        id: "1",
-        name: "GitHub",
-        link: "github.com/tranhoanglong",
-      },
-    ],
-  },
-];
+// export const dataUser = [
+//   {
+//     id: "123456789",
+//     follower: 1500,
+//     fullname: "Tran Hoang Long",
+//     avatar:
+//       "https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg",
+//     birthday: "2000-01-01",
+//     class: "18050202",
+//     major: "Software Developer",
+//     coverImage:
+//       "https://i.pinimg.com/originals/25/e1/4d/25e14d756f86b34a3bd12d65f329d03a.jpg",
+//     about:
+//       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget est ac turpis placerat malesuada a nec sem. Morbi quis diam sit amet mi malesuada malesuada. Nulla pharetra neque id nunc aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id eleifend pellentesque. Nunc non urna id felis luctus semper a ut nisi.",
+//     skills: [
+//       {
+//         id: 1,
+//         name: "javascript",
+//         description: "JavaScript",
+//         color: "yellow",
+//       },
+//       {
+//         id: 2,
+//         name: "reactjs",
+//         description: "React",
+//         color: "violet",
+//       },
+//       {
+//         id: 3,
+//         name: "nodejs",
+//         description: "nodejs",
+//         color: "green",
+//       },
+//       {
+//         id: 4,
+//         name: "c-sharp",
+//         description: "c-sharp",
+//         color: "green",
+//       },
+//     ],
+//     email: "hoanglong@example.com",
+//     address: "q7,hcm,vn",
+//     phone: "123-456-7890",
+//     links: [
+//       {
+//         id: "1",
+//         name: "GitHub",
+//         link: "github.com/tranhoanglong",
+//       },
+//     ],
+//   },
+// ];
 
-export const contactUser = {
-  test: "asasasasa",
-  email: "hoanglong@example.com",
-  address: "q7,hcm,vn",
-  phone: "123-456-7890",
-  links: [
-    {
-      id: "1",
-      name: "GitHub",
-      link: "github.com/tranhoanglong",
-    },
-  ],
-};
+// export const contactUser = {
+//   test: "asasasasa",
+//   email: "hoanglong@example.com",
+//   address: "q7,hcm,vn",
+//   phone: "123-456-7890",
+//   links: [
+//     {
+//       id: "1",
+//       name: "GitHub",
+//       link: "github.com/tranhoanglong",
+//     },
+//   ],
+// };
 
-export const about =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget est ac turpis placerat malesuada a nec sem. Morbi quis diam sit amet mi malesuada malesuada. Nulla pharetra neque id nunc aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id eleifend pellentesque. Nunc non urna id felis luctus semper a ut nisi.";
+// export const about =
+//   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget est ac turpis placerat malesuada a nec sem. Morbi quis diam sit amet mi malesuada malesuada. Nulla pharetra neque id nunc aliquam, et pulvinar nisl eleifend. Aenean commodo dolor id eleifend pellentesque. Nunc non urna id felis luctus semper a ut nisi.";
 
-export const notifications = [
-  {
-    title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
-    content:
-      "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
-    author: "Admin",
-    datePosting: "19/7/2023",
-  },
-  {
-    title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
-    content:
-      "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
-    author: "Admin",
-    datePosting: "19/7/2023",
-  },
-  {
-    title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
-    content:
-      "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
-    author: "Admin",
-    datePosting: "19/7/2023",
-  },
-  {
-    title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
-    content:
-      "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
-    author: "Admin",
-    datePosting: "19/7/2023",
-  },
-];
+// export const notifications = [
+//   {
+//     title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
+//     content:
+//       "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
+//     author: "Admin",
+//     datePosting: "19/7/2023",
+//   },
+//   {
+//     title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
+//     content:
+//       "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
+//     author: "Admin",
+//     datePosting: "19/7/2023",
+//   },
+//   {
+//     title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
+//     content:
+//       "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
+//     author: "Admin",
+//     datePosting: "19/7/2023",
+//   },
+//   {
+//     title: "THÔNG BÁO: ĐĂNG KÝ KIẾN TẬP CÔNG NGHIỆP Ở PENANG, MALAYSIA",
+//     content:
+//       "- Số lượng tối thiểu để triển khai chương trình: 15 bạn.- Về chứng chỉ TA: tùy thuộc vào số lượng SV đăng ký, khoa sẽ xem xét bỏ ràng buộc chứng chỉ TA.- Về hành lý có các gói 20, 25, 30, 40 kg với các mức giá khác nhau. Các SV có thể mua theo group nhỏ với nhau (3, 4 bạn) để tiết kiệm chi phí. Khối lượng hành lý sẽ đăng ký với khoa sau.- Khoa dự kiến sẽ tổ chức 1 buổi sinh hoạt với khoa trước khi đi, SV đăng ký tham gia lưu ý có mặt đầy đủ.- Mọi thắc mắc, SV liên hệ VP khoa để được giải đáp.",
+//     author: "Admin",
+//     datePosting: "19/7/2023",
+//   },
+// ];
 
 export const exampleDataNotifi = [
   {
@@ -1673,12 +1673,47 @@ export const exampleDataListUsers = [
 ];
 
 export const colorThemeChat = [
-  {backgroundColor: "bg-gradient-to-r from-teal-200 to-lime-200", messageColor: "bg-[#22A699]", color: "earth"},
-  {backgroundColor: "bg-gradient-to-r from-cyan-200 to-cyan-400", messageColor: "bg-[#3A98B9]", color: "sea"},
-  {backgroundColor: "bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900", messageColor: "bg-[#525FE1]", color: "sky"},
-  {backgroundColor: "bg-gradient-to-r from-gray-100 to-gray-300", messageColor: "bg-[#ED7B7B]", color: "silver"},
-  {backgroundColor: "bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400", messageColor: "bg-[#FF2171]", color: "strawberry"},
-  {backgroundColor: "bg-gradient-to-t from-orange-400 to-sky-400", messageColor: "bg-[#6C3428]", color: "oahu"},
-  {backgroundColor: "bg-gradient-to-b from-gray-900 via-purple-900 to-violet-600", messageColor: "bg-[#322653]", color: "salem"},
-  {backgroundColor: "bg-gradient-to-b from-gray-900 to-gray-600", messageColor: "bg-[#352F44]", color: "space"},
-]
+  {
+    backgroundColor: "bg-gradient-to-r from-teal-200 to-lime-200",
+    messageColor: "bg-[#22A699]",
+    color: "earth",
+  },
+  {
+    backgroundColor: "bg-gradient-to-r from-cyan-200 to-cyan-400",
+    messageColor: "bg-[#3A98B9]",
+    color: "sea",
+  },
+  {
+    backgroundColor:
+      "bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-sky-400 to-indigo-900",
+    messageColor: "bg-[#525FE1]",
+    color: "sky",
+  },
+  {
+    backgroundColor: "bg-gradient-to-r from-gray-100 to-gray-300",
+    messageColor: "bg-[#ED7B7B]",
+    color: "silver",
+  },
+  {
+    backgroundColor:
+      "bg-gradient-to-r from-yellow-200 via-pink-200 to-pink-400",
+    messageColor: "bg-[#FF2171]",
+    color: "strawberry",
+  },
+  {
+    backgroundColor: "bg-gradient-to-t from-orange-400 to-sky-400",
+    messageColor: "bg-[#6C3428]",
+    color: "oahu",
+  },
+  {
+    backgroundColor:
+      "bg-gradient-to-b from-gray-900 via-purple-900 to-violet-600",
+    messageColor: "bg-[#322653]",
+    color: "salem",
+  },
+  {
+    backgroundColor: "bg-gradient-to-b from-gray-900 to-gray-600",
+    messageColor: "bg-[#352F44]",
+    color: "space",
+  },
+];

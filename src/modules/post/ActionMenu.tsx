@@ -26,25 +26,25 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
         <HiFlag className="mr-2" />
         Report
       </button>
-      {userCurrentId?.role === 0 ||
-        (userCurrentId?.role === userOwnerId?.role && (
-          <>
-            <button
-              onClick={handleDeleted}
-              className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
-            >
-              <HiTrash className="mr-2" />
-              Delete
-            </button>
-            <button
-              onClick={handleHidden}
-              className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
-            >
-              <HiEyeOff className="mr-2" />
-              Hide
-            </button>
-          </>
-        ))}
+      {(userCurrentId?.role === 0 ||
+        userCurrentId?._id === userOwnerId?._id) && (
+        <>
+          <button
+            onClick={handleDeleted}
+            className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
+          >
+            <HiTrash className="mr-2" />
+            Delete
+          </button>
+          <button
+            onClick={handleHidden}
+            className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
+          >
+            <HiEyeOff className="mr-2" />
+            Hide
+          </button>
+        </>
+      )}
     </div>
   );
 };

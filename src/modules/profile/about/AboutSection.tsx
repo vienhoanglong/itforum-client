@@ -56,7 +56,9 @@ const AboutSection: React.FC<AboutSectionProps> = ({
 
   useEffect(() => {
     setNewAbout(userData ? userData.desc : "");
-  }, [userData]);
+    setSelectedAvatar(userData ? userData.avatar : "");
+    setSelectedColor(userData ? userData.color : "");
+  }, [userData, isUpdatingAvatar]);
 
   const handleSelectColor = (color: string) => {
     if (selectedColor === color) {

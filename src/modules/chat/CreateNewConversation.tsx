@@ -16,7 +16,11 @@ interface CreateNewConversationProps {
   userId: string;
   onSuccess: (conversationNew: IConversation) => void;
 }
-const CreateNewConversation: React.FC<CreateNewConversationProps> = ({onCloseModal, userId, onSuccess}) => {
+const CreateNewConversation: React.FC<CreateNewConversationProps> = ({
+  onCloseModal,
+  userId,
+  onSuccess,
+}) => {
   const [conversationMembers, setConversationMembers] = useState<IUser[]>([]);
   const [conversationMemberSave, setConversationMemberSave] = useState<IUser[]>(
     []
@@ -56,21 +60,23 @@ const CreateNewConversation: React.FC<CreateNewConversationProps> = ({onCloseMod
   };
 
   const handleCreateConversation = async (users: IUser[]) => {
-    const members: string[] = []
-    users.forEach(user => {
-      return user._id && members.push(user._id)
+    const members: string[] = [];
+    users.forEach((user) => {
+      return user._id && members.push(user._id);
     });
     const payload = {
       members: [...members, userId],
       createBy: userId,
     };
     const response = await createConversation(payload);
-    if(response){
+    if (response) {
       onSuccess(response);
       onCloseModal();
-      return toast.success("Tạo cuộc hội thoại thành công!", {position: 'bottom-right'});
+      return toast.success("Tạo cuộc hội thoại thành công!", {
+        position: "bottom-right",
+      });
     }
-  }
+  };
   return (
     <div className="h-auto m-auto p-4 sm:w-[350px]">
       <div className="text-base text-dark1 text-center font-medium mb-4 dark:text-light0">
@@ -91,90 +97,92 @@ const CreateNewConversation: React.FC<CreateNewConversationProps> = ({onCloseMod
           </div>
         </div>
       </div>
-        {(conversationMembers &&
-          conversationMembers.length > 0) ?
-          conversationMembers.map((member) => (
-            <Fragment key={member?._id}>
-              <div
-                key={member?._id}
-                className="p-3 w-full flex align-middle transition-all duration-300 ease dark:text-light0 rounded-md hover:bg-blue-400 hover:outline-mainColor dark:focus:bg-darker"
-              >
-                <Avatar
-                  src={member?.avatar?? ""}
-                  cln={
-                    `w-[40px] h-[40px] object-cover border-none align-middle cursor-pointer ${setColorBackgroundUser(member.color ?? "")}`
-                  }
-                />
-                <div className="flex w-full justify-between items-center">
-                  <div className="ml-3 max-w-xs text-darker flex flex-col">
-                    <span className="text-sm dark:text-light0">
-                      {member?.fullName ?? member.username}
-                    </span>
-                    <span className="text-[10px] dark:text-light0">
-                      @{member?.username}
-                    </span>
-                  </div>
-                  <div className="p-2 rounded-full shadow-inner hover:bg-subtle">
-                    <HiUserAdd
-                      className="text-xl text-mainColor"
-                      onClick={() => {
-                        handleAddMember(member);
-                      }}
-                    />
-                  </div>
+      {conversationMembers && conversationMembers.length > 0 ? (
+        conversationMembers.map((member) => (
+          <Fragment key={member?._id}>
+            <div
+              key={member?._id}
+              className="p-3 w-full flex align-middle transition-all duration-300 ease dark:text-light0 rounded-md hover:bg-blue-400 hover:outline-mainColor dark:focus:bg-darker"
+            >
+              <Avatar
+                src={member?.avatar ?? ""}
+                cln={`w-[40px] h-[40px] object-cover border-none align-middle cursor-pointer ${setColorBackgroundUser(
+                  member.color ?? ""
+                )}`}
+              />
+              <div className="flex w-full justify-between items-center">
+                <div className="ml-3 max-w-xs text-darker flex flex-col">
+                  <span className="text-sm dark:text-light0">
+                    {member?.fullName ?? member.username}
+                  </span>
+                  <span className="text-[10px] dark:text-light0">
+                    @{member?.username}
+                  </span>
+                </div>
+                <div className="p-2 rounded-full shadow-inner hover:bg-subtle">
+                  <HiUserAdd
+                    className="text-xl text-mainColor"
+                    onClick={() => {
+                      handleAddMember(member);
+                    }}
+                  />
                 </div>
               </div>
-            </Fragment>
-          )): (<div className="text-xs text-center">Không tìm thấy người dùng nào</div>)}
-        {conversationMemberSave && conversationMemberSave.length > 0 && (
-          <>
-            <div className="text-sm mt-5">Người đã thêm</div>
-            <div className="border-t-[1px] text-sm mb-1"></div>
-          </>
-        )}
-        {conversationMemberSave &&
-          conversationMemberSave.length > 0 &&
-          conversationMemberSave.map((member, index) => (
-            <Fragment key={member?._id} >
-              <div className="p-3 w-full flex align-middle transition-all duration-300 ease dark:text-light0 rounded-md hover:bg-blue-400 hover:outline-mainColor dark:focus:bg-darker">
-                    <Avatar
-                  src={member?.avatar?? ""}
-                  cln={
-                    `w-[40px] h-[40px] object-cover border-none align-middle cursor-pointer ${setColorBackgroundUser(member.color ?? "")}`
-                  }
-                />
-                <div className="flex w-full justify-between items-center">
-                  <div className="ml-3 max-w-xs text-darker flex flex-col">
-                    <span className="text-sm dark:text-light0">
-                      {member?.fullName ?? member.username}
-                    </span>
-                    <span className="text-[10px] dark:text-light0">
-                      @{member?.username}
-                    </span>
-                  </div>
-                  <div className="p-2 rounded-full shadow-inner hover:bg-red-100">
-                    <HiTrash
-                      className="text-xl text-red1"
-                      onClick={() => handleRemoveConversation(index)}
-                    />
-                  </div>
+            </div>
+          </Fragment>
+        ))
+      ) : (
+        <div className="text-xs text-center">Không tìm thấy người dùng nào</div>
+      )}
+      {conversationMemberSave && conversationMemberSave.length > 0 && (
+        <>
+          <div className="text-sm mt-5">Người đã thêm</div>
+          <div className="border-t-[1px] text-sm mb-1"></div>
+        </>
+      )}
+      {conversationMemberSave &&
+        conversationMemberSave.length > 0 &&
+        conversationMemberSave.map((member, index) => (
+          <Fragment key={member?._id}>
+            <div className="p-3 w-full flex align-middle transition-all duration-300 ease dark:text-light0 rounded-md hover:bg-blue-400 hover:outline-mainColor dark:focus:bg-darker">
+              <Avatar
+                src={member?.avatar ?? ""}
+                cln={`w-[40px] h-[40px] object-cover border-none align-middle cursor-pointer ${setColorBackgroundUser(
+                  member.color ?? ""
+                )}`}
+              />
+              <div className="flex w-full justify-between items-center">
+                <div className="ml-3 max-w-xs text-darker flex flex-col">
+                  <span className="text-sm dark:text-light0">
+                    {member?.fullName ?? member.username}
+                  </span>
+                  <span className="text-[10px] dark:text-light0">
+                    @{member?.username}
+                  </span>
+                </div>
+                <div className="p-2 rounded-full shadow-inner hover:bg-red-100">
+                  <HiTrash
+                    className="text-xl text-red1"
+                    onClick={() => handleRemoveConversation(index)}
+                  />
                 </div>
               </div>
-            </Fragment>
-          ))}
+            </div>
+          </Fragment>
+        ))}
 
-        <div className="flex space-x-4 justify-end mt-10">
-          {conversationMemberSave && conversationMemberSave.length > 0 &&(
+      <div className="flex space-x-4 justify-end mt-10">
+        {conversationMemberSave && conversationMemberSave.length > 0 && (
           <Button
             size="small"
             className="text-xs w-fit bg-teal-400 hover:bg-teal-500"
-            handle={()=> handleCreateConversation(conversationMemberSave)}
+            handle={() => handleCreateConversation(conversationMemberSave)}
           >
             Tạo nhóm chat
           </Button>
-          )}
-        </div>
+        )}
       </div>
+    </div>
   );
 };
 export default CreateNewConversation;

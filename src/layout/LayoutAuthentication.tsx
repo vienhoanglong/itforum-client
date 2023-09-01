@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import bg from "../assets/ellipse.png";
-import logo from 'assets/logo.png'
+import logo from "assets/logo.png";
 interface LayoutAuthenticationProps {
   children: ReactNode;
   heading: string;

@@ -19,7 +19,7 @@ import Avatar from "../image/Avatar";
 import { useAuthStore } from "@/store/authStore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { colorsAvatar } from "@/constants/global";
 import notice from "assets/notification.png";
@@ -29,7 +29,7 @@ export const Header: React.FC = React.memo(() => {
   const { user, setUser, theme } = useUserStore();
   const { logout } = useAuthStore();
   const navigate = useNavigate();
-  const [openNotice, setOpenNotice] = useState<boolean>(false)
+  const [openNotice, setOpenNotice] = useState<boolean>(false);
   const notificationRef = useRef<HTMLDivElement | null>(null);
   React.useEffect(() => {
     setUser();
@@ -54,23 +54,29 @@ export const Header: React.FC = React.memo(() => {
   const colorAvatar = getColorAvatar ? getColorAvatar.value : "";
   const handleShowNotification = () => {
     setOpenNotice(!openNotice);
-  }
+  };
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (event.target && notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+      if (
+        event.target &&
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
         setOpenNotice(false);
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  const handleNotificationClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>{
+  const handleNotificationClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     event.stopPropagation();
-  }
+  };
   return (
     <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
       <Container>
@@ -91,7 +97,10 @@ export const Header: React.FC = React.memo(() => {
             <span className="text-[10px]">{t("newPost")}</span>
             <HiPlusCircle size={15}></HiPlusCircle>
           </Button>
-          <div className="relative flex cursor-pointer p-1" onClick={handleShowNotification}>
+          <div
+            className="relative flex cursor-pointer p-1"
+            onClick={handleShowNotification}
+          >
             <div className="absolute -top-1 right-0">
               <div className="relative flex h-5 w-5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
@@ -100,36 +109,43 @@ export const Header: React.FC = React.memo(() => {
                 </span>
               </div>
             </div>
-            <HiBell className={`block ${openNotice ? 'text-mainColor': ''}`} size={30}></HiBell>
+            <HiBell
+              className={`block ${openNotice ? "text-mainColor" : ""}`}
+              size={30}
+            ></HiBell>
             {openNotice && (
-            <div ref={notificationRef} onClick={(e)=> handleNotificationClick(e)} className="w-[300px] h-auto absolute top-[60px] -right-10 md:left-0 rounded-lg shadow-md p-2 space-y-1 bg-white text-dark2 dark:bg-dark3 dark:text-light0 outline-1 mr-6">
-              <div className="flex flex-row border-b-2 justify-between items-center p-2">
-                <div className="text-sm font-bold">Thông báo</div>
-                <div className="flex flex-row gap-1 cursor-pointer">
-                  <BiCheckDouble/>
-                  <div className="text-xs">Đánh dấu đọc tất cả</div>
-                </div>
-              </div>
-              <div className="border-b-2 p-2">
-                <div className="rounded-lg relative flex flex-row gap-2 p-2 transition-all duration-300 ease dark:text-light0 focus:bg-subtle hover:bg-subtle hover:outline-mainColor dark:focus:bg-darker dark:hover:text-mainColor cursor-pointer ">
-                  <span className="absolute inline-flex rounded-full h-2 w-2 bg-mainColor drop-shadow-2xl top-2 right-2"></span>
-                  <img
-                    src={notice}
-                    className="rounded-full object-cover h-8 w-8"
-                  />
-                  <div className="flex flex-col">
-                    <span className="text-xs break-words line-clamp-2 w-11/12 font-semibold">
-                      Bạn vừa nhận được một thông báo mới từ Khoa CNTT về việc
-                      báo cáo dự án công nghệ thông tin 2 năm học 2022-2023
-                    </span>
-                    <span className="text-[10px] font-normal">
-                      10 phút trước
-                    </span>
+              <div
+                ref={notificationRef}
+                onClick={(e) => handleNotificationClick(e)}
+                className="w-[300px] h-auto absolute top-[60px] -right-10 md:left-0 rounded-lg shadow-md p-2 space-y-1 bg-white text-dark2 dark:bg-dark3 dark:text-light0 outline-1 mr-6"
+              >
+                <div className="flex flex-row border-b-2 justify-between items-center p-2">
+                  <div className="text-sm font-bold">Thông báo</div>
+                  <div className="flex flex-row gap-1 cursor-pointer">
+                    <BiCheckDouble />
+                    <div className="text-xs">Đánh dấu đọc tất cả</div>
                   </div>
                 </div>
+                <div className="border-b-2 p-2">
+                  <div className="rounded-lg relative flex flex-row gap-2 p-2 transition-all duration-300 ease dark:text-light0 focus:bg-subtle hover:bg-subtle hover:outline-mainColor dark:focus:bg-darker dark:hover:text-mainColor cursor-pointer ">
+                    <span className="absolute inline-flex rounded-full h-2 w-2 bg-mainColor drop-shadow-2xl top-2 right-2"></span>
+                    <img
+                      src={notice}
+                      className="rounded-full object-cover h-8 w-8"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-xs break-words line-clamp-2 w-11/12 font-semibold">
+                        Bạn vừa nhận được một thông báo mới từ Khoa CNTT về việc
+                        báo cáo dự án công nghệ thông tin 2 năm học 2022-2023
+                      </span>
+                      <span className="text-[10px] font-normal">
+                        10 phút trước
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-xs text-center">Xem tất cả</div>
               </div>
-              <div className="text-xs text-center">Xem tất cả</div>
-            </div>
             )}
           </div>
           <div className="relative cursor-pointer group sm:cursor-default">
@@ -147,20 +163,20 @@ export const Header: React.FC = React.memo(() => {
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex ">
               <div className="h-[58px] bg-transparent"></div>
               <div className=" flex flex-col w-full p-5 space-y-5 bg-white rounded text-dark2 dark:bg-dark3 dark:text-light0">
-                <a
+                <Link
                   className="flex flex-row items-center space-x-5 cursor-pointer hover:text-mainColor"
-                  href="/profile"
+                  to="/profile"
                 >
                   <HiUser size={18} title="Settings" />
                   <span className="text-sm">Profile</span>
-                </a>
-                <a
+                </Link>
+                <Link
                   className="flex flex-row items-center space-x-5 cursor-pointer hover:text-mainColor"
-                  href="/managements"
+                  to="/managements"
                 >
                   <HiDocumentDuplicate size={18} title="Manegement" />
                   <span className="text-sm">Managements</span>
-                </a>
+                </Link>
                 <a
                   className="flex flex-row items-center space-x-5 cursor-pointer hover:text-red2"
                   onClick={handleLogout}

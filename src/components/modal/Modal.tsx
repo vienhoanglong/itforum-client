@@ -16,7 +16,7 @@ export const Modal: React.FC<ModalProps> = ({
     "modal-overlay fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center";
   return (
     <ReactModal
-      onRequestClose={()=>onClose()}
+      onRequestClose={() => onClose()}
       isOpen={isOpen}
       overlayClassName={overlayClassName}
       className="modal-content max-w-[90vw] bg-light4 dark:bg-dark1 rounded-lg outline-none p-6 relative max-h-[90vh] overflow-y-auto scroll-hidden"

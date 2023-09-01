@@ -1,6 +1,6 @@
-import { IMessage } from '@/interface/message';
-import { getAllMessagesInConversation } from '@/services/messageService';
-import create from 'zustand';
+import { IMessage } from "@/interface/message";
+import { getAllMessagesInConversation } from "@/services/messageService";
+import create from "zustand";
 
 interface MessageStoreState {
   messages: IMessage[];

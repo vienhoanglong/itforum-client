@@ -29,7 +29,8 @@ const schema = yup.object({
     .min(8, "Password must be 8 characters"),
 });
 export const SignInPage: React.FC = () => {
-  const clientId = '106166759784-gto4fegdleq238nfle0mv5cu222pestp.apps.googleusercontent.com';
+  const clientId =
+    "106166759784-gto4fegdleq238nfle0mv5cu222pestp.apps.googleusercontent.com";
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
   const setLoading = useLoadingStore((state) => state.setLoading);
@@ -54,7 +55,7 @@ export const SignInPage: React.FC = () => {
       setLoading(false);
       navigate("/");
     } catch (error) {
-      toast.error("Tài khoản hoặc mật khẩu không chính xác")
+      toast.error("Tài khoản hoặc mật khẩu không chính xác");
       setLoading(false);
     }
   };

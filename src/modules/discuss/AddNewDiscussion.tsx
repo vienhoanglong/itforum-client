@@ -81,11 +81,15 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
     }
   };
 
-  const selectOptions = listAllTopic?.map((skill: Topic) => ({
-    value: skill._id,
-    label: skill.name,
-    color: `${colorSelectTopic[skill.color as keyof typeof colorSelectTopic]}`,
-  }));
+  const selectOptions = listAllTopic
+    ?.filter((e) => e.hide === false && e.isDraft === false)
+    .map((skill: Topic) => ({
+      value: skill._id,
+      label: skill.name,
+      color: `${
+        colorSelectTopic[skill.color as keyof typeof colorSelectTopic]
+      }`,
+    }));
 
   return (
     <div>

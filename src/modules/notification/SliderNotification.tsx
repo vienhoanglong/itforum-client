@@ -93,7 +93,7 @@ const SliderNotification: React.FC<SliderNotification> = ({ newUpdate }) => {
                 key={index}
                 className="flex h-full hover:cursor-pointer bg-light4 dark:bg-dark2 shadow-lg hover:shadow-lg p-2 rounded-lg transform transition-all duration-100 hover:scale-105"
               >
-                <span className="text-sm font-medium break-words line-clamp-2 dark:text-light0">
+                <span className="text-sm font-medium break-words line-clamp-1 dark:text-light0">
                   {notifi.titleNotice}
                 </span>
 

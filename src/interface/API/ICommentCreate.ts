@@ -1,5 +1,6 @@
 export interface ICommentCreate {
   discussId?: string;
+  postsId?: string;
   createBy?: string;
   content?: string;
   left?: number;

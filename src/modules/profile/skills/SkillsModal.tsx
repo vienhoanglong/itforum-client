@@ -47,11 +47,15 @@ const SkillsModal: React.FC<SkillsModalProps> = ({
     setNewSelectedSkills(updatedUserData);
     setIsSkillListEmpty(updatedSkill.length === 0);
   };
-  const selectOptions = listSkills?.map((skill) => ({
-    value: skill._id,
-    label: skill.name,
-    color: `${colorSelectTopic[skill.color as keyof typeof colorSelectTopic]}`,
-  }));
+  const selectOptions = listSkills
+    ?.filter((e) => e.hide === false && e.isDraft === false)
+    .map((skill) => ({
+      value: skill._id,
+      label: skill.name,
+      color: `${
+        colorSelectTopic[skill.color as keyof typeof colorSelectTopic]
+      }`,
+    }));
 
   return (
     <div className="container sm:w-[400px] w-[200px] h-[330px]">

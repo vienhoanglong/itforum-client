@@ -1,5 +1,5 @@
-export interface IMessage{
-    _id: string;
+export interface IMessage {
+  _id: string;
   contentMessage: string;
   conversationId: string;
   senderId: string;
@@ -7,12 +7,12 @@ export interface IMessage{
   reactionMessage: any;
   createdAt: string;
   updatedAt: string;
-  file:string;
+  file: string;
   nameFile: string;
   __v: number;
 }
 
-export interface IMessageRequest{
+export interface IMessageRequest {
   contentMessage: string;
   conversationId: string;
   senderId: string;

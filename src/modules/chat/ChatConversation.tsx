@@ -14,7 +14,6 @@ import { colorThemeChat } from "@/constants/global";
 import MessageItem from "./MessageItem";
 import socket from "@/utils/getSocketIo";
 
-
 interface ChatConversationProps {
   showConversation: boolean;
   chatId: string | null;
@@ -39,7 +38,7 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
   //   }
   // }, [messages]);
   React.useEffect(() => {
-    const fetchInitialMessages =  () => {
+    const fetchInitialMessages = () => {
       if (showConversation && chatId) {
         fetchMessages(chatId, 1, 100);
       }
@@ -48,19 +47,19 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
   }, [chatId, fetchMessages, showConversation]);
 
   React.useEffect(() => {
-    socket.on('newMessage', (newMessage) => {
+    socket.on("newMessage", (newMessage) => {
       // Handle the new message
-      if(newMessage.conversationId === chatId){
+      if (newMessage.conversationId === chatId) {
         setMessages([newMessage, ...messages]);
       }
     });
-    socket.on('newMessageFile', (newMessage) =>{
-      if(newMessage.conversationId === chatId){
+    socket.on("newMessageFile", (newMessage) => {
+      if (newMessage.conversationId === chatId) {
         setMessages([newMessage, ...messages]);
       }
     });
-    socket.on('newMessageChatGpt', (newMessage) => {
-      if(newMessage.conversationId === chatId){
+    socket.on("newMessageChatGpt", (newMessage) => {
+      if (newMessage.conversationId === chatId) {
         setMessages([newMessage, ...messages]);
       }
     });
@@ -70,9 +69,7 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
   //   console.log(containerRef.current.scrollTop, containerRef.current.clientHeight, containerRef.current.scrollHeight)
   //   }
   // }
-  const users = [
-    { id: 2, username: "ChatGPT" },
-  ];
+  const users = [{ id: 2, username: "ChatGPT" }];
   const [showModalInformation, setShowModalInformation] =
     useState<boolean>(false);
   const handleCloseModalInformation = () => {
@@ -139,7 +136,9 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
             />
           </div>
           <div
-            className={`pt-4 ${colorThemeChat.find(e=> e.color === theme)?.backgroundColor} mb-0 md:mb-20 flex flex-col-reverse flex-grow h-[58vh] lg:h-[400px] overflow-y-scroll`}
+            className={`pt-4 ${
+              colorThemeChat.find((e) => e.color === theme)?.backgroundColor
+            } mb-0 md:mb-20 flex flex-col-reverse flex-grow h-[58vh] lg:h-[400px] overflow-y-scroll`}
             // ref={containerRef}
             // onScroll={()=>handleScroll()}
           >
@@ -165,19 +164,20 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
               )
             ) : (
               <div className="flex items-center justify-center text-base h-full dark:text-white mt-10">
-               Chưa có nội dung cuộc trò chuyện...
+                Chưa có nội dung cuộc trò chuyện...
               </div>
             )}
           </div>
           <div className="sticky bottom-0 dark:bg-dark2 bg-light1">
-              <ChatBox
-                users={users}
-                chatId={chatId ?? ""}
-                sender={user?._id ?? ""}></ChatBox>
+            <ChatBox
+              users={users}
+              chatId={chatId ?? ""}
+              sender={user?._id ?? ""}
+            ></ChatBox>
           </div>
         </div>
       ) : (
-        <div className="text-xl m-auto dark:text-white"> 
+        <div className="text-xl m-auto dark:text-white">
           Hãy chọn một đoạn chat hoặc bắt đầu cuộc trò chuyện mới
         </div>
       )}
@@ -185,7 +185,12 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
         isOpen={showModalInformation}
         onClose={handleCloseModalInformation}
       >
-        <ChatInformation onCancel={handleCloseModalInformation} userId={user?._id ?? ""} chatId={chatId ?? ""} conversation={conversations}/>
+        <ChatInformation
+          onCancel={handleCloseModalInformation}
+          userId={user?._id ?? ""}
+          chatId={chatId ?? ""}
+          conversation={conversations}
+        />
       </Modal>
     </>
   );

@@ -14,7 +14,7 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
   const [title, setTitle] = useState<string>("");
   const [createBy, setCreateBy] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [typeNotice, setTypeNotice] = useState<string>("other");
+  const [typeNotice, setTypeNotice] = useState<string>("recruitment");
   const [file, setFile] = useState<File | undefined>(undefined);
   const [selectedLevel, setSelectedLevel] = useState<string>("normal");
   const [submitted, setSubmitted] = useState<boolean>(false);
@@ -46,7 +46,6 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
     setSubmitted(true);
 
     if (title === "" || content === "" || content === "<p><br></p>") {
-      // Hiển thị cảnh báo khi title hoặc content bị bỏ trống và đã ấn submit
       console.log("Title and content are required.");
       return;
     }
@@ -58,6 +57,7 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
       typeNotice: typeNotice,
       level: selectedLevel,
     };
+    console.log(notification);
     onSubmit(notification, file ? file : undefined);
   };
   return (
@@ -84,17 +84,21 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
               </div>
             )}
           </div>
-          <div className=" w-full flex justify-between flex-wrap items-center">
+          <div className=" w-full h-auto gap-4 flex justify-start flex-wrap items-center">
             <div className=" relative">
               <span className="mb-2">Type notification:</span>
               <select
                 onChange={(e) => handleTypeNoticeChange(e)}
                 className="appearance-none -ml-2 flex cursor-pointer items-center rounded-lg bg-slate-100 px-4 py-2 text-xs leading-4 text-dark2 dark:bg-dark2 dark:text-light0 w-full mr-5"
               >
-                <option value="other">Other</option>
-                <option value="event">Event</option>
                 <option value="recruitment">Recruitment</option>
-                <option value="subject">Subject</option>
+                {user?.role !== 3 && (
+                  <>
+                    <option value="subject">Subject</option>
+                    <option value="event">Event</option>
+                    <option value="other">Other</option>
+                  </>
+                )}
               </select>
               <HiChevronDown className="text-dark1 dark:text-light1 text-base absolute right-4 top-[25px] fill-current pointer-events-none" />
             </div>
@@ -112,17 +116,19 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
                   />
                   <label htmlFor="normal">Normal</label>
                 </div>
-                <div className="flex items-center h-full space-x-1">
-                  <input
-                    type="radio"
-                    id="important"
-                    name="fav_language"
-                    value="important"
-                    checked={selectedLevel === "important"}
-                    onChange={() => setSelectedLevel("important")}
-                  />
-                  <label htmlFor="important">Important</label>
-                </div>
+                {user?.role !== 3 && (
+                  <div className="flex items-center h-full space-x-1">
+                    <input
+                      type="radio"
+                      id="important"
+                      name="fav_language"
+                      value="important"
+                      checked={selectedLevel === "important"}
+                      onChange={() => setSelectedLevel("important")}
+                    />
+                    <label htmlFor="important">Important</label>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -135,26 +141,28 @@ export const AddNewNotifications: React.FC<NotificationFormProps> = ({
           ></QuillEditor>
 
           {submitted && (content === "" || content === "<p><br></p>") && (
-            <div className="block text-xs text-red-500 mt-1">
+            <div className="block text-xs mt-2 text-red-500">
               Content is required.
             </div>
           )}
         </div>
-        <label
-          className="block mb-2 mt-2 text-xs font-medium text-gray-900 dark:text-white"
-          htmlFor="file_input"
-        >
-          Upload file:
-        </label>
-        <input
-          onChange={(e) => handleFileChange(e)}
-          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-          id="file_input"
-          type="file"
-        />
-        <div className="flex justify-end">
+        <div className=" max-sm:mt-20">
+          <label
+            className="block mb-2 mt-2 text-xs font-medium text-gray-900 dark:text-white"
+            htmlFor="file_input"
+          >
+            Upload file:
+          </label>
+          <input
+            onChange={(e) => handleFileChange(e)}
+            className="block w-full text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            id="file_input"
+            type="file"
+          />
+        </div>
+        <div className="flex justify-end items-center mt-3">
           <button
-            className="p-4 rounded-lg bg-mainColor flex space-x-1 mt-10"
+            className="p-4 rounded-lg bg-mainColor flex space-x-1 my-2"
             onClick={handleSubmit}
           >
             <span className="text-[12px]">Submit</span>

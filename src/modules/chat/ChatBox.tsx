@@ -1,16 +1,15 @@
 import { IMessageRequest } from "@/interface/message";
-import { createMessage, createMessageChatGPT, createMessageFile } from "@/services/messageService";
+import {
+  createMessage,
+  createMessageChatGPT,
+  createMessageFile,
+} from "@/services/messageService";
 import { useMessageStore } from "@/store/messageStore";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import React, { useState, ChangeEvent } from "react";
 import { FaPaperPlane } from "react-icons/fa";
-import {
-  HiOutlinePaperClip,
-  HiOutlineEmojiHappy,
-  HiX,
-} from "react-icons/hi";
-
+import { HiOutlinePaperClip, HiOutlineEmojiHappy, HiX } from "react-icons/hi";
 
 interface Mention {
   id: number;
@@ -60,15 +59,15 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
   };
 
   const handleSubmitMessage = async () => {
-    if(selectedFile){
+    if (selectedFile) {
       const payload: IMessageRequest = {
         contentMessage: inputText,
         senderId: sender,
         conversationId: chatId,
       };
-      const response = await createMessageFile(payload, selectedFile)
+      const response = await createMessageFile(payload, selectedFile);
       if (response) {
-        setMessages([response,...messages]);
+        setMessages([response, ...messages]);
       }
       setInputText("");
       setShowSuggestions(false);
@@ -77,18 +76,18 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
       return;
     }
     if (inputText.trim() !== "") {
-      console.log("S")
+      console.log("S");
       const payload: IMessageRequest = {
         contentMessage: inputText,
         senderId: sender,
         conversationId: chatId,
       };
-      if (inputText.includes('@ChatGPT')) {
+      if (inputText.includes("@ChatGPT")) {
         const response = await createMessageChatGPT(payload);
-        response && setMessages([response,...messages]);
+        response && setMessages([response, ...messages]);
       } else {
         const response = await createMessage(payload);
-        response && setMessages([response,...messages]);
+        response && setMessages([response, ...messages]);
       }
       // if (response) {
       //   setMessages([response,...messages]);
@@ -206,9 +205,9 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
       </span>
       <FaPaperPlane
         className={`text-xl cursor-pointer ${
-          inputText || selectedFile ? 'text-mainColor' : ''
+          inputText || selectedFile ? "text-mainColor" : ""
         }`}
-        onClick={()=>handleSubmitMessage()}
+        onClick={() => handleSubmitMessage()}
       />
     </div>
   );

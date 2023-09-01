@@ -74,7 +74,7 @@ function App() {
             path="/notification/:type"
             element={<ListNotificationPage />}
           ></Route>
-          <Route path="/post-detail" element={<PostDetailPage />}></Route>
+          <Route path="/post/:postId" element={<PostDetailPage />}></Route>
           <Route
             path="/discuss/:discussId"
             element={<DiscussDetailPage />}
@@ -94,7 +94,6 @@ function App() {
           <Route path="/chat" element={<ChatPage />}></Route>
           <Route path="/chat/:id" element={<ChatPage />}></Route>
           <Route path="/test" element={<TestPage />}></Route>
-
         </Route>
         <Route element={<PrivateRouter authenticated={false} />}>
           <Route path="/sign-in" element={<SignInPage />} />
