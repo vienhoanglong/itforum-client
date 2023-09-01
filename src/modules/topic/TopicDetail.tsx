@@ -1,4 +1,4 @@
-import { colorThumnailTopic, colorTopic, posts } from "@/constants/global";
+import { colorThumnailTopic, colorTopic } from "@/constants/global";
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import React, { useMemo, useState } from "react";
 import { HiArrowCircleLeft, HiArrowDown, HiTrash } from "react-icons/hi";

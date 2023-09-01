@@ -1,44 +1,44 @@
-import React, { useEffect, useRef, useState } from "react";
-import Thumbnail from "../assets/header-image-post-detail.png";
+import React from "react";
+// import Thumbnail from "../assets/header-image-post-detail.png";
 
-import { content, exampleDataTopic, topicColors } from "@/constants/global";
+// import { content, exampleDataTopic, topicColors } from "@/constants/global";
 import LayoutDetail from "@/layout/LayoutDetail";
-import PostHeader from "@/modules/post/PostHeader";
-import PostContent from "@/modules/post/PostContent";
+// import PostHeader from "@/modules/post/PostHeader";
+// import PostContent from "@/modules/post/PostContent";
 
 export const ReviewPostPage: React.FC = React.memo(() => {
-  const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isReportModalOpen, setReportModalOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  // const [isMenuOpen, setMenuOpen] = useState(false);
+  // const [isReportModalOpen, setReportModalOpen] = useState(false);
+  // const menuRef = useRef<HTMLDivElement>(null);
 
-  const handleMenuToggle = () => {
-    setMenuOpen(!isMenuOpen);
-  };
-  const handleReportClick = () => {
-    setReportModalOpen(true);
-    setMenuOpen(false);
-  };
+  // const handleMenuToggle = () => {
+  //   setMenuOpen(!isMenuOpen);
+  // };
+  // const handleReportClick = () => {
+  //   setReportModalOpen(true);
+  //   setMenuOpen(false);
+  // };
 
-  const handleCloseModal = () => {
-    setReportModalOpen(false);
-  };
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        menuRef.current &&
-        !(
-          menuRef.current instanceof Node &&
-          menuRef.current.contains(event.target as Node)
-        )
-      ) {
-        setMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  // const handleCloseModal = () => {
+  //   setReportModalOpen(false);
+  // };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       menuRef.current &&
+  //       !(
+  //         menuRef.current instanceof Node &&
+  //         menuRef.current.contains(event.target as Node)
+  //       )
+  //     ) {
+  //       setMenuOpen(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
 
   // const [comment, setComment] = useState<string>("");
 
@@ -72,7 +72,7 @@ export const ReviewPostPage: React.FC = React.memo(() => {
           exampleDataTopic={exampleDataTopic}
           topicColors={topicColors}
         /> */}
-        <PostContent content={content}></PostContent>
+        {/* <PostContent content={content}></PostContent> */}
       </div>
     </LayoutDetail>
   );
