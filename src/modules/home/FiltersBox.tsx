@@ -1,4 +1,5 @@
 import Topic from "@/interface/topic";
+import { useDiscussionStore } from "@/store/discussionStore";
 import React, { useEffect, useState } from "react";
 import { BsFilterRight, BsSearch } from "react-icons/bs";
 import { HiChevronDown } from "react-icons/hi";
@@ -14,8 +15,9 @@ export const FiltersBox: React.FC<FiltersBoxProps> = ({
   handleSearch,
   handleFilter,
 }) => {
+  const { stateSort, setStateSort } = useDiscussionStore();
   const [filterOptions, setFilterOptions] = useState({
-    sort: "desc",
+    sort: stateSort,
     topic: "",
   });
   const [search, setSearch] = useState("");
@@ -32,6 +34,7 @@ export const FiltersBox: React.FC<FiltersBoxProps> = ({
       handleFilter({ sort: filterOptions.sort, topic: value });
     } else {
       setFilterOptions({ ...filterOptions, sort: value });
+      setStateSort(value);
       handleFilter({ sort: value, topic: filterOptions.topic });
     }
   };

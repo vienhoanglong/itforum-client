@@ -172,7 +172,7 @@ export const UpdateDiscussion: React.FC<UpdateDiscussionProps> = ({
             kind="primary"
             disable
           >
-            Posting
+            Update
           </Button>
         ) : (
           <Button
@@ -182,7 +182,7 @@ export const UpdateDiscussion: React.FC<UpdateDiscussionProps> = ({
             kind="primary"
             handle={handleSaveChanges}
           >
-            Posting
+            Update
           </Button>
         )}
       </div>

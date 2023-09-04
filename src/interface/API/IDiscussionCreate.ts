@@ -4,5 +4,6 @@ interface IDiscussionCreate {
   createBy?: string;
   topic?: string[];
   statusDiscuss?: number;
+  reasonBan?: string;
 }
 export default IDiscussionCreate;

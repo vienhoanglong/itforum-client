@@ -7,6 +7,7 @@ import {
 import { create } from "zustand";
 
 interface DiscussionState {
+  stateSort: string;
   listDiscuss: IDiscussion[] | null;
   listDiscussForSearch: IDiscussion[] | null;
   discussion: IDiscussion | null;
@@ -32,12 +33,17 @@ interface DiscussionState {
     sort?: string,
     topicId?: string
   ) => void;
+  setStateSort: (sort: string) => void;
 }
 export const useDiscussionStore = create<DiscussionState>((set) => ({
   listDiscuss: null,
+  stateSort: "desc",
   discussion: null,
   listDiscussForSearch: null,
   listDiscussByStatus: null,
+  setStateSort: (sort: string) => {
+    set(() => ({ stateSort: sort }));
+  },
   getListDiscussion: async (
     skip: number,
     limit: number,

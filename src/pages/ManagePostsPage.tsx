@@ -1,93 +1,271 @@
 import { Button } from "@/components/button";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
-  HiArrowCircleLeft,
+  HiEye,
+  HiEyeOff,
   HiFilter,
   HiPencil,
   HiPlusCircle,
-  HiSearch,
   HiTrash,
 } from "react-icons/hi";
 import ReactPaginate from "react-paginate";
-import { exampleData, topicColors } from "../constants/global.ts";
+import { colorTopic } from "../constants/global.ts";
 import Modal from "@/components/modal/Modal.tsx";
-import PostAddNewPage from "../modules/post/PostAddNew.tsx";
-import DeletedPostsPage from "../modules/post/DeletedPosts.tsx";
 import LayoutSecondary from "@/layout/LayoutSecondary.tsx";
+import { Link } from "react-router-dom";
+import { useTopicStore } from "@/store/topicStore.ts";
+import { useUserStore } from "@/store/userStore.ts";
+import { toast } from "react-toastify";
+import convertDateTime from "@/utils/helper.ts";
+import {
+  BsFillArrowDownSquareFill,
+  BsFillArrowUpSquareFill,
+} from "react-icons/bs";
+import ConfirmDialog from "@/components/confirm/ConfirmDialog.tsx";
+import Navigation from "@/components/navigation/Navigation.tsx";
+import { usePostStore } from "@/store/postStore.ts";
+import IPost from "@/interface/post.ts";
+import {
+  changeStatusPost,
+  moveTrashOrRestorePost,
+} from "@/services/postService.ts";
+import DeletedPostsPage from "@/modules/post/DeletedPosts.tsx";
+import PostAddNewPage from "@/modules/post/PostAddNew.tsx";
+import PostUpdatePage from "@/modules/post/PostUpdate.tsx";
 
 export const ManagePostsPage: React.FC = React.memo(() => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const { listAllTopic, getTopic } = useTopicStore();
+  const { change, getListPost, getListPostsFromTrash, listAllPost } =
+    usePostStore();
+
+  const { setUser, user } = useUserStore();
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const [filterType, setFilterType] = useState<string | null>(null);
+  const [filterStatus, setFilterStatus] = useState<string | null>(null);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const formatDate = "MM-DD-YYYY";
+  const [listPostDefault, setListPostDefault] = useState<IPost[] | null>([]);
+  const [postUpdate, setpostUpdate] = useState<string>("");
+  const [currentItems, setCurrentItems] = useState<IPost[] | null>([]);
+  const [isModalOpenDialog, setIsModalOpenDialog] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+  const [confirmMessage, setConfirmMessage] = useState("");
+
+  const HIDDEN = 3;
+  const PUBLISH = 1;
+  useMemo(() => {
+    getListPost(0, 0, "desc");
+    getTopic();
+    setUser();
+  }, [getListPost, getTopic, setUser, change]);
+
+  useMemo(() => {
+    setListPostDefault(
+      listAllPost && listAllPost?.filter((post) => post.createdBy === user?._id)
+    );
+    setCurrentItems(
+      listAllPost &&
+        listAllPost
+          ?.filter((post) => post.createdBy === user?._id)
+          .slice(0, itemsPerPage)
+    );
+  }, [itemsPerPage, listAllPost, user?._id]);
+
+  const [isModalOpenAdd, setIsModalOpenAdd] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+  const [isModalOpenTrash, setIsModalOpenTrash] = useState(false);
+
+  const handleAddNew = () => {
+    setIsModalOpenAdd(true);
+  };
+
+  const handleDeleted = () => {
+    setIsModalOpenTrash(true);
+  };
+  const handlepostUpdate = (id: string) => {
+    setpostUpdate(id);
+
+    setIsModalOpenUpdate(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpenAdd(false);
+    setIsModalOpenTrash(false);
+    setIsModalOpenUpdate(false);
+    setIsModalOpenDialog(false);
+  };
+
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const sortedData =
+    listPostDefault &&
+    [...listPostDefault].sort((a, b) => {
+      if (sortDirection === "asc") {
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      } else {
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      }
+    });
+  useMemo(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    const filteredData = filterType
+      ? sortedData?.filter((item) => item.hashtag.includes(filterType))
+      : sortedData;
+
+    const filteredByStatus = filterStatus
+      ? filteredData?.filter((item) => item.status.toString() === filterStatus)
+      : filteredData;
+
+    const newCurrentItems = filteredByStatus?.slice(itemOffset, endOffset);
+    const newPageCount = Math.ceil(
+      (filteredByStatus?.length ?? 0) / itemsPerPage
+    );
+
+    setTimeout(() => {
+      newCurrentItems && setCurrentItems(newCurrentItems);
+      setPageCount(newPageCount);
+    }, 0);
+  }, [filterType, filterStatus, sortedData, itemOffset, itemsPerPage]);
+
+  const handleSort = () => {
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  };
+
   const handleItemsPerPageChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const selectedItemsPerPage = parseInt(event.target.value);
     setItemsPerPage(selectedItemsPerPage);
+  };
+
+  const handleStatusFilter = (status: string | null) => {
+    setFilterStatus(status);
+    setItemOffset(0);
     setCurrentPage(0);
   };
-  const handlePageChange = (selectedPage: { selected: number }) => {
+  const handleFilter = (type: string | null) => {
+    setFilterType(type);
+    setItemOffset(0);
+    setCurrentPage(0);
+  };
+  const handlePageClick = (selectedPage: { selected: number }) => {
+    const newOffset = selectedPage.selected * itemsPerPage;
+    setItemOffset(newOffset);
     setCurrentPage(selectedPage.selected);
   };
-
-  const offset = currentPage * itemsPerPage;
-  const paginatedData = exampleData.slice(offset, offset + itemsPerPage);
-
-  const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
-  const [isModalOpenTrash, setIsModalOpenTrash] = useState(false); // config modal trash
-  const handleAddNewPost = () => {
-    setIsModalOpenAddPost(true);
+  const handleConfirm = (action: () => void, message: string) => {
+    setConfirmAction(() => action);
+    setConfirmMessage(message);
+    setIsModalOpenDialog(true);
+  };
+  const handleConfirmAction = () => {
+    if (confirmAction) {
+      confirmAction();
+    }
+    setIsModalOpenDialog(false);
+  };
+  const handleDelete = async (id: string) => {
+    handleConfirm(async () => {
+      try {
+        await moveTrashOrRestorePost(id);
+        getListPostsFromTrash();
+        getListPost(0, 0, "desc");
+        toast.success(" Deleted discuss successfully! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error restore discussion");
+      }
+    }, "Bạn có chắc muốn xoá không?");
+  };
+  const handleHidden = async (id: string) => {
+    handleConfirm(async () => {
+      try {
+        await changeStatusPost(id, HIDDEN);
+        getListPost(0, 0, "desc");
+        toast.success(" Discussion is hidden! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error hidden discussion");
+      }
+    }, "Bạn có chắc muốn ẩn không?");
+  };
+  const handlePublish = async (id: string) => {
+    handleConfirm(async () => {
+      try {
+        await changeStatusPost(id, PUBLISH);
+        getListPost(0, 0, "desc");
+        toast.success(" Discussion is publish! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error publish discussion");
+      }
+    }, "Bạn có chắc muốn công khai không?");
   };
 
-  const handleCloseModalAdd = () => {
-    setIsModalOpenAddPost(false);
-  };
-  const handleDeletedPosts = () => {
-    setIsModalOpenTrash(true);
-  };
-
-  const handleCloseModalTrash = () => {
-    setIsModalOpenTrash(false);
-  };
   return (
     <LayoutSecondary>
-      <a
-        className="dark:text-light0 bg- rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        href="/managements"
-      >
-        <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back to Managements
-      </a>
+      <Navigation></Navigation>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Manage posts</h4>
+          <h4 className="text-xl font-bold text-darker ">Post management</h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
             <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
-              <div className="w-full mr-2 relative">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className=" dark:bg-dark0 dark:border-dark2 dark:text-light4 border w-3/4 px-8 py-2 text-xs rounded-lg shadow-inner   "
-                />
-                <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-                  <HiSearch className="text-darker" size={18}></HiSearch>
-                </span>
+              <div className="w-1/2 relative flex flex-wrap">
+                <div className="w-1/4 flex justify-center  dark:text-white items-center">
+                  <span>Topic:</span>
+                </div>
+                <div className="w-3/4">
+                  <select
+                    id="filterDropdown"
+                    className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
+                    value={filterType || ""}
+                    onChange={(e) => handleFilter(e.target.value || null)}
+                  >
+                    <option value="">All</option>
+                    {listAllTopic?.map((topic) => (
+                      <option key={topic._id} value={topic._id}>
+                        {topic.name}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
+                    <HiFilter className="text-darker" size={15} />
+                  </span>
+                </div>
               </div>
-              <div className="w-2/5 relative">
-                <select
-                  id="filterDropdown"
-                  className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
-                >
-                  <option value="keyword">Filter</option>
-                  <option value="time">Thời gian</option>
-                  <option value="category">Thể loại</option>
-                  <option value="bookmark">Đánh dấu</option>
-                  <option value="author">Tác giả</option>
-                </select>
-                <span className="absolute inset-y-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
-                  <HiFilter className="text-darker" size={15} />
-                </span>
+              <div className="w-1/2 relative flex flex-wrap">
+                <div className="w-1/4 flex justify-center  dark:text-white items-center">
+                  <span>Status:</span>
+                </div>
+                <div className="w-3/4">
+                  <select
+                    id="statusFilterDropdown"
+                    className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
+                    value={filterStatus || ""}
+                    onChange={(e) => handleStatusFilter(e.target.value || null)}
+                  >
+                    <option value="">All</option>
+                    <option value="1">Publish</option>
+                    <option value="3">Hidden</option>
+                    <option value="2">Reject</option>
+                  </select>
+                  <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
+                    <HiFilter className="text-darker" size={15} />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -97,7 +275,7 @@ export const ManagePostsPage: React.FC = React.memo(() => {
               className=" w-full text-white text-xs bg-lighter hover:bg-darker  rounded px-4 shadow-md py-2"
               kind="primary"
               type="submit"
-              handle={handleAddNewPost}
+              handle={handleAddNew}
             >
               {" "}
               New{" "}
@@ -105,12 +283,11 @@ export const ManagePostsPage: React.FC = React.memo(() => {
                 <HiPlusCircle size={20} />
               </span>
             </Button>
-
             <Button
               className=" w-full text-white bg-red3 hover:bg-red2  text-xs rounded shadow-md px-4 py-2"
               kind="custom"
               type="submit"
-              handle={handleDeletedPosts}
+              handle={() => handleDeleted()}
             >
               {" "}
               Trash{" "}
@@ -121,77 +298,186 @@ export const ManagePostsPage: React.FC = React.memo(() => {
           </div>
         </div>
 
-        <Modal isOpen={isModalOpenAddPost} onClose={handleCloseModalAdd}>
-          <PostAddNewPage onCancel={handleCloseModalAdd}></PostAddNewPage>
+        <Modal isOpen={isModalOpenAdd} onClose={handleCloseModal}>
+          <PostAddNewPage onCancel={handleCloseModal} />
         </Modal>
-        <Modal isOpen={isModalOpenTrash} onClose={handleCloseModalTrash}>
-          <DeletedPostsPage></DeletedPostsPage>
+        <Modal isOpen={isModalOpenUpdate} onClose={handleCloseModal}>
+          <PostUpdatePage
+            listAllTopic={listAllTopic}
+            postId={postUpdate}
+            onCancel={handleCloseModal}
+          />
         </Modal>
+        <Modal isOpen={isModalOpenTrash} onClose={handleCloseModal}>
+          <DeletedPostsPage />
+        </Modal>
+        {isModalOpenDialog && (
+          <Modal isOpen={isModalOpenDialog} onClose={handleCloseModal}>
+            <ConfirmDialog
+              message={confirmMessage}
+              onConfirm={handleConfirmAction}
+              onCancel={handleCloseModal}
+            />
+          </Modal>
+        )}
 
         <div className="w-full overflow-x-auto">
           <table className="min-w-full shadow-lg  ">
             <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
               <tr>
                 <th className="py-2 px-4  rounded-tl-md ">SN</th>
-                <th className="py-2 px-4  ">Author</th>
                 <th className="py-2 px-4  ">Title</th>
                 <th className="py-2 px-4  ">Topic</th>
-                <th className="py-2 px-4  ">Views</th>
-                <th className="py-2 px-4  ">Date</th>
-                <th className="py-2 px-4  ">Publish</th>
+                <th className="py-2 px-4  ">View</th>
+                <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
+                  <div className="flex justify-center items-center gap-2">
+                    <span>Date</span>
+                    {sortDirection === "asc" ? (
+                      <BsFillArrowUpSquareFill size={14} />
+                    ) : (
+                      <BsFillArrowDownSquareFill size={14} />
+                    )}
+                  </div>
+                </th>
+                <th className="py-2 px-4  ">Status</th>
+                <th className="py-2 px-4  ">Reason</th>
                 <th className="py-2 px-4 rounded-tr-md ">Action</th>
               </tr>
             </thead>
             <tbody>
-              {paginatedData.length === 0 ? (
+              {currentItems === undefined || currentItems?.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center">
-                    Không có bài viết nào
+                  <td colSpan={7} className="text-center dark:text-white">
+                    There are no posts
                   </td>
                 </tr>
               ) : (
-                paginatedData.map((item) => (
+                currentItems?.map((item, index) => (
                   <tr
-                    key={item.id}
+                    key={item._id}
                     className=" even:bg-light3 odd:bg-light4 dark:odd:bg-dark2 dark:even:bg-dark2 dark:text-light0 text-xs cursor-pointer text-center"
                   >
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3 ">
-                      {item.id}
+                      {index + 1}
                     </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.author}
-                    </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.title}
+                    <td className="py-2  px-4 border-y border-light0 dark:border-dark3  ">
+                      <div className=" flex items-start justify-start">
+                        <h6 className="tracking-normal text-xs md:pr-6 lg:mb-0 dark:text-light0">
+                          <Link
+                            to={`/post/${item._id}`}
+                            className=" text-xs break-words text-left line-clamp-2 hover:text-mainColor"
+                          >
+                            {item.title}
+                          </Link>
+                        </h6>
+                      </div>
                     </td>
                     <td className="py-2 px-4 border-y text-left border-light0 dark:border-dark3">
-                      {item.topic.map((topic) => (
-                        <div
-                          key={topic.id}
-                          className={`inline-block border-2 px-2 py-1 rounded-full  m-[1px] 
-                        ${topicColors[topic.name] || ""}`}
-                        >
-                          {topic.name}
-                        </div>
-                      ))}
+                      {item.hashtag.map((topicId, index) => {
+                        const topic = listAllTopic?.find(
+                          (topic) => topic._id === topicId
+                        );
+                        if (topic) {
+                          return (
+                            <div
+                              key={index}
+                              className={`inline-block w-max border-2 px-2 py-[2px] rounded-full m-[1px] text-[10px] ${
+                                colorTopic[
+                                  topic.color as keyof typeof colorTopic
+                                ] || ""
+                              }`}
+                            >
+                              <h6 className="tracking-normal">
+                                <Link
+                                  className=""
+                                  key={topic._id}
+                                  to={`/topics/detail/${topic._id}`}
+                                >
+                                  {topic.name}
+                                </Link>
+                              </h6>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.views}
+                      {item.totalView}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.datePost}
+                      {convertDateTime(item.createdAt.toString(), formatDate)}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.publish ? "publish" : "unpublish"}
+                      {(() => {
+                        switch (item.status) {
+                          case 0:
+                            return (
+                              <div className=" bg-amber-500 text-[10px] px-[2px] text-white rounded-md">
+                                Pending
+                              </div>
+                            );
+                          case 1:
+                            return (
+                              <div className="bg-green-400 text-white text-[10px] px-[2px] rounded-md">
+                                Publish
+                              </div>
+                            );
+                          case 2:
+                            return (
+                              <div className="bg-red-400 text-white text-[10px] px-[2px] rounded-md">
+                                Rejected
+                              </div>
+                            );
+                          case 3:
+                            return (
+                              <div className="bg-cyan-400 text-white text-[10px] px-[2px] rounded-md">
+                                Hidden
+                              </div>
+                            );
+                          default:
+                            return null;
+                        }
+                      })()}
                     </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
-                      <div className="flex items-center">
-                        <div className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200">
-                          <HiPencil size={16} />
-                        </div>
-                        <div className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200">
-                          <HiTrash size={16} />
-                        </div>
+                      {item.reasonBan != "" ? item.reasonBan : ""}
+                    </td>
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3">
+                      <div className="flex items-center justify-center">
+                        {item.status !== 0 && item.status !== 2 && (
+                          <div
+                            onClick={() => handlepostUpdate(item._id)}
+                            className="mx-1 p-1 rounded-full  hover:bg-mainColor transition-colors duration-200"
+                          >
+                            <HiPencil size={16} />
+                          </div>
+                        )}
+                        {item.status !== 2 &&
+                          item.status !== 0 &&
+                          (item.status === 1 ? (
+                            <div
+                              onClick={() => handleHidden(item._id)}
+                              className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200"
+                            >
+                              <HiEyeOff size={16} />
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() => handlePublish(item._id)}
+                              className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200"
+                            >
+                              <HiEye size={16} />
+                            </div>
+                          ))}
+                        {item.status !== 0 && (
+                          <div
+                            onClick={() => handleDelete(item._id)}
+                            className="mx-1 p-1 rounded-full hover:bg-mainColor transition-colors duration-200"
+                          >
+                            <HiTrash size={16} />
+                          </div>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -204,18 +490,21 @@ export const ManagePostsPage: React.FC = React.memo(() => {
         <div className="flex items-center justify-center bg-light2 dark:bg-dark2 dark:text-light0 h-8 text-xs rounded-b-md">
           <div className="w-1/2 mr-2 pb-3 ml-1">
             <ReactPaginate
-              pageCount={Math.ceil(exampleData.length / itemsPerPage)}
+              breakLabel="..."
+              nextLabel="next >"
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={1}
               marginPagesDisplayed={2}
-              pageRangeDisplayed={5}
-              onPageChange={handlePageChange}
+              pageCount={pageCount}
+              previousLabel="< prev"
+              renderOnZeroPageCount={null}
               containerClassName="flex justify-center items-center  mt-4 space-x-4"
               pageClassName="m-2"
               activeClassName="underline underline-offset-2"
-              previousLabel="<Prev"
-              nextLabel="Next>"
+              forcePage={currentPage}
             />
           </div>
-          <div className="w-1/2 ml-2 flex items-center justify-center">
+          <div className="w-auto mx-2 flex items-center justify-end">
             <label htmlFor="itemsPerPage" className="mr-2">
               Rows per page:
             </label>
@@ -235,5 +524,4 @@ export const ManagePostsPage: React.FC = React.memo(() => {
     </LayoutSecondary>
   );
 });
-
 export default ManagePostsPage;

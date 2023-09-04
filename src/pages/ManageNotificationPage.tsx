@@ -270,7 +270,7 @@ export const ManageNotificationPage: React.FC = () => {
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">
-            Management notifications
+            Notification management
           </h4>
         </div>
         <div className="flex flex-wrap items-center">

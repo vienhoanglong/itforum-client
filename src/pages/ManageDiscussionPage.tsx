@@ -1,7 +1,6 @@
 import { Button } from "@/components/button";
 import React, { useMemo, useState } from "react";
 import {
-  HiArrowCircleLeft,
   HiEye,
   HiEyeOff,
   HiFilter,
@@ -254,7 +253,9 @@ export const ManageDiscussionPage: React.FC = React.memo(() => {
       <Navigation></Navigation>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Manage discussions</h4>
+          <h4 className="text-xl font-bold text-darker ">
+            Discussion management
+          </h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">

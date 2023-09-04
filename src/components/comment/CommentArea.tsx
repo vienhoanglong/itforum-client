@@ -114,7 +114,7 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
             }}
           ></textarea>
           {/* <QuillEditor value={content} onChange={handleContentChange} /> */}
-          <div className="flex justify-end mt-2">
+          <div className="flex justify-end z-10 mt-2">
             {isTextareaEmpty == true ? (
               <Button
                 size="small"

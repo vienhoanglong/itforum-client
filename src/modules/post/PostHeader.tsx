@@ -10,6 +10,15 @@ import IPost from "@/interface/post";
 import IUser from "@/interface/user";
 import convertDateTime from "@/utils/helper";
 import { Link } from "react-router-dom";
+import { useUserStore } from "@/store/userStore";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import {
+  changeStatusPost,
+  moveTrashOrRestorePost,
+} from "@/services/postService";
+import Modal from "@/components/modal/Modal";
+import ConfirmDialog from "@/components/confirm/ConfirmDialog";
 
 type PostHeaderProps = {
   menuRef: React.RefObject<HTMLDivElement>;
@@ -18,10 +27,11 @@ type PostHeaderProps = {
   handleReportClick: () => void;
   handleCloseModal: () => void;
   isReportModalOpen: boolean;
-
+  postStatus: boolean;
+  setPostStatus: React.Dispatch<React.SetStateAction<boolean>>;
   listTopic: Topic[] | null;
   post: IPost | null;
-  user: IUser | null;
+  userOwner: IUser | null;
 };
 
 const PostHeader: React.FC<PostHeaderProps> = ({
@@ -33,13 +43,86 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   isReportModalOpen,
   listTopic,
   post,
-  user,
+  userOwner,
+  setPostStatus,
+  postStatus,
 }) => {
+  const { user } = useUserStore();
   const getColorUser = (color: string): string => {
     const result = colorsAvatar.find((item) => item.color === color);
     return result?.value ?? "bg-white";
   };
   const formatDate = "MM-DD-YYYY";
+  const [isModalOpenDialog, setIsModalOpenDialog] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const handleConfirm = (action: () => void, message: string) => {
+    setConfirmAction(() => action);
+    setConfirmMessage(message);
+    setIsModalOpenDialog(true);
+  };
+  const handleConfirmAction = () => {
+    if (confirmAction) {
+      confirmAction();
+    }
+    setIsModalOpenDialog(false);
+  };
+  const handleHidden = async () => {
+    handleConfirm(async () => {
+      try {
+        post && (await changeStatusPost(post._id, 3));
+        setPostStatus(!postStatus);
+        toast.success(" Post is hidden! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error hidden posts");
+      }
+    }, "Bạn có chắc muốn ẩn không?");
+  };
+  const handlePublish = async () => {
+    handleConfirm(async () => {
+      try {
+        post && (await changeStatusPost(post._id, 1));
+        setPostStatus(!postStatus);
+        toast.success(" Post is published! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error publish posts");
+      }
+    }, "Bạn có chắc muốn công khai không?");
+  };
+  const handleDelete = async () => {
+    handleConfirm(async () => {
+      try {
+        post && (await moveTrashOrRestorePost(post._id));
+        setPostStatus(!postStatus);
+        toast.success(" Deleted post successfully! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error delete posts");
+      }
+    }, "Bạn có chắc muốn xoá không?");
+  };
+  const handleRestore = async () => {
+    handleConfirm(async () => {
+      try {
+        post && (await moveTrashOrRestorePost(post._id));
+        setPostStatus(!postStatus);
+        toast.success(" Restore post successfully! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error restore posts");
+      }
+    }, "Bạn có chắc muốn khôi phục không?");
+  };
   return (
     <div className="header grid grid-cols-1">
       <div className="mb-4 flex justify-between">
@@ -53,16 +136,45 @@ const PostHeader: React.FC<PostHeaderProps> = ({
           <span className="ml-1">{0}</span>
         </div>
         <div className="w-auto relative" ref={menuRef}>
-          <button
-            className="bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full px-2 py-1"
-            onClick={handleMenuToggle}
-          >
-            <HiDotsHorizontal size={10} className="w-5 h-5" />
-          </button>
-          {isMenuOpen && (
-            <ActionMenu handleReportClick={handleReportClick}></ActionMenu>
+          {post?.status !== 0 && (
+            <button
+              className="bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 rounded-full px-2 py-1"
+              onClick={handleMenuToggle}
+            >
+              <HiDotsHorizontal size={10} className="w-5 h-5" />
+            </button>
           )}
-          {isReportModalOpen && <ReportModal closeModal={handleCloseModal} />}
+
+          {isMenuOpen && (
+            <ActionMenu
+              handleRestore={handleRestore}
+              isDraft={post?.isDraft}
+              status={post?.status}
+              handlePublish={handlePublish}
+              handleDeleted={handleDelete}
+              handleHidden={handleHidden}
+              userCurrentId={user}
+              userOwnerId={userOwner}
+              handleReportClick={handleReportClick}
+            ></ActionMenu>
+          )}
+          {isReportModalOpen && (
+            <ReportModal
+              idRefer={post != null ? post._id : ""}
+              reportFor={"Posts"}
+              userId={user !== undefined && user !== null ? user._id || "" : ""}
+              closeModal={handleCloseModal}
+            />
+          )}
+          {isModalOpenDialog && (
+            <Modal isOpen={isModalOpenDialog} onClose={handleCloseModal}>
+              <ConfirmDialog
+                message={confirmMessage}
+                onConfirm={handleConfirmAction}
+                onCancel={handleCloseModal}
+              />
+            </Modal>
+          )}
         </div>
       </div>
       <div className="">
@@ -73,25 +185,64 @@ const PostHeader: React.FC<PostHeaderProps> = ({
       <div className="w-full flex flex-col-3 items-center">
         <div className=" w-8 h-8 rounded-full overflow-hidden">
           <img
-            src={user?.avatar}
+            src={userOwner?.avatar}
             alt="Avatar"
             className={`w-full h-full object-cover brightness-90 ${getColorUser(
-              user?.color ?? ""
+              userOwner?.color ?? ""
             )}`}
           />
         </div>
         <div className=" py-2 px-2">
-          <div className="text-sm font-semibold text-grey-600">
+          <div className="text-xs gap-1 flex font-semibold text-grey-600">
             <Link
-              to={`/user/${user?._id}`}
+              to={`/user/${userOwner?._id}`}
               className=" hover:text-mainColor cursor-pointer"
             >
-              {user?.fullName ?? user?.username}
+              <div> {userOwner?.fullName ?? userOwner?.username}</div>
             </Link>
+            <span>:</span>
+            <span>
+              {" "}
+              {post && convertDateTime(post.createdAt.toString(), formatDate)}
+            </span>
           </div>
           <div className="text-xs font-normal text-grey-600">
-            Published{" "}
-            {post && convertDateTime(post.createdAt.toString(), formatDate)}
+            {post?.isDraft === true ? (
+              <div className=" inline-block bg-red-500 text-[10px] px-[2px] text-white rounded-md">
+                Deleted
+              </div>
+            ) : (
+              (() => {
+                switch (post?.status) {
+                  case 0:
+                    return (
+                      <div className=" inline-block bg-amber-500 text-[10px] px-[2px] text-white rounded-md">
+                        Pending
+                      </div>
+                    );
+                  case 1:
+                    return (
+                      <div className="inline-block bg-green-400 text-white text-[10px] px-[2px] rounded-md">
+                        Publish
+                      </div>
+                    );
+                  case 2:
+                    return (
+                      <div className=" inline-block bg-red-400 text-white text-[10px] px-[2px] rounded-md">
+                        Rejected
+                      </div>
+                    );
+                  case 3:
+                    return (
+                      <div className="inline-block bg-cyan-400 text-white text-[10px] px-[2px] rounded-md">
+                        Hidden
+                      </div>
+                    );
+                  default:
+                    return null;
+                }
+              })()
+            )}
           </div>
         </div>
       </div>
