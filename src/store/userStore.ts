@@ -1,13 +1,17 @@
 import { IAvatar } from "./../interface/listAvatar";
 import { IUser } from "@/interface/user";
 import {
+  GetAllUser,
   getListAvatars,
   getUserById,
   getUserByListId,
+  searchUserByUsername,
 } from "@/services/userService";
 import decodeToken from "@/utils/decodeToken";
 import { create } from "zustand";
 interface UserState {
+  listUserBySearch: IUser[] | null;
+  allUser: IUser[] | null;
   user: IUser | null;
   userById: IUser | null;
   listAvatar: IAvatar[] | null;
@@ -15,7 +19,9 @@ interface UserState {
   listUserNotifi: IUser[] | null;
   listUserNotifiLevel: IUser[] | null;
   setUser: () => void;
+  getListUserBySearch: (username: string) => void;
   getListAvatar: () => void;
+  getListAllUser: () => void;
   theme: string;
   setThemeUser: (theme: string) => void;
   getById: (id: string) => void;
@@ -25,6 +31,8 @@ interface UserState {
 }
 export const useUserStore = create<UserState>((set) => ({
   user: null,
+  listUserBySearch: null,
+  allUser: null,
   userById: [],
   listUserNotifi: null,
   listUserNotifiLevel: null,
@@ -74,10 +82,27 @@ export const useUserStore = create<UserState>((set) => ({
       return;
     }
   },
+  getListAllUser: async () => {
+    try {
+      const reponse = await GetAllUser();
+      set(() => ({ allUser: reponse.data }));
+    } catch (err) {
+      return;
+    }
+  },
   getListUserNotifi: async (listId: string[]) => {
     try {
       const reponse = await getUserByListId(listId);
       set(() => ({ listUserNotifi: reponse.data }));
+    } catch (err) {
+      return;
+    }
+  },
+
+  getListUserBySearch: async (username: string) => {
+    try {
+      const reponse = await searchUserByUsername(username);
+      set(() => ({ listUserBySearch: reponse }));
     } catch (err) {
       return;
     }

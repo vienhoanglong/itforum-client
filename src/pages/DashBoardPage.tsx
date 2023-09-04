@@ -136,17 +136,20 @@ interface UserDashboard {
   count: number;
 }
 interface ReportDashboard {
-  name: string
-  value: number
+  name: string;
+  value: number;
 }
 const DashBoardPage: React.FC = React.memo(() => {
   const [userDashboard, setUserDashboard] = React.useState<
     UserDashboard[] | null
   >(null);
   const [topicDashboard, setTopicDashboard] = React.useState<any>(null);
-  const [reportDashboard, setReportDashboard] = React.useState<ReportDashboard[] | []>([]);
-  const [postsAndDiscussDashboard, setPostsAndDiscussDashboard] = React.useState<any>([]);
-  const [selectedOption, setSelectedOption] = React.useState('');
+  const [reportDashboard, setReportDashboard] = React.useState<
+    ReportDashboard[] | []
+  >([]);
+  const [postsAndDiscussDashboard, setPostsAndDiscussDashboard] =
+    React.useState<any>([]);
+  const [selectedOption, setSelectedOption] = React.useState("");
   React.useEffect(() => {
     const fetchData = async () => {
       try {
@@ -166,16 +169,16 @@ const DashBoardPage: React.FC = React.memo(() => {
     fetchData();
   }, []);
 
-  const fetchDataPostsAndDiscuss = async(type: string) => {
+  const fetchDataPostsAndDiscuss = async (type: string) => {
     try {
-      const response = await dashboardDiscussAndPosts(type)
+      const response = await dashboardDiscussAndPosts(type);
       response && setPostsAndDiscussDashboard(response);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }
+  };
   React.useEffect(() => {
-    fetchDataPostsAndDiscuss('week');
+    fetchDataPostsAndDiscuss("week");
   }, []);
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
@@ -259,8 +262,11 @@ const DashBoardPage: React.FC = React.memo(() => {
               Post & Discussion
             </div>
             <div className="flex items-end justify-end text-right">
-              <select className="bg-light1 dark:bg-dark0 dark:text-white rounded-md py-1 px-2"   value={selectedOption}
-          onChange={handleOptionChange}>
+              <select
+                className="bg-light1 dark:bg-dark0 dark:text-white rounded-md py-1 px-2"
+                value={selectedOption}
+                onChange={handleOptionChange}
+              >
                 <option value="week">Tuần</option>
                 <option value="month">Tháng</option>
                 <option value="year">Năm</option>

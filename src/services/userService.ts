@@ -1,3 +1,4 @@
+import IUserCreate from "@/interface/API/IUserCreate";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import IAvatar from "@/interface/listAvatar";
 import axios from "axios";
@@ -107,5 +108,66 @@ export const searchUserByUsername = async (username: string): Promise<any> => {
     return response.data.data;
   } catch (error) {
     throw new Error("Error searching user by username");
+  }
+};
+
+export const GetAllUser = async (): Promise<any> => {
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      throw new Error("Access token not found");
+    }
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/user/all-users`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Error get all user");
+  }
+};
+
+export const resetPassword = async (id: string): Promise<any> => {
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      throw new Error("Access token not found");
+    }
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/user/reset-password/{id}?id=${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Error reset password");
+  }
+};
+
+export const createUser = async (data: IUserCreate): Promise<any> => {
+  try {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      throw new Error("Access token not found");
+    }
+    const response = await axios.post(
+      `https://ict-forum-server.onrender.com/auth/register`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Error create user");
   }
 };
