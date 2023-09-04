@@ -1,5 +1,11 @@
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import TopicDashboard from "@/modules/dashboard/TopicDashboard";
+import {
+  dashboardDiscussAndPosts,
+  dashboardReport,
+  dashboardTopic,
+  dashboardUser,
+} from "@/services/dashboardService";
 import React from "react";
 import { HiArrowCircleLeft } from "react-icons/hi";
 import {
@@ -90,12 +96,6 @@ const data = [
     amt: 2100,
   },
 ];
-const dataPie = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 interface CustomLabelProps {
@@ -131,8 +131,57 @@ const renderCustomizedLabel = ({
     </text>
   );
 };
-
+interface UserDashboard {
+  role: string;
+  count: number;
+}
+interface ReportDashboard {
+  name: string
+  value: number
+}
 const DashBoardPage: React.FC = React.memo(() => {
+  const [userDashboard, setUserDashboard] = React.useState<
+    UserDashboard[] | null
+  >(null);
+  const [topicDashboard, setTopicDashboard] = React.useState<any>(null);
+  const [reportDashboard, setReportDashboard] = React.useState<ReportDashboard[] | []>([]);
+  const [postsAndDiscussDashboard, setPostsAndDiscussDashboard] = React.useState<any>([]);
+  const [selectedOption, setSelectedOption] = React.useState('');
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [userData, topicData, reportData] = await Promise.all([
+          dashboardUser(),
+          dashboardTopic(),
+          dashboardReport(),
+        ]);
+        userData && setUserDashboard(userData);
+        topicData && setTopicDashboard(topicData);
+        reportData && setReportDashboard(reportData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const fetchDataPostsAndDiscuss = async(type: string) => {
+    try {
+      const response = await dashboardDiscussAndPosts(type)
+      response && setPostsAndDiscussDashboard(response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+  React.useEffect(() => {
+    fetchDataPostsAndDiscuss('week');
+  }, []);
+  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    setSelectedOption(selectedValue);
+    fetchDataPostsAndDiscuss(selectedValue);
+  };
   return (
     <LayoutSecondary>
       <a
@@ -148,65 +197,61 @@ const DashBoardPage: React.FC = React.memo(() => {
         </div>
         <div className="flex flex-col lg:grid grid-cols-1 lg:grid-cols-3 gap-x-4 gap-y-4">
           <div className=" bg-light4 rounded-lg lg:col-span-1 dark:bg-dark2 p-4 h-auto">
-            <TopicDashboard></TopicDashboard>
+            <TopicDashboard topicDashboard={topicDashboard}></TopicDashboard>
           </div>
 
           <div className=" bg-light4 h-auto lg:col-span-2 dark:bg-dark2 p-4 rounded-lg">
             <div className="text-sm dark:text-white mb-4 font-bold">
               Overview user
             </div>
-            <div className="flex justify-center items-center gap-4 p-4  rounded-lg  lg:h-[180px]">
-              <div
-                className=" dark:bg-dark0  w-1/3 h-auto rounded-lg p-4 shadow-md flex
-                        flex-col items-center"
-              >
-                <img
-                  src="https://cdn-icons-png.flaticon.com/128/3429/3429417.png"
-                  className=" object-fill"
-                  width={50}
-                  height={50}
-                ></img>
-                <div className=" text-xs text-dark3 font-medium mt-2 mb-4">
-                  Student
-                </div>
-                <div className="font-semibold dark:text-white text-4xl">
-                  100
-                </div>
-              </div>
-              <div
-                className=" dark:bg-dark0  w-1/3 h-auto rounded-lg p-4 shadow-md flex
-                        flex-col items-center"
-              >
-                <img
-                  src="https://cdn-icons-png.flaticon.com/128/1995/1995539.png"
-                  className=" object-fill"
-                  width={50}
-                  height={50}
-                ></img>
-                <div className=" text-xs text-dark3 font-medium mt-2 mb-4">
-                  Teacher
-                </div>
-                <div className="font-semibold dark:text-white text-4xl">
-                  100
-                </div>
-              </div>
-              <div
-                className=" dark:bg-dark0  w-1/3 h-auto rounded-lg p-4 shadow-md flex
-                        flex-col items-center"
-              >
-                <img
-                  src="https://cdn-icons-png.flaticon.com/128/3061/3061341.png"
-                  className=" object-fill"
-                  width={50}
-                  height={50}
-                ></img>
-                <div className=" text-xs text-dark3 font-medium mt-2 mb-4">
-                  Company
-                </div>
-                <div className="font-semibold dark:text-white text-4xl">
-                  100
-                </div>
-              </div>
+            <div className="flex justify-center items-center gap-4 p-4 rounded-lg lg:h-[180px]">
+              {userDashboard &&
+                ["Student", "Teacher", "Company"].map((role) => {
+                  const roleData = userDashboard.find(
+                    (e) => e.role === role
+                  ) || { count: 0 };
+
+                  return (
+                    <div
+                      key={role}
+                      className="dark:bg-dark0 w-1/3 h-auto rounded-lg p-4 shadow-md flex flex-col items-center"
+                    >
+                      {role === "Student" && (
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/128/3429/3429417.png"
+                          className="object-fill"
+                          width={50}
+                          height={50}
+                          alt="Student Icon"
+                        />
+                      )}
+                      {role === "Teacher" && (
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/128/1995/1995539.png"
+                          className="object-fill"
+                          width={50}
+                          height={50}
+                          alt="Teacher Icon"
+                        />
+                      )}
+                      {role === "Company" && (
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/128/3061/3061341.png"
+                          className="object-fill"
+                          width={50}
+                          height={50}
+                          alt="Company Icon"
+                        />
+                      )}
+                      <div className="text-xs text-dark3 font-medium mt-2 mb-4">
+                        {role}
+                      </div>
+                      <div className="font-semibold dark:text-white text-4xl">
+                        {roleData.count}
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
           <div className="flex no-scrollbar flex-col gap-4 items-center justify-center lg:col-span-2 dark:bg-dark2 bg-light4 p-4 rounded-md">
@@ -214,17 +259,18 @@ const DashBoardPage: React.FC = React.memo(() => {
               Post & Discussion
             </div>
             <div className="flex items-end justify-end text-right">
-              <select className="bg-light1 dark:bg-dark0 dark:text-white rounded-md py-1 px-2">
-                <option value="">Tuần</option>
-                <option value="zip">Tháng</option>
-                <option value="doc">Năm</option>
+              <select className="bg-light1 dark:bg-dark0 dark:text-white rounded-md py-1 px-2"   value={selectedOption}
+          onChange={handleOptionChange}>
+                <option value="week">Tuần</option>
+                <option value="month">Tháng</option>
+                <option value="year">Năm</option>
               </select>
             </div>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 width={600}
                 height={300}
-                data={data}
+                data={postsAndDiscussDashboard}
                 margin={{
                   top: 5,
                   right: 30,
@@ -247,16 +293,9 @@ const DashBoardPage: React.FC = React.memo(() => {
             <div className=" text-sm dark:text-white font-bold mb-4">
               Reports
             </div>
-            <div className="flex items-end justify-end text-right">
-              <select className="bg-light1 dark:bg-dark0 dark:text-white rounded-md py-1 px-2">
-                <option value="">Tuần</option>
-                <option value="zip">Tháng</option>
-                <option value="doc">Năm</option>
-              </select>
-            </div>
             <PieChart width={300} height={300}>
               <Pie
-                data={dataPie}
+                data={reportDashboard}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
