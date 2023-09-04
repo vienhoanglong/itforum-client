@@ -1,7 +1,7 @@
 import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 
-const PrivateRouter = lazy(()=> import("@/PrivateRoute"));
+const PrivateRouter = lazy(() => import("@/PrivateRoute"));
 import DashBoardPage from "@/pages/DashBoardPage";
 import DiscussDetailPage from "@/pages/DiscussDetailPage";
 import ManageDiscussionPage from "@/pages/ManageDiscussionPage";
@@ -58,74 +58,58 @@ import TopicDetail from "@/modules/topic/TopicDetail";
 // const ManageDiscussionPage = lazy(() => import("@/pages/ManageDiscussionPage"));
 function App() {
   return (
-      <Suspense fallback={<Loading/>}>
-        <Routes >
-          <Route path="*" element={<PageNotFound />}/>
-          <Route element={<PrivateRouter authenticated={true} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/profile" element={<ProfilePage />}/>
-            <Route path="/notifications" element={<NotificationPage />}/>
-            <Route
-              path="/notifications-detail/:notificationId"
-              element={<NotificationDetailPage />}
-            />
-            <Route path="/user/:userId" element={<UserPage />}/>
-            <Route
-              path="/managements/report"
-              element={<ManageReportPage />}
-            />
-            <Route
-              path="/managements/approve/:postId"
-              element={<ReviewPostPage />}
-            />
-            <Route
-              path="/managements/approve"
-              element={<ManageApprove />}
-            />
-            <Route
-              path="/managements/topics"
-              element={<ManageTopicsPage />}
-            />
-            <Route
-              path="/managements/dashboard"
-              element={<DashBoardPage />}
-            />
-            <Route path="/managements/user" element={<ManageUser />}/>
-            <Route
-              path="/managements/notifications/:userId"
-              element={<ManageNotificationPage />}
-            />
-            <Route
-              path="/notification/:type"
-              element={<ListNotificationPage />}
-            />
-            <Route path="/post/:postId" element={<PostDetailPage />}/>
-            <Route
-              path="/discuss/:discussId"
-              element={<DiscussDetailPage />}
-            />
-            <Route
-              path="/managements/posts/:userId"
-              element={<ManagePostsPage />}
-            />
-            <Route
-              path="/managements/discussions/:userId"
-              element={<ManageDiscussionPage />}
-            />
-            <Route path="/managements" element={<ManagementPage />}/>
-            <Route path="/topics" element={<TopicPage />}/>
-            <Route path="/topics/detail/:topicId" element={<TopicDetail />} />
-            <Route path="/topics/:type" element={<TopicPage />}/>
-            <Route path="/chat" element={<ChatPage />}/>
-            <Route path="/chat/:id" element={<ChatPage />}/>
-            <Route path="/test" element={<TestPage />}/>
-          </Route>
-          <Route element={<PrivateRouter authenticated={false} />}>
-            <Route path="/sign-in" element={<SignInPage />} />
-          </Route>
-        </Routes>
-      </Suspense>
-
+    <Suspense fallback={<Loading />}>
+      <Routes>
+        <Route path="*" element={<PageNotFound />} />
+        <Route element={<PrivateRouter authenticated={true} />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/notifications" element={<NotificationPage />} />
+          <Route
+            path="/notifications-detail/:notificationId"
+            element={<NotificationDetailPage />}
+          />
+          <Route path="/user/:userId" element={<UserPage />} />
+          <Route path="/managements/report" element={<ManageReportPage />} />
+          <Route
+            path="/managements/approve/:postId"
+            element={<ReviewPostPage />}
+          />
+          <Route path="/managements/approve" element={<ManageApprove />} />
+          <Route path="/managements/topics" element={<ManageTopicsPage />} />
+          <Route path="/managements/dashboard" element={<DashBoardPage />} />
+          <Route path="/managements/user" element={<ManageUser />} />
+          <Route
+            path="/managements/notifications/:userId"
+            element={<ManageNotificationPage />}
+          />
+          <Route
+            path="/notification/:type"
+            element={<ListNotificationPage />}
+          />
+          <Route path="/post/:postId" element={<PostDetailPage />} />
+          <Route path="/discuss/:discussId" element={<DiscussDetailPage />} />
+          <Route
+            path="/managements/posts/:userId"
+            element={<ManagePostsPage />}
+          />
+          <Route
+            path="/managements/discussions/:userId"
+            element={<ManageDiscussionPage />}
+          />
+          <Route path="/managements" element={<ManagementPage />} />
+          <Route path="/topics" element={<TopicPage />} />
+          <Route path="/topics/detail/:topicId" element={<TopicDetail />} />
+          <Route path="/topics/:type" element={<TopicPage />} />
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/chat/:id" element={<ChatPage />} />
+          <Route path="/test" element={<TestPage />} />
+        </Route>
+        <Route element={<PrivateRouter authenticated={false} />}>
+          <Route path="/sign-in" element={<SignInPage />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }
 

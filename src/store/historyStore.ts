@@ -6,7 +6,7 @@ interface HistoryStoreState {
   historyNotification: HistoryNotification[];
   setHistory: (history: HistoryNotification[]) => void;
   fetchHistory: (userId: string) => void;
-  updateHistory: (updatedHistory: HistoryNotification)=> void;
+  updateHistory: (updatedHistory: HistoryNotification) => void;
 }
 
 export const useHistoryStore = create<HistoryStoreState>((set) => ({
@@ -18,7 +18,7 @@ export const useHistoryStore = create<HistoryStoreState>((set) => ({
   },
   updateHistory: (updatedHistory) =>
     set((state) => ({
-        historyNotification: state.historyNotification.map((c) =>
+      historyNotification: state.historyNotification.map((c) =>
         c._id === updatedHistory._id ? updatedHistory : c
       ),
     })),

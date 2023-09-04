@@ -5,7 +5,7 @@ import Carousel from "@/modules/post/Carousel";
 import PostHeader from "@/modules/post/PostHeader";
 import PostContent from "@/modules/post/PostContent";
 import ListPostCard from "@/modules/post/ListPostCard";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePostStore } from "@/store/postStore";
 import { useTopicStore } from "@/store/topicStore";
 import { useUserStore } from "@/store/userStore";
@@ -25,17 +25,19 @@ import Comments from "@/components/comment/Comments";
 import Modal from "@/components/modal/Modal";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog";
 import { toast } from "react-toastify";
+import LayoutSecondary from "@/layout/LayoutSecondary";
+import { HiArrowCircleLeft } from "react-icons/hi";
 
 export const PostDetailPage: React.FC = () => {
   const { postId } = useParams();
   const { getById, userById, user } = useUserStore();
   const { post, getPostByPostId } = usePostStore();
   const { getListByListTopicId, listTopicByListId } = useTopicStore();
-
+  const navigate = useNavigate();
   const [postIncrement, setPostIncrement] = useState<IPost | null>(null);
   const viewedPostIdsKey = user?._id ? `viewedPostIds_${user._id}` : "";
   const [increment, setIncrement] = useState(false);
-
+  const [postStatus, setPostStatus] = useState(false);
   const [parentComment, setParentComment] = useState<IComment[]>([]);
   const [activeComment, setActiveComment] = useState<{
     type: string;
@@ -60,35 +62,37 @@ export const PostDetailPage: React.FC = () => {
       const response = postId && (await getPostById(postId));
       if (response) {
         setPostIncrement(response);
-        if (viewedPostIdsKey !== "") {
-          const viewedPostIdsString = localStorage.getItem(viewedPostIdsKey);
-          if (viewedPostIdsString === null) {
-            postId && incrementViewPost(postId);
-            postId &&
-              localStorage.setItem(
-                `viewedPostIds_${user?._id}`,
-                JSON.stringify([postId])
-              );
-            setIncrement(!increment);
-          } else {
-            const initialViewedPostIds =
-              viewedPostIdsString != null
-                ? JSON.parse(viewedPostIdsString)
-                : [];
-            if (!initialViewedPostIds.includes(postId ? postId : "")) {
+        if (user?._id !== post?.createdBy) {
+          if (viewedPostIdsKey !== "") {
+            const viewedPostIdsString = localStorage.getItem(viewedPostIdsKey);
+            if (viewedPostIdsString === null) {
               postId && incrementViewPost(postId);
-              localStorage.setItem(
-                `viewedPostIds_${user?._id}`,
-                JSON.stringify([...initialViewedPostIds, postId])
-              );
+              postId &&
+                localStorage.setItem(
+                  `viewedPostIds_${user?._id}`,
+                  JSON.stringify([postId])
+                );
               setIncrement(!increment);
+            } else {
+              const initialViewedPostIds =
+                viewedPostIdsString != null
+                  ? JSON.parse(viewedPostIdsString)
+                  : [];
+              if (!initialViewedPostIds.includes(postId ? postId : "")) {
+                postId && incrementViewPost(postId);
+                localStorage.setItem(
+                  `viewedPostIds_${user?._id}`,
+                  JSON.stringify([...initialViewedPostIds, postId])
+                );
+                setIncrement(!increment);
+              }
             }
           }
         }
       }
     };
     fetchData();
-  }, [postId, user?._id, increment]);
+  }, [postId, user?._id, increment, postStatus]);
 
   useEffect(() => {
     post && getListByListTopicId(post.hashtag.toString());
@@ -192,6 +196,38 @@ export const PostDetailPage: React.FC = () => {
       console.log("fail to update comment");
     }
   };
+  const handleBack = () => {
+    navigate(-1);
+  };
+  if (
+    !post ||
+    (post.status === 3 && user?._id != post.createdBy) ||
+    (post.status === 2 && user?._id != post.createdBy) ||
+    (post.status === 0 && user?._id != post.createdBy) ||
+    (post.isDraft === true && user?._id != post.createdBy) ||
+    (post.status === 3 && user?.role !== 0) ||
+    (post.status === 2 && user?.role !== 0) ||
+    (post.status === 0 && user?.role !== 0) ||
+    (post.isDraft === true && user?.role !== 0)
+  ) {
+    return (
+      <LayoutSecondary>
+        <div className="w-full h-full text-center flex flex-col text-lg font-bold p-10 gap-4">
+          <span>Post not found!</span>
+          <div>
+            <button
+              className="dark:text-light0 rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
+              onClick={handleBack}
+            >
+              <HiArrowCircleLeft className="w-6 h-6 mr-1" />
+              Back
+            </button>
+          </div>
+        </div>
+      </LayoutSecondary>
+    );
+  }
+
   return (
     <LayoutDetail
       otherChildren={
@@ -205,7 +241,7 @@ export const PostDetailPage: React.FC = () => {
       <div className="z-10 md:w-full pb-2 bg-light4 dark:bg-dark1 dark:text-light0 rounded-lg p-8">
         <PostHeader
           post={postIncrement && postIncrement}
-          user={userById && userById}
+          userOwner={userById && userById}
           menuRef={menuRef}
           handleMenuToggle={handleMenuToggle}
           handleCloseModal={handleCloseModal}
@@ -213,6 +249,8 @@ export const PostDetailPage: React.FC = () => {
           handleReportClick={handleReportClick}
           isReportModalOpen={isReportModalOpen}
           listTopic={listTopicByListId != null ? listTopicByListId : []}
+          postStatus={postStatus}
+          setPostStatus={setPostStatus}
         />
         <PostContent content={post ? post.content : ""}></PostContent>
         {isModalOpenDialog && (

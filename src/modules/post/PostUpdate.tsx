@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import QuillEditor from "@/components/editor/QuillEditor";
 import { Label } from "@/components/label";
@@ -8,41 +8,43 @@ import UploadImage from "@/components/uploadImage/UploadImage";
 import Select from "react-select";
 import { colorSelectTopic } from "@/constants/global";
 import IPostCreate from "@/interface/API/IPostCreate";
-import { useTopicStore } from "@/store/topicStore";
 import Topic from "@/interface/topic";
-import { useUserStore } from "@/store/userStore";
 import { toast } from "react-toastify";
-import { CreateNewPost } from "@/services/postService";
+import { UpdatePost } from "@/services/postService";
 import { usePostStore } from "@/store/postStore";
 
-interface PostAddNewPageProps {
+interface PostUpdatePageProps {
   onCancel: () => void;
+  listAllTopic: Topic[] | null;
+  postId: string;
 }
 
-export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
-  const [dataPost, setDataPost] = useState<IPostCreate>({
-    title: "",
-    content: "",
-    createdBy: "",
-    hashtag: [],
-  });
-  const { user } = useUserStore();
-  const { listAllTopic, getTopic } = useTopicStore();
+export const PostUpdatePage: React.FC<PostUpdatePageProps> = ({
+  onCancel,
+  listAllTopic,
+  postId,
+}) => {
+  const { post, getPostByPostId } = usePostStore();
   const [title, setTitle] = useState<string>("");
+
   const [content, setContent] = useState<string>("");
+  const [postUpdate, setPostUpdate] = useState<IPostCreate | null>(null);
   const [uploadImg, setNewUploadImg] = useState<File | null>(null);
   const [uploadComplete, setUploadComplete] = useState(false);
-  const [createBy, setCreateBy] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [topicError, setTopicError] = useState<string | null>(null);
   const { change, setChange } = usePostStore();
-  useEffect(() => {
-    getTopic();
-  }, [getTopic]);
+  useMemo(() => {
+    postId && getPostByPostId(postId);
+  }, [postId]);
 
   useMemo(() => {
-    user && user._id && setCreateBy(user._id);
-  }, [user]);
+    if (post) {
+      setTitle(post.title);
+      setContent(post.content);
+      setPostUpdate(post);
+    }
+  }, [post]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -50,10 +52,10 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
 
   const handleCoverImageUpload = (file: File) => {
     setNewUploadImg(file);
-    setUploadComplete(true);
+    setUploadComplete(uploadComplete);
   };
   const handleDeleteImage = () => {
-    setUploadComplete(false);
+    setUploadComplete(uploadComplete);
   };
   const handleContentChange = (value: string) => {
     setContent(value);
@@ -67,13 +69,12 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
     const newTopic =
       selectedOptions && selectedOptions.map((option: any) => option.value);
     const updateTopic = newTopic;
-
     const createPost: IPostCreate = {
-      ...dataPost,
+      ...postUpdate,
       hashtag: updateTopic,
     };
 
-    setDataPost(createPost);
+    setPostUpdate(createPost);
   };
 
   const selectOptions = listAllTopic
@@ -89,7 +90,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
   const validateFields = () => {
     let isValid = true;
 
-    if (!dataPost || dataPost.hashtag?.length === 0) {
+    if (!postUpdate || postUpdate.hashtag?.length === 0) {
       setTopicError("Please select at least one topic");
       isValid = false;
     } else {
@@ -107,22 +108,24 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
 
     if (validateFields()) {
       const newPosts: IPostCreate = {
-        ...dataPost,
+        ...postUpdate,
         title: title,
         content: content,
-        createdBy: createBy,
       };
-      uploadImg != null && (await CreateNewPost(newPosts, uploadImg));
-      setChange(!change);
-      toast.success(" Create post successfully! ", {
+      if (uploadImg != null) {
+        post && (await UpdatePost(newPosts, post._id, uploadImg));
+        setChange(!change);
+      } else {
+        post && (await UpdatePost(newPosts, post._id));
+        setChange(!change);
+      }
+      toast.success(" Updated post successfully! ", {
         position: "top-center",
         autoClose: 3000,
       });
       onCancel();
       console.log(newPosts, uploadImg);
     }
-
-    //onSubmit(newPosts, uploadImg ? uploadImg : undefined);
   };
 
   return (
@@ -138,6 +141,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
                 Title
               </Label>
               <input
+                value={title}
                 className="border text-black border-gray-300 text-xs w-full h-full bg-light4  px-4 py-2 rounded-lg "
                 placeholder="Adding your title"
                 onChange={(e) => handleTitleChange(e)}
@@ -158,7 +162,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
                   isSearchable
                   placeholder="Choose topic..."
                   options={selectOptions}
-                  value={dataPost?.hashtag?.map((skill) => ({
+                  value={postUpdate?.hashtag?.map((skill) => ({
                     value: skill,
                     label: getSkillLabelById(skill),
                   }))}
@@ -175,7 +179,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
                   }}
                 />
               </div>
-              {submitted && dataPost.hashtag?.length === 0 && (
+              {submitted && postUpdate?.hashtag?.length === 0 && (
                 <div className="block text-xs text-red-500 mt-1">
                   {topicError}
                 </div>
@@ -192,11 +196,6 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
                 onImageUpload={handleCoverImageUpload}
                 onDeleteImage={handleDeleteImage}
               ></UploadImage>
-              {submitted && uploadComplete === false && (
-                <div className="block text-xs text-red-500 mt-1">
-                  Thumbnail is required.
-                </div>
-              )}
             </div>
           </div>
 
@@ -222,7 +221,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
           className=" text-light0 text-xs mx-2 bg-lighter hover:bg-darker rounded-xl px-4 py-2 mt-2 "
           onClick={handleSubmit}
         >
-          Add post
+          Update
         </button>
         <Button
           className=" text-light0 text-xs mx-2 rounded px-4 py-2 mt-2 bg-red3 hover:bg-red2"
@@ -237,4 +236,4 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
   );
 };
 
-export default PostAddNewPage;
+export default PostUpdatePage;

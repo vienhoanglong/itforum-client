@@ -64,9 +64,8 @@ export const setColorBackgroundUser = (color: string): string => {
 
 export const formatNumber = (number: number): string => {
   if (number > 9) {
-    return '9+';
+    return "9+";
   } else {
     return number.toString();
   }
-}
-
+};

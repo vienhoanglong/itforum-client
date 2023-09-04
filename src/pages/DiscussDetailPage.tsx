@@ -36,6 +36,7 @@ import IDiscussion from "@/interface/discussion";
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import Comments from "@/components/comment/Comments";
 import { useCommentStore } from "@/store/commentStore";
+import Navigation from "@/components/navigation/Navigation";
 
 const DiscussDetailPage: React.FC = React.memo(() => {
   const { discussId } = useParams<{ discussId: string }>();
@@ -47,10 +48,11 @@ const DiscussDetailPage: React.FC = React.memo(() => {
   const { listAllTopic, getTopic } = useTopicStore();
   const [isReportModalOpen, setReportModalOpen] = useState(false);
   const { user, userById, getById } = useUserStore();
-
+  const [state, setState] = useState(false);
   const [isModalOpenDialog, setIsModalOpenDialog] = useState(false);
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
   const [confirmMessage, setConfirmMessage] = useState("");
+
   const handleBack = () => {
     navigate(-1);
   };
@@ -136,7 +138,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
       }
     };
     fetchData();
-  }, [discussId, user?._id, increment]);
+  }, [discussId, user?._id, increment, state]);
 
   //Menu
   useEffect(() => {
@@ -203,6 +205,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
     handleConfirm(async () => {
       try {
         discussId && (await moveTrashOrRestore(discussId));
+        setState(!state);
         toast.success(" Deleted discuss successfully! ", {
           position: "bottom-right",
           autoClose: 3000,
@@ -212,16 +215,45 @@ const DiscussDetailPage: React.FC = React.memo(() => {
       }
     }, "Bạn có chắc muốn xoá không?");
   };
+  const handleRestore = async () => {
+    handleConfirm(async () => {
+      try {
+        discussId && (await moveTrashOrRestore(discussId));
+        setState(!state);
+        toast.success(" Restore discuss successfully! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error restore discussion");
+      }
+    }, "Bạn có chắc muốn khôi phục không?");
+  };
   const handleHidden = async () => {
     handleConfirm(async () => {
       try {
         discussId && (await updateStatusDiscussion(discussId, 3));
+        setState(!state);
         toast.success(" Discussion is hidden! ", {
           position: "bottom-right",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error hidden discussion");
+      }
+    }, "Bạn có chắc muốn ẩn không?");
+  };
+  const handlePublish = async () => {
+    handleConfirm(async () => {
+      try {
+        discussId && (await updateStatusDiscussion(discussId, 1));
+        setState(!state);
+        toast.success(" Discussion is published! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } catch (err) {
+        console.log("error publish discussion");
       }
     }, "Bạn có chắc muốn ẩn không?");
   };
@@ -249,9 +281,14 @@ const DiscussDetailPage: React.FC = React.memo(() => {
 
   if (
     !discussion ||
-    discussion.statusDiscuss === 3 ||
-    discussion.statusDiscuss === 2 ||
-    discussion.isDraft === true
+    (discussion.statusDiscuss === 3 && user?._id != discussion.createBy) ||
+    (discussion.statusDiscuss === 2 && user?._id != discussion.createBy) ||
+    (discussion.statusDiscuss === 0 && user?._id != discussion.createBy) ||
+    (discussion.isDraft === true && user?._id != discussion.createBy) ||
+    (discussion.statusDiscuss === 3 && user?.role !== 0) ||
+    (discussion.statusDiscuss === 2 && user?.role !== 0) ||
+    (discussion.statusDiscuss === 0 && user?.role !== 0) ||
+    (discussion.isDraft === true && user?.role !== 0)
   ) {
     return (
       <LayoutSecondary>
@@ -280,13 +317,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
         />
       }
     >
-      <button
-        className="dark:text-light0 rounded-full pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        onClick={handleBack}
-      >
-        <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back
-      </button>
+      <Navigation></Navigation>
       <div className="relative flex flex-col px-4 py-4 mb-3 duration-300 rounded-xl md:flex-row bg-light4 dark:bg-dark1">
         <div className="flex items-center self-start w-full mb-4 md:mr-5 md:mb-0 md:block md:w-auto">
           <div className="flex items-center">
@@ -315,6 +346,44 @@ const DiscussDetailPage: React.FC = React.memo(() => {
                   ? convertDateTime(discussion.createdAt.toString(), formatDate)
                   : ""}
               </span>
+              <div className="text-xs md:hidden font-normal text-grey-600">
+                {discussion.isDraft === true ? (
+                  <div className=" inline-block bg-red-500 text-[10px] px-[2px] text-white rounded-md">
+                    deleted
+                  </div>
+                ) : (
+                  (() => {
+                    switch (discussion?.statusDiscuss) {
+                      case 0:
+                        return (
+                          <div className=" inline-block bg-amber-500 text-[10px] px-[2px] text-white rounded-md">
+                            Pending
+                          </div>
+                        );
+                      case 1:
+                        return (
+                          <div className="inline-block bg-green-400 text-white text-[10px] px-[2px] rounded-md">
+                            Publish
+                          </div>
+                        );
+                      case 2:
+                        return (
+                          <div className=" inline-block bg-red-400 text-white text-[10px] px-[2px] rounded-md">
+                            Rejected
+                          </div>
+                        );
+                      case 3:
+                        return (
+                          <div className="inline-block bg-cyan-400 text-white text-[10px] px-[2px] rounded-md">
+                            Hidden
+                          </div>
+                        );
+                      default:
+                        return null;
+                    }
+                  })()
+                )}
+              </div>
             </div>
           </div>
           <div className="flex items-center justify-center dark:text-light0 py-2 ml-auto rounded-xl bg-grey-400 md:hidden">
@@ -356,6 +425,44 @@ const DiscussDetailPage: React.FC = React.memo(() => {
                         formatDate
                       )
                     : ""}
+                </div>
+                <div className="text-xs font-normal text-grey-600">
+                  {discussion.isDraft === true ? (
+                    <div className=" inline-block bg-red-500 text-[10px] px-[2px] text-white rounded-md">
+                      deleted
+                    </div>
+                  ) : (
+                    (() => {
+                      switch (discussion?.statusDiscuss) {
+                        case 0:
+                          return (
+                            <div className=" inline-block bg-amber-500 text-[10px] px-[2px] text-white rounded-md">
+                              Pending
+                            </div>
+                          );
+                        case 1:
+                          return (
+                            <div className="inline-block bg-green-400 text-white text-[10px] px-[2px] rounded-md">
+                              Publish
+                            </div>
+                          );
+                        case 2:
+                          return (
+                            <div className=" inline-block bg-red-400 text-white text-[10px] px-[2px] rounded-md">
+                              Rejected
+                            </div>
+                          );
+                        case 3:
+                          return (
+                            <div className="inline-block bg-cyan-400 text-white text-[10px] px-[2px] rounded-md">
+                              Hidden
+                            </div>
+                          );
+                        default:
+                          return null;
+                      }
+                    })()
+                  )}
                 </div>
               </div>
               <div className="relative hidden text-center md:ml-auto md:flex md:flex-row-reverse md:items-center gap-2 dark:text-light0">
@@ -419,17 +526,28 @@ const DiscussDetailPage: React.FC = React.memo(() => {
                 >
                   <HiDotsHorizontal size={10} className="w-4 h-4" />
                 </button>
-                {isMenuOpen && (
+                {isMenuOpen && discussion.statusDiscuss !== 0 && (
                   <ActionMenu
                     handleReportClick={handleReportClick}
                     handleHidden={handleHidden}
                     handleDeleted={handleDelete}
                     userCurrentId={user}
                     userOwnerId={userById}
+                    handlePublish={handlePublish}
+                    handleRestore={handleRestore}
+                    status={discussion.statusDiscuss}
+                    isDraft={discussion.isDraft}
                   ></ActionMenu>
                 )}
                 {isReportModalOpen && (
-                  <ReportModal closeModal={handleCloseModal} />
+                  <ReportModal
+                    idRefer={discussion._id}
+                    userId={
+                      user !== undefined && user !== null ? user._id || "" : ""
+                    }
+                    reportFor={"Discuss"}
+                    closeModal={handleCloseModal}
+                  />
                 )}
                 {isModalOpenDialog && (
                   <Modal isOpen={isModalOpenDialog} onClose={handleCloseModal}>

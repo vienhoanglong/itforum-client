@@ -251,7 +251,7 @@ export const ManageTopicsPage: React.FC = () => {
       <Navigation></Navigation>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Management topics</h4>
+          <h4 className="text-xl font-bold text-darker ">Topic management</h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">

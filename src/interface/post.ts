@@ -13,5 +13,6 @@ interface IPost {
   updatedAt: string;
   slug: string;
   __v: number;
+  reasonBan?: string;
 }
 export default IPost;

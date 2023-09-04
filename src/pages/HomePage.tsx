@@ -1,4 +1,3 @@
-import { posts } from "@/constants/global";
 import IDiscussion from "@/interface/discussion";
 import LayoutDefault from "@/layout/LayoutDefault";
 import { Discuss } from "@/modules/home/Discuss";
@@ -80,7 +79,7 @@ export const HomePage: React.FC = React.memo(() => {
           ></Discuss>
         </TabPanel>
         <TabPanel>
-          <Posts post={posts}></Posts>
+          <Posts></Posts>
         </TabPanel>
       </Tabs>
     </LayoutDefault>

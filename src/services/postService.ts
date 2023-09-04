@@ -12,12 +12,19 @@ export const CreateNewPost = async (
       throw new Error("Access token not found");
     }
     const formData = new FormData();
-    formData.append("title", post.title);
-    formData.append("content", post.content);
-    formData.append("createdBy", post.createdBy);
-    post.hashtag.forEach((hashtag) => {
-      formData.append("hashtag", hashtag);
-    });
+    if (post.content) {
+      formData.append("content", post.content);
+    }
+    if (post.title) {
+      formData.append("title", post.title);
+    }
+    if (post.createdBy) {
+      formData.append("createdBy", post.createdBy);
+    }
+    if (post.hashtag && Array.isArray(post.hashtag)) {
+      const hashtagString = post.hashtag.join(",");
+      formData.append("hashtag", hashtagString);
+    }
 
     formData.append("thumbnail", thumbnail);
 
@@ -105,12 +112,19 @@ export const UpdatePost = async (
       throw new Error("Access token not found");
     }
     const formData = new FormData();
-    formData.append("title", post.title);
-    formData.append("content", post.content);
-    formData.append("createdBy", post.createdBy);
-    post.hashtag.forEach((hashtag) => {
-      formData.append("hashtag", hashtag);
-    });
+    if (post.content) {
+      formData.append("content", post.content);
+    }
+    if (post.reasonBan) {
+      formData.append("reasonBan", post.reasonBan);
+    }
+    if (post.title) {
+      formData.append("title", post.title);
+    }
+    if (post.hashtag && Array.isArray(post.hashtag)) {
+      const hashtagString = post.hashtag.join(",");
+      formData.append("hashtag", hashtagString);
+    }
     if (thumbnail) {
       formData.append("thumbnail", thumbnail);
     }
@@ -167,5 +181,16 @@ export const moveTrashOrRestorePost = async (id: string): Promise<any> => {
   } catch (error) {
     console.error(error);
     throw new Error("Error change status posts");
+  }
+};
+export const getPostsBySearch = async (search: string): Promise<any> => {
+  try {
+    const response = await axios.get(
+      `https://ict-forum-server.onrender.com/posts/search?title=${search}`
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error get post: ");
   }
 };

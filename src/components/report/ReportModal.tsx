@@ -2,12 +2,28 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../button";
 import { OPTIONS } from "@/constants/global";
+import IReportCreate from "@/interface/API/IReportCreate";
+import { CreateReport } from "@/services/reportService";
+import { toast } from "react-toastify";
+
+interface IReportData {
+  selectedOptions: string[];
+  otherText?: string;
+}
 
 interface ModalReportProps {
   closeModal: () => void;
+  reportFor: string;
+  userId: string;
+  idRefer: string;
 }
 
-const ModalReport: React.FC<ModalReportProps> = ({ closeModal }) => {
+const ModalReport: React.FC<ModalReportProps> = ({
+  closeModal,
+  reportFor,
+  userId,
+  idRefer,
+}) => {
   const {
     register,
     handleSubmit,
@@ -32,19 +48,49 @@ const ModalReport: React.FC<ModalReportProps> = ({ closeModal }) => {
     setWarning(false);
   };
 
-  const onSubmit = (data: Record<string, any>) => {
-    if (selectedOptions.length === 0) {
-      console.log("Please select at least one option");
-      setWarning(true);
-      return;
-    }
+  const onSubmit = async (data: Record<string, any>) => {
+    try {
+      if (selectedOptions.length === 0) {
+        console.log("Please select at least one option");
+        setWarning(true);
+        return;
+      }
 
-    const requestData = {
-      selectedOptions,
-      ...data,
-    };
-    console.log("Form data:", requestData);
-    closeModal();
+      const requestData: IReportData = {
+        selectedOptions,
+        ...data,
+      };
+      const reportData: IReportCreate = {
+        createdBy: userId,
+        reportBelong: reportFor,
+        idReference: idRefer,
+        typeReport: requestData.selectedOptions,
+        link: `https://itforum-client.vercel.app/${
+          reportFor === "Posts"
+            ? reportFor.slice(0, 4).toLowerCase()
+            : reportFor.toLowerCase()
+        }/${idRefer}`,
+        ...(requestData.otherText !== null
+          ? { otherText: requestData.otherText }
+          : {}),
+      };
+      const response = await CreateReport(reportData);
+      if (response.response.data.statusCode === 400) {
+        toast.warning(response.response.data.message, {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      } else {
+        toast.success(" Report successfully! ", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+      }
+      closeModal();
+      console.log(response);
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   return (

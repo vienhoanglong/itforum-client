@@ -238,7 +238,7 @@ const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
             className="p-4 rounded-lg bg-mainColor flex space-x-1 my-2"
             onClick={hanldeCreate}
           >
-            <span className="text-[12px]">Submit</span>
+            <span className="text-[12px]">Update</span>
           </button>
         </div>
       </form>

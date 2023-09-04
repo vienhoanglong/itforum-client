@@ -11,5 +11,6 @@ export interface IDiscussion {
   statusDiscuss: number;
   __v?: number;
   isDraft: boolean;
+  reasonBan?: string;
 }
 export default IDiscussion;

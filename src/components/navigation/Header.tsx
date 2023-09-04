@@ -32,24 +32,30 @@ import { markAsReadHistory } from "@/services/historyNotificationService";
 export const Header: React.FC = React.memo(() => {
   const { t } = useTranslation();
   const { user, setUser, theme } = useUserStore();
-  const {fetchHistory, historyNotification, setHistory, updateHistory} = useHistoryStore();
+  const { fetchHistory, historyNotification, setHistory, updateHistory } =
+    useHistoryStore();
   const { logout } = useAuthStore();
   const navigate = useNavigate();
   const [openNotice, setOpenNotice] = useState<boolean>(false);
   const notificationRef = useRef<HTMLDivElement | null>(null);
-  React.useEffect(()=> {
-    user?._id && fetchHistory(user?._id)
-  }, [fetchHistory, user?._id])
+  React.useEffect(() => {
+    user?._id && fetchHistory(user?._id);
+  }, [fetchHistory, user?._id]);
   React.useEffect(() => {
     socket.on("newHistoryNotification", (data: HistoryNotification) => {
-      if(data && ((data.type === "ALL") || (data.sendTo.includes(user?._id ?? '')))){
+      if (
+        data &&
+        (data.type === "ALL" || data.sendTo.includes(user?._id ?? ""))
+      ) {
         setHistory([data]);
-        if(user?._id && data.createdBy !== user?._id){
-          toast.info("Bạn có thông báo mới: "+data.title, {position: "bottom-right"})
+        if (user?._id && data.createdBy !== user?._id) {
+          toast.info("Bạn có thông báo mới: " + data.title, {
+            position: "bottom-right",
+          });
         }
       }
     });
-  }, [setHistory, user?._id])
+  }, [setHistory, user?._id]);
   React.useEffect(() => {
     setUser();
   }, [setUser]);
@@ -123,15 +129,20 @@ export const Header: React.FC = React.memo(() => {
               <div className="relative flex h-5 w-5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
                 {historyNotification && (
-                <span className="relative inline-flex rounded-full h-5 w-5 bg-sky-500 justify-center items-center text-white text-[10px] font-semibold">
-                  {formatNumber(historyNotification.reduce((count, notification) => {
-                    if (user?._id && !notification.readBy.includes(user?._id)) {
-                      return count + 1;
-                    }
-                    return count;
-                  }, 0))}
-                </span>
-              )}
+                  <span className="relative inline-flex rounded-full h-5 w-5 bg-sky-500 justify-center items-center text-white text-[10px] font-semibold">
+                    {formatNumber(
+                      historyNotification.reduce((count, notification) => {
+                        if (
+                          user?._id &&
+                          !notification.readBy.includes(user?._id)
+                        ) {
+                          return count + 1;
+                        }
+                        return count;
+                      }, 0)
+                    )}
+                  </span>
+                )}
               </div>
             </div>
             <HiBell
@@ -151,24 +162,34 @@ export const Header: React.FC = React.memo(() => {
                   </div>
                 </div>
                 <div className="border-b-2 p-2">
-                  {historyNotification && historyNotification.map((history) => (
-
-                  <Link key={history._id} className="rounded-lg relative flex flex-row gap-2 p-2 transition-all duration-300 ease dark:text-light0 focus:bg-subtle hover:bg-subtle hover:outline-mainColor dark:focus:bg-darker dark:hover:text-mainColor cursor-pointer " to={history.link} onClick={()=>user?._id && handleMarkAsRead(history._id, user?._id)}>
-                    {user?._id && !history.readBy.includes(user?._id) && (<span className="absolute inline-flex rounded-full h-2 w-2 bg-mainColor drop-shadow-2xl top-2 right-2"></span>)}
-                    <img
-                      src={notice}
-                      className="rounded-full object-cover h-8 w-8"
-                    />
-                    <div className="flex flex-col">
-                      <span className="text-xs break-words line-clamp-2 w-11/12 font-semibold">
-                        {history.title}
-                      </span>
-                      <span className="text-[10px] font-normal">
-                        {history?.createdAt && formatTimeAuto(history?.createdAt)}
-                      </span>
-                    </div>
-                  </Link>
-                  ))}
+                  {historyNotification &&
+                    historyNotification.map((history) => (
+                      <Link
+                        key={history._id}
+                        className="rounded-lg relative flex flex-row gap-2 p-2 transition-all duration-300 ease dark:text-light0 focus:bg-subtle hover:bg-subtle hover:outline-mainColor dark:focus:bg-darker dark:hover:text-mainColor cursor-pointer "
+                        to={history.link}
+                        onClick={() =>
+                          user?._id && handleMarkAsRead(history._id, user?._id)
+                        }
+                      >
+                        {user?._id && !history.readBy.includes(user?._id) && (
+                          <span className="absolute inline-flex rounded-full h-2 w-2 bg-mainColor drop-shadow-2xl top-2 right-2"></span>
+                        )}
+                        <img
+                          src={notice}
+                          className="rounded-full object-cover h-8 w-8"
+                        />
+                        <div className="flex flex-col">
+                          <span className="text-xs break-words line-clamp-2 w-11/12 font-semibold">
+                            {history.title}
+                          </span>
+                          <span className="text-[10px] font-normal">
+                            {history?.createdAt &&
+                              formatTimeAuto(history?.createdAt)}
+                          </span>
+                        </div>
+                      </Link>
+                    ))}
                 </div>
               </div>
             )}

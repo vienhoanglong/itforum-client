@@ -38,7 +38,7 @@ const ManagementPage: React.FC = React.memo(() => {
           </div>
 
           <Link
-            to="/managements/posts"
+            to={`/managements/posts/${user?._id}`}
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
             Chi tiết
