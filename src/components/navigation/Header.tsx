@@ -24,13 +24,32 @@ import { useTranslation } from "react-i18next";
 import { colorsAvatar } from "@/constants/global";
 import notice from "assets/notification.png";
 import { BiCheckDouble } from "react-icons/bi";
+import socket from "@/utils/getSocketIo";
+import { HistoryNotification } from "@/interface/history";
+import { formatNumber, formatTimeAuto } from "@/utils/helper";
+import { useHistoryStore } from "@/store/historyStore";
+import { markAsReadHistory } from "@/services/historyNotificationService";
 export const Header: React.FC = React.memo(() => {
   const { t } = useTranslation();
   const { user, setUser, theme } = useUserStore();
+  const {fetchHistory, historyNotification, setHistory, updateHistory} = useHistoryStore();
   const { logout } = useAuthStore();
   const navigate = useNavigate();
   const [openNotice, setOpenNotice] = useState<boolean>(false);
   const notificationRef = useRef<HTMLDivElement | null>(null);
+  React.useEffect(()=> {
+    user?._id && fetchHistory(user?._id)
+  }, [fetchHistory, user?._id])
+  React.useEffect(() => {
+    socket.on("newHistoryNotification", (data: HistoryNotification) => {
+      if(data && ((data.type === "ALL") || (data.sendTo.includes(user?._id ?? '')))){
+        setHistory([data]);
+        if(user?._id && data.createdBy !== user?._id){
+          toast.info("Bạn có thông báo mới: "+data.title, {position: "bottom-right"})
+        }
+      }
+    });
+  }, [setHistory, user?._id])
   React.useEffect(() => {
     setUser();
   }, [setUser]);
@@ -40,7 +59,7 @@ export const Header: React.FC = React.memo(() => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     navigate("/sign-in");
   };
-  const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false); // config modal add
+  const [isModalOpenAddPost, setIsModalOpenAddPost] = useState(false);
   const handleAddNewPost = () => {
     setIsModalOpenAddPost(true);
   };
@@ -72,10 +91,9 @@ export const Header: React.FC = React.memo(() => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  const handleNotificationClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    event.stopPropagation();
+  const handleMarkAsRead = async (id: string, userId: string) => {
+    const response = await markAsReadHistory(id, userId);
+    response && updateHistory(response);
   };
   return (
     <header className="z-20 flex flex-row items-center  justify-between w-full py-4 bg-light4 shadow-sm dark:bg-dark0 dark:shadow-xl">
@@ -104,9 +122,16 @@ export const Header: React.FC = React.memo(() => {
             <div className="absolute -top-1 right-0">
               <div className="relative flex h-5 w-5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                {historyNotification && (
                 <span className="relative inline-flex rounded-full h-5 w-5 bg-sky-500 justify-center items-center text-white text-[10px] font-semibold">
-                  9+
+                  {formatNumber(historyNotification.reduce((count, notification) => {
+                    if (user?._id && !notification.readBy.includes(user?._id)) {
+                      return count + 1;
+                    }
+                    return count;
+                  }, 0))}
                 </span>
+              )}
               </div>
             </div>
             <HiBell
@@ -116,8 +141,7 @@ export const Header: React.FC = React.memo(() => {
             {openNotice && (
               <div
                 ref={notificationRef}
-                onClick={(e) => handleNotificationClick(e)}
-                className="w-[300px] h-auto absolute top-[60px] -right-10 md:left-0 rounded-lg shadow-md p-2 space-y-1 bg-white text-dark2 dark:bg-dark3 dark:text-light0 outline-1 mr-6"
+                className="w-[300px] h-[430px] overflow-y-auto no-scrollbar absolute top-[60px] -right-10 md:-left-4 rounded-lg shadow-md p-2 space-y-1 bg-white text-dark2 dark:bg-dark3 dark:text-light0 outline-1 mr-6"
               >
                 <div className="flex flex-row border-b-2 justify-between items-center p-2">
                   <div className="text-sm font-bold">Thông báo</div>
@@ -127,24 +151,25 @@ export const Header: React.FC = React.memo(() => {
                   </div>
                 </div>
                 <div className="border-b-2 p-2">
-                  <div className="rounded-lg relative flex flex-row gap-2 p-2 transition-all duration-300 ease dark:text-light0 focus:bg-subtle hover:bg-subtle hover:outline-mainColor dark:focus:bg-darker dark:hover:text-mainColor cursor-pointer ">
-                    <span className="absolute inline-flex rounded-full h-2 w-2 bg-mainColor drop-shadow-2xl top-2 right-2"></span>
+                  {historyNotification && historyNotification.map((history) => (
+
+                  <Link key={history._id} className="rounded-lg relative flex flex-row gap-2 p-2 transition-all duration-300 ease dark:text-light0 focus:bg-subtle hover:bg-subtle hover:outline-mainColor dark:focus:bg-darker dark:hover:text-mainColor cursor-pointer " to={history.link} onClick={()=>user?._id && handleMarkAsRead(history._id, user?._id)}>
+                    {user?._id && !history.readBy.includes(user?._id) && (<span className="absolute inline-flex rounded-full h-2 w-2 bg-mainColor drop-shadow-2xl top-2 right-2"></span>)}
                     <img
                       src={notice}
                       className="rounded-full object-cover h-8 w-8"
                     />
                     <div className="flex flex-col">
                       <span className="text-xs break-words line-clamp-2 w-11/12 font-semibold">
-                        Bạn vừa nhận được một thông báo mới từ Khoa CNTT về việc
-                        báo cáo dự án công nghệ thông tin 2 năm học 2022-2023
+                        {history.title}
                       </span>
                       <span className="text-[10px] font-normal">
-                        10 phút trước
+                        {history?.createdAt && formatTimeAuto(history?.createdAt)}
                       </span>
                     </div>
-                  </div>
+                  </Link>
+                  ))}
                 </div>
-                <div className="text-xs text-center">Xem tất cả</div>
               </div>
             )}
           </div>
