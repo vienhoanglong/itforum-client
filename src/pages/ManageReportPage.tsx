@@ -69,9 +69,9 @@ export const ManageReportPage: React.FC = React.memo(() => {
       ? sortedData?.filter((item) => item.typeReport.includes(filterType))
       : sortedData;
 
-    const filteredByBelong = filterBelong
-      ? filteredData?.filter((item) => item.reportBelong === filterBelong)
-      : filteredData;
+    // const filteredByBelong = filterBelong
+    //   ? filteredData?.filter((item) => item.reportBelong === filterBelong)
+    //   : filteredData;
 
     const filteredByStatus = filterStatus
       ? filteredData?.filter((item) => item.status === filterStatus)

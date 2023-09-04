@@ -20,7 +20,6 @@ import ManagementPage from "./pages/ManagementPage";
 import NotificationPage from "./pages/NotificationPage";
 import PageNotFound from "./pages/PageNotFound";
 import ProfilePage from "./pages/ProfilePage";
-import ReviewPostPage from "./pages/ReviewPostPage";
 import SignInPage from "./pages/SignInPage";
 import TestPage from "./pages/TestPage";
 import TopicPage from "./pages/TopicPage";
@@ -71,10 +70,6 @@ function App() {
           />
           <Route path="/user/:userId" element={<UserPage />} />
           <Route path="/managements/report" element={<ManageReportPage />} />
-          <Route
-            path="/managements/approve/:postId"
-            element={<ReviewPostPage />}
-          />
           <Route path="/managements/approve" element={<ManageApprove />} />
           <Route path="/managements/topics" element={<ManageTopicsPage />} />
           <Route path="/managements/dashboard" element={<DashBoardPage />} />
