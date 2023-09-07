@@ -49,21 +49,27 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
   React.useEffect(() => {
     socket.on("newMessage", (newMessage) => {
       // Handle the new message
-      if (newMessage.conversationId === chatId) {
+      if (newMessage.conversationId === chatId && newMessage.senderId !== user?._id) {
         setMessages([newMessage, ...messages]);
       }
     });
     socket.on("newMessageFile", (newMessage) => {
+      if (newMessage.conversationId === chatId && newMessage.senderId !== user?._id) {
+        setMessages([newMessage, ...messages]);
+      }
+    });
+    socket.on("newMessageChatGpt", (newMessage ) => {
+      if (newMessage.conversationId === chatId && newMessage.senderId !== user?._id) {
+        setMessages([newMessage, ...messages]);
+      }
+    });
+    socket.on("chatGptReply", (newMessage) => {
+      console.log("newMessage", newMessage)
       if (newMessage.conversationId === chatId) {
         setMessages([newMessage, ...messages]);
       }
     });
-    socket.on("newMessageChatGpt", (newMessage) => {
-      if (newMessage.conversationId === chatId) {
-        setMessages([newMessage, ...messages]);
-      }
-    });
-  }, [chatId, messages, setMessages]);
+  }, [chatId, messages, setMessages, user?._id]);
   // const handleScroll = () => {
   //   if(containerRef.current){
   //   console.log(containerRef.current.scrollTop, containerRef.current.clientHeight, containerRef.current.scrollHeight)
