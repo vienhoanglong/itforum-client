@@ -1,5 +1,5 @@
 import { Suspense, lazy } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 
 const PrivateRouter = lazy(() => import("@/PrivateRoute"));
 import DashBoardPage from "@/pages/DashBoardPage";
@@ -26,6 +26,7 @@ import TopicPage from "./pages/TopicPage";
 import UserPage from "./pages/UserPage";
 import Loading from "./components/Loading/Loading";
 import TopicDetail from "@/modules/topic/TopicDetail";
+import decodeToken from "./utils/decodeToken";
 // import TestPage from "./pages/TestPage";
 // import Loading from "./components/Loading/Loading";
 // const ManageNotificationPage = lazy(
@@ -55,6 +56,22 @@ import TopicDetail from "@/modules/topic/TopicDetail";
 //   () => import("@/pages/NotificationDetailPage")
 // );
 // const ManageDiscussionPage = lazy(() => import("@/pages/ManageDiscussionPage"));
+const RoleAccess = ({ roles = [] }: { roles?: string[] } = {}) => {
+  const accessToken: string = localStorage.getItem("accessToken") ?? "";
+  if (accessToken) {
+    const decodedToken = decodeToken(accessToken);
+    // Check expiration access token
+    const currentTimeStamp = Math.floor(Date.now() / 1000);
+    if (decodedToken.exp && decodedToken.exp >= currentTimeStamp) {
+      return !roles?.length || roles.includes(decodedToken?.role.toString()) ? (
+        <Outlet />
+      ) : (
+        <PageNotFound />
+      );
+    }
+  }
+};
+
 function App() {
   return (
     <Suspense fallback={<Loading />}>
@@ -69,15 +86,19 @@ function App() {
             element={<NotificationDetailPage />}
           />
           <Route path="/user/:userId" element={<UserPage />} />
-          <Route path="/managements/report" element={<ManageReportPage />} />
-          <Route path="/managements/approve" element={<ManageApprove />} />
-          <Route path="/managements/topics" element={<ManageTopicsPage />} />
-          <Route path="/managements/dashboard" element={<DashBoardPage />} />
-          <Route path="/managements/user" element={<ManageUser />} />
-          <Route
-            path="/managements/notifications/:userId"
-            element={<ManageNotificationPage />}
-          />
+          <Route element={<RoleAccess roles={["0"]} />}>
+            <Route path="/managements/report" element={<ManageReportPage />} />
+            <Route path="/managements/approve" element={<ManageApprove />} />
+            <Route path="/managements/dashboard" element={<DashBoardPage />} />
+            <Route path="/managements/topics" element={<ManageTopicsPage />} />
+            <Route path="/managements/user" element={<ManageUser />} />
+          </Route>
+          <Route element={<RoleAccess roles={["0", "1", "3"]} />}>
+            <Route
+              path="/managements/notifications/:userId"
+              element={<ManageNotificationPage />}
+            />
+          </Route>
           <Route
             path="/notification/:type"
             element={<ListNotificationPage />}
