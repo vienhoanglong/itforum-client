@@ -4,6 +4,7 @@ import { getAllPost } from "@/services/postService";
 import { useTopicStore } from "@/store/topicStore";
 import convertDateTime from "@/utils/helper";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 interface ListPostCardProps {
@@ -17,6 +18,7 @@ const ListPostCard: React.FC<ListPostCardProps> = ({
   numTopicsToShow,
   postId,
 }) => {
+  const { t } = useTranslation();
   const { listAllTopic, getTopic } = useTopicStore();
   const formatDate = "MM-DD-YYYY";
   const [filter, setFilter] = useState<IPost[]>([]);
@@ -57,19 +59,21 @@ const ListPostCard: React.FC<ListPostCardProps> = ({
   return (
     <div className="w-full h-auto  dark:bg-dark1/80 rounded-lg mt-2 flex pt-4 flex-col space-y-2">
       <div className=" flex justify-between items-center mb-2 px-2">
-        <span className="font-bold text-sm text-darker">Related posts</span>
+        <span className="font-bold text-sm text-darker">
+          {t("relatedPosts")}
+        </span>
         {filter.length === 0 ? null : (
           <Link
             className=" dark:text-light0 px-4 rounded-full link inline-flex items-center text-xs !text-grey-600 underline font-medium bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0"
             to="/"
           >
-            More
+            {t("more")}
           </Link>
         )}
       </div>
       {filter.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-white py-4">
-          Không có bài viết liên quan
+          {t("noPostRelated")}
         </div>
       ) : (
         filter.slice(0, numTopicsToShow).map((post, index) => (

@@ -3,37 +3,31 @@ import { HiBell, HiChatAlt2, HiHome, HiUser, HiViewGrid } from "react-icons/hi";
 const menus: MenuTypes[] = [
   {
     id: "home",
-    name: { en: "Home", vn: "Trang chủ" },
+    name: { en: "home", vn: "Trang chủ" },
     icon: HiHome,
     path: "/",
   },
   {
     id: "chat",
-    name: { en: "Chat", vn: "Tin nhắn" },
+    name: { en: "chat", vn: "Tin nhắn" },
     icon: HiChatAlt2,
     path: "/chat",
   },
   {
     id: "profileUser",
-    name: { en: "My Profile", vn: "Hồ sơ" },
+    name: { en: "myProfile", vn: "Hồ sơ" },
     icon: HiUser,
     path: "/profile",
   },
   {
     id: "notice",
-    name: { en: "Notification", vn: "Thông báo" },
+    name: { en: "notifications", vn: "Thông báo" },
     icon: HiBell,
     path: "/notifications",
   },
-  // {
-  //   id: "management",
-  //   name: { en: "Management", vn: "Quản lý cá nhân" },
-  //   icon: HiDocumentDuplicate,
-  //   path: "/managements",
-  // },
   {
     id: "topic",
-    name: { en: "Topic", vn: "chủ đề" },
+    name: { en: "topics", vn: "chủ đề" },
     icon: HiViewGrid,
     path: "/topics",
   },

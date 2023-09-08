@@ -6,6 +6,9 @@ import IDiscussionCreate from "@/interface/API/IDiscussionCreate";
 import "react-toastify/dist/ReactToastify.css";
 import Topic from "@/interface/topic";
 import { useDiscussionStore } from "@/store/discussionStore";
+import { useTranslation } from "react-i18next";
+import { Label } from "@/components/label";
+import QuillEditor from "@/components/editor/QuillEditor";
 interface UpdateDiscussionProps {
   listTopic: Topic[] | null;
   discussionId: string;
@@ -16,12 +19,13 @@ export const UpdateDiscussion: React.FC<UpdateDiscussionProps> = ({
   listTopic,
   discussionId,
 }) => {
+  const { t } = useTranslation();
   const { getDiscussById, discussion } = useDiscussionStore();
   const [dataDisussion, setDataDiscussion] =
     useState<IDiscussionCreate | null>();
   const [isTopicistEmpty, setIsTopicistEmpty] = useState(false);
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState<string>("");
   const [titleError, setTitleError] = useState<string | null>(null);
   const [topicError, setTopicError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
@@ -90,11 +94,10 @@ export const UpdateDiscussion: React.FC<UpdateDiscussionProps> = ({
     }));
   };
 
-  const handleChangeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+  const handleChangeContent = (e: string) => {
     setDataDiscussion((prevUserData) => ({
       ...prevUserData,
-      [name]: value,
+      content: e,
     }));
   };
 
@@ -114,7 +117,7 @@ export const UpdateDiscussion: React.FC<UpdateDiscussionProps> = ({
     <div>
       <div className="flex justify-center mb-3">
         <span className=" dark:text-light0 text-lg  font-bold">
-          Update discussion
+          {t("updateDiscussion")}
         </span>
       </div>
       <div className="sm:w-[400px] w-[200px] ">
@@ -154,13 +157,33 @@ export const UpdateDiscussion: React.FC<UpdateDiscussionProps> = ({
         {topicError && (
           <div className="text-red-500 text-xs mt-1">{topicError}</div>
         )}
-        <textarea
+        {/* <textarea
           placeholder="Typing your content here..."
           value={dataDisussion?.content}
           name="content"
           onChange={handleChangeContent}
           className=" w-full h-[300px]  md:h-[300px] text-dark0 dark:bg-dark0/80 bg-light2/80 dark:text-light0 text-xs p-4 rounded-md mt-2"
         ></textarea>
+        {contentError && (
+          <div className="text-red-500 text-xs mt-1">{contentError}</div>
+        )} */}
+        <div className=" px-2 pb-2 w-full h-full mb-14 md:w-full md:h-[340px]">
+          <Label htmlFor="content" className="block text-xs font-semibold">
+            {t("content")}
+          </Label>
+          <QuillEditor
+            value={content}
+            onChange={(e) => {
+              handleChangeContent(e);
+              setContent(e);
+            }}
+          ></QuillEditor>
+          {/* {submitted && (content === "" || content === "<p><br></p>") && (
+              <div className="block text-xs mt-2 text-red-500">
+                 {t("contentIsRequired")}     
+              </div>
+            )} */}
+        </div>
         {contentError && (
           <div className="text-red-500 text-xs mt-1">{contentError}</div>
         )}
@@ -172,7 +195,7 @@ export const UpdateDiscussion: React.FC<UpdateDiscussionProps> = ({
             kind="primary"
             disable
           >
-            Update
+            {t("update")}
           </Button>
         ) : (
           <Button
@@ -182,7 +205,7 @@ export const UpdateDiscussion: React.FC<UpdateDiscussionProps> = ({
             kind="primary"
             handle={handleSaveChanges}
           >
-            Update
+            {t("update")}
           </Button>
         )}
       </div>

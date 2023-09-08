@@ -20,11 +20,12 @@ import IPost from "@/interface/post.ts";
 import IPostCreate from "@/interface/API/IPostCreate.ts";
 import { UpdatePost, changeStatusPost } from "@/services/postService.ts";
 import ReviewPostPage from "./ReviewPostPage.tsx";
+import { useTranslation } from "react-i18next";
 
 export const ManageApprove: React.FC = React.memo(() => {
   const { listAllTopic, getTopic } = useTopicStore();
   const { change, getListPost, listAllPost } = usePostStore();
-
+  const { t } = useTranslation();
   const { setUser, user } = useUserStore();
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [filterType, setFilterType] = useState<string | null>(null);
@@ -155,7 +156,7 @@ export const ManageApprove: React.FC = React.memo(() => {
         try {
           await changeStatusPost(id, PUBLISH);
           getListPost(0, 0, "desc");
-          toast.success(" Post is approved! ", {
+          toast.success(`${t("approveSucess")}`, {
             position: "bottom-right",
             autoClose: 3000,
           });
@@ -163,7 +164,7 @@ export const ManageApprove: React.FC = React.memo(() => {
           console.log("error approved post");
         }
       },
-      "Bạn có chắc đồng ý duyệt không?",
+      `${t("confirmApprove")}`,
       false
     );
   };
@@ -181,7 +182,7 @@ export const ManageApprove: React.FC = React.memo(() => {
             await UpdatePost(updateReason, id);
           }
           getListPost(0, 0, "desc");
-          toast.success(" Post is reject! ", {
+          toast.success(`${t("rejectSucess")}`, {
             position: "bottom-right",
             autoClose: 3000,
           });
@@ -189,7 +190,7 @@ export const ManageApprove: React.FC = React.memo(() => {
           console.log("error reject post");
         }
       },
-      "Bạn có chắc muốn từ chối không?",
+      `${t("confirmReject")}`,
       true
     );
   };
@@ -199,25 +200,23 @@ export const ManageApprove: React.FC = React.memo(() => {
       <Navigation></Navigation>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">
-            Approval management
-          </h4>
+          <h4 className="text-xl font-bold text-darker ">{t("approve")}</h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
             <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
               <div className="w-1/2 relative flex flex-wrap">
-                <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                  <span>Topic:</span>
+                <div className="w-1/2 flex justify-center  dark:text-white items-center">
+                  <span> {t("topics")}:</span>
                 </div>
-                <div className="w-3/4">
+                <div className="w-1/2">
                   <select
                     id="filterDropdown"
                     className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
                     value={filterType || ""}
                     onChange={(e) => handleFilter(e.target.value || null)}
                   >
-                    <option value="">All</option>
+                    <option value=""> {t("all")}</option>
                     {listAllTopic?.map((topic) => (
                       <option key={topic._id} value={topic._id}>
                         {topic.name}
@@ -251,13 +250,12 @@ export const ManageApprove: React.FC = React.memo(() => {
           <table className="min-w-full shadow-lg  ">
             <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
               <tr>
-                <th className="py-2 px-4  rounded-tl-md ">SN</th>
-                <th className="py-2 px-4  ">Title</th>
-                <th className="py-2 px-4  ">Topic</th>
-                <th className="py-2 px-4  ">View</th>
+                <th className="py-2 px-4  rounded-tl-md "> {t("sn")}</th>
+                <th className="py-2 px-4  "> {t("title")}</th>
+                <th className="py-2 px-4  "> {t("topics")}</th>
                 <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
                   <div className="flex justify-center items-center gap-2">
-                    <span>Date</span>
+                    <span> {t("date")}</span>
                     {sortDirection === "asc" ? (
                       <BsFillArrowUpSquareFill size={14} />
                     ) : (
@@ -265,16 +263,16 @@ export const ManageApprove: React.FC = React.memo(() => {
                     )}
                   </div>
                 </th>
-                <th className="py-2 px-4  ">Status</th>
-                <th className="py-2 px-4  ">Review</th>
-                <th className="py-2 px-4 rounded-tr-md ">Action</th>
+                <th className="py-2 px-4  "> {t("status")}</th>
+                <th className="py-2 px-4  "> {t("review")}</th>
+                <th className="py-2 px-4 rounded-tr-md "> {t("action")}</th>
               </tr>
             </thead>
             <tbody>
               {currentItems === undefined || currentItems?.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center dark:text-white">
-                    There are no posts
+                    {t("noPosts")}
                   </td>
                 </tr>
               ) : (
@@ -328,9 +326,7 @@ export const ManageApprove: React.FC = React.memo(() => {
                         return null;
                       })}
                     </td>
-                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
-                      {item.totalView}
-                    </td>
+
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                       {convertDateTime(item.createdAt.toString(), formatDate)}
                     </td>
@@ -418,7 +414,7 @@ export const ManageApprove: React.FC = React.memo(() => {
           </div>
           <div className="w-auto mx-2 flex items-center justify-end">
             <label htmlFor="itemsPerPage" className="mr-2">
-              Rows per page:
+              {t("rowPerPage")}:
             </label>
             <select
               id="itemsPerPage"

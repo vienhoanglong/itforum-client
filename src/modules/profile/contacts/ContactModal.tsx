@@ -4,6 +4,7 @@ import { HiPencil, HiPlus, HiTrash } from "react-icons/hi";
 import { v4 as uuidv4 } from "uuid";
 import IUser from "@/interface/user";
 import IContact from "@/interface/API/IContact";
+import { useTranslation } from "react-i18next";
 
 interface ContactModalProps {
   userData: IUser | null;
@@ -14,6 +15,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
   userData,
   onSave,
 }: ContactModalProps) => {
+  const { t } = useTranslation();
   const [editedContact, setEditedContact] = useState<IUser | null>(
     userData || null
   );
@@ -86,7 +88,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
       <ul className="text-xs">
         <li>
           <div className="flex justify-between items-center mt-4 ">
-            Address:{" "}
+            {t("address")}:{" "}
             <input
               type="text"
               value={editedContact?.address}
@@ -98,7 +100,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
 
         <li>
           <div className="flex justify-between items-center mt-4">
-            Phone:{" "}
+            {t("phone")}:{" "}
             <input
               type="text"
               value={editedContact?.phoneNumber}
@@ -167,7 +169,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
           onClick={handleSave}
         >
           <HiPencil />
-          <span className="">Save</span>
+          <span className=""> {t("save")}</span>
         </button>
       </div>
     </div>

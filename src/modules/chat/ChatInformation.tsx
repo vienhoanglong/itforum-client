@@ -21,6 +21,7 @@ import { MdTitle, MdOutlineDescription } from "react-icons/md";
 import { Button } from "@/components/button";
 import { setColorBackgroundUser } from "@/utils/helper";
 import socket from "@/utils/getSocketIo";
+import { useTranslation } from "react-i18next";
 interface ChatInformationProps {
   onCancel?: () => void;
   userId: string;
@@ -32,6 +33,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
   chatId,
   conversation,
 }) => {
+  const { t } = useTranslation();
   const { updateConversation, members } = useConversationStore();
   const [conversationUpdate, setConversationUpdate] =
     React.useState<IConversation | null>(null);
@@ -166,7 +168,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                       htmlFor="title"
                       className="block mb-1 text-xs font-semibold"
                     >
-                      Choose theme
+                      {t("chooseTheme")}
                     </Label>
                     <div className="flex flex-wrap max-w-[175px] gap-1 w-auto ">
                       {colorThemeChat.map((them, index) => (
@@ -193,7 +195,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                       htmlFor="input-group-1"
                       className="block mb-1 text-xs font-semibold dark:text-white"
                     >
-                      Tên nhóm chat
+                      {t("nameGroupChat")}
                     </label>
                     <div className="relative mb-2">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
@@ -211,7 +213,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                       htmlFor="input-group-2"
                       className="block mb-1 text-xs font-semibold dark:text-white"
                     >
-                      Mô tả nhóm
+                      {t("descGroupChat")}
                     </label>
                     <div className="relative mb-2">
                       <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
@@ -227,7 +229,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                     </div>
                     {inputEmpty && (
                       <div className="text-xs text-right mt-2 text-red-500">
-                        Vui lòng nhập thông tin cần thay đổi!
+                        {t("pleasInputChangeInfo")}
                       </div>
                     )}
                     <div className="flex flex-row gap-2 justify-end mb-6">
@@ -238,7 +240,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                         className="text-xs bg-dark4 rounded-lg"
                         handle={() => toggleCollapseEdit()}
                       >
-                        Cancel
+                        {t("cancel")}
                       </Button>
                       <Button
                         kind="secondary"
@@ -247,7 +249,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                         className="text-xs rounded-lg"
                         handle={handleEditConversation}
                       >
-                        Save
+                        {t("save")}
                       </Button>
                     </div>
                   </div>
@@ -258,18 +260,24 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                     onClick={toggleCollapseEdit}
                   >
                     <HiPencilSquare />
-                    <span className="text-xs mt-1 font-medium">Edit</span>
+                    <span className="text-xs mt-1 font-medium">
+                      {t("edit")}
+                    </span>
                   </div>
                   <div
                     className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 dark:bg-dark2 cursor-pointer hover:text-darker hover:font-bold"
                     onClick={toggleCollapseTheme}
                   >
                     <HiOutlineSparkles />
-                    <span className="text-xs mt-1 font-medium">Theme</span>
+                    <span className="text-xs mt-1 font-medium">
+                      {t("theme")}
+                    </span>
                   </div>
                   <div className="flex p-2 border-[1px] items-center flex-col rounded-lg min-w-[30%] bg-light3 dark:bg-dark2 cursor-pointer hover:text-darker hover:font-bold">
                     <HiLogout />
-                    <span className="text-xs mt-1 font-medium">Leave</span>
+                    <span className="text-xs mt-1 font-medium">
+                      {t("leave")}
+                    </span>
                   </div>
                 </div>
                 {members && (
@@ -278,7 +286,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                       <div className="flex flex-row gap-2 items-center">
                         <FaUserFriends className="text-lg" />
                         <div className="flex gap-2">
-                          <span className="text-sm">Member</span>
+                          <span className="text-sm">{t("member")}</span>
                           <span className="text-mainColor bg-subtle p-[2px_6px] rounded-md text-xs">
                             {members.length}
                           </span>
@@ -299,7 +307,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                               {member.fullName ?? member.username}
                             </span>
                             {member._id === userId ? (
-                              <p className="text-xs">Quản trị viên</p>
+                              <p className="text-xs">{t("admin")}</p>
                             ) : null}
                           </div>
                         </div>
@@ -317,7 +325,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                       }`}
                       onClick={() => handleTabChatClick("file")}
                     >
-                      File
+                      {t("file")}
                     </li>
                     <li
                       className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${
@@ -327,7 +335,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                       }`}
                       onClick={() => handleTabChatClick("media")}
                     >
-                      Media
+                      {t("media")}
                     </li>
                     <li
                       className={`block p-1 text-sm font-medium text-center border min-w-[30%] rounded-lg cursor-pointer hover:font-bold ${
@@ -337,7 +345,7 @@ export const ChatInformation: React.FC<ChatInformationProps> = ({
                       }`}
                       onClick={() => handleTabChatClick("link")}
                     >
-                      Link
+                      {t("link")}
                     </li>
                   </ul>
                   <div className="p-2">

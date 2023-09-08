@@ -3,6 +3,7 @@ import INotificationCreate from "@/interface/API/INotificationCreate";
 import { getNotificationById } from "@/services/notificationService";
 import { useUserStore } from "@/store/userStore";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { HiChevronDown } from "react-icons/hi";
 
 type NotificationFormProps = {
@@ -17,6 +18,7 @@ export const UpdateNotifications: React.FC<NotificationFormProps> = ({
   onSubmit,
   notificationId,
 }) => {
+  const { t } = useTranslation();
   const { user } = useUserStore();
   const [title, setTitle] = useState<string>("");
   const [createBy, setCreateBy] = useState<string>("");
@@ -84,7 +86,7 @@ export const UpdateNotifications: React.FC<NotificationFormProps> = ({
     <>
       <div className="flex justify-start">
         <span className="dark:text-light0 font-semibold">
-          Add new notification
+          {t("updateNotifications")}
         </span>
       </div>
       <form className="text-xs dark:text-light0 lg:w-[600px] max-sm:h-[530px] ">
@@ -106,7 +108,7 @@ export const UpdateNotifications: React.FC<NotificationFormProps> = ({
           </div>
           <div className=" w-full h-auto gap-4 flex justify-start flex-wrap items-center">
             <div className=" relative">
-              <span className="mb-2">Type notification:</span>
+              <span className="mb-2"> {t("typeNotifications")}:</span>
               <select
                 value={typeNotice}
                 onChange={(e) => handleTypeNoticeChange(e)}
@@ -114,17 +116,17 @@ export const UpdateNotifications: React.FC<NotificationFormProps> = ({
               >
                 {user?.role !== 3 && (
                   <>
-                    <option value="subject">Subject</option>
-                    <option value="event">Event</option>
-                    <option value="other">Other</option>
+                    <option value="subject"> {t("subject")}</option>
+                    <option value="event"> {t("event")}</option>
+                    <option value="other"> {t("Other")}</option>
                   </>
                 )}
-                <option value="recruitment">Recruitment</option>
+                <option value="recruitment"> {t("recruitment")}</option>
               </select>
               <HiChevronDown className="text-dark1 dark:text-light1 text-base absolute right-4 top-[25px] fill-current pointer-events-none" />
             </div>
             <div className="flex flex-col justify-center">
-              <span className="block h-1/3 mb-2">Level:</span>
+              <span className="block h-1/3 mb-2"> {t("level")}:</span>
               <div className="flex space-x-2 items-center justify-center h-full">
                 <div className="flex items-center h-full space-x-1">
                   <input
@@ -135,7 +137,7 @@ export const UpdateNotifications: React.FC<NotificationFormProps> = ({
                     checked={selectedLevel === "normal"}
                     onChange={() => setSelectedLevel("normal")}
                   />
-                  <label htmlFor="normal">Normal</label>
+                  <label htmlFor="normal"> {t("normal")}</label>
                 </div>
                 {user?.role !== 3 && (
                   <div className="flex items-center h-full space-x-1">
@@ -147,7 +149,7 @@ export const UpdateNotifications: React.FC<NotificationFormProps> = ({
                       checked={selectedLevel === "important"}
                       onChange={() => setSelectedLevel("important")}
                     />
-                    <label htmlFor="important">Important</label>
+                    <label htmlFor="important"> {t("important")}</label>
                   </div>
                 )}
               </div>
@@ -172,7 +174,7 @@ export const UpdateNotifications: React.FC<NotificationFormProps> = ({
             className="block mb-2 mt-2 text-xs font-medium text-gray-900 dark:text-white"
             htmlFor="file_input"
           >
-            Upload file:
+            {t("uploadFile")}:
           </label>
           <input
             onChange={(e) => handleFileChange(e)}
@@ -186,7 +188,7 @@ export const UpdateNotifications: React.FC<NotificationFormProps> = ({
             className="p-4 rounded-lg bg-mainColor flex space-x-1 my-2"
             onClick={handleSubmit}
           >
-            <span className="text-[12px]">Submit</span>
+            <span className="text-[12px]"> {t("submit")}</span>
           </button>
         </div>
       </form>

@@ -1,8 +1,10 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { HiArrowCircleLeft, HiArrowCircleRight } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
 const Navigation: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
@@ -17,13 +19,13 @@ const Navigation: React.FC = () => {
         onClick={handleBack}
       >
         <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back
+        {t("back")}
       </button>
       <button
         className=" w-24 dark:text-light0 rounded-full mb-4 link flex justify-end items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0"
         onClick={hanldeForward}
       >
-        Forward
+        {t("forward")}
         <HiArrowCircleRight className=" w-6 h-6 ml-1" />
       </button>
     </div>

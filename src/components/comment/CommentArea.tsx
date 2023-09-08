@@ -6,6 +6,7 @@ import data from "@emoji-mart/data";
 import { useUserStore } from "@/store/userStore";
 import { colorsAvatar } from "@/constants/global";
 import ICommentCreate from "@/interface/API/ICommentCreate";
+import { useTranslation } from "react-i18next";
 
 interface CommentAreaProps {
   onSaveChanges: (comment: ICommentCreate) => void;
@@ -28,6 +29,7 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
   content,
   postsId,
 }) => {
+  const { t } = useTranslation();
   const { user } = useUserStore();
   const [comment, setComment] = useState(content ? content : "");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -106,7 +108,7 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
             rows={1}
             ref={textareaRef}
             className=" w-full overflow-y-hidden h-auto p-2 break-words border rounded dark:bg-dark2 dark:text-white  pr-4"
-            placeholder="Typing your comment..."
+            placeholder={t("typingYourComment")}
             value={comment}
             onChange={(event) => {
               setComment(event.target.value);
@@ -116,32 +118,24 @@ export const CommentArea: React.FC<CommentAreaProps> = ({
           {/* <QuillEditor value={content} onChange={handleContentChange} /> */}
           <div className="flex justify-end z-10 mt-2">
             {isTextareaEmpty == true ? (
-              <Button
-                size="small"
-                type="submit"
-                kind="primary"
-                className="text-xs dark:bg-dark3 bg-dark3 hover:cursor-pointer "
-                disable
+              <button
+                className="flex items-center justify-center p-4  font-semibold rounded-xl text-xs w-[50px] dark:bg-dark3 h-[40px] text-white bg-dark3 hover:cursor-pointer "
+                disabled
               >
-                Send
-              </Button>
+                {t("send")}
+              </button>
             ) : (
-              <Button
-                size="small"
-                type="submit"
-                kind="primary"
-                className="text-xs hover:cursor-pointer"
-              >
-                Send
-              </Button>
+              <button className="flex items-center text-white bg-mainColor justify-center p-4 h-[40px] font-semibold rounded-xl text-xs w-[50px] hover:cursor-pointer">
+                {t("send")}
+              </button>
             )}
             {isEditing && (
               <button
                 type="button"
                 onClick={handleCancel}
-                className="text-[10px] hover:cursor-pointer font-semibold ml-2 p-2 rounded-xl bg-red-400 text-white"
+                className="text-[10px] w-[50px] hover:cursor-pointer font-semibold ml-2 p-2 rounded-xl bg-red-400 text-white"
               >
-                Cancel
+                {t("cancel")}
               </button>
             )}
           </div>

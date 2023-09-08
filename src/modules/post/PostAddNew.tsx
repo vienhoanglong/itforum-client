@@ -14,6 +14,7 @@ import { useUserStore } from "@/store/userStore";
 import { toast } from "react-toastify";
 import { CreateNewPost } from "@/services/postService";
 import { usePostStore } from "@/store/postStore";
+import { useTranslation } from "react-i18next";
 
 interface PostAddNewPageProps {
   onCancel: () => void;
@@ -26,6 +27,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
     createdBy: "",
     hashtag: [],
   });
+  const { t } = useTranslation();
   const { user } = useUserStore();
   const { listAllTopic, getTopic } = useTopicStore();
   const [title, setTitle] = useState<string>("");
@@ -128,35 +130,35 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
   return (
     <div className=" h-full dark:text-light0 w-full overflow-auto rounded-lg mx-auto flex flex-col ">
       <div className=" pb-4 h-auto w-full">
-        <h4 className="text-xl font-bold text-darker ">New post</h4>
+        <h4 className="text-xl font-bold text-darker ">{t("newPost")}</h4>
       </div>
       <div className="h-auto w-full">
         <form className="w-full flex flex-col md:flex-row overflow-y-auto overflow-x-hidden h-auto">
           <div className="w-full h-full md:w-1/3">
             <div className="mb-4">
               <Label htmlFor="title" className="block text-xs font-semibold">
-                Title
+                {t("title")}
               </Label>
               <input
                 className="border text-black border-gray-300 text-xs w-full h-full bg-light4  px-4 py-2 rounded-lg "
-                placeholder="Adding your title"
+                placeholder={t("addingYourTitle")}
                 onChange={(e) => handleTitleChange(e)}
               />
               {submitted && title === "" && (
                 <div className="block text-xs text-red-500 mt-1">
-                  Title is required.
+                  {t("titleIsRequired")}
                 </div>
               )}
             </div>
             <div className="mb-4">
               <Label htmlFor="hastag" className="block text-xs font-semibold">
-                Hastag
+                {t("hashtag")}
               </Label>
               <div>
                 <Select
                   isMulti
                   isSearchable
-                  placeholder="Choose topic..."
+                  placeholder={t("chooseTopic")}
                   options={selectOptions}
                   value={dataPost?.hashtag?.map((skill) => ({
                     value: skill,
@@ -186,7 +188,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
                 htmlFor="uploadImage"
                 className="block text-xs font-semibold"
               >
-                Upload image
+                {t("uploadImage")}
               </Label>
               <UploadImage
                 onImageUpload={handleCoverImageUpload}
@@ -194,7 +196,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
               ></UploadImage>
               {submitted && uploadComplete === false && (
                 <div className="block text-xs text-red-500 mt-1">
-                  Thumbnail is required.
+                  {t("thumnailIsRequired")}
                 </div>
               )}
             </div>
@@ -202,7 +204,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
 
           <div className=" px-2 pb-2 w-full h-full md:w-2/3 md:h-[340px]">
             <Label htmlFor="content" className="block text-xs font-semibold">
-              Content
+              {t("content")}
             </Label>
             <QuillEditor
               value={content}
@@ -210,7 +212,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
             ></QuillEditor>
             {submitted && (content === "" || content === "<p><br></p>") && (
               <div className="block text-xs mt-2 text-red-500">
-                Content is required.
+                {t("contentIsRequired")}
               </div>
             )}
           </div>
@@ -222,7 +224,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
           className=" text-light0 text-xs mx-2 bg-lighter hover:bg-darker rounded-xl px-4 py-2 mt-2 "
           onClick={handleSubmit}
         >
-          Add post
+          {t("add")}
         </button>
         <Button
           className=" text-light0 text-xs mx-2 rounded px-4 py-2 mt-2 bg-red3 hover:bg-red2"
@@ -230,7 +232,7 @@ export const PostAddNewPage: React.FC<PostAddNewPageProps> = ({ onCancel }) => {
           type="submit"
           handle={onCancel}
         >
-          Cancel
+          {t("cancel")}
         </Button>
       </div>
     </div>

@@ -10,9 +10,11 @@ import parse from "html-react-parser";
 import convertDateTime from "@/utils/helper";
 import { useUserStore } from "@/store/userStore";
 import Navigation from "@/components/navigation/Navigation";
+import { useTranslation } from "react-i18next";
 
 export const ListNotificationPage: React.FC = React.memo(() => {
   const { type } = useParams<string>();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { getListUserNotifi, listUserNotifi } = useUserStore();
   const {
@@ -237,14 +239,14 @@ export const ListNotificationPage: React.FC = React.memo(() => {
     return (
       <LayoutSecondary>
         <div className="w-full h-full text-center flex flex-col text-lg font-bold p-10 gap-4">
-          <span>Type notification not found!</span>
+          <span>{t("notificationNotFound")}</span>
           <div>
             <button
               className="dark:text-light0 rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
               onClick={handleBackButtonClick}
             >
               <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-              Back
+              {t("back")}
             </button>
           </div>
         </div>
@@ -258,7 +260,9 @@ export const ListNotificationPage: React.FC = React.memo(() => {
       <div className=" md:pl-8 md:pr-11 p-4">
         <Navigation></Navigation>
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Notifications</h4>
+          <h4 className="text-xl font-bold text-darker ">
+            {t("notifications")}
+          </h4>
         </div>
 
         <div className="flex flex-row flex-wrap gap-2 justify-between">
@@ -270,8 +274,8 @@ export const ListNotificationPage: React.FC = React.memo(() => {
                 value={sortDirection}
                 name="sort"
               >
-                <option value="desc">Mới nhất</option>
-                <option value="asc">Cũ nhất</option>
+                <option value="desc">{t("newest")}</option>
+                <option value="asc">{t("oldest")}</option>
               </select>
               <HiChevronDown className="text-dark1 dark:text-light1 text-base absolute right-4 top-[10px] fill-current pointer-events-none" />
             </div>
@@ -282,9 +286,9 @@ export const ListNotificationPage: React.FC = React.memo(() => {
                 value={filter || ""}
                 name="level"
               >
-                <option value="">All</option>
-                <option value="important">Important</option>
-                <option value="normal">Normal</option>
+                <option value="">{t("all")}</option>
+                <option value="important">{t("important")}</option>
+                <option value="normal">{t("normal")}</option>
               </select>
               <BsFilterRight className="text-dark1 dark:text-light1 text-base absolute right-4 top-[10px] fill-current pointer-events-none" />
             </div>
@@ -295,7 +299,7 @@ export const ListNotificationPage: React.FC = React.memo(() => {
      "
                   onClick={handleShowAllClick}
                 >
-                  Clear search
+                  {t("clearSearch")}
                 </button>
               ) : (
                 <button
@@ -304,7 +308,7 @@ export const ListNotificationPage: React.FC = React.memo(() => {
                   disabled
                   onClick={handleShowAllClick}
                 >
-                  Clear search
+                  {t("clearSearch")}
                 </button>
               )}
             </div>
@@ -316,22 +320,22 @@ export const ListNotificationPage: React.FC = React.memo(() => {
               <input
                 id="q"
                 className="ml-3 h-full w-full pt-0 text-xs bg-transparent outline-none"
-                placeholder="Begin your search..."
+                placeholder={t("beginYourSearch")}
                 value={search}
                 onChange={handleSearchChange}
               />
             </label>
             <button
               onClick={handleButtonClick}
-              className=" bg-mainColor text-white p-2 rounded-lg"
+              className=" bg-mainColor w-[100px] text-white p-2 rounded-lg"
             >
-              Search
+              {t("search")}
             </button>
           </div>
         </div>
         {currentItems === undefined || currentItems?.length === 0 ? (
           <div className="text-center dark:text-white">
-            Không có thông báo nào
+            {t("notificationNotFound")}
           </div>
         ) : (
           currentItems?.map((notifi, index) =>
@@ -382,12 +386,12 @@ export const ListNotificationPage: React.FC = React.memo(() => {
           <div className="w-1/2 mr-2 pb-3 ml-1">
             <ReactPaginate
               breakLabel="..."
-              nextLabel="next >"
+              nextLabel={`${t("next")}>`}
               onPageChange={handlePageClick}
               pageRangeDisplayed={1}
               marginPagesDisplayed={2}
               pageCount={pageCount}
-              previousLabel="< prev"
+              previousLabel={`<${t("prev")}`}
               renderOnZeroPageCount={null}
               containerClassName="flex justify-center items-center  mt-4 space-x-4"
               pageClassName="m-2"
@@ -397,7 +401,7 @@ export const ListNotificationPage: React.FC = React.memo(() => {
           </div>
           <div className="w-auto mx-2 flex items-center justify-end">
             <label htmlFor="itemsPerPage" className="mr-2">
-              Item:
+              {t("rowPerPage")}:
             </label>
             <select
               id="itemsPerPage"

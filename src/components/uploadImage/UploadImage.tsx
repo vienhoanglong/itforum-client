@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import UploadProgress from "./UploadProgress";
 import logoUpload from "/src/assets/upload-image.png";
 import { HiTrash } from "react-icons/hi";
+import { useTranslation } from "react-i18next";
 
 interface UploadImageProps {
   onImageUpload: (imageUrl: File | any) => void;
@@ -14,6 +15,7 @@ const UploadImage: React.FC<UploadImageProps> = ({
   onImageUpload,
   onDeleteImage,
 }) => {
+  const { t } = useTranslation();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -87,14 +89,16 @@ const UploadImage: React.FC<UploadImageProps> = ({
             <input {...getInputProps()} accept="image/*" />
             <img srcSet={logoUpload} alt="logoUpload" className="mb-2 h-14" />
             {isDragActive ? (
-              <p className="text-xs">Drop the image here...</p>
+              <p className="text-xs dark:text-white">
+                {t("dropTheImageHere")}...
+              </p>
             ) : (
-              <p className="text-xs">
-                Drag and drop an image here, or{" "}
+              <p className="text-xs dark:text-white">
+                {t("dragAndDropAnImageHere")}{" "}
                 <a className="underline underline-offset-2 cursor-pointer text-blue-500 hover:text-blue-700 font-bold">
-                  CLICK
+                  {t("click")}
                 </a>{" "}
-                to select an image.
+                {t("toSelectAnImage")}
               </p>
             )}
           </div>

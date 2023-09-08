@@ -10,8 +10,10 @@ import IUserUpdate from "@/interface/API/IUserUpdate";
 import { useUserStore } from "@/store/userStore";
 import { UpdateDataUser } from "@/services/userService";
 import { useTopicStore } from "@/store/topicStore";
+import { useTranslation } from "react-i18next";
 
 const ProfilePage: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const [isEdit, setIsEdit] = useState(false);
 
   const handleToggle = () => {
@@ -103,9 +105,9 @@ const ProfilePage: React.FC = React.memo(() => {
   return (
     <LayoutSecondary>
       <div className="max-w-4xl mx-auto md:p-8 p-4 bg-light4 shadow-sm dark:bg-dark1 rounded-lg dark:text-light0 relative">
-        <h4 className="text-xl font-bold text-darker mb-4 ">Profile</h4>
+        <h4 className="text-xl font-bold text-darker mb-4 ">{t("profile")}</h4>
         <div className="flex space-x-2 items-center absolute top-2 right-2">
-          <span className=" text-sm font-bold">Edit</span>
+          <span className=" text-sm font-bold">{t("edit")}</span>
           <div
             className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
               isEdit ? "bg-blue-600" : "bg-gray-400"

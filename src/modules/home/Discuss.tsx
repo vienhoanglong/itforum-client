@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
 import IUser from "@/interface/user";
+import { useTranslation } from "react-i18next";
 
 interface ListDiscussProps {
   currentLimit: number;
@@ -31,10 +32,12 @@ export const Discuss: React.FC<ListDiscussProps> = ({
   handleFilter,
   currentLimit,
 }) => {
+  const { t } = useTranslation();
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
   const { listAllTopic, getTopic } = useTopicStore();
-  const [sort, setSort] = useState("desc");
+  const { stateSort } = useDiscussionStore();
+  const [sort, setSort] = useState(stateSort);
   const [topicId, setTopicId] = useState("");
   const { user } = useUserStore();
   const { getDiscussByStatus, listDiscussByStatus } = useDiscussionStore();
@@ -60,6 +63,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
   const handleFiltered = (filterOptions: { sort: string; topic: string }) => {
     handleFilter(filterOptions);
     setSort(filterOptions.sort);
@@ -115,7 +119,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
 
   return (
     <>
-      <div className=" bg-light4 dark:bg-dark1 p-4 rounded-lg shadow-sm dark:text-white mb-4 flex items-center">
+      <div className=" bg-light4 mt-2 dark:bg-dark1 p-4 rounded-lg shadow-sm dark:text-white mb-4 flex items-center">
         <div className="flex items-center mr-3 brightness-90 w-1/6 h-1/6">
           <Avatar
             src={user?.avatar ?? ""}
@@ -130,7 +134,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
           className="w-full text-left justify-center rounded-3xl h-full py-2 px-4 bg-light3/70 shadow-inner dark:bg-dark0/80"
         >
           {" "}
-          What do you think?
+          {t("whatAreYouThinkings")}
         </button>
 
         <Modal isOpen={showModal} onClose={handleCloseModal}>
@@ -198,7 +202,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                           <BsFillChatFill className="text-lg " />
                         </div>
                         <span className="text-xs font-semibold leading-none text-grey-800">
-                          3
+                          {discuss.totalComment > 0 ? discuss.totalComment : 0}
                         </span>
                       </div>
                       <div className="flex items-center justify-center">
@@ -206,7 +210,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                           <BsEyeFill className="text-lg" />
                         </div>
                         <span className="text-xs font-medium leading-none text-left text-text1">
-                          {discuss.totalView}
+                          {discuss.totalView > 0 ? discuss.totalView : 0}
                         </span>
                       </div>
                     </div>
@@ -238,7 +242,9 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                               <BsFillChatFill className="text-lg" />
                             </div>
                             <span className="relative text-xs font-medium leading-none text-left text-text1">
-                              3
+                              {discuss.totalComment > 0
+                                ? discuss.totalComment
+                                : 0}
                             </span>
                           </div>
                           <div className="flex items-center justify-center">
@@ -246,7 +252,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                               <BsEyeFill className="text-lg" />
                             </div>
                             <span className="text-xs font-medium leading-none text-left text-text1">
-                              {discuss.totalView}
+                              {discuss.totalView > 0 ? discuss.totalView : 0}
                             </span>
                           </div>
                         </div>
@@ -261,9 +267,9 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                           </Link>
                         </h3>
                       </div>
-                      <div className=" break-words line-clamp-3 text-black/90 dark:text-light0 lg:mb-0 lg:pr-8 text-xs">
+                      {/* <div className=" break-words line-clamp-3 text-black/90 dark:text-light0 lg:mb-0 lg:pr-8 text-xs">
                         {discuss.content}
-                      </div>
+                      </div> */}
                       <div className="mt-2">
                         {discuss.topic.map((topicId) => {
                           const topic = listAllTopic?.find(
@@ -297,7 +303,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
           )
       ) : listDiscussionDefault?.length === 0 ? (
         <div className=" dark:text-white text-sm font-semibold">
-          Không có thảo luận nào
+          {t("noDiscussions")}
         </div>
       ) : (
         listDiscussionDefault?.map((discuss, index) =>
@@ -346,7 +352,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                         <BsFillChatFill className="text-lg " />
                       </div>
                       <span className="text-xs font-semibold leading-none text-grey-800">
-                        3
+                        {discuss.totalComment > 0 ? discuss.totalComment : 0}
                       </span>
                     </div>
                     <div className="flex items-center justify-center">
@@ -354,7 +360,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                         <BsEyeFill className="text-lg" />
                       </div>
                       <span className="text-xs font-medium leading-none text-left text-text1">
-                        {discuss.totalView}
+                        {discuss.totalView > 0 ? discuss.totalView : 0}
                       </span>
                     </div>
                   </div>
@@ -386,7 +392,9 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                             <BsFillChatFill className="text-lg" />
                           </div>
                           <span className="relative text-xs font-medium leading-none text-left text-text1">
-                            3
+                            {discuss.totalComment > 0
+                              ? discuss.totalComment
+                              : 0}
                           </span>
                         </div>
                         <div className="flex items-center justify-center">
@@ -394,7 +402,7 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                             <BsEyeFill className="text-lg" />
                           </div>
                           <span className="text-xs font-medium leading-none text-left text-text1">
-                            {discuss.totalView}
+                            {discuss.totalView > 0 ? discuss.totalView : 0}
                           </span>
                         </div>
                       </div>
@@ -409,9 +417,9 @@ export const Discuss: React.FC<ListDiscussProps> = ({
                         </Link>
                       </h3>
                     </div>
-                    <div className=" break-words line-clamp-3 text-black/90 dark:text-light0 lg:mb-0 lg:pr-8 text-xs">
+                    {/* <div className=" break-words line-clamp-3 text-black/90 dark:text-light0 lg:mb-0 lg:pr-8 text-xs">
                       {discuss.content}
-                    </div>
+                    </div> */}
                     <div className="mt-2">
                       {discuss.topic.map((topicId) => {
                         const topic = listAllTopic?.find(

@@ -5,6 +5,7 @@ export interface IReport {
   createdBy: string;
   idReference: string;
   link: string;
+  otherText: string;
   reportBelong: string;
   createdAt: string;
   updatedAt: string;

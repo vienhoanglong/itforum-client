@@ -7,6 +7,7 @@ export interface IDiscussion {
   topic: string[];
   createdAt: string;
   updatedAt: string;
+  totalComment: number;
   slug: string;
   statusDiscuss: number;
   __v?: number;

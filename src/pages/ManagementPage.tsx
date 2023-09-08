@@ -6,25 +6,26 @@ import posts from "../assets/post.png";
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ManagementPage: React.FC = React.memo(() => {
   const { user, setUser } = useUserStore();
   useEffect(() => {
     setUser();
   }, []);
-
+  const { t } = useTranslation();
   return (
     <LayoutSecondary>
       <div className="flex justify-between items-center">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Management</h4>
+          <h4 className="text-xl font-bold text-darker ">{t("managements")}</h4>
         </div>
       </div>
       <div className="max-w-full p-2 grid gap-4 grid-cols-3 max-sm:grid-cols-1 dark:text-light0">
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
             <span className="text-base font-bold block justify-start align-top">
-              My Posts
+              {t("myPosts")}
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -32,23 +33,21 @@ const ManagementPage: React.FC = React.memo(() => {
                 className=" object-fill max-w-full max-h-full"
               ></img>
             </div>
-            <span className="block justify-start">
-              Quản lý tất cả bài viết của bạn.
-            </span>
+            <span className="block justify-start">{t("myPostDesc")}</span>
           </div>
 
           <Link
             to={`/managements/posts/${user?._id}`}
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
-            Chi tiết
+            {t("detail")}
           </Link>
         </div>
 
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
             <span className="text-base font-bold block justify-start align-top">
-              My Discussions
+              {t("myDiscussion")}
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -58,7 +57,7 @@ const ManagementPage: React.FC = React.memo(() => {
             </div>
             <span className="block justify-start">
               {" "}
-              Quản lý tất cả bài thảo luận của bạn.
+              {t("myDiscussionDesc")}
             </span>
           </div>
 
@@ -66,14 +65,14 @@ const ManagementPage: React.FC = React.memo(() => {
             to={`/managements/discussions/${user?._id}`}
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
-            Chi tiết
+            {t("detail")}
           </Link>
         </div>
         {user?.role !== 2 && (
           <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
             <div className="flex flex-col w-full space-y-2 ">
               <span className="text-base font-bold block justify-start align-top">
-                My Notifications
+                {t("myNotifications")}
               </span>
               <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                 <img
@@ -82,7 +81,7 @@ const ManagementPage: React.FC = React.memo(() => {
                 ></img>
               </div>
               <span className="block justify-start">
-                Quản lý tất cả các thông báo của bạn.
+                {t("myNotificationsDesc")}
               </span>
             </div>
 
@@ -90,7 +89,7 @@ const ManagementPage: React.FC = React.memo(() => {
               to={`/managements/notifications/${user?._id}`}
               className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
             >
-              Chi tiết
+              {t("detail")}
             </Link>
           </div>
         )}
@@ -100,7 +99,7 @@ const ManagementPage: React.FC = React.memo(() => {
             <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
               <div className="flex flex-col w-full space-y-2 ">
                 <span className="text-base font-bold block justify-start align-top">
-                  Dashboard
+                  {t("dashboard")}
                 </span>
                 <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                   <img
@@ -108,21 +107,24 @@ const ManagementPage: React.FC = React.memo(() => {
                     className=" object-fill max-w-full max-h-full"
                   ></img>
                 </div>
-                <span className="block justify-start">Thống kê số liệu.</span>
+                <span className="block justify-start">
+                  {" "}
+                  {t("dashboardDesc")}
+                </span>
               </div>
 
               <Link
                 to="/managements/dashboard"
                 className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
               >
-                Chi tiết
+                {t("detail")}
               </Link>
             </div>
 
             <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
               <div className="flex flex-col w-full space-y-2 ">
                 <span className="text-base font-bold block justify-start align-top">
-                  Users
+                  {t("users")}
                 </span>
                 <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                   <img
@@ -130,23 +132,21 @@ const ManagementPage: React.FC = React.memo(() => {
                     className=" object-fill max-w-full max-h-full"
                   ></img>
                 </div>
-                <span className="block justify-start">
-                  Quản lý tất cả người dùng.
-                </span>
+                <span className="block justify-start">{t("usersDesc")}</span>
               </div>
 
               <Link
                 to="/managements/user"
                 className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
               >
-                Chi tiết
+                {t("detail")}
               </Link>
             </div>
 
             <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
               <div className="flex flex-col w-full space-y-2 ">
                 <span className="text-base font-bold block justify-start align-top">
-                  Topics
+                  {t("topics")}
                 </span>
                 <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                   <img
@@ -154,21 +154,21 @@ const ManagementPage: React.FC = React.memo(() => {
                     className=" object-fill max-w-full max-h-full"
                   ></img>
                 </div>
-                <span className="block justify-start">Quản lý chủ đề.</span>
+                <span className="block justify-start"> {t("topicDesc")}</span>
               </div>
 
               <Link
                 to="/managements/topics"
                 className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
               >
-                Chi tiết
+                {t("detail")}
               </Link>
             </div>
 
             <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
               <div className="flex flex-col w-full space-y-2 ">
                 <span className="text-base font-bold block justify-start align-top">
-                  Approve
+                  {t("approve")}
                 </span>
                 <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                   <img
@@ -176,23 +176,21 @@ const ManagementPage: React.FC = React.memo(() => {
                     className=" object-fill max-w-full max-h-full"
                   ></img>
                 </div>
-                <span className="block justify-start">
-                  Phê duyệt bài viết và thảo luận.
-                </span>
+                <span className="block justify-start">{t("approveDesc")}</span>
               </div>
 
               <Link
                 to="/managements/approve"
                 className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
               >
-                Chi tiết
+                {t("detail")}
               </Link>
             </div>
 
             <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
               <div className="flex flex-col w-full space-y-2 ">
                 <span className="text-base font-bold block justify-start align-top">
-                  Report
+                  {t("report")}
                 </span>
                 <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                   <img
@@ -200,14 +198,14 @@ const ManagementPage: React.FC = React.memo(() => {
                     className=" object-fill max-w-full max-h-full"
                   ></img>
                 </div>
-                <span className="block justify-start">Phê duyệt báo cáo.</span>
+                <span className="block justify-start"> {t("reportDesc")}</span>
               </div>
 
               <Link
                 to="/managements/report"
                 className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
               >
-                Chi tiết
+                {t("detail")}
               </Link>
             </div>
           </>

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type DocumentFormProps = {
   onSubmit: (file: File) => void;
 };
 export const AddNewDocument: React.FC<DocumentFormProps> = ({ onSubmit }) => {
   const [file, setFile] = useState<File | undefined>(undefined);
+  const { t } = useTranslation();
   const [submitted, setSubmitted] = useState<boolean>(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +30,9 @@ export const AddNewDocument: React.FC<DocumentFormProps> = ({ onSubmit }) => {
   return (
     <>
       <div className="flex justify-start">
-        <span className="dark:text-light0 font-semibold">Add new document</span>
+        <span className="dark:text-light0 font-semibold">
+          {t("addNewDocuments")}
+        </span>
       </div>
       <form className="text-xs dark:text-light0 lg:w-[600px] max-sm:h-[530px] ">
         <div className=" max-sm:mt-20">
@@ -36,7 +40,7 @@ export const AddNewDocument: React.FC<DocumentFormProps> = ({ onSubmit }) => {
             className="block mb-2 mt-2 text-xs font-medium text-gray-900 dark:text-white"
             htmlFor="file_input"
           >
-            Upload file:
+            {t("uploadFile")}:
           </label>
           <input
             onChange={(e) => handleFileChange(e)}
@@ -55,7 +59,7 @@ export const AddNewDocument: React.FC<DocumentFormProps> = ({ onSubmit }) => {
             className="p-4 rounded-lg bg-mainColor flex space-x-1 my-2"
             onClick={handleSubmit}
           >
-            <span className="text-[12px]">Submit</span>
+            <span className="text-[12px]">{t("submit")}</span>
           </button>
         </div>
       </form>

@@ -1,5 +1,6 @@
 import IUser from "@/interface/user";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   HiFlag,
   HiTrash,
@@ -31,14 +32,15 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
   isDraft,
   handleRestore,
 }) => {
+  const { t } = useTranslation();
   return (
-    <div className="bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 absolute top-full right-0 rounded-md shadow-lg z-50">
+    <div className="bg-light2 w-[100px] hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 absolute top-full right-0 rounded-md shadow-lg z-50">
       <button
         className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
         onClick={handleReportClick}
       >
         <HiFlag className="mr-2" />
-        Report
+        {t("report")}
       </button>
       {(userCurrentId?.role === 0 ||
         userCurrentId?._id === userOwnerId?._id) && (
@@ -50,7 +52,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
                 className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
               >
                 <HiTrash className="mr-2" />
-                Delete
+                {t("delete")}
               </button>
 
               {status === 1 && (
@@ -59,7 +61,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
                   className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
                 >
                   <HiEyeOff className="mr-2" />
-                  Hide
+                  {t("hidden")}
                 </button>
               )}
               {status === 3 && (
@@ -68,7 +70,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
                   className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
                 >
                   <HiEye className="mr-2" />
-                  Publish
+                  {t("publish")}
                 </button>
               )}
             </>
@@ -79,7 +81,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
               className="flex items-center bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0 dark:text-light0 w-full text-left py-2 px-4"
             >
               <HiArrowCircleUp className="mr-2" />
-              Restore
+              {t("restore")}
             </button>
           )}
         </>

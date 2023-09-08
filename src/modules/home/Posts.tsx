@@ -9,8 +9,10 @@ import convertDateTime from "@/utils/helper";
 import { usePostStore } from "@/store/postStore";
 import { useTopicStore } from "@/store/topicStore";
 import IPost from "@/interface/post";
+import { useTranslation } from "react-i18next";
 
 export const Posts: React.FC = () => {
+  const { t } = useTranslation();
   const {
     listUserPosts,
     getListUserPost,
@@ -160,7 +162,7 @@ export const Posts: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-row flex-wrap gap-2 justify-between">
+      <div className="flex flex-row flex-wrap gap-2 mt-2 justify-between">
         <div className="flex justify-center items-center gap-2">
           <div className="relative">
             <select
@@ -169,8 +171,8 @@ export const Posts: React.FC = () => {
               value={sortDirection}
               name="sort"
             >
-              <option value="desc">Mới nhất</option>
-              <option value="asc">Cũ nhất</option>
+              <option value="desc">{t("newest")}</option>
+              <option value="asc">{t("oldest")}</option>
             </select>
             <HiChevronDown className="text-dark1 dark:text-light1 text-base absolute right-4 top-[10px] fill-current pointer-events-none" />
           </div>
@@ -181,7 +183,7 @@ export const Posts: React.FC = () => {
               value={filter || ""}
               name="level"
             >
-              <option value="">All</option>
+              <option value="">{t("all")}</option>
               {listAllTopic?.map((topic) => (
                 <option key={topic._id} value={topic._id}>
                   {topic.name}
@@ -197,7 +199,7 @@ export const Posts: React.FC = () => {
      "
                 onClick={handleShowAllClick}
               >
-                Clear search
+                {t("clearSearch")}
               </button>
             ) : (
               <button
@@ -206,7 +208,7 @@ export const Posts: React.FC = () => {
                 disabled
                 onClick={handleShowAllClick}
               >
-                Clear search
+                {t("clearSearch")}
               </button>
             )}
           </div>
@@ -218,23 +220,21 @@ export const Posts: React.FC = () => {
             <input
               id="q"
               className="ml-3 h-full w-full pt-0 text-xs bg-transparent outline-none"
-              placeholder="Begin your search..."
+              placeholder={t("beginYourSearch")}
               value={search}
               onChange={handleSearchChange}
             />
           </label>
           <button
             onClick={handleButtonClick}
-            className=" bg-mainColor text-white p-2 rounded-lg"
+            className=" bg-mainColor text-white p-2 w-[100px] rounded-lg"
           >
-            Search
+            {t("search")}
           </button>
         </div>
       </div>
       {currentItems === undefined || currentItems?.length === 0 ? (
-        <div className="text-center p-4 dark:text-white">
-          Không có bài viết nào
-        </div>
+        <div className="text-center p-4 dark:text-white">{t("noPosts")}</div>
       ) : (
         currentItems?.map((post, index) =>
           listUserPosts

@@ -3,6 +3,7 @@ import { getAllNotification } from "@/services/notificationService";
 import { useUserStore } from "@/store/userStore";
 import convertDateTime from "@/utils/helper";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 interface NotificationProps {
@@ -10,6 +11,7 @@ interface NotificationProps {
 }
 export const NotificationRecruit: React.FC<NotificationProps> = React.memo(
   ({ newUpdate }) => {
+    const { t } = useTranslation();
     const { getListUserNotifi, listUserNotifi } = useUserStore();
     const [listNofiti, setListNofiti] = React.useState<INotification[]>([]);
     const formatDate = "MM-DD-YYYY";
@@ -21,7 +23,7 @@ export const NotificationRecruit: React.FC<NotificationProps> = React.memo(
     }, [newUpdate, update]);
     useEffect(() => {
       const fetchData = async () => {
-        const response = await getAllNotification(0, 0, "desc");
+        const response = await getAllNotification(0, 5, "desc");
         if (response) {
           const listUserIdNotification = response.data.data.map(
             (user: INotification) => user.createdBy
@@ -39,13 +41,13 @@ export const NotificationRecruit: React.FC<NotificationProps> = React.memo(
       <div className="flex flex-col gap-2">
         <div className="flex flex-row justify-between items-center mb-2 px-3">
           <h4 className="text-sm font-semibold dark:text-light0">
-            New notification
+            {t("newNotifications")}
           </h4>
           <Link
             to="/notification/recruitment"
             className="text-xs text-mainColor cursor-pointer hover:scale-105 hover:underline"
           >
-            More
+            {t("more")}
           </Link>
         </div>
         <div className="flex flex-col cursor-pointer border-solid border-mainColor border-[1px] border-t-0 border-r-0 rounded-bl-3xl p-3 pt-0">

@@ -443,10 +443,10 @@ export const topicColors: { [key: string]: string } = {
   "c-sharp": "bg-violet-400/25 text-violet-400 border-violet-400",
 };
 export const OPTIONS = [
-  "Spam",
-  "Violence",
-  "Misinformation",
-  "Copyright infringement",
+  "spam",
+  "violence",
+  "misinformation",
+  "copyrightInfringement",
   "Other",
 ];
 

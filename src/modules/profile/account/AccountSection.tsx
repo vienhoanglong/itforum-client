@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import React, { useState } from "react";
 import { useAuthStore } from "@/store/authStore";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 interface AccountSectionProps {
   isEdit: boolean;
@@ -17,6 +18,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
   isEdit,
   userData,
 }) => {
+  const { t } = useTranslation();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
@@ -83,9 +85,9 @@ const AccountSection: React.FC<AccountSectionProps> = ({
     >
       <div className=" flex justify-between">
         <h2 className="text-base font-bold mb-4">
-          Account{" "}
+          {t("account")}{" "}
           <span className="text-xs">
-            {isEdit ? "" : "(Only show in edit mode)"}
+            {isEdit ? "" : `(${t("onlyShowInEditMode")})`}
           </span>
         </h2>
       </div>
@@ -101,11 +103,11 @@ const AccountSection: React.FC<AccountSectionProps> = ({
                 htmlFor="accountInfo"
                 className="text-xs font-semibold mr-2"
               >
-                Account infomation:
+                {t("accountInfo")}:
               </Label>
               <div className="mb-4 flex flex-col  justify-start">
                 <label htmlFor="username" className="text-xs">
-                  Username:
+                  {t("username")}:
                 </label>
                 <input
                   type="text"
@@ -117,7 +119,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
               </div>
               <div className="mb-4 flex flex-col justify-start">
                 <label htmlFor="password" className="text-xs ">
-                  Password:
+                  {t("password")}:
                 </label>
                 <input
                   type="text"
@@ -135,12 +137,12 @@ const AccountSection: React.FC<AccountSectionProps> = ({
                   htmlFor="changePass"
                   className="block text-xs font-semibold mr-2"
                 >
-                  Change password:
+                  {t("changePassword")}:
                 </Label>
               </div>
               <div className="mb-4 flex justify-between items-center">
                 <label htmlFor="major" className="block text-xs  mr-2 ">
-                  New password:
+                  {t("newPassword")}::
                 </label>
                 <input
                   type="password"
@@ -152,7 +154,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
               <div className="mb-4">
                 <div className="flex justify-between items-center">
                   <label htmlFor="major" className="block text-xs  mr-2 ">
-                    Confirm password:
+                    {t("confirmPassword")}:
                   </label>
                   <input
                     type="password"
@@ -163,13 +165,13 @@ const AccountSection: React.FC<AccountSectionProps> = ({
                 </div>
                 {!passwordsMatch && (
                   <div className=" text-xs text-right mt-2 text-red-500">
-                    Passwords do not match
+                    {t("passwordsDoNotMatch")}
                   </div>
                 )}
               </div>
               <div className="mb-4 flex justify-between items-center">
                 <label htmlFor="major" className="block text-xs  mr-2 ">
-                  CODE:
+                  {t("code")}:
                 </label>
                 <div className="flex justify-end items-center space-x-2 ml-8">
                   <input
@@ -183,7 +185,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
                     className="text-xs ml-2 bg-teal0 rounded-lg p-2"
                     onClick={handleGetOTP}
                   >
-                    Get
+                    {t("get")}
                   </button>
                 </div>
               </div>
@@ -194,7 +196,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
               )}
               {inputEmpty && (!newPassword || !confirmPassword || !otpCode) && (
                 <div className="text-xs text-right mt-2 text-red-500">
-                  Please fill out all fields
+                  {t("pleaseFillOutAllFields")}
                 </div>
               )}
               <div className="flex justify-end">
@@ -205,7 +207,7 @@ const AccountSection: React.FC<AccountSectionProps> = ({
                   className="text-xs ml-2 bg-mainColor rounded-lg p-2"
                   handle={handleChangePassword}
                 >
-                  Submit
+                  {t("submit")}
                 </Button>
               </div>
             </div>

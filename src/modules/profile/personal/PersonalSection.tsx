@@ -6,6 +6,7 @@ import PersonalModal from "./PersonalModal";
 import IUserUpdate from "@/interface/API/IUserUpdate";
 import IUser from "@/interface/user";
 import convertDateTime from "@/utils/helper";
+import { useTranslation } from "react-i18next";
 
 interface ProfileSectionProps {
   userData: IUser | null;
@@ -18,6 +19,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   isEdit,
   hanldeUpdatePersonal,
 }) => {
+  const { t } = useTranslation();
   const [isUpdatePersonal, setUpdatePersonal] = useState(false);
   const formatDate = "MM-DD-YYYY";
   const handleEditPersonal = () => {
@@ -35,12 +37,12 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   return (
     <div>
       <div className="mb-4 dark:bg-dark2 bg-light3 shadow-sm w-auto rounded-lg p-4 relative">
-        <h2 className="text-base font-bold mb-4">Personal Information</h2>
+        <h2 className="text-base font-bold mb-4">{t("personalInfo")}</h2>
         <div className="flex flex-wrap">
           <div className="w-1/2 flex flex-col space-y-4 min-w-[120px] mb-4">
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
-                Full name:
+                {t("fullName")}:
               </label>
               <div>
                 {userData
@@ -52,7 +54,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             </div>
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
-                Birthday:
+                {t("birthday")}:
               </label>
               <div>
                 {userData?.birthDay &&
@@ -66,7 +68,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
                       htmlFor="title"
                       className="block text-xs font-semibold"
                     >
-                      Class:
+                      {t("class")}:
                     </label>
                     <div>{userData?.class}</div>
                   </div>
@@ -74,9 +76,24 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
               : null}
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
-                Gender:
+                {t("gender")}:
               </label>
-              <div>{userData?.gender}</div>
+              <div>
+                {userData
+                  ? (() => {
+                      switch (userData.gender) {
+                        case "Male":
+                          return `${t("male")}`;
+                        case "Female":
+                          return `${t("female")}`;
+                        case "Other":
+                          return `${t("Other")}`;
+                        default:
+                          return "";
+                      }
+                    })()
+                  : ""}
+              </div>
             </div>
           </div>
           <div className="w-1/2 flex flex-col space-y-4 min-w-[120px]">
@@ -88,7 +105,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
                         htmlFor="title"
                         className="block text-xs font-semibold"
                       >
-                        ID:
+                        {t("id")}:
                       </label>
                       <div>{userData ? userData.email?.split("@")[0] : ""}</div>
                     </div>
@@ -97,7 +114,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
                         htmlFor="title"
                         className="block text-xs font-semibold"
                       >
-                        Major:
+                        {t("major")}:
                       </label>
                       <div>{userData?.major}</div>
                     </div>
@@ -107,7 +124,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
 
             <div>
               <label htmlFor="title" className="block text-xs font-semibold">
-                Position:
+                {t("position")}:
               </label>
               <div>
                 {" "}
@@ -115,13 +132,13 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
                   ? (() => {
                       switch (userData.role) {
                         case 0:
-                          return "Admin";
+                          return `${t("admin")}`;
                         case 1:
-                          return "Teacher";
+                          return `${t("teacher")}`;
                         case 2:
-                          return "Student";
+                          return `${t("student")}`;
                         case 3:
-                          return "Company";
+                          return `${t("company")}`;
                         default:
                           return "";
                       }
@@ -137,13 +154,13 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
             onClick={handleEditPersonal}
           >
             <HiPencil />
-            <span className="max-md:hidden">Edit</span>
+            <span className="max-md:hidden">{t("edit")}</span>
           </button>
         ) : null}
       </div>
       <Modal isOpen={isUpdatePersonal} onClose={handleClose}>
         <Label htmlFor="title" className="block text-sm font-semibold mb-8">
-          Personal Infomation:
+          {t("personalInfo")}:
         </Label>
         <PersonalModal userData={userData} onSaveChanges={hanleSavePersonal} />
       </Modal>

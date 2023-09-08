@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useUserStore } from "@/store/userStore";
 
 export const SideBar: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const { setThemeUser } = useUserStore();
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") || "light";
@@ -37,7 +38,16 @@ export const SideBar: React.FC = React.memo(() => {
   const [language, setLanguage] = useState<string>(
     () => localStorage.getItem("i18nextLng") ?? "vn"
   );
-  const handleLanguage = () => {
+  const toggleImageStyle = {
+    backgroundImage: `url('${
+      language === "en"
+        ? "https://cdn-icons-png.flaticon.com/512/323/323329.png"
+        : "https://cdn-icons-png.flaticon.com/512/323/323319.png"
+    }')`,
+    transform: language === "vn" ? "translateX(0)" : "translateX(100%)",
+    transition: "transform 0.3s ease-in-out",
+  };
+  const handleLanguageToggle = () => {
     setLanguage(language === "vn" ? "en" : "vn");
   };
   useEffect(() => {
@@ -51,7 +61,7 @@ export const SideBar: React.FC = React.memo(() => {
     <div className="fixed">
       <ul className="flex flex-col h-full space-y-4 dark:text-light1 ">
         <li className="pb-3 font-bold text-sm text-center md:px-5 md:text-left">
-          Menu
+          {t("menu")}
         </li>
         {menus.map((menu) => (
           <li key={menu.id} title={menu.name.en}>
@@ -62,7 +72,7 @@ export const SideBar: React.FC = React.memo(() => {
               }
             >
               <menu.icon size={20} />
-              <span className="hidden md:block">{menu.name.en}</span>
+              <span className="hidden md:block">{t(menu.name.en)}</span>
             </NavLink>
           </li>
         ))}
@@ -77,16 +87,18 @@ export const SideBar: React.FC = React.memo(() => {
             onClick={handleOpenSetting}
             className="w-full text-left hidden md:block  md:pl-5"
           >
-            Setting
+            {t("settings")}
           </button>
           <Modal isOpen={isOpenSetting} onClose={handleCloseSetting}>
             <div className="text-sm font-semibold dark:text-light0">
-              Settings
+              {t("settings")}
             </div>
             <div className="z-10 flex-col space-y-4 w-[200px] mt-4">
               <div className=" flex flex-col w-full space-y-5 bg-white rounded text-dark2 dark:bg-dark1 dark:text-light0">
                 <div className="flex space-x-2 items-center justify-between">
-                  <span className=" block text-xs font-bold">Dark mode:</span>
+                  <span className=" block text-xs font-bold">
+                    {t("darkMode")}:
+                  </span>
                   <div
                     className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
                       theme === "dark" ? "bg-blue-600" : "bg-gray-400"
@@ -106,12 +118,14 @@ export const SideBar: React.FC = React.memo(() => {
 
               <div className=" flex flex-col w-full space-y-5 bg-white rounded text-dark2 dark:bg-dark1 dark:text-light0">
                 <div className="flex space-x-2 items-center justify-between">
-                  <span className=" block text-xs font-bold">Language:</span>
+                  <span className="block text-xs font-bold">
+                    {t("language")}:
+                  </span>
                   <div
                     className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
                       language === "en" ? "bg-blue-600" : "bg-gray-400"
                     }`}
-                    onClick={handleLanguage}
+                    onClick={handleLanguageToggle}
                   >
                     <div
                       className={`absolute left-1 top-1 w-4 h-4 rounded-full transition-transform duration-300 transform ${
@@ -119,6 +133,10 @@ export const SideBar: React.FC = React.memo(() => {
                           ? "translate-x-6 bg-white"
                           : "bg-gray-300"
                       }`}
+                    ></div>
+                    <div
+                      className="absolute w-6 h-6 bg-no-repeat bg-center bg-cover toggle-image"
+                      style={toggleImageStyle}
                     ></div>
                   </div>
                 </div>
@@ -129,7 +147,7 @@ export const SideBar: React.FC = React.memo(() => {
         <li className="flex items-end h-full">
           <Button1 type="button" isDanger isFull start title="Log out">
             <HiOutlineLogout size={20} />
-            <span className="hidden md:block md:pl-5">Logout</span>
+            <span className="hidden md:block md:pl-5">{t("logout")}</span>
           </Button1>
         </li>
       </ul>

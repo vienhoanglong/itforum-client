@@ -1,5 +1,6 @@
 import { colorThumnailTopic, colorTopic } from "@/constants/global";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface TopicDashboard {
   topic: string;
@@ -10,11 +11,14 @@ interface TopicDashboardProps {
   topicDashboard: TopicDashboard[];
 }
 const TopicDashboard: React.FC<TopicDashboardProps> = ({ topicDashboard }) => {
+  const { t } = useTranslation();
   return (
     <div className=" flex flex-col justify-between">
-      <div className="text-sm dark:text-white mb-4 font-bold">Top Topics</div>
+      <div className="text-sm dark:text-white mb-4 font-bold">
+        {t("topTopics")}
+      </div>
       <div className="text-xs dark:text-dark3 mb-4 font-normal">
-        Post & discussion
+        {t("post&discuss")}
       </div>
       <div className="flex flex-col gap-2">
         {topicDashboard &&

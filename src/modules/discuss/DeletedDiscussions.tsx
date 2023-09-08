@@ -19,9 +19,11 @@ import {
   moveTrashOrRestore,
 } from "@/services/discussionService";
 import { ToastContainer, toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export const DeletedDiscussions: React.FC = () => {
   const formatDate = "MM-DD-YYYY";
+  const { t } = useTranslation();
   const { user } = useUserStore();
   const { listAllTopic } = useTopicStore();
   const { getDiscussFromTrash, discussTrash, getListDiscussion } =
@@ -134,14 +136,14 @@ export const DeletedDiscussions: React.FC = () => {
         getDiscussFromTrash();
         getListDiscussion(0, 0, "desc");
         setIsModalOpenDialog(false);
-        toast.success(" Restore discuss successfully! ", {
+        toast.success(`${t("restoreSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error restore discussion");
       }
-    }, "Bạn có chắc muốn khôi phục không?");
+    }, `${t("confirmRestore")}`);
   };
 
   const handleDelete = async (id: string) => {
@@ -151,20 +153,22 @@ export const DeletedDiscussions: React.FC = () => {
         getDiscussFromTrash();
         getListDiscussion(0, 0, "desc");
         setIsModalOpenDialog(false);
-        toast.success(" Delete discuss successfully! ", {
+        toast.success(`${t("deleteSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error deleted discussion");
       }
-    }, "Bạn có chắc muốn xoá không?");
+    }, `${t("confirmDelete")}`);
   };
 
   return (
     <div className="container h-[80vh] w-[80vw] mx-auto bg-light4 dark:bg-dark1  p-4 rounded-3xl">
       <div className=" py-4">
-        <h4 className="text-xl font-bold text-darker ">Deleted Discussion</h4>
+        <h4 className="text-xl font-bold text-darker ">
+          {t("deletedDiscussion")}
+        </h4>
       </div>
       <div className="flex flex-wrap items-center">
         <div className=" w-full md:w-1/2 mr-auto pt-2">
@@ -176,7 +180,7 @@ export const DeletedDiscussions: React.FC = () => {
                 value={filterType || ""}
                 onChange={(e) => handleFilter(e.target.value || null)}
               >
-                <option value="">All</option>
+                <option value="">{t("all")}</option>
                 {listAllTopic?.map((topic) => (
                   <option key={topic._id} value={topic._id}>
                     {topic.name}
@@ -195,13 +199,13 @@ export const DeletedDiscussions: React.FC = () => {
         <table className="min-w-full shadow-lg  ">
           <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
             <tr>
-              <th className="py-2 px-4  rounded-tl-md ">SN</th>
-              <th className="py-2 px-4  ">Title</th>
-              <th className="py-2 px-4  ">Topic</th>
-              <th className="py-2 px-4  ">View</th>
+              <th className="py-2 px-4  rounded-tl-md ">{t("sn")}</th>
+              <th className="py-2 px-4  ">{t("title")}</th>
+              <th className="py-2 px-4  ">{t("topic")}</th>
+              <th className="py-2 px-4  ">{t("view")}</th>
               <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
                 <div className="flex justify-center items-center gap-2">
-                  <span>Date</span>
+                  <span>{t("date")}</span>
                   {sortDirection === "asc" ? (
                     <BsFillArrowUpSquareFill size={14} />
                   ) : (
@@ -209,15 +213,15 @@ export const DeletedDiscussions: React.FC = () => {
                   )}
                 </div>
               </th>
-              <th className="py-2 px-4  ">Status</th>
-              <th className="py-2 px-4 rounded-tr-md ">Action</th>
+              <th className="py-2 px-4  ">{t("status")}</th>
+              <th className="py-2 px-4 rounded-tr-md ">{t("action")}</th>
             </tr>
           </thead>
           <tbody>
             {currentItems?.length === 0 ? (
               <tr>
                 <td colSpan={7} className="text-center">
-                  Không có bài viết nào
+                  {t("noPosts")}
                 </td>
               </tr>
             ) : (
@@ -324,7 +328,7 @@ export const DeletedDiscussions: React.FC = () => {
         </div>
         <div className="w-1/2 ml-2 flex items-center justify-center">
           <label htmlFor="itemsPerPage" className="mr-2">
-            Rows per page:
+            {t("rowPerPage")}:
           </label>
           <select
             id="itemsPerPage"

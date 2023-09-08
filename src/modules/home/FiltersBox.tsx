@@ -1,6 +1,7 @@
 import Topic from "@/interface/topic";
 import { useDiscussionStore } from "@/store/discussionStore";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { BsFilterRight, BsSearch } from "react-icons/bs";
 import { HiChevronDown } from "react-icons/hi";
 
@@ -15,6 +16,7 @@ export const FiltersBox: React.FC<FiltersBoxProps> = ({
   handleSearch,
   handleFilter,
 }) => {
+  const { t } = useTranslation();
   const { stateSort, setStateSort } = useDiscussionStore();
   const [filterOptions, setFilterOptions] = useState({
     sort: stateSort,
@@ -52,8 +54,8 @@ export const FiltersBox: React.FC<FiltersBoxProps> = ({
             value={filterOptions.sort}
             name="sort"
           >
-            <option value="desc">Mới nhất</option>
-            <option value="asc">Cũ nhất</option>
+            <option value="desc">{t("newest")}</option>
+            <option value="asc">{t("oldest")}</option>
           </select>
           <HiChevronDown className="text-dark1 dark:text-light1 text-base absolute right-4 top-[10px] fill-current pointer-events-none" />
         </div>
@@ -64,7 +66,7 @@ export const FiltersBox: React.FC<FiltersBoxProps> = ({
             value={filterOptions.topic || ""}
             name="topic"
           >
-            <option value="">All</option>
+            <option value="">{t("all")}</option>
             {listTopic?.map((topic) => (
               <option key={topic._id} value={topic._id}>
                 {topic.name}
@@ -83,7 +85,7 @@ export const FiltersBox: React.FC<FiltersBoxProps> = ({
           <input
             id="q"
             className="ml-3 h-full w-full pt-0 text-xs bg-transparent outline-none"
-            placeholder="Begin your search..."
+            placeholder={t("beginYourSearch")}
             value={search}
             onChange={handleSearchChange}
           />

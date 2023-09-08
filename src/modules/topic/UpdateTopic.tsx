@@ -5,6 +5,7 @@ import { getTopicById } from "@/services/topicService";
 import { uploadImage } from "@/services/userService";
 
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const colors = [
   { color: "bg-yellow-500", value: "yellow" },
@@ -31,7 +32,7 @@ const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
   const [uploadComplete, setUploadComplete] = useState(false);
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
-
+  const { t } = useTranslation();
   const [newLogo, setNewLogo] = useState("");
   const [newColor, setNewColor] = useState("");
   const [newDesc, setNewDesc] = useState("");
@@ -125,13 +126,15 @@ const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
   return (
     <>
       <div className="flex justify-start mb-8">
-        <span className="dark:text-light0 font-semibold">Create Topic</span>
+        <span className="dark:text-light0 font-semibold">
+          {t("updateTopic")}
+        </span>
       </div>
       <form className="text-xs dark:text-light0 max-sm:h-[530px] ">
         <div className="mb-4">
           <div className="mb-4">
             <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Name
+              {t("name")}
             </Label>
             <input
               value={newName}
@@ -148,7 +151,7 @@ const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
           </div>
           <div className="mb-4">
             <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Description
+              {t("desc")}
             </Label>
             <input
               value={newDesc}
@@ -170,7 +173,7 @@ const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
                   htmlFor="title"
                   className="block mb-1 text-xs font-semibold"
                 >
-                  Old topic image:
+                  {t("oldTopicImage")}:
                 </Label>
                 <div className=" flex item-center justify-center">
                   <img src={`${newLogo}`} width={50} height={50}></img>
@@ -178,7 +181,7 @@ const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
               </div>
             )}
             <Label htmlFor="title" className="block text-xs font-semibold">
-              Choose new topic image:
+              {t("chooseTopicImage")}:
             </Label>
 
             <UploadImage
@@ -188,7 +191,7 @@ const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
           </div>
           <div className=" mb-4">
             <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Type
+              {t("type")}
             </Label>
             <div>
               <select
@@ -208,7 +211,7 @@ const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
           </div>
           <div>
             <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Choose color
+              {t("chooseColor")}
             </Label>
             <div className=" flex flex-wrap max-w-[300px] gap-1 w-auto cursor-pointer ">
               {colors.map((colorInfo, index) => (
@@ -238,7 +241,7 @@ const UpdateTopic: React.FC<CreateUserFormProps> = ({ onSubmit, topicId }) => {
             className="p-4 rounded-lg bg-mainColor flex space-x-1 my-2"
             onClick={hanldeCreate}
           >
-            <span className="text-[12px]">Update</span>
+            <span className="text-[12px]"> {t("update")}</span>
           </button>
         </div>
       </form>

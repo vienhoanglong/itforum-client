@@ -7,6 +7,9 @@ import { useTopicStore } from "@/store/topicStore";
 import IDiscussionCreate from "@/interface/API/IDiscussionCreate";
 import "react-toastify/dist/ReactToastify.css";
 import Topic from "@/interface/topic";
+import { useTranslation } from "react-i18next";
+import QuillEditor from "@/components/editor/QuillEditor";
+import { Label } from "@/components/label";
 interface AddNewDiscussionProps {
   onSaveChanges: (dataDiscuss: IDiscussionCreate) => void;
 }
@@ -16,11 +19,12 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
   const [dataDisussion, setDataDiscussion] = useState<IDiscussionCreate | null>(
     null
   );
+  const { t } = useTranslation();
   const { user } = useUserStore();
   const { listAllTopic, getTopic } = useTopicStore();
   const [isTopicistEmpty, setIsTopicistEmpty] = useState(false);
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState<string>("");
   const [titleError, setTitleError] = useState<string | null>(null);
   const [topicError, setTopicError] = useState<string | null>(null);
   const [contentError, setContentError] = useState<string | null>(null);
@@ -45,7 +49,7 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
       setTopicError(null);
     }
 
-    if (!content) {
+    if (!content || content === "<p><br></p>") {
       setContentError("Content cannot be empty");
       isValid = false;
     } else {
@@ -95,14 +99,14 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
     <div>
       <div className="flex justify-center mb-3">
         <span className=" dark:text-light0 text-lg  font-bold">
-          New discussion
+          {t("newDiscussion")}
         </span>
       </div>
-      <div className="sm:w-[400px] w-[200px] ">
+      <div className="sm:w-[400px] h-[80vh] w-[200px] ">
         <div className="mb-3">
           <input
             className="w-full h-full bg-light2/80 text-sm dark:text-light0 px-4 py-2 rounded-2xl dark:bg-dark0/80"
-            placeholder="Adding your title"
+            placeholder={t("addingYourTitle")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -114,7 +118,7 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
         <Select
           isMulti
           isSearchable
-          placeholder="Choose topic..."
+          placeholder={t("chooseTopic")}
           options={selectOptions}
           value={dataDisussion?.topic?.map((skill) => ({
             value: skill,
@@ -134,12 +138,26 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
         {topicError && (
           <div className="text-red-500 text-xs mt-1">{topicError}</div>
         )}
-        <textarea
-          placeholder="Typing your content here..."
+        {/* <textarea
+          placeholder={t('typingYourContent')}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className=" w-full h-[300px]  md:h-[300px] text-dark0 dark:bg-dark0/80 bg-light2/80 dark:text-light0 text-xs p-4 rounded-md mt-2"
-        ></textarea>
+        ></textarea> */}
+        <div className=" px-2 pb-2 w-full h-full mb-14 md:w-full md:h-[340px]">
+          <Label htmlFor="content" className="block text-xs font-semibold">
+            {t("content")}
+          </Label>
+          <QuillEditor
+            value={content}
+            onChange={(e) => setContent(e)}
+          ></QuillEditor>
+          {/* {submitted && (content === "" || content === "<p><br></p>") && (
+              <div className="block text-xs mt-2 text-red-500">
+                 {t("contentIsRequired")}     
+              </div>
+            )} */}
+        </div>
         {contentError && (
           <div className="text-red-500 text-xs mt-1">{contentError}</div>
         )}
@@ -151,7 +169,7 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
             kind="primary"
             disable
           >
-            Posting
+            {t("posting")}
           </Button>
         ) : (
           <Button
@@ -161,7 +179,7 @@ export const AddNewDiscussion: React.FC<AddNewDiscussionProps> = ({
             kind="primary"
             handle={handleSaveChanges}
           >
-            Posting
+            {t("posting")}
           </Button>
         )}
       </div>

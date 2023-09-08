@@ -8,6 +8,7 @@ interface IPost {
   totalView: number;
   status: number;
   thumbnail: string;
+  totalComment: number;
   thumbnailName: string;
   createdAt: string;
   updatedAt: string;

@@ -4,6 +4,7 @@ import IUserUpdate from "@/interface/API/IUserUpdate";
 import IUser from "@/interface/user";
 import convertDateTime from "@/utils/helper";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface PersonalModalProps {
   userData: IUser | null;
@@ -20,6 +21,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
   userData,
   onSaveChanges,
 }) => {
+  const { t } = useTranslation();
   const [newUserData, setNewUserData] = useState<IUserUpdate>({
     birthDay: userData?.birthDay,
     class: userData?.class,
@@ -89,7 +91,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
           htmlFor="fullName"
           className="block text-xs dark:text-white font-semibold mr-2"
         >
-          Full Name:
+          {t("fullName")}:
         </Label>
         <div className="flex justify-start items-center">
           <input
@@ -115,7 +117,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
           htmlFor="birthDay"
           className="block text-xs dark:text-white font-semibold mr-2"
         >
-          Birthday:
+          {t("birthday")}:
         </Label>
         <div className="flex justify-start items-center">
           <input
@@ -142,7 +144,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
           htmlFor="gender"
           className="block text-xs dark:text-white font-semibold mr-2"
         >
-          Gender:
+          {t("gender")}:
         </Label>
         <div className="flex text-xs dark:text-white justify-start gap-2 flex-wrap items-center">
           <label>
@@ -154,7 +156,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
               checked={newUserData.gender === "Male"}
               onChange={handleChange}
             />
-            Male
+            {t("male")}
           </label>
           <label>
             <input
@@ -165,7 +167,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
               checked={newUserData.gender === "Female"}
               onChange={handleChange}
             />
-            Female
+            {t("female")}
           </label>
           <label>
             <input
@@ -176,7 +178,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
               checked={newUserData.gender === "Other"}
               onChange={handleChange}
             />
-            Other
+            {t("Other")}
           </label>
         </div>
 
@@ -193,7 +195,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
               htmlFor="class"
               className="block text-xs dark:text-white font-semibold mr-2"
             >
-              Class:
+              {t("class")}:
             </Label>
             <div className="flex justify-start items-center">
               <input
@@ -216,7 +218,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
               htmlFor="major"
               className="block text-xs dark:text-white font-semibold mr-2"
             >
-              Major:
+              {t("major")}:
             </Label>
             <div className="flex justify-start items-center">
               <input
@@ -247,7 +249,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
             handle={handleSaveChanges}
             disable
           >
-            Save Changes
+            {t("save")}
           </Button>
         ) : (
           <Button
@@ -257,7 +259,7 @@ const PersonalModal: React.FC<PersonalModalProps> = ({
             className="bg-mainColor text-xs text-white px-3 py-2 rounded-md"
             handle={handleSaveChanges}
           >
-            Save Changes
+            {t("save")}
           </Button>
         )}
       </div>
