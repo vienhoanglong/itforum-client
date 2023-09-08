@@ -7,6 +7,7 @@ import { getAllPost } from "@/services/postService";
 import IPost from "@/interface/post";
 import { Link } from "react-router-dom";
 import convertDateTime from "@/utils/helper";
+import { useTranslation } from "react-i18next";
 
 interface ListPostCardProps {
   listTopic: string[] | string;
@@ -14,6 +15,7 @@ interface ListPostCardProps {
 }
 
 const Carousel: React.FC<ListPostCardProps> = ({ listTopic, postId }) => {
+  const { t } = useTranslation();
   const { getTopic } = useTopicStore();
   const formatDate = "MM-DD-YYYY";
   const [filter, setFilter] = useState<IPost[]>([]);
@@ -55,7 +57,7 @@ const Carousel: React.FC<ListPostCardProps> = ({ listTopic, postId }) => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: filter.length === 1 ? 1 : 2,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -85,10 +87,12 @@ const Carousel: React.FC<ListPostCardProps> = ({ listTopic, postId }) => {
   };
   return (
     <div className=" slider-container bg-light2 dark:bg-dark0 rounded-lg">
-      <h1 className="text-sm font-bold mb-2 text-darker">Realated posts</h1>
+      <h1 className="text-sm font-bold mb-2 text-darker">
+        {t("relatedPosts")}
+      </h1>
       {filter?.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-white py-4">
-          Không có bài viết liên quan
+          {t("noPostRelated")}
         </div>
       ) : (
         <Slider {...settings}>

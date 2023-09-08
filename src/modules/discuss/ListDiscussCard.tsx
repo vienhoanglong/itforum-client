@@ -7,6 +7,7 @@ import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
 import convertDateTime from "@/utils/helper";
 import { getAllDiscussion } from "@/services/discussionService";
+import { useTranslation } from "react-i18next";
 
 interface ListDiscussCardProps {
   listTopic: string[] | string;
@@ -16,6 +17,7 @@ interface ListDiscussCardProps {
 
 const ListDiscussCard: React.FC<ListDiscussCardProps> = React.memo(
   ({ numTopicsToShow, listTopic, discussId }) => {
+    const { t } = useTranslation();
     const { listAllTopic, getTopic } = useTopicStore();
     const { listUser, getListUser } = useUserStore();
     const formatDate = "MM-DD-YYYY";
@@ -66,20 +68,20 @@ const ListDiscussCard: React.FC<ListDiscussCardProps> = React.memo(
       <div className="w-full  dark:bg-dark1/80 h-auto rounded-lg mt-2 flex pt-4 flex-col space-y-2">
         <div className=" flex justify-between items-center mb-2 px-2">
           <span className="font-bold text-sm text-darker">
-            Related discussion
+            {t("relatedDiscussions")}
           </span>
           {filter?.length === 0 ? null : (
             <Link
               className=" dark:text-light0 px-4 rounded-full link inline-flex items-center text-xs !text-grey-600 underline font-medium bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark0"
               to="/"
             >
-              More
+              {t("more")}
             </Link>
           )}
         </div>
         {filter?.length === 0 ? (
           <div className="text-center text-gray-500 dark:text-white py-4">
-            Không có thảo luận liên quan
+            {t("noDiscussionsRelated")}
           </div>
         ) : (
           filter?.slice(0, numTopicsToShow).map((discuss, index) =>

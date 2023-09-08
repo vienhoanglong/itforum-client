@@ -10,6 +10,7 @@ import IDiscussion from "@/interface/discussion";
 import convertDateTime from "@/utils/helper";
 import { Link } from "react-router-dom";
 import Avatar from "@/components/image/Avatar";
+import { useTranslation } from "react-i18next";
 
 interface SliderDiscussProps {
   listTopic: string[] | string;
@@ -25,7 +26,7 @@ const SliderDiscuss: React.FC<SliderDiscussProps> = ({
   const { listAllTopic } = useTopicStore();
   const [filter, setFilter] = useState<IDiscussion[]>([]);
   const formatDate = "MM-DD-YYYY";
-
+  const { t } = useTranslation();
   useEffect(() => {
     const filteredDiscussions =
       listDiscuss != null &&
@@ -86,7 +87,9 @@ const SliderDiscuss: React.FC<SliderDiscussProps> = ({
   };
   return (
     <div className=" slider-container bg-light2 dark:bg-dark0 rounded-lg">
-      <h1 className="text-sm font-bold mb-2 text-darker">Related discuss</h1>
+      <h1 className="text-sm font-bold mb-2 text-darker">
+        {t("relatedDiscussions")}
+      </h1>
       <Slider {...settings}>
         {filter.map((discuss, index) =>
           listUser

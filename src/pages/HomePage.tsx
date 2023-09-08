@@ -7,10 +7,12 @@ import Posts from "@/modules/home/Posts";
 import { getDiscussionByStatus } from "@/services/discussionService";
 import { useUserStore } from "@/store/userStore";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 export const HomePage: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const [sort, setSort] = useState<string>("desc");
   const [filter, setFilter] = useState<string>("");
   const { listUser, getListUser } = useUserStore();
@@ -62,11 +64,11 @@ export const HomePage: React.FC = React.memo(() => {
       <Tabs>
         <TabList>
           <Tab className=" hover:cursor-pointer relative py-2 px-4 mr-1 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
-            Discuss
+            {t("discussions")}
             <div className="absolute inset-0 bg-transparent"></div>
           </Tab>
           <Tab className="hover:cursor-pointer relative py-2 px-4 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
-            Posts
+            {t("posts")}
             <div className="absolute inset-0 bg-transparent"></div>
           </Tab>
         </TabList>

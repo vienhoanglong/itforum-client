@@ -11,6 +11,7 @@ import { useUserStore } from "@/store/userStore";
 import { colorsAvatar } from "@/constants/global";
 import { uploadImage } from "@/services/userService";
 import { coverDefault } from "@/utils/helper";
+import { useTranslation } from "react-i18next";
 
 interface AboutSectionProps {
   userData: IUser | null;
@@ -27,6 +28,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
   onUpdateAvatar,
   onUpdateCoverImage,
 }) => {
+  const { t } = useTranslation();
   const [isUpdatingAbout, setIsUpdatingAbout] = useState(false);
   const [isUpdatingImg, setIsUpdatingImg] = useState(false);
   const [isUpdatingAvatar, setIsUpdatingAvatar] = useState(false);
@@ -165,13 +167,13 @@ const AboutSection: React.FC<AboutSectionProps> = ({
             onClick={handleOpenModalImg}
           >
             <HiPencil></HiPencil>
-            <span className="max-md:hidden">Edit</span>
+            <span className="max-md:hidden">{t("edit")}</span>
           </button>
         ) : null}
 
         <Modal isOpen={isUpdatingImg} onClose={handleCloseModal}>
           <Label htmlFor="title" className="block text-xs font-semibold">
-            Choose your cover image:
+            {t("chooseYourCoverImage")}
           </Label>
 
           <UploadImage
@@ -188,7 +190,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                 type="submit"
                 handle={handleUpload}
               >
-                Submit
+                {t("submit")}
               </Button>
             ) : null}
           </div>
@@ -208,7 +210,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
               className="absolute top-[47%] mx-1 inset-0 rounded-b-full h-[50%] flex items-center justify-center bg-dark0 text-white opacity-0 transition-opacity duration-200 hover:opacity-50"
             >
               <HiPencil />
-              Edit
+              {t("edit")}
             </button>
           ) : null}
 
@@ -218,7 +220,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                 htmlFor="updateAvatar"
                 className="block text-xs font-semibold mb-4 mr-8"
               >
-                Choose your avatar:
+                {t("chooseYourAvatar")}
               </Label>
               <div className="flex flex-wrap max-w-[340px] gap-2">
                 {listAvatar &&
@@ -248,7 +250,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                 htmlFor="title"
                 className="block mb-1 text-xs font-semibold"
               >
-                Choose color
+                {t("chooseColor")}
               </Label>
               <div className=" flex flex-wrap max-w-[300px] gap-1 w-auto ">
                 {colorsAvatar.map((colorInfo, index) => (
@@ -276,7 +278,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                   type="submit"
                   handle={handleUpdateAvatar}
                 >
-                  Submit
+                  {t("submit")}
                 </Button>
               ) : null}
             </div>
@@ -296,13 +298,13 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                 ? (() => {
                     switch (userData.role) {
                       case 0:
-                        return "Admin";
+                        return `${t("admin")}`;
                       case 1:
-                        return "Teacher";
+                        return `${t("teacher")}`;
                       case 2:
-                        return "Student";
+                        return `${t("student")}`;
                       case 3:
-                        return "Company";
+                        return `${t("company")}`;
                       default:
                         return "";
                     }
@@ -318,13 +320,13 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                   ? userData.followers
                   : "0"
                 : ""}{" "}
-              follower
+              {t("follower")}
             </span>
           </div>
         </div>
       </div>
       <div className="p-4 relative">
-        <h2 className="text-base font-bold mb-4">About</h2>
+        <h2 className="text-base font-bold mb-4">{t("about")}</h2>
         <p className="">{userData ? userData.desc : ""}</p>
         {isEdit ? (
           <button
@@ -332,7 +334,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
             onClick={handleOpenModalAbout}
           >
             <HiPencil />
-            <span className="max-md:hidden">Edit</span>
+            <span className="max-md:hidden">{t("edit")}</span>
           </button>
         ) : null}
 
@@ -343,12 +345,12 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                 htmlFor="about"
                 className="block text-xs font-semibold mb-2"
               >
-                About me:
+                {t("aboutMe")}
               </Label>
               <textarea
                 id="about"
                 className="text-xs sm:w-[400px] sm:h-[200px] w-[250px] h-[100px] overflow-y-hidden p-2 break-words border rounded dark:bg-dark2 dark:text-light0"
-                placeholder="Typing about you..."
+                placeholder={t("typingAboutYou")}
                 value={newAbout}
                 onChange={handleAboutChange}
               ></textarea>
@@ -361,7 +363,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
                   className="text-xs mt-2"
                   handle={handleUpdateAbout}
                 >
-                  Submit
+                  {t("submit")}
                 </Button>
               )}
             </div>

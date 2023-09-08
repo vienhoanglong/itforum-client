@@ -7,6 +7,7 @@ import {
   dashboardUser,
 } from "@/services/dashboardService";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { HiArrowCircleLeft } from "react-icons/hi";
 import {
   BarChart,
@@ -140,6 +141,7 @@ interface ReportDashboard {
   value: number;
 }
 const DashBoardPage: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const [userDashboard, setUserDashboard] = React.useState<
     UserDashboard[] | null
   >(null);
@@ -185,6 +187,7 @@ const DashBoardPage: React.FC = React.memo(() => {
     setSelectedOption(selectedValue);
     fetchDataPostsAndDiscuss(selectedValue);
   };
+
   return (
     <LayoutSecondary>
       <a
@@ -192,11 +195,11 @@ const DashBoardPage: React.FC = React.memo(() => {
         href="/managements"
       >
         <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back to Managements
+        {t("back")}
       </a>
       <div className=" h-auto mx-auto bg-light3 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Dashboard</h4>
+          <h4 className="text-xl font-bold text-darker ">{t("dashboard")}</h4>
         </div>
         <div className="flex flex-col lg:grid grid-cols-1 lg:grid-cols-3 gap-x-4 gap-y-4">
           <div className=" bg-light4 rounded-lg lg:col-span-1 dark:bg-dark2 p-4 h-auto">
@@ -205,7 +208,7 @@ const DashBoardPage: React.FC = React.memo(() => {
 
           <div className=" bg-light4 h-auto lg:col-span-2 dark:bg-dark2 p-4 rounded-lg">
             <div className="text-sm dark:text-white mb-4 font-bold">
-              Overview user
+              {t("overviewUsers")}
             </div>
             <div className="flex justify-center items-center gap-4 p-4 rounded-lg lg:h-[180px]">
               {userDashboard &&
@@ -259,7 +262,7 @@ const DashBoardPage: React.FC = React.memo(() => {
           </div>
           <div className="flex no-scrollbar flex-col gap-4 items-center justify-center lg:col-span-2 dark:bg-dark2 bg-light4 p-4 rounded-md">
             <div className=" text-sm dark:text-white font-bold">
-              Post & Discussion
+              {t("post&discuss")}
             </div>
             <div className="flex items-end justify-end text-right">
               <select
@@ -267,9 +270,9 @@ const DashBoardPage: React.FC = React.memo(() => {
                 value={selectedOption}
                 onChange={handleOptionChange}
               >
-                <option value="week">Tuần</option>
-                <option value="month">Tháng</option>
-                <option value="year">Năm</option>
+                <option value="week">{t("week")}</option>
+                <option value="month">{t("month")}</option>
+                <option value="year">{t("year")}</option>
               </select>
             </div>
             <ResponsiveContainer width="100%" height="100%">
@@ -297,7 +300,7 @@ const DashBoardPage: React.FC = React.memo(() => {
 
           <div className="flex no-scrollbar flex-col  items-center justify-center lg:col-span-1 dark:bg-dark2 bg-light4 p-4 rounded-md">
             <div className=" text-sm dark:text-white font-bold mb-4">
-              Reports
+              {t("report")}
             </div>
             <PieChart width={300} height={300}>
               <Pie

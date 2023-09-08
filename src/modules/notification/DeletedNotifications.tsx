@@ -17,8 +17,10 @@ import {
 } from "@/services/notificationService.ts";
 import { toast } from "react-toastify";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog";
+import { useTranslation } from "react-i18next";
 
 export const DeletedNotifications: React.FC = () => {
+  const { t } = useTranslation();
   const { listNotification, getListNotification } = useManagementStore();
   const { user } = useUserStore();
   const [currentPage, setCurrentPage] = useState(0);
@@ -149,14 +151,14 @@ export const DeletedNotifications: React.FC = () => {
         await moveTrashOrRestoreNotification(id);
         getListNotification(0, 0, "desc");
         setIsModalOpenDialog(false);
-        toast.success(" Restore notification successfully! ", {
+        toast.success(`${t("restoreSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error restore notification");
       }
-    }, "Bạn có chắc muốn khôi phục không?");
+    }, `${t("confirmRestore")}`);
   };
 
   const handleDelete = async (id: string) => {
@@ -165,29 +167,29 @@ export const DeletedNotifications: React.FC = () => {
         await deleteNotification(id);
         getListNotification(0, 0, "desc");
         setIsModalOpenDialog(false);
-        toast.success(" Deleted notification successfully! ", {
+        toast.success(`${t("deleteSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error deleted notification");
       }
-    }, "Bạn có chắc muốn xoá không?");
+    }, `${t("confirmDelete")}`);
   };
 
   return (
     <div className="container h-[80vh] w-[80vw] mx-auto bg-light4 dark:bg-dark1  p-4 rounded-3xl">
       <div className=" py-4">
         <h4 className="text-xl font-bold text-darker ">
-          Deleted notifications
+          {t("deletedNotifications")}
         </h4>
       </div>
       <div className="flex flex-wrap items-center">
         <div className=" w-full md:w-1/2 mr-auto pt-2">
           <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
             <div className="w-1/2 relative flex flex-wrap">
-              <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                <span>Type:</span>
+              <div className="w-1/4 text-xs flex justify-center  dark:text-white items-center">
+                <span>{t("type")}:</span>
               </div>
               <div className="w-3/4">
                 <select
@@ -196,11 +198,11 @@ export const DeletedNotifications: React.FC = () => {
                   value={filterType || ""}
                   onChange={(e) => handleFilter(e.target.value || null)}
                 >
-                  <option value="">All</option>
-                  <option value="subject">Subject</option>
-                  <option value="event">Event</option>
-                  <option value="recruitment">Recruitment</option>
-                  <option value="other">Other</option>
+                  <option value="">{t("all")}</option>
+                  <option value="subject">{t("subject")}</option>
+                  <option value="event">{t("event")}</option>
+                  <option value="recruitment">{t("recruitment")}</option>
+                  <option value="other">{t("Other")}</option>
                 </select>
                 <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
                   <HiFilter className="text-darker" size={15} />
@@ -209,7 +211,7 @@ export const DeletedNotifications: React.FC = () => {
             </div>
             <div className="w-1/2 relative flex flex-wrap">
               <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                <span>Level:</span>
+                <span>{t("level")}:</span>
               </div>
               <div className="w-3/4">
                 <select
@@ -218,9 +220,9 @@ export const DeletedNotifications: React.FC = () => {
                   value={filterStatus || ""}
                   onChange={(e) => handleLevelFilter(e.target.value || null)}
                 >
-                  <option value="">All</option>
-                  <option value="important">Important</option>
-                  <option value="normal">Normal</option>
+                  <option value="">{t("all")}</option>
+                  <option value="important">{t("important")}</option>
+                  <option value="normal">{t("normal")}</option>
                 </select>
                 <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
                   <HiFilter className="text-darker" size={15} />
@@ -245,14 +247,14 @@ export const DeletedNotifications: React.FC = () => {
         <table className="min-w-full shadow-lg  ">
           <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
             <tr>
-              <th className="py-2 px-4  rounded-tl-md ">SN</th>
-              <th className="py-2 px-4  ">Author</th>
-              <th className="py-2 px-4  ">Title</th>
-              <th className="py-2 px-4  ">Type</th>
-              <th className="py-2 px-4  ">Level</th>
+              <th className="py-2 px-4  rounded-tl-md ">{t("sn")}</th>
+              <th className="py-2 px-4  ">{t("author")}</th>
+              <th className="py-2 px-4  ">{t("title")}</th>
+              <th className="py-2 px-4  ">{t("type")}</th>
+              <th className="py-2 px-4  ">{t("level")}</th>
               <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
                 <div className="flex justify-center items-center gap-2">
-                  <span>Date</span>
+                  <span>{t("date")}</span>
                   {sortDirection === "asc" ? (
                     <BsFillArrowUpSquareFill size={14} />
                   ) : (
@@ -260,15 +262,15 @@ export const DeletedNotifications: React.FC = () => {
                   )}
                 </div>
               </th>
-              <th className="py-2 px-4  ">Status</th>
-              <th className="py-2 px-4 rounded-tr-md ">Action</th>
+              <th className="py-2 px-4  ">{t("status")}</th>
+              <th className="py-2 px-4 rounded-tr-md ">{t("action")}</th>
             </tr>
           </thead>
           <tbody>
             {currentItems?.length === 0 ? (
               <tr>
                 <td colSpan={7} className="text-center">
-                  Không có thông báo nào
+                  {t("noNotification")}
                 </td>
               </tr>
             ) : (
@@ -358,7 +360,7 @@ export const DeletedNotifications: React.FC = () => {
         </div>
         <div className="w-auto mx-2 flex items-center justify-end">
           <label htmlFor="itemsPerPage" className="mr-2">
-            Rows per page:
+            {t("rowPerPage")}:
           </label>
           <select
             id="itemsPerPage"

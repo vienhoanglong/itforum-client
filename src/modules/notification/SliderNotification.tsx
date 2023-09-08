@@ -7,6 +7,7 @@ import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
 import { getNotificationByLevel } from "@/services/notificationService";
 import INotification from "@/interface/notification";
+import { useTranslation } from "react-i18next";
 
 interface SliderNotification {
   newUpdate: boolean;
@@ -39,6 +40,7 @@ const SliderNotification: React.FC<SliderNotification> = ({ newUpdate }) => {
     };
     fetchData();
   }, [getListUserNotifiLevel, newUpdate, update]);
+  const { t } = useTranslation();
   const settings = {
     dots: true,
     infinite: true,
@@ -82,7 +84,7 @@ const SliderNotification: React.FC<SliderNotification> = ({ newUpdate }) => {
   };
   return (
     <div className=" slider-container bg-light2 dark:bg-dark1 rounded-lg">
-      <h1 className="text-sm font-bold mb-2 text-red2">Important</h1>
+      <h1 className="text-sm font-bold mb-2 text-red2">{t("important")}</h1>
       <Slider {...settings}>
         {listNotificationImportant?.map((notifi, index) =>
           listUserNotifiLevel

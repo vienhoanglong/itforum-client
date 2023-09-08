@@ -33,9 +33,11 @@ import {
 import DeletedTopic from "@/modules/topic/DeletedTopic";
 import Navigation from "@/components/navigation/Navigation";
 import UpdateTopic from "@/modules/topic/UpdateTopic";
+import { useTranslation } from "react-i18next";
 
 export const ManageTopicsPage: React.FC = () => {
   const { getListTopic, listTopic } = useManagementStore();
+  const { t } = useTranslation();
   const [topicUpdate, setTopicUpdate] = useState<string>("");
   const [isModalOpenAddTopic, setIsModalOpenAddTopic] = useState(false); // config modal add
   const [isModalOpenTrash, setIsModalOpenTrash] = useState(false); // config modal trash
@@ -174,14 +176,14 @@ export const ManageTopicsPage: React.FC = () => {
         await moveTrashOrRestoreTopic(id);
         getListTopic();
         setIsModalOpenDialog(false);
-        toast.success(" Delete topic successfully! ", {
+        toast.success(`${t("deleteSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error deleted topic");
       }
-    }, "Bạn có chắc muốn xoá không?");
+    }, `${t("confirmDelete")}`);
   };
   const changeStatusPublish = async (id: string) => {
     handleConfirm(async () => {
@@ -189,14 +191,14 @@ export const ManageTopicsPage: React.FC = () => {
         await changeStatusTopic(id, false);
         getListTopic();
         setIsModalOpenDialog(false);
-        toast.success(" Change status topic successfully! ", {
+        toast.success(`${t("publishSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error change Status topic");
       }
-    }, "Bạn có chắc muốn công khai không?");
+    }, `${t("confirmPublish")}`);
   };
   const changeStatusHidden = async (id: string) => {
     handleConfirm(async () => {
@@ -204,21 +206,21 @@ export const ManageTopicsPage: React.FC = () => {
         await changeStatusTopic(id, true);
         getListTopic();
         setIsModalOpenDialog(false);
-        toast.success(" Change status topic successfully! ", {
+        toast.success(`${t("hiddenSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error change Status topic");
       }
-    }, "Bạn có chắc muốn ẩn không?");
+    }, `${t("confirmHidden")}`);
   };
   const handleFormSubmit = async (topic: ITopicCreate) => {
     try {
       await CreateNewTopic(topic);
       getListTopic();
       setIsModalOpenAddTopic(false);
-      toast.success(" Create topic successfully! ", {
+      toast.success(`${t("createSucess")}`, {
         position: "bottom-right",
         autoClose: 3000,
       });
@@ -236,7 +238,7 @@ export const ManageTopicsPage: React.FC = () => {
       await UpdatedTopic(topic, topicUpdate);
 
       getListTopic();
-      toast.success(" Update topic successfully! ", {
+      toast.success(`${t("updateSucess")}`, {
         position: "bottom-right",
         autoClose: 3000,
       });
@@ -251,23 +253,25 @@ export const ManageTopicsPage: React.FC = () => {
       <Navigation></Navigation>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Topic management</h4>
+          <h4 className="text-xl font-bold text-darker ">
+            {t("topicManagement")}
+          </h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
             <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
               <div className="w-1/2 relative flex flex-wrap">
-                <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                  <span>Type:</span>
+                <div className="w-1/2 flex justify-center text-xs  dark:text-white items-center">
+                  <span>{t("type")}:</span>
                 </div>
-                <div className="w-3/4">
+                <div className="w-1/2">
                   <select
                     id="filterDropdown"
                     className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
                     value={filterType || ""}
                     onChange={(e) => handleFilter(e.target.value || null)}
                   >
-                    <option value="">All</option>
+                    <option value="">{t("all")}</option>
                     <option value="devOps">DevOps</option>
                     <option value="frameworks">Framework</option>
                     <option value="languages">Language</option>
@@ -281,17 +285,17 @@ export const ManageTopicsPage: React.FC = () => {
                 </div>
               </div>
               <div className="w-1/2 relative flex flex-wrap">
-                <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                  <span>Status:</span>
+                <div className="w-1/2 flex justify-center text-xs dark:text-white items-center">
+                  <span>{t("status")}:</span>
                 </div>
-                <div className="w-3/4">
+                <div className="w-1/2">
                   <select
                     id="statusFilterDropdown"
                     className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
                     value={filterStatus || ""}
                     onChange={(e) => handleStatusFilter(e.target.value || null)}
                   >
-                    <option value="">All</option>
+                    <option value="">{t("all")}</option>
                     <option value="false">Publish</option>
                     <option value="true">Hidden</option>
                   </select>
@@ -311,7 +315,7 @@ export const ManageTopicsPage: React.FC = () => {
               handle={handleAddNew}
             >
               {" "}
-              New{" "}
+              {t("new")}{" "}
               <span className="pl-1">
                 <HiPlusCircle size={20} />
               </span>
@@ -323,7 +327,7 @@ export const ManageTopicsPage: React.FC = () => {
               handle={() => handleDeleted()}
             >
               {" "}
-              Trash{" "}
+              {t("trash")}{" "}
               <span className="pl-1">
                 <HiTrash size={20} />
               </span>
@@ -354,13 +358,13 @@ export const ManageTopicsPage: React.FC = () => {
           <table className="min-w-full shadow-lg  ">
             <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
               <tr>
-                <th className="py-2 px-4  rounded-tl-md ">SN</th>
-                <th className="py-2 px-4  ">Name</th>
-                <th className="py-2 px-4  ">Type</th>
-                <th className="py-2 px-4  ">Desc</th>
+                <th className="py-2 px-4  rounded-tl-md ">{t("sn")}</th>
+                <th className="py-2 px-4  ">{t("name")}</th>
+                <th className="py-2 px-4  ">{t("type")}</th>
+                <th className="py-2 px-4  ">{t("desc")}</th>
                 <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
                   <div className="flex justify-center items-center gap-2">
-                    <span>Date</span>
+                    <span>{t("date")}</span>
                     {sortDirection === "asc" ? (
                       <BsFillArrowUpSquareFill size={14} />
                     ) : (
@@ -368,15 +372,15 @@ export const ManageTopicsPage: React.FC = () => {
                     )}
                   </div>
                 </th>
-                <th className="py-2 px-4  ">Status</th>
-                <th className="py-2 px-4 rounded-tr-md ">Action</th>
+                <th className="py-2 px-4  ">{t("status")}</th>
+                <th className="py-2 px-4 rounded-tr-md ">{t("action")}</th>
               </tr>
             </thead>
             <tbody>
               {currentItems?.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center">
-                    Không có chủ đề nào
+                    {t("noTopics")}
                   </td>
                 </tr>
               ) : (
@@ -496,7 +500,7 @@ export const ManageTopicsPage: React.FC = () => {
           </div>
           <div className="w-auto mx-2 flex items-center justify-end">
             <label htmlFor="itemsPerPage" className="mr-2">
-              Rows per page:
+              {t("rowPerPage")}:
             </label>
             <select
               id="itemsPerPage"

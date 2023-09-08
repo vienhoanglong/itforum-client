@@ -1,6 +1,7 @@
 import LayoutSecondary from "@/layout/LayoutSecondary";
 import { useTopicStore } from "@/store/topicStore";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 export const TopicPage: React.FC = React.memo(() => {
@@ -15,6 +16,7 @@ export const TopicPage: React.FC = React.memo(() => {
     "tooling",
     "testing",
   ];
+  const { t } = useTranslation();
   const { listAllTopic, getTopic } = useTopicStore();
   useEffect(() => {
     getTopic();
@@ -137,7 +139,7 @@ export const TopicPage: React.FC = React.memo(() => {
         >
           {filteredTopics && filteredTopics?.length === 0 ? (
             <div className="w-full h-full text-center flex flex-col text-lg font-bold p-10 gap-4">
-              <span>No topic yet</span>
+              <span>{t("noTopics")}</span>
             </div>
           ) : (
             filteredTopics?.map(

@@ -37,8 +37,11 @@ import LayoutSecondary from "@/layout/LayoutSecondary";
 import Comments from "@/components/comment/Comments";
 import { useCommentStore } from "@/store/commentStore";
 import Navigation from "@/components/navigation/Navigation";
+import { useTranslation } from "react-i18next";
+import parse from "html-react-parser";
 
 const DiscussDetailPage: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const { discussId } = useParams<{ discussId: string }>();
   const navigate = useNavigate();
   const { listDiscuss, getListDiscussion } = useDiscussionStore();
@@ -175,12 +178,12 @@ const DiscussDetailPage: React.FC = React.memo(() => {
         setParentComment(updateComment);
         setIsDeleted(true);
         setIdDelete(commentId);
-        toast.success(" Deleted comment successfully! ", {
+        toast.success(" Deleted successfully! ", {
           position: "bottom-right",
           autoClose: 3000,
         });
       } catch (err) {
-        console.log("error hidden comment");
+        console.log("error delete");
       }
     }, "Bạn có chắc muốn xoá không?");
   };
@@ -206,12 +209,12 @@ const DiscussDetailPage: React.FC = React.memo(() => {
       try {
         discussId && (await moveTrashOrRestore(discussId));
         setState(!state);
-        toast.success(" Deleted discuss successfully! ", {
+        toast.success(" Deleted successfully! ", {
           position: "bottom-right",
           autoClose: 3000,
         });
       } catch (err) {
-        console.log("error delete discussion");
+        console.log("error delete ");
       }
     }, "Bạn có chắc muốn xoá không?");
   };
@@ -220,12 +223,12 @@ const DiscussDetailPage: React.FC = React.memo(() => {
       try {
         discussId && (await moveTrashOrRestore(discussId));
         setState(!state);
-        toast.success(" Restore discuss successfully! ", {
+        toast.success(" Restore successfully! ", {
           position: "bottom-right",
           autoClose: 3000,
         });
       } catch (err) {
-        console.log("error restore discussion");
+        console.log("error restore ");
       }
     }, "Bạn có chắc muốn khôi phục không?");
   };
@@ -234,12 +237,12 @@ const DiscussDetailPage: React.FC = React.memo(() => {
       try {
         discussId && (await updateStatusDiscussion(discussId, 3));
         setState(!state);
-        toast.success(" Discussion is hidden! ", {
+        toast.success(" Hidden successfully! ", {
           position: "bottom-right",
           autoClose: 3000,
         });
       } catch (err) {
-        console.log("error hidden discussion");
+        console.log("error hidden");
       }
     }, "Bạn có chắc muốn ẩn không?");
   };
@@ -248,14 +251,14 @@ const DiscussDetailPage: React.FC = React.memo(() => {
       try {
         discussId && (await updateStatusDiscussion(discussId, 1));
         setState(!state);
-        toast.success(" Discussion is published! ", {
+        toast.success(" Published successfully! ", {
           position: "bottom-right",
           autoClose: 3000,
         });
       } catch (err) {
-        console.log("error publish discussion");
+        console.log("error publish ");
       }
-    }, "Bạn có chắc muốn ẩn không?");
+    }, "Bạn có chắc muốn công khai không?");
   };
 
   const handleUpdate = async (data: ICommentCreate, id: string) => {
@@ -293,14 +296,14 @@ const DiscussDetailPage: React.FC = React.memo(() => {
     return (
       <LayoutSecondary>
         <div className="w-full h-full text-center flex flex-col text-lg font-bold p-10 gap-4">
-          <span>Discussion not found!</span>
+          <span>{t("discussionNotFound")}</span>
           <div>
             <button
               className="dark:text-light0 rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
               onClick={handleBack}
             >
               <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-              Back
+              {t("back")}
             </button>
           </div>
         </div>
@@ -392,7 +395,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
                 <BsFillChatFill className="text-lg " />
               </div>
               <span className="text-xs font-semibold leading-none text-grey-800">
-                3
+                {discussion.totalComment > 0 ? discussion.totalComment : 0}
               </span>
             </div>
             <div className="flex items-center justify-center">
@@ -400,7 +403,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
                 <BsEyeFill className="text-lg" />
               </div>
               <span className="text-xs font-medium leading-none text-left text-text1">
-                {discussion?.totalView}
+                {discussion.totalView > 0 ? discussion.totalView : 0}
               </span>
             </div>
           </div>
@@ -471,7 +474,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
                     <BsFillChatFill className="text-lg" />
                   </div>
                   <span className="relative text-xs font-medium leading-none text-left text-text1">
-                    3
+                    {discussion.totalComment > 0 ? discussion.totalComment : 0}
                   </span>
                 </div>
                 <div className="flex items-center justify-center">
@@ -479,7 +482,7 @@ const DiscussDetailPage: React.FC = React.memo(() => {
                     <BsEyeFill className="text-lg" />
                   </div>
                   <span className="text-xs font-medium leading-none text-left text-text1">
-                    {discussion?.totalView}
+                    {discussion.totalView > 0 ? discussion.totalView : 0}
                   </span>
                 </div>
               </div>
@@ -492,7 +495,11 @@ const DiscussDetailPage: React.FC = React.memo(() => {
               </h3>
             </div>
             <div className=" text-black/90 dark:text-light0 lg:mb-0 lg:pr-8 text-xs">
-              {discussion?.content}
+              <div className="ql-snow">
+                {discussion?.content && (
+                  <div className="ql-editor">{parse(discussion?.content)}</div>
+                )}
+              </div>
             </div>
             <div className="flex justify-between items-center mt-2">
               <div className="flex justify-start items-center">

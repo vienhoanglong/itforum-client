@@ -4,6 +4,7 @@ import ITopicCreate from "@/interface/API/ITopicCreate";
 import { uploadImage } from "@/services/userService";
 
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const colors = [
   { color: "bg-yellow-500", value: "yellow" },
@@ -27,7 +28,7 @@ type CreateTopicFormProps = {
 const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
   const [uploadImg, setNewUploadImg] = useState<File | null>(null);
   const [uploadComplete, setUploadComplete] = useState(false);
-
+  const { t } = useTranslation();
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   const [newColor, setNewColor] = useState("");
@@ -110,13 +111,15 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
   return (
     <>
       <div className="flex justify-start mb-8">
-        <span className="dark:text-light0 font-semibold">Create Topic</span>
+        <span className="dark:text-light0 font-semibold">
+          {t("createTopics")}
+        </span>
       </div>
       <form className="text-xs dark:text-light0 max-sm:h-[530px] ">
         <div className="mb-4">
           <div className="mb-4">
             <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Name
+              {t("name")}
             </Label>
             <input
               onChange={(e) => handleNameChange(e)}
@@ -132,7 +135,7 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
           </div>
           <div className="mb-4">
             <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Description
+              {t("desc")}
             </Label>
             <input
               onChange={(e) => hanldeDescChange(e)}
@@ -148,7 +151,7 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
           </div>
           <div className="mb-4">
             <Label htmlFor="title" className="block text-xs font-semibold">
-              Choose topic image:
+              {t("chooseTopicImage")}:
             </Label>
 
             <UploadImage
@@ -163,7 +166,7 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
           </div>
           <div className=" mb-4">
             <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Type
+              {t("type")}
             </Label>
             <div>
               <select
@@ -183,7 +186,7 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
           </div>
           <div>
             <Label htmlFor="title" className="block mb-1 text-xs font-semibold">
-              Choose color
+              {t("chooseColor")}
             </Label>
             <div className=" flex flex-wrap max-w-[300px] gap-1 w-auto cursor-pointer ">
               {colors.map((colorInfo, index) => (
@@ -213,7 +216,7 @@ const AddNewTopic: React.FC<CreateTopicFormProps> = ({ onSubmit }) => {
             className="p-4 rounded-lg bg-mainColor text-white flex space-x-1 my-2"
             onClick={hanldeCreate}
           >
-            <span className="text-[12px]">Submit</span>
+            <span className="text-[12px]">{t("submit")}</span>
           </button>
         </div>
       </form>

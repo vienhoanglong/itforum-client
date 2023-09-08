@@ -11,8 +11,10 @@ import { getListConversationsByUser } from "@/services/conversationService";
 import Modal from "@/components/modal/Modal";
 import CreateNewConversation from "./CreateNewConversation";
 import { IConversation } from "@/interface/conversation";
+import { useTranslation } from "react-i18next";
 
 export const ListChat: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useUserStore();
   const { conversations, setConversations, setSelectedChatId } =
     useConversationStore();
@@ -80,14 +82,16 @@ export const ListChat: React.FC = () => {
             <input
               id="q"
               className="ml-4 h-full min-w-full pt-0 text-xs bg-transparent outline-none"
-              placeholder="Begin your search..."
+              placeholder={t("beginYourSearch")}
             />
           </div>
         </form>
       </div>
       {/* Chat List */}
       <div className="flex flex-col dark:bg-dark2 p-2 gap-2">
-        <div className="font-semibold text-sm">Recent</div>
+        <div className="font-semibold text-sm dark:text-white">
+          {t("recent")}
+        </div>
         <div className="h-[70vh] no-scrollbar min-w-full overflow-y-scroll">
           {conversations.length > 0 &&
             conversations.map((e) => (
@@ -120,9 +124,7 @@ export const ListChat: React.FC = () => {
                       {e.descConversation}
                     </p>
                   </div>
-                  <span className="text-[10px] text-mainColor font-bold mt-1">
-                    11:00
-                  </span>
+                  
                 </div>
               </Link>
             ))}

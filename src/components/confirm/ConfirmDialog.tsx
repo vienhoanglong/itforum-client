@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../button";
 import { Label } from "@/components/label";
+import { useTranslation } from "react-i18next";
 
 interface ConfirmDialogProps {
   message: string;
@@ -16,6 +17,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onConfirm,
   onCancel,
 }) => {
+  const { t } = useTranslation();
   const [reason, setReason] = useState<string>("");
   const handleChangeReason = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReason(e.target.value);
@@ -34,7 +36,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       {isReject === true && (
         <>
           <Label htmlFor="reason" className="block mt-4 text-xs font-semibold">
-            Reason: (optional)
+            {t("reason")}: ({t("optional")})
           </Label>
           <div className="flex justify-start w-full items-center">
             <input
@@ -55,7 +57,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           kind="primary"
           handle={handleSubmit}
         >
-          Yes
+          {t("yes")}
         </Button>
         <Button
           size="small"
@@ -63,7 +65,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           kind="primary"
           handle={onCancel}
         >
-          No
+          {t("no")}
         </Button>
       </div>
     </div>

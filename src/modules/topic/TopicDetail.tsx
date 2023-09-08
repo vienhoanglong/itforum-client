@@ -31,6 +31,7 @@ import Modal from "@/components/modal/Modal";
 import { CreateNewDocument, deleteDocument } from "@/services/documentService";
 import { toast } from "react-toastify";
 import { AddNewDocument } from "./AddNewDocument";
+import { useTranslation } from "react-i18next";
 
 const TopicDetail: React.FC = () => {
   const { topic, getById } = useTopicStore();
@@ -45,6 +46,7 @@ const TopicDetail: React.FC = () => {
   const handleBackTopic = () => {
     navigate(-1);
   };
+  const { t } = useTranslation();
   const { getListDocument, listAllDocument } = useDocumentStore();
   const formatDate = "MM-DD-YYYY";
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
@@ -186,14 +188,14 @@ const TopicDetail: React.FC = () => {
     return (
       <LayoutSecondary>
         <div className="w-full h-full text-center flex flex-col text-lg font-bold p-10 gap-4">
-          <span>Topic not found!</span>
+          <span>{t("noTopics")}</span>
           <div>
             <button
               className="dark:text-light0 rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
               onClick={handleBackTopic}
             >
               <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-              Back
+              {t("back")}
             </button>
           </div>
         </div>
@@ -237,11 +239,11 @@ const TopicDetail: React.FC = () => {
           <Tabs>
             <TabList>
               <Tab className=" cursor-pointer relative py-2 px-4 mr-1 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
-                Discuss
+                {t("discussions")}
                 <div className="absolute inset-0 bg-transparent"></div>
               </Tab>
               <Tab className=" cursor-pointer relative py-2 px-4 bg-light2 dark:bg-dark1/20 dark:text-white rounded-t-lg">
-                Posts
+                {t("posts")}
                 <div className="absolute inset-0 bg-transparent"></div>
               </Tab>
             </TabList>
@@ -272,7 +274,7 @@ const TopicDetail: React.FC = () => {
           </Modal>
         )}
         <div className="bg-light4 shadow-sm dark:bg-dark1/80 lg:col-span-2 lg:row-auto rounded-lg p-4">
-          <div className=" text-lg font-semibold mb-4">Document</div>
+          <div className=" text-lg font-semibold mb-4">{t("document")}</div>
           <div className=" flex justify-between items-center">
             <div className="mb-2 ">
               <select
@@ -280,7 +282,7 @@ const TopicDetail: React.FC = () => {
                 value={filterType || ""}
                 onChange={(e) => handleFilter(e.target.value || null)}
               >
-                <option value="">All Types</option>
+                <option value="">{t("all")}</option>
                 {uniqueTypes?.map((type, index) => (
                   <option key={index} value={type}>
                     {type}
@@ -294,7 +296,7 @@ const TopicDetail: React.FC = () => {
                   onClick={handleAddNew}
                   className=" text-white bg-mainColor mb-2 p-2 rounded-lg"
                 >
-                  Add document
+                  {t("addDocuments")}
                 </button>
               </div>
             )}
@@ -303,12 +305,12 @@ const TopicDetail: React.FC = () => {
             <table className="min-w-full shadow-md  ">
               <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
                 <tr>
-                  <th className="py-2 px-4 rounded-tl-md  ">Files</th>
-                  <th className="py-2 px-4 rounded-tl-md  ">Name</th>
-                  <th className="py-2 px-4  ">Type</th>
+                  <th className="py-2 px-4 rounded-tl-md  ">{t("file")}</th>
+                  <th className="py-2 px-4  ">{t("name")}</th>
+                  <th className="py-2 px-4  ">{t("type")}</th>
                   <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
                     <div className="flex justify-center items-center gap-2">
-                      <span>Date</span>
+                      <span>{t("date")}</span>
                       {sortDirection === "asc" ? (
                         <BsFillArrowUpSquareFill size={14} />
                       ) : (
@@ -316,15 +318,15 @@ const TopicDetail: React.FC = () => {
                       )}
                     </div>
                   </th>
-                  <th className="py-2 px-4  ">Status</th>
-                  <th className="py-2 px-4 rounded-tr-md ">Download</th>
+                  <th className="py-2 px-4  ">{t("status")}</th>
+                  <th className="py-2 px-4 rounded-tr-md ">{t("download")}</th>
                 </tr>
               </thead>
               <tbody>
                 {currentItems?.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="text-center">
-                      Không có file nào
+                      {t("noFile")}
                     </td>
                   </tr>
                 ) : (
@@ -498,7 +500,7 @@ const TopicDetail: React.FC = () => {
 
             <div className="w-auto mx-2 flex items-center justify-end">
               <label htmlFor="itemsPerPage" className="mr-2">
-                Rows per page:
+                {t("rowPerPage")}:
               </label>
               <select
                 id="itemsPerPage"

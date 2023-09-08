@@ -13,6 +13,7 @@ import ICommentCreate from "@/interface/API/ICommentCreate";
 import { useCommentStore } from "@/store/commentStore";
 import { getUserById } from "@/services/userService";
 import IUser from "@/interface/user";
+import { useTranslation } from "react-i18next";
 interface ActiveCommentType {
   id: string;
   type: string;
@@ -52,6 +53,7 @@ const Comments: React.FC<CommentsProps> = ({
   setActiveComment,
   handleUpdated,
 }) => {
+  const { t } = useTranslation();
   const { setIsDeleted } = useCommentStore();
   const [repliesComment, setRepliesComment] = useState<IComment[]>([]);
   const [user, setUser] = useState<IUser | null>(null);
@@ -210,7 +212,7 @@ const Comments: React.FC<CommentsProps> = ({
                   >
                     <BsFillChatRightDotsFill />
                     <span className="text-[10px] italic font-thin text-mainColor">
-                      Reply
+                      {t("reply")}
                     </span>
                   </button>
                 )}
@@ -227,7 +229,7 @@ const Comments: React.FC<CommentsProps> = ({
                   >
                     <HiPencil />
                     <span className="text-[10px] italic font-thin text-mainColor">
-                      Edit
+                      {t("edit")}
                     </span>
                   </button>
                 )}
@@ -243,7 +245,7 @@ const Comments: React.FC<CommentsProps> = ({
                   >
                     <BsTrashFill />
                     <span className="text-[10px] italic font-thin text-mainColor hover:text-red-400 ">
-                      Delete
+                      {t("delete")}
                     </span>
                   </button>
                 )}

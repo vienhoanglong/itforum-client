@@ -5,6 +5,7 @@ import { OPTIONS } from "@/constants/global";
 import IReportCreate from "@/interface/API/IReportCreate";
 import { CreateReport } from "@/services/reportService";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 interface IReportData {
   selectedOptions: string[];
@@ -32,7 +33,7 @@ const ModalReport: React.FC<ModalReportProps> = ({
   } = useForm();
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [warning, setWarning] = useState<boolean>(false);
-
+  const { t } = useTranslation();
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const optionValue = event.target.value;
     if (selectedOptions.includes(optionValue)) {
@@ -96,11 +97,11 @@ const ModalReport: React.FC<ModalReportProps> = ({
   return (
     <div className="fixed inset-0 z-20 text-dark0 dark:text-light0  flex items-center justify-center bg-gray-900 bg-opacity-75">
       <div className="bg-white dark:bg-dark1   dark:text-light0 w-80 h-auto mx-4 p-6 rounded-lg">
-        <h2 className="text-2xl mb-4 font-bold text-darker">Report</h2>
+        <h2 className="text-2xl mb-4 font-bold text-darker">{t("report")}</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-medium">
-              Select options:
+              {t("selectOptions")}:
             </label>
 
             <div className="flex flex-col justify-center">
@@ -119,7 +120,7 @@ const ModalReport: React.FC<ModalReportProps> = ({
                     className="mr-2"
                     style={{ width: "1.25em", height: "1.25em" }}
                   />
-                  {option}
+                  {t(option)}
                 </label>
               ))}
             </div>
@@ -132,7 +133,7 @@ const ModalReport: React.FC<ModalReportProps> = ({
           {selectedOptions.includes("Other") && (
             <div className="mb-4">
               <label className="block mb-2" htmlFor="otherText">
-                Other:
+                {t("Other")}:
               </label>
               <input
                 type="text"
@@ -151,7 +152,7 @@ const ModalReport: React.FC<ModalReportProps> = ({
               size="small"
               className="  text-xs bg-teal2 hover:bg-teal0 text-white "
             >
-              Send
+              {t("send")}
             </Button>
             <Button
               type="submit"
@@ -159,7 +160,7 @@ const ModalReport: React.FC<ModalReportProps> = ({
               className="  text-xs bg-red2 hover:bg-red0 text-white "
               handle={closeModal}
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </div>
         </form>

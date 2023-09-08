@@ -8,6 +8,7 @@ import { useMessageStore } from "@/store/messageStore";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import React, { useState, ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { FaPaperPlane } from "react-icons/fa";
 import { HiOutlinePaperClip, HiOutlineEmojiHappy, HiX } from "react-icons/hi";
 
@@ -23,6 +24,7 @@ interface ChatBoxProps {
 }
 
 const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
+  const { t } = useTranslation();
   const { messages, setMessages } = useMessageStore();
   const [inputText, setInputText] = useState<string>("");
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
@@ -169,7 +171,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ users, chatId, sender }) => {
         className="p-[4px_10px] border rounded-full overflow-wrap w-full border-[#dee2e6] dark:bg-dark0 text-sm outline-none"
         type="text"
         value={inputText}
-        placeholder="Nhập @ChatGPT, để đặt câu hỏi cho ChatGPT"
+        placeholder={t("questionChatGPT")}
         onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}
       />

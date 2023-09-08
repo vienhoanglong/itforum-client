@@ -14,8 +14,10 @@ import ConfirmDialog from "@/components/confirm/ConfirmDialog";
 import Topic from "@/interface/topic";
 import { colorTopic } from "@/constants/global";
 import { deleteTopic, moveTrashOrRestoreTopic } from "@/services/topicService";
+import { useTranslation } from "react-i18next";
 
 export const DeletedTopic: React.FC = () => {
+  const { t } = useTranslation();
   const { getListTopicFromTrash, listTopicFromTrash, getListTopic } =
     useManagementStore();
   const [currentPage, setCurrentPage] = useState(0);
@@ -117,14 +119,14 @@ export const DeletedTopic: React.FC = () => {
         getListTopicFromTrash();
         getListTopic();
         setIsModalOpenDialog(false);
-        toast.success(" Restore topic successfully! ", {
+        toast.success(`${t("restoreSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error Restore topic");
       }
-    }, "Bạn có chắc muốn khôi phục không?");
+    }, `${t("confirmRestore")}`);
   };
   const hanldeDeleted = async (id: string) => {
     handleConfirm(async () => {
@@ -132,27 +134,27 @@ export const DeletedTopic: React.FC = () => {
         await deleteTopic(id);
         getListTopicFromTrash();
         setIsModalOpenDialog(false);
-        toast.success(" Deleted topic successfully! ", {
+        toast.success(`${t("deleteSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error Deleted topic");
       }
-    }, "Bạn có chắc muốn xoá không?");
+    }, `${t("confirmDelete")}`);
   };
 
   return (
     <div className="container text-xs h-[80vh] w-[80vw] mx-auto bg-light4 dark:bg-dark1  p-4 rounded-3xl">
       <div className=" py-4">
-        <h4 className="text-xl font-bold text-darker ">Deleted topics</h4>
+        <h4 className="text-xl font-bold text-darker ">{t("deletedTopic")}</h4>
       </div>
       <div className="flex flex-wrap items-center">
         <div className=" w-full md:w-1/2 mr-auto pt-2">
           <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
             <div className="w-1/2 relative flex flex-wrap">
-              <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                <span>Type:</span>
+              <div className="w-1/4 flex text-xs justify-center  dark:text-white items-center">
+                <span>{t("type")}:</span>
               </div>
               <div className="w-3/4">
                 <select
@@ -161,7 +163,7 @@ export const DeletedTopic: React.FC = () => {
                   value={filterType || ""}
                   onChange={(e) => handleFilter(e.target.value || null)}
                 >
-                  <option value="">All</option>
+                  <option value="">{t("all")}</option>
                   <option value="devOps">DevOps</option>
                   <option value="frameworks">Framework</option>
                   <option value="languages">Language</option>
@@ -192,13 +194,13 @@ export const DeletedTopic: React.FC = () => {
         <table className="min-w-full shadow-lg  ">
           <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
             <tr>
-              <th className="py-2 px-4  rounded-tl-md ">SN</th>
-              <th className="py-2 px-4  ">Name</th>
-              <th className="py-2 px-4  ">Type</th>
-              <th className="py-2 px-4  ">Desc</th>
+              <th className="py-2 px-4  rounded-tl-md ">{t("sn")}</th>
+              <th className="py-2 px-4  ">{t("name")}</th>
+              <th className="py-2 px-4  ">{t("type")}</th>
+              <th className="py-2 px-4  ">{t("desc")}</th>
               <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
                 <div className="flex justify-center items-center gap-2">
-                  <span>Date</span>
+                  <span>{t("date")}</span>
                   {sortDirection === "asc" ? (
                     <BsFillArrowUpSquareFill size={14} />
                   ) : (
@@ -206,15 +208,15 @@ export const DeletedTopic: React.FC = () => {
                   )}
                 </div>
               </th>
-              <th className="py-2 px-4  ">Status</th>
-              <th className="py-2 px-4 rounded-tr-md ">Action</th>
+              <th className="py-2 px-4  ">{t("status")}</th>
+              <th className="py-2 px-4 rounded-tr-md ">{t("action")}</th>
             </tr>
           </thead>
           <tbody>
             {currentItems?.length === 0 ? (
               <tr>
                 <td colSpan={7} className="text-center dark:text-white">
-                  Không có chủ đề nào
+                  {t("noTopics")}
                 </td>
               </tr>
             ) : (
@@ -313,7 +315,7 @@ export const DeletedTopic: React.FC = () => {
         </div>
         <div className="w-auto mx-2 flex items-center justify-end">
           <label htmlFor="itemsPerPage" className="mr-2">
-            Rows per page:
+            {t("rowPerPage")}:
           </label>
           <select
             id="itemsPerPage"

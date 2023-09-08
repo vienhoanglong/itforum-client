@@ -13,6 +13,7 @@ import { AvatarImage } from "@/components/image";
 import { colorThemeChat } from "@/constants/global";
 import MessageItem from "./MessageItem";
 import socket from "@/utils/getSocketIo";
+import { useTranslation } from "react-i18next";
 
 interface ChatConversationProps {
   showConversation: boolean;
@@ -22,6 +23,7 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
   showConversation,
   chatId,
 }) => {
+  const { t } = useTranslation();
   const { messages, fetchMessages, setMessages } = useMessageStore();
   const { conversations, members } = useConversationStore();
   const { user } = useUserStore();
@@ -170,7 +172,7 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
               )
             ) : (
               <div className="flex items-center justify-center text-base h-full dark:text-white mt-10">
-                Chưa có nội dung cuộc trò chuyện...
+                {t("noConversationContentAvailable")}...
               </div>
             )}
           </div>
@@ -184,7 +186,7 @@ export const ChatConversation: React.FC<ChatConversationProps> = ({
         </div>
       ) : (
         <div className="text-xl m-auto dark:text-white">
-          Hãy chọn một đoạn chat hoặc bắt đầu cuộc trò chuyện mới
+          {t("chooseChatToConversation")}
         </div>
       )}
       <Modal

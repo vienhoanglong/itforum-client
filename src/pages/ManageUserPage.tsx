@@ -28,12 +28,14 @@ import { toast } from "react-toastify";
 import AddNewUser from "@/modules/user/AddNewUser";
 import IUserCreate from "@/interface/API/IUserCreate";
 import convertDateTime from "@/utils/helper";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const ManageUser: React.FC = () => {
   const { allUser, getListAllUser, listUserBySearch, getListUserBySearch } =
     useUserStore();
   const [resetType, setResetType] = useState("");
-
+  const { t } = useTranslation();
   const [sortDirection, setSortDirection] = useState<string>("desc");
   const [search, setSearch] = useState("");
   const [searchClick, setSearchClick] = useState(false);
@@ -168,14 +170,14 @@ export const ManageUser: React.FC = () => {
         await UpdateDataUser(updateBan, id);
 
         getListAllUser();
-        toast.success(" Ban user successfully! ", {
+        toast.success(`${t("banSucess")}`, {
           position: "bottom-right",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error restore discussion");
       }
-    }, "Bạn có chắc muốn ban không?");
+    }, `${t("confirmBan")}`);
   };
   const handleUnBan = async (id: string) => {
     handleConfirm(async () => {
@@ -186,14 +188,14 @@ export const ManageUser: React.FC = () => {
         await UpdateDataUser(updateBan, id);
 
         getListAllUser();
-        toast.success(" Unban user successfully! ", {
+        toast.success(`${t("unbanSucess")}`, {
           position: "bottom-right",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error restore discussion");
       }
-    }, "Bạn có chắc muốn Unban không?");
+    }, `${t("confirmUnban")}`);
   };
   const handleResetPass = async (id: string) => {
     handleConfirm(async () => {
@@ -201,14 +203,14 @@ export const ManageUser: React.FC = () => {
         await resetPassword(id);
 
         getListAllUser();
-        toast.success(" Reset password successfully! ", {
+        toast.success(`${t("resetSucess")}`, {
           position: "bottom-right",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error restore discussion");
       }
-    }, "Bạn có chắc muốn khôi phục không?");
+    }, `${t("confirmRestore")}`);
   };
   const handleFormSubmit = async (data: IUserCreate) => {
     try {
@@ -220,7 +222,7 @@ export const ManageUser: React.FC = () => {
         await createUser(newUser);
         getListAllUser();
         setIsModalOpenAddUser(false);
-        toast.success(" Create successfully! ", {
+        toast.success(`${t("createSucess")}`, {
           position: "bottom-right",
           autoClose: 3000,
         });
@@ -229,18 +231,22 @@ export const ManageUser: React.FC = () => {
       console.log("error create discussion");
     }
   };
+
   return (
     <LayoutSecondary>
-      <a
+      <Link
         className="dark:text-light0 bg- rounded-full mb-4 pr-1 link inline-flex items-center text-sm font-medium !text-grey-600 bg-light2 hover:bg-light0 dark:bg-dark2 dark:hover:bg-dark1"
-        href="/managements"
+        to="/managements"
       >
         <HiArrowCircleLeft className="w-6 h-6 mr-1" />
-        Back to Managements
-      </a>
+        {t("back")}
+      </Link>
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Management User</h4>
+          <h4 className="text-xl font-bold text-darker ">
+            {" "}
+            {t("userManagement")}
+          </h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
@@ -259,9 +265,9 @@ export const ManageUser: React.FC = () => {
                   </label>
                   <button
                     onClick={handleButtonClick}
-                    className=" bg-mainColor text-white p-2 rounded-lg"
+                    className=" bg-mainColor w-[100px] text-white p-2 rounded-lg"
                   >
-                    Search
+                    {t("search")}
                   </button>
                 </div>
                 <div>
@@ -271,7 +277,7 @@ export const ManageUser: React.FC = () => {
      "
                       onClick={handleShowAllClick}
                     >
-                      Clear
+                      {t("clearSearch")}
                     </button>
                   ) : (
                     <button
@@ -280,7 +286,7 @@ export const ManageUser: React.FC = () => {
                       disabled
                       onClick={handleShowAllClick}
                     >
-                      Clear
+                      {t("clearSearch")}
                     </button>
                   )}
                 </div>
@@ -296,7 +302,7 @@ export const ManageUser: React.FC = () => {
               handle={handleAddNewUser}
             >
               {" "}
-              New{" "}
+              {t("new")}{" "}
               <span className="pl-1">
                 <HiPlusCircle size={20} />
               </span>
@@ -321,10 +327,10 @@ export const ManageUser: React.FC = () => {
           <table className="min-w-full shadow-lg  ">
             <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
               <tr>
-                <th className="py-2 px-4  rounded-tl-md ">SN</th>
+                <th className="py-2 px-4  rounded-tl-md "> {t("sn")}</th>
                 <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
                   <div className="flex justify-center items-center gap-2">
-                    <span>Name</span>
+                    <span>{t("name")}</span>
                     {sortDirection === "asc" ? (
                       <BsFillArrowUpSquareFill size={14} />
                     ) : (
@@ -333,20 +339,20 @@ export const ManageUser: React.FC = () => {
                   </div>
                 </th>
 
-                <th className="py-2 px-4  ">Username</th>
+                <th className="py-2 px-4  ">{t("username")}</th>
                 <th className="py-2 px-4  ">Email</th>
-                <th className="py-2 px-4  ">Gender</th>
-                <th className="py-2 px-4  ">Birthday</th>
-                <th className="py-2 px-4  ">Role</th>
-                <th className="py-2 px-4  ">Status</th>
-                <th className="py-2 px-4 rounded-tr-md ">Action</th>
+                <th className="py-2 px-4  ">{t("gender")}</th>
+                <th className="py-2 px-4  ">{t("birthday")}</th>
+                <th className="py-2 px-4  ">{t("role")}</th>
+                <th className="py-2 px-4  ">{t("status")}</th>
+                <th className="py-2 px-4 rounded-tr-md ">{t("action")}</th>
               </tr>
             </thead>
             <tbody>
               {currentItems?.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center">
-                    Không có dữ liệu người dùng
+                    {t("noUsers")}
                   </td>
                 </tr>
               ) : (
@@ -453,7 +459,7 @@ export const ManageUser: React.FC = () => {
           </div>
           <div className="w-auto mx-2 flex items-center justify-end">
             <label htmlFor="itemsPerPage" className="mr-2">
-              Item:
+              {t("rowPerPage")}:
             </label>
             <select
               id="itemsPerPage"

@@ -7,12 +7,13 @@ import { HiBell, HiChevronRight } from "react-icons/hi";
 import { Link, useParams } from "react-router-dom";
 import parse from "html-react-parser";
 import Navigation from "@/components/navigation/Navigation";
+import { useTranslation } from "react-i18next";
 export const NotificationDetailPage: React.FC = () => {
   const formatDate = "MM-DD-YYYY";
   const { notificationId } = useParams<string>();
   const { notifications, getNotification } = useNotificationStore();
   const { getById, userById } = useUserStore();
-
+  const { t } = useTranslation();
   useMemo(() => {
     notificationId && getNotification(notificationId);
   }, [getNotification, notificationId]);
@@ -29,17 +30,17 @@ export const NotificationDetailPage: React.FC = () => {
           to="/notifications"
           className=" cursor-pointer underline hover:text-mainColor"
         >
-          Notification
+          {t("notifications")}
         </Link>
         <HiChevronRight></HiChevronRight>
         <Link
           to={`/notification/${notifications?.typeNotice}`}
           className=" cursor-pointer underline hover:text-mainColor"
         >
-          Notification List
+          {t("notificationsList")}
         </Link>
         <HiChevronRight></HiChevronRight>
-        <span>Notification Detail</span>
+        <span>{t("notificationsDetail")}</span>
       </div>
       <div className=" bg-light4 p-8 dark:bg-dark1 mt-2 rounded-lg shadow-sm">
         <div className="flex justify-center items-center dark:text-light0 mt-4">
@@ -75,8 +76,8 @@ export const NotificationDetailPage: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="w-full flex flex-col p-2  bg-dark0 mt-2 dark:text-white h-auto rounded-lg">
-          <div className=" mb-2">File đính kèm:</div>
+        <div className="w-full flex flex-col p-2  bg-dark0 mt-2 text-white h-auto rounded-lg">
+          <div className=" mb-2">{t("attachedFiles")}:</div>
           {notifications?.filename != null ? (
             <Link to={`${notifications.file}`}>
               <span className=" hover:text-mainColor cursor-pointer hover:underline">
@@ -84,7 +85,7 @@ export const NotificationDetailPage: React.FC = () => {
               </span>
             </Link>
           ) : (
-            <div>Không có</div>
+            <div>{t("nothing")}</div>
           )}
         </div>
       </div>

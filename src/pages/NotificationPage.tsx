@@ -18,8 +18,10 @@ import { useNotificationStore } from "@/store/notificationStore";
 import { useUserStore } from "@/store/userStore";
 import { Link } from "react-router-dom";
 import NotificationRecruit from "@/modules/home/NotificationRecruit";
+import { useTranslation } from "react-i18next";
 
 const NotificationPage: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const { getListNotificationNav } = useNotificationStore();
   const { user } = useUserStore();
   const [isModalOpenAddNotifi, setIsModalOpenAddNotifi] = useState(false); // config modal add
@@ -73,7 +75,9 @@ const NotificationPage: React.FC = React.memo(() => {
     >
       <div className="flex flex-wrap justify-between items-center">
         <div className=" py-4">
-          <h4 className="text-xl font-bold text-darker ">Notifications</h4>
+          <h4 className="text-xl font-bold text-darker ">
+            {t("notifications")}
+          </h4>
         </div>
         {user?.role !== 2 && (
           <Button
@@ -83,7 +87,7 @@ const NotificationPage: React.FC = React.memo(() => {
             kind="secondary"
             handle={handleAddNewNotifi}
           >
-            <span className="text-[12px]">New notification</span>
+            <span className="text-[12px]">{t("newNotifications")}</span>
             <HiPlusCircle size={15}></HiPlusCircle>
           </Button>
         )}
@@ -103,7 +107,7 @@ const NotificationPage: React.FC = React.memo(() => {
           <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
             <div className="flex flex-col w-full space-y-2 ">
               <span className="text-base font-bold block justify-start align-top">
-                All
+                {t("all")}
               </span>
               <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                 <img
@@ -111,24 +115,21 @@ const NotificationPage: React.FC = React.memo(() => {
                   className=" object-fill max-w-full max-h-full"
                 ></img>
               </div>
-              <span className="block justify-start">
-                All notifications from the Department, including activities,
-                studies, regulations,...
-              </span>
+              <span className="block justify-start">{t("allTypeDesc")}</span>
             </div>
 
             <Link
               to="/notification/all"
               className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
             >
-              View all
+              {t("viewAll")}
             </Link>
           </div>
         )}
         <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
           <div className="flex flex-col w-full space-y-2 ">
             <span className="text-base font-bold block justify-start align-top">
-              Recruitment
+              {t("recruitment")}
             </span>
             <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
               <img
@@ -136,18 +137,14 @@ const NotificationPage: React.FC = React.memo(() => {
                 className=" object-fill max-w-full max-h-full"
               ></img>
             </div>
-            <span className="block justify-start">
-              {" "}
-              Information about recruitment, job opportunities, and student
-              support programs.
-            </span>
+            <span className="block justify-start"> {t("recuitTypeDesc")}</span>
           </div>
 
           <Link
             to="/notification/recruitment"
             className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
           >
-            View all
+            {t("viewAll")}
           </Link>
         </div>
         {user?.role !== 3 && (
@@ -155,7 +152,7 @@ const NotificationPage: React.FC = React.memo(() => {
             <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
               <div className="flex flex-col w-full space-y-2 ">
                 <span className="text-base font-bold block justify-start align-top">
-                  Event
+                  {t("event")}
                 </span>
                 <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                   <img
@@ -164,8 +161,7 @@ const NotificationPage: React.FC = React.memo(() => {
                   ></img>
                 </div>
                 <span className="block justify-start">
-                  Upcoming events, including seminars, competitions, and
-                  exciting activities.
+                  {t("eventTypeDesc")}
                 </span>
               </div>
 
@@ -173,14 +169,14 @@ const NotificationPage: React.FC = React.memo(() => {
                 to="/notification/event"
                 className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
               >
-                View all
+                {t("viewAll")}
               </Link>
             </div>
 
             <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
               <div className="flex flex-col space-y-2 w-full ">
                 <span className="text-base font-bold block justify-start align-top">
-                  Subject
+                  {t("subject")}
                 </span>
                 <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                   <img
@@ -189,7 +185,7 @@ const NotificationPage: React.FC = React.memo(() => {
                   ></img>
                 </div>
                 <span className="block justify-start">
-                  Information about courses, class schedules, and instructors.
+                  {t("subjectTypeDesc")}
                 </span>
               </div>
 
@@ -197,13 +193,13 @@ const NotificationPage: React.FC = React.memo(() => {
                 to="/notification/subject"
                 className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
               >
-                View all
+                {t("viewAll")}
               </Link>
             </div>
             <div className=" p-4 justify-between flex flex-col rounded-lg bg-light4 dark:bg-dark1 shadow-md w-full h-auto">
               <div className="flex flex-col space-y-2 w-full ">
                 <span className="text-base font-bold block justify-start align-top">
-                  Others
+                  {t("others")}
                 </span>
                 <div className="w-full bg-light3 dark:bg-dark0/80 rounded-lg p-4 h-[90px] flex justify-center items-center">
                   <img
@@ -212,7 +208,7 @@ const NotificationPage: React.FC = React.memo(() => {
                   ></img>
                 </div>
                 <span className="block justify-start">
-                  Other types of notifications.
+                  {t("otherTypeDesc")}
                 </span>
               </div>
 
@@ -220,7 +216,7 @@ const NotificationPage: React.FC = React.memo(() => {
                 to="/notification/other"
                 className="w-full p-2 rounded-full text-center bg-mainColor hover:bg-blue-600 text-light0 mt-4 font-semibold"
               >
-                View all
+                {t("viewAll")}
               </Link>
             </div>
           </>

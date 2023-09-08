@@ -16,8 +16,10 @@ import { useReportStore } from "@/store/reportStore.ts";
 import { IReport } from "@/interface/report.ts";
 import { ApproveReport, RejectReport } from "@/services/reportService.ts";
 import IReportApprove from "@/interface/API/IReportApprove.ts";
+import { useTranslation } from "react-i18next";
 
 export const ManageReportPage: React.FC = React.memo(() => {
+  const { t } = useTranslation();
   const { listAllReport, getListReport } = useReportStore();
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [filterType, setFilterType] = useState<string | null>(null);
@@ -153,7 +155,7 @@ export const ManageReportPage: React.FC = React.memo(() => {
         try {
           await RejectReport(id);
           getListReport(0, 0, "desc");
-          toast.success(" Report is rejected! ", {
+          toast.success(`${t("rejectSucess")}`, {
             position: "bottom-right",
             autoClose: 3000,
           });
@@ -161,7 +163,7 @@ export const ManageReportPage: React.FC = React.memo(() => {
           console.log("error rejected report");
         }
       },
-      "Bạn có chắc từ chối không?",
+      `${t("confirmReject")}`,
       false
     );
   };
@@ -178,7 +180,7 @@ export const ManageReportPage: React.FC = React.memo(() => {
             await ApproveReport(dataApprove);
           }
           getListReport(0, 0, "desc");
-          toast.success("  Report is approved! ", {
+          toast.success(`${t("approveSucess")}`, {
             position: "bottom-right",
             autoClose: 3000,
           });
@@ -186,7 +188,7 @@ export const ManageReportPage: React.FC = React.memo(() => {
           console.log("error approved report");
         }
       },
-      "Bạn có chắc muốn duyệt không?",
+      `${t("confirmApprove")}`,
       true
     );
   };
@@ -197,24 +199,24 @@ export const ManageReportPage: React.FC = React.memo(() => {
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">
-            Approval management
+            {t("reportManagement")}
           </h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
             <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
               <div className="w-1/2 relative flex flex-wrap">
-                <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                  <span>Type:</span>
+                <div className="w-1/2 flex justify-center  dark:text-white items-center">
+                  <span>{t("type")}:</span>
                 </div>
-                <div className="w-3/4">
+                <div className="w-1/2">
                   <select
                     id="filterDropdown"
                     className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
                     value={filterType || ""}
                     onChange={(e) => handleFilter(e.target.value || null)}
                   >
-                    <option value="">All</option>
+                    <option value="">{t("all")}</option>
                     <option value="Spam">Spam</option>
                     <option value="Other">Other</option>
                     <option value="Violence">Violence</option>
@@ -229,19 +231,19 @@ export const ManageReportPage: React.FC = React.memo(() => {
                 </div>
               </div>
               <div className="w-1/2 relative flex flex-wrap">
-                <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                  <span>Belong:</span>
+                <div className="w-1/2 flex justify-center  dark:text-white items-center">
+                  <span>{t("belong")}:</span>
                 </div>
-                <div className="w-3/4">
+                <div className="w-1/2">
                   <select
                     id="filterDropdown"
                     className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
                     value={filterBelong || ""}
                     onChange={(e) => handleFilterBelong(e.target.value || null)}
                   >
-                    <option value="">All</option>
-                    <option value="Discuss">Discuss</option>
-                    <option value="Posts">Posts</option>
+                    <option value="">{t("all")}</option>
+                    <option value="Discuss">{t("discuss")}</option>
+                    <option value="Posts">{t("post")}</option>
                   </select>
                   <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
                     <HiFilter className="text-darker" size={15} />
@@ -249,17 +251,17 @@ export const ManageReportPage: React.FC = React.memo(() => {
                 </div>
               </div>
               <div className="w-1/2 relative flex flex-wrap">
-                <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                  <span>Status:</span>
+                <div className="w-1/2 flex justify-center  dark:text-white items-center">
+                  <span>{t("status")}:</span>
                 </div>
-                <div className="w-3/4">
+                <div className="w-1/2">
                   <select
                     id="filterDropdown"
                     className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
                     value={filterStatus || ""}
                     onChange={(e) => handleFilterStatus(e.target.value || null)}
                   >
-                    <option value="">All</option>
+                    <option value="">{t("all")}</option>
                     <option value="Pending">Pending</option>
                     <option value="Approved">Approved</option>
                     <option value="Rejected">Rejected</option>
@@ -288,13 +290,14 @@ export const ManageReportPage: React.FC = React.memo(() => {
           <table className="min-w-full shadow-lg  ">
             <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
               <tr>
-                <th className="py-2 px-4  rounded-tl-md ">SN</th>
-                <th className="py-2 px-4  ">Belong</th>
-                <th className="py-2 px-4  ">Link</th>
-                <th className="py-2 px-4  ">Type</th>
+                <th className="py-2 px-4  rounded-tl-md ">{t("sn")}</th>
+                <th className="py-2 px-4  ">{t("belong")}</th>
+                <th className="py-2 px-4  ">{t("link")}</th>
+                <th className="py-2 px-4  ">{t("type")}</th>
+                <th className="py-2 px-4  ">{t("Other")}</th>
                 <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
                   <div className="flex justify-center items-center gap-2">
-                    <span>Date</span>
+                    <span>{t("date")}</span>
                     {sortDirection === "asc" ? (
                       <BsFillArrowUpSquareFill size={14} />
                     ) : (
@@ -302,15 +305,15 @@ export const ManageReportPage: React.FC = React.memo(() => {
                     )}
                   </div>
                 </th>
-                <th className="py-2 px-4  ">Status</th>
-                <th className="py-2 px-4 rounded-tr-md ">Action</th>
+                <th className="py-2 px-4  ">{t("status")}</th>
+                <th className="py-2 px-4 rounded-tr-md ">{t("action")}</th>
               </tr>
             </thead>
             <tbody>
               {currentItems === undefined || currentItems?.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center dark:text-white">
-                    There are no report
+                    {t("noReport")}
                   </td>
                 </tr>
               ) : (
@@ -401,7 +404,9 @@ export const ManageReportPage: React.FC = React.memo(() => {
                         })}
                       </div>
                     </td>
-
+                    <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
+                      {item.otherText != "" ? item.otherText : ""}
+                    </td>
                     <td className="py-2 px-4 border-y border-light0 dark:border-dark3  ">
                       {convertDateTime(item.createdAt.toString(), formatDate)}
                     </td>
@@ -468,7 +473,7 @@ export const ManageReportPage: React.FC = React.memo(() => {
           </div>
           <div className="w-auto mx-2 flex items-center justify-end">
             <label htmlFor="itemsPerPage" className="mr-2">
-              Rows per page:
+              {t("rowPerPage")}:
             </label>
             <select
               id="itemsPerPage"

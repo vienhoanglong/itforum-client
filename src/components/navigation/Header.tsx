@@ -155,10 +155,10 @@ export const Header: React.FC = React.memo(() => {
                 className="w-[300px] h-[430px] overflow-y-auto no-scrollbar absolute top-[60px] -right-10 md:-left-4 rounded-lg shadow-md p-2 space-y-1 bg-white text-dark2 dark:bg-dark3 dark:text-light0 outline-1 mr-6"
               >
                 <div className="flex flex-row border-b-2 justify-between items-center p-2">
-                  <div className="text-sm font-bold">Thông báo</div>
+                  <div className="text-sm font-bold">{t("notifications")}</div>
                   <div className="flex flex-row gap-1 cursor-pointer">
                     <BiCheckDouble />
-                    <div className="text-xs">Đánh dấu đọc tất cả</div>
+                    <div className="text-xs">{t("markAllAsRead")}</div>
                   </div>
                 </div>
                 <div className="border-b-2 p-2">
@@ -208,27 +208,27 @@ export const Header: React.FC = React.memo(() => {
             )}
             <div className="absolute top-0 right-0 z-10 flex-col hidden group-hover:flex ">
               <div className="h-[58px] bg-transparent"></div>
-              <div className=" flex flex-col w-full p-5 space-y-5 bg-white rounded text-dark2 dark:bg-dark3 dark:text-light0">
+              <div className=" flex flex-col w-[200px] p-5 space-y-5 bg-white rounded text-dark2 dark:bg-dark3 dark:text-light0">
                 <Link
                   className="flex flex-row items-center space-x-5 cursor-pointer hover:text-mainColor"
                   to="/profile"
                 >
                   <HiUser size={18} title="Settings" />
-                  <span className="text-sm">Profile</span>
+                  <span className="text-sm">{t("profile")}</span>
                 </Link>
                 <Link
                   className="flex flex-row items-center space-x-5 cursor-pointer hover:text-mainColor"
                   to="/managements"
                 >
                   <HiDocumentDuplicate size={18} title="Manegement" />
-                  <span className="text-sm">Managements</span>
+                  <span className="text-sm">{t("managements")}</span>
                 </Link>
                 <a
                   className="flex flex-row items-center space-x-5 cursor-pointer hover:text-red2"
                   onClick={handleLogout}
                 >
                   <HiOutlineLogout size={18} title="Log out" />
-                  <span className="text-sm">Log out</span>
+                  <span className="text-sm">{t("logout")}</span>
                 </a>
               </div>
             </div>

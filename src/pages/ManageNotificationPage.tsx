@@ -33,8 +33,10 @@ import { toast } from "react-toastify";
 import { UpdateNotifications } from "@/modules/notification/UpdateNotification.tsx";
 import ConfirmDialog from "@/components/confirm/ConfirmDialog";
 import Navigation from "@/components/navigation/Navigation";
+import { useTranslation } from "react-i18next";
 
 export const ManageNotificationPage: React.FC = () => {
+  const { t } = useTranslation();
   const { listNotification, getListNotification } = useManagementStore();
   const { user } = useUserStore();
   const [notificationUpdate, setNotificationUpdate] = useState<string>("");
@@ -182,14 +184,14 @@ export const ManageNotificationPage: React.FC = () => {
         await moveTrashOrRestoreNotification(id);
         getListNotification(0, 0, "desc");
         setIsModalOpenDialog(false);
-        toast.success(" Delete notification successfully! ", {
+        toast.success(`${t("deleteSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error deleted notification");
       }
-    }, "Bạn có chắc muốn xoá không?");
+    }, `${t("confirmDelete")}`);
   };
   const changeStatusPublish = async (id: string) => {
     handleConfirm(async () => {
@@ -197,14 +199,14 @@ export const ManageNotificationPage: React.FC = () => {
         await changeStatusNotification(id);
         getListNotification(0, 0, "desc");
         setIsModalOpenDialog(false);
-        toast.success(" Change status notification successfully! ", {
+        toast.success(`${t("publishSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error change Status notification");
       }
-    }, "Bạn có chắc muốn công khai không?");
+    }, `${t("confirmPublish")}`);
   };
   const changeStatusHidden = async (id: string) => {
     handleConfirm(async () => {
@@ -212,14 +214,14 @@ export const ManageNotificationPage: React.FC = () => {
         await changeStatusNotification(id);
         getListNotification(0, 0, "desc");
         setIsModalOpenDialog(false);
-        toast.success(" Change status notification successfully! ", {
+        toast.success(`${t("hiddenSucess")}`, {
           position: "top-center",
           autoClose: 3000,
         });
       } catch (err) {
         console.log("error change Status notification");
       }
-    }, "Bạn có chắc muốn ẩn không?");
+    }, `${t("confirmHidden")}`);
   };
   const handleFormSubmit = async (notice: INotificationCreate, file?: File) => {
     try {
@@ -230,7 +232,7 @@ export const ManageNotificationPage: React.FC = () => {
       }
       getListNotification(0, 0, "desc");
       setIsModalOpenAddNotifi(false);
-      toast.success(" Create notification successfully! ", {
+      toast.success(`${t("createSucess")}`, {
         position: "bottom-right",
         autoClose: 3000,
       });
@@ -255,7 +257,7 @@ export const ManageNotificationPage: React.FC = () => {
         await UpdateNotification(notification, id);
       }
       getListNotification(0, 0, "desc");
-      toast.success(" Update notification successfully! ", {
+      toast.success(`${t("updateSucess")}`, {
         position: "bottom-right",
         autoClose: 3000,
       });
@@ -270,28 +272,28 @@ export const ManageNotificationPage: React.FC = () => {
       <div className=" h-auto mx-auto bg-light4 dark:bg-dark1 shadow-md p-4 rounded-3xl">
         <div className=" py-4">
           <h4 className="text-xl font-bold text-darker ">
-            Notification management
+            {t("notifiManage")}
           </h4>
         </div>
         <div className="flex flex-wrap items-center">
           <div className=" w-full md:w-1/2 mr-auto pt-2">
             <div className="grid grid-cols-1 grid-rows-2 gap-2 py-2 mr-2 ">
               <div className="w-1/2 relative flex flex-wrap">
-                <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                  <span>Type:</span>
+                <div className="w-1/2 flex justify-center  dark:text-white items-center">
+                  <span>{t("type")}:</span>
                 </div>
-                <div className="w-3/4">
+                <div className="w-1/2">
                   <select
                     id="filterDropdown"
                     className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
                     value={filterType || ""}
                     onChange={(e) => handleFilter(e.target.value || null)}
                   >
-                    <option value="">All</option>
-                    <option value="subject">Subject</option>
-                    <option value="event">Event</option>
-                    <option value="recruitment">Recruitment</option>
-                    <option value="other">Other</option>
+                    <option value="">{t("all")}</option>
+                    <option value="subject">{t("subject")}</option>
+                    <option value="event">{t("event")}</option>
+                    <option value="recruitment">{t("recruitment")}</option>
+                    <option value="other">{t("Other")}</option>
                   </select>
                   <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
                     <HiFilter className="text-darker" size={15} />
@@ -299,19 +301,19 @@ export const ManageNotificationPage: React.FC = () => {
                 </div>
               </div>
               <div className="w-1/2 relative flex flex-wrap">
-                <div className="w-1/4 flex justify-center  dark:text-white items-center">
-                  <span>Level:</span>
+                <div className="w-1/2 flex justify-center  dark:text-white items-center">
+                  <span>{t("level")}:</span>
                 </div>
-                <div className="w-3/4">
+                <div className="w-1/2">
                   <select
                     id="statusFilterDropdown"
                     className="text-xs w-full shadow-inner rounded-lg appearance-none px-2 py-1 dark:bg-dark0 dark:border-dark2 border  dark:text-light4"
                     value={filterStatus || ""}
                     onChange={(e) => handleLevelFilter(e.target.value || null)}
                   >
-                    <option value="">All</option>
-                    <option value="important">Important</option>
-                    <option value="normal">Normal</option>
+                    <option value="">{t("all")}</option>
+                    <option value="important">{t("important")}</option>
+                    <option value="normal">{t("normal")}</option>
                   </select>
                   <span className="absolute top-2 bottom-0 -translate-y-1 right-0 flex items-center pl-2 pr-2">
                     <HiFilter className="text-darker" size={15} />
@@ -329,7 +331,7 @@ export const ManageNotificationPage: React.FC = () => {
               handle={handleAddNew}
             >
               {" "}
-              New{" "}
+              {t("new")}{" "}
               <span className="pl-1">
                 <HiPlusCircle size={20} />
               </span>
@@ -341,7 +343,7 @@ export const ManageNotificationPage: React.FC = () => {
               handle={() => handleDeleted()}
             >
               {" "}
-              Trash{" "}
+              {t("trash")}{" "}
               <span className="pl-1">
                 <HiTrash size={20} />
               </span>
@@ -377,14 +379,14 @@ export const ManageNotificationPage: React.FC = () => {
           <table className="min-w-full shadow-lg  ">
             <thead className="bg-light2 dark:bg-dark2 dark:text-light0 text-xs text-center">
               <tr>
-                <th className="py-2 px-4  rounded-tl-md ">SN</th>
-                <th className="py-2 px-4  ">Author</th>
-                <th className="py-2 px-4  ">Title</th>
-                <th className="py-2 px-4  ">Type</th>
-                <th className="py-2 px-4  ">Level</th>
+                <th className="py-2 px-4  rounded-tl-md ">{t("sn")}</th>
+                <th className="py-2 px-4  ">{t("author")}</th>
+                <th className="py-2 px-4  ">{t("title")}</th>
+                <th className="py-2 px-4  ">{t("type")}</th>
+                <th className="py-2 px-4  ">{t("level")}</th>
                 <th className="py-2 px-4 cursor-pointer" onClick={handleSort}>
                   <div className="flex justify-center items-center gap-2">
-                    <span>Date</span>
+                    <span>{t("date")}</span>
                     {sortDirection === "asc" ? (
                       <BsFillArrowUpSquareFill size={14} />
                     ) : (
@@ -392,15 +394,15 @@ export const ManageNotificationPage: React.FC = () => {
                     )}
                   </div>
                 </th>
-                <th className="py-2 px-4  ">Status</th>
-                <th className="py-2 px-4 rounded-tr-md ">Action</th>
+                <th className="py-2 px-4  ">{t("status")}</th>
+                <th className="py-2 px-4 rounded-tr-md ">{t("action")}</th>
               </tr>
             </thead>
             <tbody>
               {currentItems?.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center">
-                    Không có thông báo nào
+                    {t("noNotification")}
                   </td>
                 </tr>
               ) : (
@@ -511,7 +513,7 @@ export const ManageNotificationPage: React.FC = () => {
           </div>
           <div className="w-auto mx-2 flex items-center justify-end">
             <label htmlFor="itemsPerPage" className="mr-2">
-              Rows per page:
+              {t("rowPerPage")}:
             </label>
             <select
               id="itemsPerPage"
